@@ -1,0 +1,1 @@
+function o(t,n){let e;return function(...r){clearTimeout(e),e=setTimeout(()=>t.apply(this,r),n)}}function i(){return typeof window<"u"}function u(){if(!i())return"other";const t=navigator.platform.toUpperCase();return t.includes("MAC")?"mac":t.includes("WIN")?"windows":t.includes("LINUX")?"linux":"other"}export{o as d,u as g};
