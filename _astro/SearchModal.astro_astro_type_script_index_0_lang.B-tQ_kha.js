@@ -1,0 +1,11 @@
+import{g,d as v}from"./utils.Cuxpda7C.js";const u=document.getElementById("search-modal"),f=document.getElementById("search-input-global"),w=document.getElementById("close-search"),E=document.querySelector(".search-overlay"),a=document.getElementById("search-results-global"),r=document.getElementById("search-loading"),k=g()==="mac"?"Cmd+K":"Ctrl+K";f&&(f.placeholder=`搜索全站内容 (${k})...`);const h=[{key:"blog",label:"博客文章"},{key:"note",label:"笔记"}];let c=null,d=0;function m(){u&&(u.style.display="flex"),f?.focus(),b()}function y(){u&&(u.style.display="none")}window.addEventListener("keydown",e=>{(e.metaKey||e.ctrlKey)&&e.key==="k"&&(e.preventDefault(),m()),e.key==="Escape"&&y()});w?.addEventListener("click",y);E?.addEventListener("click",y);window.openSearchModal=m;async function b(){if(!c)try{window.loadPagefind&&(c=await window.loadPagefind(),await c.init())}catch{console.warn("Pagefind not found. It only works in production build."),a&&(a.innerHTML='<div class="search-placeholder">搜索功能仅在构建后可用 (npm run build)</div>')}}async function I(e){const t=Date.now();if(d=t,!c||!e.trim()){a&&(a.innerHTML=""),r&&(r.style.display="none");return}r&&(r.style.display="flex"),a&&(a.style.opacity="0.5");try{const i=await c.search(e);if(t!==d)return;const l=i.results.slice(0,10),o=await Promise.all(l.map(s=>s.data()));if(t!==d)return;const n={};h.forEach(s=>{n[s.key]=[]}),n.other=[],o.forEach(s=>{const p=s.filters?.type?.[0];p&&n[p]?n[p].push(s):n.other.push(s)}),S(n)}finally{t===d&&(r&&(r.style.display="none"),a&&(a.style.opacity="1"))}}function S(e){if(!a)return;let t="";const i=(l,o)=>!o||o.length===0?"":`
+        <div class="search-group">
+          <div class="search-group-title">${l}</div>
+          ${o.map(n=>`
+            <a href="${n.url}" class="search-result-item">
+              <span class="search-result-title">${n.meta.title}</span>
+              <span class="search-result-excerpt">${n.excerpt}</span>
+            </a>
+          `).join("")}
+        </div>
+      `;h.forEach(l=>{t+=i(l.label,e[l.key])}),t+=i("其他",e.other),t===""&&(t='<div class="search-placeholder">未找到相关内容</div>'),a.innerHTML=t}const L=v(e=>I(e),300);f?.addEventListener("input",e=>{const t=e.target.value;L(t)});
