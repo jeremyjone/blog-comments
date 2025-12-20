@@ -1,0 +1,86 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="dark" data-astro-cid-x322jucz> <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>windows下自动备份文件</title><meta name="description" content="之前写了一个自动备份mysql的脚本，现在还需要一个自动备份文件的脚本，所以就看了一下windows的命令，就有了下面的脚本内容： ```bash rem ***** Resource backup start ***** @echo o..."><link rel="canonical" href="https://www.jeremyjone.com//blog/windows%E4%B8%8B%E8%87%AA%E5%8A%A8%E5%A4%87%E4%BB%BD%E6%96%87%E4%BB%B6/"><meta property="og:title" content="windows下自动备份文件"><meta property="og:description" content="之前写了一个自动备份mysql的脚本，现在还需要一个自动备份文件的脚本，所以就看了一下windows的命令，就有了下面的脚本内容： ```bash rem ***** Resource backup start ***** @echo o..."><meta property="og:type" content="article"><meta property="og:url" content="https://www.jeremyjone.com//blog/windows%E4%B8%8B%E8%87%AA%E5%8A%A8%E5%A4%87%E4%BB%BD%E6%96%87%E4%BB%B6/"><meta property="og:site_name" content="JeremyJone's Blog"><meta property="og:locale" content="zh_CN"><link rel="icon" href="/favicon.ico"><link rel="stylesheet" href="/_astro/_year_.CFHYKZJi.css">
+<link rel="stylesheet" href="/_astro/_slug_.B1ShOm38.css"></head> <body data-astro-cid-x322jucz> <header class="site-header" data-astro-cid-x322jucz> <div class="container header-content" data-astro-cid-x322jucz> <a href="/" class="logo" data-astro-cid-x322jucz> <div class="logo-icon" data-astro-cid-x322jucz> <img src="/resources/avatar.png" alt="Logo" width="32" height="32" data-astro-cid-x322jucz> </div> <span class="logo-text" data-astro-cid-x322jucz>JeremyJone&#39;s Blog</span> </a> <div class="header-right" data-astro-cid-x322jucz> <nav class="nav" data-astro-cid-x322jucz> <a href="/" class="nav-link" data-astro-cid-x322jucz> 首页 </a><a href="/blog" class="nav-link active" data-astro-cid-x322jucz> 博客 </a><a href="/notes" class="nav-link" data-astro-cid-x322jucz> 笔记 </a> </nav> <button class="search-toggle" onclick="window.openSearchModal()" aria-label="搜索" data-astro-cid-x322jucz> <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-astro-cid-x322jucz><circle cx="11" cy="11" r="8" data-astro-cid-x322jucz></circle><line x1="21" y1="21" x2="16.65" y2="16.65" data-astro-cid-x322jucz></line></svg> <span class="search-placeholder" data-astro-cid-x322jucz>Ctrl+K 搜索...</span> </button> <button class="theme-toggle" id="theme-toggle" aria-label="切换主题" data-astro-cid-x322jucz> <svg class="sun-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" data-astro-cid-x322jucz> <circle cx="12" cy="12" r="5" data-astro-cid-x322jucz></circle> <line x1="12" y1="1" x2="12" y2="3" data-astro-cid-x322jucz></line> <line x1="12" y1="21" x2="12" y2="23" data-astro-cid-x322jucz></line> <line x1="4.22" y1="4.22" x2="5.64" y2="5.64" data-astro-cid-x322jucz></line> <line x1="18.36" y1="18.36" x2="19.78" y2="19.78" data-astro-cid-x322jucz></line> <line x1="1" y1="12" x2="3" y2="12" data-astro-cid-x322jucz></line> <line x1="21" y1="12" x2="23" y2="12" data-astro-cid-x322jucz></line> <line x1="4.22" y1="19.78" x2="5.64" y2="18.36" data-astro-cid-x322jucz></line> <line x1="18.36" y1="5.64" x2="19.78" y2="4.22" data-astro-cid-x322jucz></line> </svg> <svg class="moon-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" data-astro-cid-x322jucz> <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" data-astro-cid-x322jucz></path> </svg> </button> </div> </div> </header> <main class="container" data-astro-cid-x322jucz>  <article data-content-type="blog" data-pagefind-body data-pagefind-filter="type:blog" data-astro-cid-iy4s3wf7> <header class="article-header" data-astro-cid-iy4s3wf7> <h1 data-astro-cid-iy4s3wf7>windows下自动备份文件</h1> <p class="meta" data-astro-cid-iy4s3wf7>
+发布于 2020-03-17 18:46:25 · 3 分钟 · 标签：<a href="/tags/xcopy" class="tag" data-astro-cid-iy4s3wf7> xcopy </a> </p> </header> <div class="article-content" data-astro-cid-iy4s3wf7> <p>之前写了一个自动备份mysql的脚本，现在还需要一个自动备份文件的脚本，所以就看了一下windows的命令，就有了下面的脚本内容：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#B392F0">rem</span><span style="color:#79B8FF"> *****</span><span style="color:#9ECBFF"> Resource</span><span style="color:#9ECBFF"> backup</span><span style="color:#9ECBFF"> start</span><span style="color:#79B8FF"> *****</span></span>
+<span class="line"><span style="color:#B392F0">@echo</span><span style="color:#9ECBFF"> off</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#B392F0">xcopy</span><span style="color:#9ECBFF"> "C:\Resource"</span><span style="color:#9ECBFF"> "Z:\resource_backup"</span><span style="color:#9ECBFF"> /S</span><span style="color:#9ECBFF"> /D</span><span style="color:#9ECBFF"> /Y</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#B392F0">@echo</span><span style="color:#9ECBFF"> on</span></span>
+<span class="line"><span style="color:#B392F0">rem</span><span style="color:#79B8FF"> *****</span><span style="color:#9ECBFF"> Resource</span><span style="color:#9ECBFF"> backup</span><span style="color:#9ECBFF"> end</span><span style="color:#79B8FF"> *****</span></span></code></pre>
+<p>很简单，就是一个<code>xcopy</code>命令，需要一个源路径，一个目标路径，其他都是可选参数。这里用了：</p>
+<ul>
+<li><code>/S</code> 复制所有非空的目录和子目录，如果没有这个参数，则只复制源根目录。</li>
+<li><code>/D</code> 这个参数可以在后面跟它自己的日期参数（如：<code>/D:mm-dd-yyyy</code>），表示复制指定日期或指定日期之后更改的文件。如果没有提供日期，则只复制那些源时间比目标时间新的文件。</li>
+<li><code>/Y</code> 遇到目标文件存在的情况，直接覆盖而不提示确认。因为是自动备份，所以这点应该很重要。</li>
+</ul>
+<p>当然，<code>xcopy</code>还有很多其他参数，下面一一说一下。</p>
+<h3 id="xcopy的语法">Xcopy的语法：</h3>
+<p>xcopy srcPath [destPath] [/W] [/P] [/C] [/V] [/Q] [/F] [/L] [/G] [/D[:mm-dd-yyyy]] [/U] [/I] [/S] [/E] [/T] [/K] [/R] [/H] [{/A |/M}] [/N] [/O] [/X] [/exclude:FileName1[+[FileName2]][+[FileName3]] [{/Y | /-Y}] [/Z]</p>
+<h3 id="xcopy的参数们">Xcopy的参数们</h3>
+<h5 id="srcpath">srcPath</h5>
+<p>源路径是必选的，可以是文件，也可以是文件夹。最好是绝对路径，当然，也可以是相对路径（虽然这样不太好）。</p>
+<h5 id="destpath">destPath</h5>
+<p>目标路径是可选的，但是如果不给该参数，则会直接拷贝到当前文件夹下，这样等于没有有效操作。</p>
+<p><img src="/images/2020/image-1584440640261.png" alt="file"></p>
+<h5 id="w">/W</h5>
+<p>在开始复制前，等待响应。</p>
+<p><img src="/images/2020/image-1584440711774.png" alt="file"></p>
+<h5 id="p">/P</h5>
+<p>提示确认是否要创建每个目标文件</p>
+<p><img src="/images/2020/image-1584440790768.png" alt="file"></p>
+<h5 id="c">/C</h5>
+<p>忽略所有错误，否则报错。</p>
+<h5 id="v">/V</h5>
+<p>写入文件时验证每个文件。</p>
+<h5 id="q">/Q</h5>
+<p>不显示消息。</p>
+<h5 id="f">/F</h5>
+<p>显示源文件和目标文件名。</p>
+<h5 id="l">/L</h5>
+<p>显示复制的文件列表。</p>
+<h5 id="g">/G</h5>
+<p>创建已经解密的目标文件，允许将没有经过加密的文件复制到不支持加密的目标。</p>
+<h5 id="dmm-dd-yyyy">/D[:mm-dd-yyyy]</h5>
+<p>表示复制指定日期或指定日期之后更改的文件。如果没有提供日期，则只复制那些源时间比目标时间新的文件。</p>
+<h5 id="u">/U</h5>
+<p>只复制目标文件目录中存在的文件。</p>
+<h5 id="i">/I</h5>
+<p>如果目标不存在，又在复制一个以上的文件，则假定目标一定是一个目录。如果没有该项，则会提示让用户选择这是一个 <code>文件/文件夹</code></p>
+<h5 id="e">/E</h5>
+<p>复制所有子目录和空目录，该参数必须与 <code>/T</code>或<code>/S</code>使用。</p>
+<h5 id="s">/S</h5>
+<p>复制所有非空的目录和子目录，如果没有这个参数，则只复制源根目录。</p>
+<h5 id="t">/T</h5>
+<p>只复制目录和子目录结构，不复制文件，如果要复制空目录，则必须包含 <code>/E</code>参数。</p>
+<h5 id="k">/K</h5>
+<p>复制文件时保留<code>只读</code>文件的只读属性，默认情况下，xcopy将删除这些属性。</p>
+<h5 id="r">/R</h5>
+<p>复制只读文件。</p>
+<h5 id="h">/H</h5>
+<p>复制隐藏文件和系统文件。默认情况下xcopy并不复制这些文件。</p>
+<h5 id="a--m">{/A | /M}</h5>
+<p>/A：只复制有存档属性集的文件，但不改变属性。 /M：只复制有存档属性集的文件，并关闭存档属性。</p>
+<h5 id="n">/N</h5>
+<p>使用NTFS短文件名创建文件。</p>
+<h5 id="o">/O</h5>
+<p>复制文件所有权与随机访问控制列表信息。</p>
+<h5 id="x">/X</h5>
+<p>复制文件审核设置和系统访问控制列表信息。</p>
+<h5 id="excludefilename1filename2filename3">/exclude:FileName1[+[FileName2]][+[FileName3]</h5>
+<p>指定排除的字符串的文件列表，例如，设置了 <code>obj</code>，则obj目录下所有文件或带有.obj 扩展名的文件都将不会被复制。</p>
+<h5 id="y---y">{/Y | /-Y}</h5>
+<p>/Y：遇到目标文件存在的情况，直接覆盖而不提示确认。 /-Y：需要提示才能继续。</p>
+<h5 id="z">/Z</h5>
+<p>用重新启动模式复制网络文件。</p> </div> <!-- 悬浮 TOC --> <button class="toc-toggle" id="toc-toggle" aria-label="显示目录" data-astro-cid-iy4s3wf7> <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-list" data-astro-cid-iy4s3wf7> <line x1="8" y1="6" x2="21" y2="6" data-astro-cid-iy4s3wf7></line> <line x1="8" y1="12" x2="21" y2="12" data-astro-cid-iy4s3wf7></line> <line x1="8" y1="18" x2="21" y2="18" data-astro-cid-iy4s3wf7></line> <line x1="3" y1="6" x2="3.01" y2="6" data-astro-cid-iy4s3wf7></line> <line x1="3" y1="12" x2="3.01" y2="12" data-astro-cid-iy4s3wf7></line> <line x1="3" y1="18" x2="3.01" y2="18" data-astro-cid-iy4s3wf7></line> </svg> </button> <aside class="floating-toc" id="floating-toc" data-astro-cid-iy4s3wf7> <div class="toc-header" data-astro-cid-iy4s3wf7> <h3 data-astro-cid-iy4s3wf7>目录</h3> </div> <nav class="toc-nav" id="toc-nav" data-astro-cid-g3fimnfa> <!-- TOC 内容将由客户端脚本填充 --> </nav>  <script type="module">document.addEventListener("DOMContentLoaded",()=>{const n=document.getElementById("toc-nav"),a=document.querySelector(".toc-header h3");if(!n)return;const s=document.querySelector(".article-header h1")?.textContent||"目录";a&&(a.textContent=s);const c=Array.from(document.querySelectorAll(".article-content h2, .article-content h3, .article-content h4, .article-content h5, .article-content h6"));if(c.length===0){n.innerHTML='<p style="color: var(--color-text-secondary); padding: 0.5rem;">暂无目录</p>';return}c.forEach(e=>{e.id||(e.id=e.textContent?.toLowerCase().replace(/\s+/g,"-").replace(/[^\w\-\u4e00-\u9fa5]/g,"")||"")});const l=document.createElement("ul");c.forEach(e=>{const t=document.createElement("li"),o=document.createElement("a");o.href=`#${e.id}`,o.textContent=e.textContent||"",o.classList.add(`toc-${e.tagName.toLowerCase()}`),o.addEventListener("click",i=>{i.preventDefault();const r=document.getElementById(e.id);if(r){const u=r.getBoundingClientRect().top+window.pageYOffset-80;window.scrollTo({top:u,behavior:"smooth"}),history.pushState(null,"",`#${e.id}`)}}),t.appendChild(o),l.appendChild(t)}),n.appendChild(l);const d={root:null,rootMargin:"-60px 0px -80% 0px",threshold:0},h=new IntersectionObserver(e=>{e.forEach(t=>{if(t.isIntersecting){const o=t.target.id;n.querySelectorAll("a").forEach(r=>{r.classList.remove("active")});const i=n.querySelector(`a[href="#${o}"]`);i&&i.classList.add("active")}})},d);c.forEach(e=>h.observe(e)),setTimeout(()=>{if(window.location.hash){const t=n.querySelector(`a[href="${window.location.hash}"]`);if(t){n.querySelectorAll("a").forEach(o=>o.classList.remove("active")),t.classList.add("active");return}}let e="";for(const t of c)if(t.getBoundingClientRect().top<=150)e=t.id;else break;if(!e&&c.length>0&&window.scrollY<100&&(e=c[0].id),e){n.querySelectorAll("a").forEach(o=>o.classList.remove("active"));const t=n.querySelector(`a[href="#${e}"]`);t&&t.classList.add("active")}},100)});</script> </aside> <div class="toc-overlay" id="toc-overlay" data-astro-cid-iy4s3wf7></div> <section class="comments" data-astro-cid-iy4s3wf7> <div class="giscus-wrapper"> <script src="https://giscus.app/client.js" data-repo="jeremyjone/blog-comments" data-repo-id="R_kgDOQlVVGg" data-category="Announcements" data-category-id="DIC_kwDOQlVVGs4Czkir" data-mapping="title" data-term data-strict="0" data-reactions-enabled="1" data-emit-metadata="0" data-input-position="top" data-theme="preferred_color_scheme" data-lang="zh-CN" crossorigin="anonymous" async></script> <noscript>请启用 JavaScript 查看评论。</noscript> </div> </section> </article>  </main> <footer class="site-footer" data-astro-cid-x322jucz> <div class="container footer-content" data-astro-cid-x322jucz> <p data-astro-cid-x322jucz>
+&copy; 2025 <b data-astro-cid-x322jucz>JeremyJone.com</b> All rights reserved.
+</p> <div class="footer-links" data-astro-cid-x322jucz> <a href="https://github.com/jeremyjone" target="_blank" rel="noopener" data-astro-cid-x322jucz> GitHub </a> </div> </div> </footer> <script type="module" src="/_astro/BaseLayout.astro_astro_type_script_index_0_lang.D4h-rqQD.js"></script> <div id="search-modal" class="search-modal" style="display: none;" data-astro-cid-jwf5kjrd> <div class="search-overlay" data-astro-cid-jwf5kjrd></div> <div class="search-container" data-astro-cid-jwf5kjrd> <div class="search-header" data-astro-cid-jwf5kjrd> <input type="text" id="search-input-global" placeholder="搜索全站内容 (Cmd+K)..." autocomplete="off" data-astro-cid-jwf5kjrd> <button id="close-search" aria-label="Close search" data-astro-cid-jwf5kjrd>&times;</button> </div> <div id="search-results-global" class="search-results" data-astro-cid-jwf5kjrd> <div class="search-placeholder" data-astro-cid-jwf5kjrd>输入关键词开始搜索...</div> </div> </div> </div>  <script>
+    window.loadPagefind = async () => {
+        try {
+            return await import("/pagefind/pagefind.js");
+        } catch (e) {
+            console.warn("Failed to load pagefind:", e);
+            return null;
+        }
+    };
+</script> <script type="module" src="/_astro/SearchModal.astro_astro_type_script_index_0_lang.C4oQFeHw.js"></script> </body></html>  <script type="module">document.addEventListener("DOMContentLoaded",()=>{const c=document.getElementById("toc-toggle"),e=document.getElementById("floating-toc"),t=document.getElementById("toc-overlay");c?.addEventListener("click",()=>{e?.classList.add("active"),t?.classList.add("active")});const o=()=>{e?.classList.remove("active"),t?.classList.remove("active")};t?.addEventListener("click",o)});</script>

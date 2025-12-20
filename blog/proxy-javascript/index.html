@@ -1,0 +1,315 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="dark" data-astro-cid-x322jucz> <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Proxy - JavaScript</title><meta name="description" content="JavaScript 的 Proxy 对象是 ES2015，也就是 ES6 版本添加的。其官方定义为： ``` Proxy 对象用于定义基本操作的自定义行为（如属性查找、赋值、枚举、函数调用等）。 ``` 它本质上就是一个代理，如果学过..."><link rel="canonical" href="https://www.jeremyjone.com//blog/proxy-javascript/"><meta property="og:title" content="Proxy - JavaScript"><meta property="og:description" content="JavaScript 的 Proxy 对象是 ES2015，也就是 ES6 版本添加的。其官方定义为： ``` Proxy 对象用于定义基本操作的自定义行为（如属性查找、赋值、枚举、函数调用等）。 ``` 它本质上就是一个代理，如果学过..."><meta property="og:type" content="article"><meta property="og:url" content="https://www.jeremyjone.com//blog/proxy-javascript/"><meta property="og:site_name" content="JeremyJone's Blog"><meta property="og:locale" content="zh_CN"><link rel="icon" href="/favicon.ico"><link rel="stylesheet" href="/_astro/_year_.CFHYKZJi.css">
+<link rel="stylesheet" href="/_astro/_slug_.B1ShOm38.css"></head> <body data-astro-cid-x322jucz> <header class="site-header" data-astro-cid-x322jucz> <div class="container header-content" data-astro-cid-x322jucz> <a href="/" class="logo" data-astro-cid-x322jucz> <div class="logo-icon" data-astro-cid-x322jucz> <img src="/resources/avatar.png" alt="Logo" width="32" height="32" data-astro-cid-x322jucz> </div> <span class="logo-text" data-astro-cid-x322jucz>JeremyJone&#39;s Blog</span> </a> <div class="header-right" data-astro-cid-x322jucz> <nav class="nav" data-astro-cid-x322jucz> <a href="/" class="nav-link" data-astro-cid-x322jucz> 首页 </a><a href="/blog" class="nav-link active" data-astro-cid-x322jucz> 博客 </a><a href="/notes" class="nav-link" data-astro-cid-x322jucz> 笔记 </a> </nav> <button class="search-toggle" onclick="window.openSearchModal()" aria-label="搜索" data-astro-cid-x322jucz> <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-astro-cid-x322jucz><circle cx="11" cy="11" r="8" data-astro-cid-x322jucz></circle><line x1="21" y1="21" x2="16.65" y2="16.65" data-astro-cid-x322jucz></line></svg> <span class="search-placeholder" data-astro-cid-x322jucz>Ctrl+K 搜索...</span> </button> <button class="theme-toggle" id="theme-toggle" aria-label="切换主题" data-astro-cid-x322jucz> <svg class="sun-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" data-astro-cid-x322jucz> <circle cx="12" cy="12" r="5" data-astro-cid-x322jucz></circle> <line x1="12" y1="1" x2="12" y2="3" data-astro-cid-x322jucz></line> <line x1="12" y1="21" x2="12" y2="23" data-astro-cid-x322jucz></line> <line x1="4.22" y1="4.22" x2="5.64" y2="5.64" data-astro-cid-x322jucz></line> <line x1="18.36" y1="18.36" x2="19.78" y2="19.78" data-astro-cid-x322jucz></line> <line x1="1" y1="12" x2="3" y2="12" data-astro-cid-x322jucz></line> <line x1="21" y1="12" x2="23" y2="12" data-astro-cid-x322jucz></line> <line x1="4.22" y1="19.78" x2="5.64" y2="18.36" data-astro-cid-x322jucz></line> <line x1="18.36" y1="5.64" x2="19.78" y2="4.22" data-astro-cid-x322jucz></line> </svg> <svg class="moon-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" data-astro-cid-x322jucz> <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" data-astro-cid-x322jucz></path> </svg> </button> </div> </div> </header> <main class="container" data-astro-cid-x322jucz>  <article data-content-type="blog" data-pagefind-body data-pagefind-filter="type:blog" data-astro-cid-iy4s3wf7> <header class="article-header" data-astro-cid-iy4s3wf7> <h1 data-astro-cid-iy4s3wf7>Proxy - JavaScript</h1> <p class="meta" data-astro-cid-iy4s3wf7>
+发布于 2020-07-28 12:40:02 · 7 分钟 · 标签： </p> </header> <div class="article-content" data-astro-cid-iy4s3wf7> <p>JavaScript 的 Proxy 对象是 ES2015，也就是 ES6 版本添加的。其官方定义为：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="plaintext"><code><span class="line"><span>Proxy 对象用于定义基本操作的自定义行为（如属性查找、赋值、枚举、函数调用等）。</span></span></code></pre>
+<p>它本质上就是一个代理，如果学过设计模式的话，其实很好理解。我之前写过的js版本的设计模式也写过这个。有兴趣可以参照：<a href="https://github.com/jeremyjone/design-pattern-js/blob/master/src/mode/proxy-mode.js">https://github.com/jeremyjone/design-pattern-js/blob/master/src/mode/proxy-mode.js</a></p>
+<h2 id="先举一个小例子">先举一个小例子</h2>
+<p>先看一下代码：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="js"><code><span class="line"><span style="color:#6A737D">/**</span></span>
+<span class="line"><span style="color:#6A737D"> * 使用ES6语法的Proxy类演示 代理模式的示例，明星 - 经纪人</span></span>
+<span class="line"><span style="color:#6A737D"> */</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">let</span><span style="color:#E1E4E8"> star </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#E1E4E8">    name: </span><span style="color:#9ECBFF">"张xx"</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">    age : </span><span style="color:#79B8FF">25</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">    phone: </span><span style="color:#9ECBFF">"138123456789"</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">let</span><span style="color:#E1E4E8"> agent </span><span style="color:#F97583">=</span><span style="color:#F97583"> new</span><span style="color:#B392F0"> Proxy</span><span style="color:#E1E4E8">(star, {</span></span>
+<span class="line"><span style="color:#B392F0">    get</span><span style="color:#E1E4E8">: </span><span style="color:#F97583">function</span><span style="color:#E1E4E8">(</span><span style="color:#FFAB70">target</span><span style="color:#E1E4E8">, </span><span style="color:#FFAB70">key</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#F97583">        if</span><span style="color:#E1E4E8"> (key </span><span style="color:#F97583">===</span><span style="color:#9ECBFF"> "phone"</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#F97583">            return</span><span style="color:#9ECBFF"> "agent phone: 13555555555"</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#E1E4E8">        }</span></span>
+<span class="line"><span style="color:#F97583">        else</span><span style="color:#F97583"> if</span><span style="color:#E1E4E8"> (key </span><span style="color:#F97583">===</span><span style="color:#9ECBFF"> "price"</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#F97583">            return</span><span style="color:#79B8FF"> 150000</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#E1E4E8">        }</span></span>
+<span class="line"><span style="color:#F97583">        return</span><span style="color:#E1E4E8"> target[key];</span></span>
+<span class="line"><span style="color:#E1E4E8">    },</span></span>
+<span class="line"><span style="color:#B392F0">    set</span><span style="color:#E1E4E8">: </span><span style="color:#F97583">function</span><span style="color:#E1E4E8">(</span><span style="color:#FFAB70">target</span><span style="color:#E1E4E8">, </span><span style="color:#FFAB70">key</span><span style="color:#E1E4E8">, </span><span style="color:#FFAB70">val</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#F97583">        if</span><span style="color:#E1E4E8"> (key </span><span style="color:#F97583">===</span><span style="color:#9ECBFF"> "customPrice"</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#F97583">            if</span><span style="color:#E1E4E8"> (val </span><span style="color:#F97583">&#x3C;</span><span style="color:#79B8FF"> 10000</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#F97583">                throw</span><span style="color:#F97583"> new</span><span style="color:#B392F0"> Error</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">"价格太低"</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#E1E4E8">            } </span><span style="color:#F97583">else</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#E1E4E8">                target[key] </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> val;</span></span>
+<span class="line"><span style="color:#F97583">                return</span><span style="color:#79B8FF"> true</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#E1E4E8">            }</span></span>
+<span class="line"><span style="color:#E1E4E8">        }</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"><span style="color:#E1E4E8">})</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">// test</span></span>
+<span class="line"><span style="color:#E1E4E8">console.</span><span style="color:#B392F0">log</span><span style="color:#E1E4E8">(agent.name);</span></span>
+<span class="line"><span style="color:#E1E4E8">console.</span><span style="color:#B392F0">log</span><span style="color:#E1E4E8">(agent.phone);</span></span>
+<span class="line"><span style="color:#E1E4E8">console.</span><span style="color:#B392F0">log</span><span style="color:#E1E4E8">(agent.age);</span></span>
+<span class="line"><span style="color:#E1E4E8">console.</span><span style="color:#B392F0">log</span><span style="color:#E1E4E8">(agent.price);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">agent.customPrice </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> 120000</span><span style="color:#E1E4E8">; </span><span style="color:#6A737D">// OK</span></span>
+<span class="line"><span style="color:#E1E4E8">console.</span><span style="color:#B392F0">log</span><span style="color:#E1E4E8">(agent.customPrice);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">agent.customPrice </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> 1000</span><span style="color:#E1E4E8">; </span><span style="color:#6A737D">// Error</span></span>
+<span class="line"><span style="color:#E1E4E8">console.</span><span style="color:#B392F0">log</span><span style="color:#E1E4E8">(agent.customPrice);</span></span></code></pre>
+<p>在这里，我们有一个明星 <code>张xx</code>，他很忙，不可能每件事情都自己处理，所以他需要一个代理人，也就是我们平时说的经纪人。当有人希望联系到该明星时，它会直接拨打电话，这时通过代理模式，经纪人会接到电话，这样对明星来说，电话的隐私被保护了起来。</p>
+<p>大体上，Proxy 就是这样的作用。当然，它不仅仅可以这样。</p>
+<h2 id="官方文档解读">官方文档解读</h2>
+<h3 id="语法">语法</h3>
+<p>从上面的例子可以看到，Proxy 的语法应该如下：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="js"><code><span class="line"><span style="color:#F97583">const</span><span style="color:#79B8FF"> p</span><span style="color:#F97583"> =</span><span style="color:#F97583"> new</span><span style="color:#B392F0"> Proxy</span><span style="color:#E1E4E8">(target, handler)</span></span></code></pre>
+<p>其中：</p>
+<ul>
+<li>
+<p><strong>target</strong> 要使用 Proxy 包装的目标对象（可以是任何类型的对象，包括原生数组，函数，甚至另一个代理）。</p>
+</li>
+<li>
+<p><strong>handler</strong> 一个通常以函数作为属性的对象，各属性中的函数分别定义了在执行各种操作时代理 p 的行为。</p>
+</li>
+</ul>
+<hr>
+<h3 id="方法">方法</h3>
+<p>Proxy 包含一个方法，其语法：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="js"><code><span class="line"><span style="color:#E1E4E8">Proxy.</span><span style="color:#B392F0">revocable</span><span style="color:#E1E4E8">(target, handler);</span></span></code></pre>
+<p>作用：创建一个可撤销的Proxy对象。</p>
+<p>官方示例：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="js"><code><span class="line"><span style="color:#F97583">var</span><span style="color:#E1E4E8"> revocable </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> Proxy.</span><span style="color:#B392F0">revocable</span><span style="color:#E1E4E8">({}, {</span></span>
+<span class="line"><span style="color:#B392F0">  get</span><span style="color:#E1E4E8">(</span><span style="color:#FFAB70">target</span><span style="color:#E1E4E8">, </span><span style="color:#FFAB70">name</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#F97583">    return</span><span style="color:#9ECBFF"> "[["</span><span style="color:#F97583"> +</span><span style="color:#E1E4E8"> name </span><span style="color:#F97583">+</span><span style="color:#9ECBFF"> "]]"</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#E1E4E8">  }</span></span>
+<span class="line"><span style="color:#E1E4E8">});</span></span>
+<span class="line"><span style="color:#F97583">var</span><span style="color:#E1E4E8"> proxy </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> revocable.proxy;</span></span>
+<span class="line"><span style="color:#E1E4E8">proxy.foo;              </span><span style="color:#6A737D">// "[[foo]]"</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">revocable.</span><span style="color:#B392F0">revoke</span><span style="color:#E1E4E8">();</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">console.</span><span style="color:#B392F0">log</span><span style="color:#E1E4E8">(proxy.foo); </span><span style="color:#6A737D">// 抛出 TypeError</span></span>
+<span class="line"><span style="color:#E1E4E8">proxy.foo </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> 1</span><span style="color:#6A737D">           // 还是 TypeError</span></span>
+<span class="line"><span style="color:#F97583">delete</span><span style="color:#E1E4E8"> proxy.foo;       </span><span style="color:#6A737D">// 又是 TypeError</span></span>
+<span class="line"><span style="color:#F97583">typeof</span><span style="color:#E1E4E8"> proxy            </span><span style="color:#6A737D">// "object"，因为 typeof 不属于可代理操作</span></span></code></pre>
+<p>更多内容，可以看<a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Proxy/revocable">官网</a>，这个不是重点。</p>
+<hr>
+<h3 id="handler-对象的方法">handler 对象的方法</h3>
+<p>handler 对象是一个容纳一批特定属性的占位符对象。它包含有 Proxy 的各个捕获器（trap）。 所有的捕捉器是可选的。如果没有定义某个捕捉器，那么就会保留源对象的默认行为。</p>
+<ul>
+<li>
+<p><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Proxy/handler/getPrototypeOf">handler.getPrototypeOf()</a> <a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Object/getPrototypeOf">Object.getPrototypeOf</a> 方法的捕捉器。</p>
+</li>
+<li>
+<p><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Proxy/handler/setPrototypeOf">handler.setPrototypeOf()</a> <a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Object/setPrototypeOf">Object.setPrototypeOf</a> 方法的捕捉器。</p>
+</li>
+<li>
+<p><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Proxy/handler/isExtensible">handler.isExtensible()</a> <a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Object/isExtensible">Object.isExtensible</a> 方法的捕捉器。</p>
+</li>
+<li>
+<p><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Proxy/handler/preventExtensions">handler.preventExtensions()</a> <a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Object/preventExtensions">Object.preventExtensions</a> 方法的捕捉器。</p>
+</li>
+<li>
+<p><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Proxy/handler/getOwnPropertyDescriptor">handler.getOwnPropertyDescriptor()</a> <a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Object/getOwnPropertyDescriptor">Object.getOwnPropertyDescriptor</a> 方法的捕捉器。</p>
+</li>
+<li>
+<p><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Proxy/handler/defineProperty">handler.defineProperty()</a> <a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Object/defineProperty">Object.defineProperty</a> 方法的捕捉器。</p>
+</li>
+<li>
+<p><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Proxy/handler/has">handler.has()</a> <a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Operators/in">in</a> 操作符的捕捉器。</p>
+</li>
+<li>
+<p><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Proxy/handler/get">handler.get()</a> 属性读取操作的捕捉器。</p>
+</li>
+<li>
+<p><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Proxy/handler/set">handler.set()</a> 属性设置操作的捕捉器。</p>
+</li>
+<li>
+<p><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Proxy/handler/deleteProperty">handler.deleteProperty()</a> <a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Operators/delete">delete</a> 操作符的捕捉器。</p>
+</li>
+<li>
+<p><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Proxy/handler/ownKeys">handler.ownKeys()</a> <a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Object/getOwnPropertyNames">Object.getOwnPropertyNames</a> 方法和 <a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Object/getOwnPropertySymbols">Object.getOwnPropertySymbols</a> 方法的捕捉器。</p>
+</li>
+<li>
+<p><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Proxy/handler/apply">handler.apply()</a> 函数调用操作的捕捉器。</p>
+</li>
+<li>
+<p><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Proxy/handler/construct">handler.construct()</a> <a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Operators/new">new</a> 操作符的捕捉器。</p>
+</li>
+</ul>
+<p>上面这些都是标准的捕捉器，还有一些不标准的捕捉器已经被<a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Deprecated_and_obsolete_features#Proxy">废弃并移除</a>了。</p>
+<h3 id="使用">使用</h3>
+<p>这里，我们最常使用的应该是 <code>get</code> 和 <code>set</code>，这也是最基础的用法，不管是最开始的小例子，还是使用 <code>Object.defineProperty</code> 的监控方式，都是通过覆写这两个方法，达到一个代理监控的效果。</p>
+<p>比如赋值时我们希望可以验证、重新整理数据等，都可以通过 Proxy 得到想要的结果。</p>
+<h4 id="基础示例">基础示例</h4>
+<p>当对象中不存在属性时，返回默认值</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="js"><code><span class="line"><span style="color:#F97583">const</span><span style="color:#79B8FF"> handler</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#B392F0">    get</span><span style="color:#E1E4E8">: </span><span style="color:#F97583">function</span><span style="color:#E1E4E8">(</span><span style="color:#FFAB70">obj</span><span style="color:#E1E4E8">, </span><span style="color:#FFAB70">prop</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#6A737D">        // 当属性不存在，返回一个默认值。</span></span>
+<span class="line"><span style="color:#F97583">        return</span><span style="color:#E1E4E8"> prop </span><span style="color:#F97583">in</span><span style="color:#E1E4E8"> obj </span><span style="color:#F97583">?</span><span style="color:#E1E4E8"> obj[prop] </span><span style="color:#F97583">:</span><span style="color:#79B8FF"> 37</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"><span style="color:#E1E4E8">};</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">const</span><span style="color:#79B8FF"> p</span><span style="color:#F97583"> =</span><span style="color:#F97583"> new</span><span style="color:#B392F0"> Proxy</span><span style="color:#E1E4E8">({}, handler);</span></span>
+<span class="line"><span style="color:#E1E4E8">p.a </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> 1</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#E1E4E8">p.b </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> undefined</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">console.</span><span style="color:#B392F0">log</span><span style="color:#E1E4E8">(p.a, p.b);      </span><span style="color:#6A737D">// 1, undefined</span></span>
+<span class="line"><span style="color:#E1E4E8">console.</span><span style="color:#B392F0">log</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">'c'</span><span style="color:#F97583"> in</span><span style="color:#E1E4E8"> p, p.c); </span><span style="color:#6A737D">// false, 37</span></span></code></pre>
+<h4 id="无操作转发代理">无操作转发代理</h4>
+<p>代理可以将所有应用到它的操作转发到原生JS对象上：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="js"><code><span class="line"><span style="color:#F97583">let</span><span style="color:#E1E4E8"> target </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> {}; </span><span style="color:#6A737D">// 原生对象</span></span>
+<span class="line"><span style="color:#F97583">let</span><span style="color:#E1E4E8"> p </span><span style="color:#F97583">=</span><span style="color:#F97583"> new</span><span style="color:#B392F0"> Proxy</span><span style="color:#E1E4E8">(target, {});</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">p.a </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> 37</span><span style="color:#E1E4E8">; </span><span style="color:#6A737D">// 操作转发到目标</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">console.</span><span style="color:#B392F0">log</span><span style="color:#E1E4E8">(target.a); </span><span style="color:#6A737D">// 37. 操作已经被正确地转发</span></span></code></pre>
+<p>同理，如果操作 <code>target</code>，同时也会转发到 <code>p</code> 上。</p>
+<h4 id="验证">验证</h4>
+<p>通过对 <code>set</code> 覆写，达到验证的效果，这个在实际生产中用处很大。</p>
+<p><em>其实上面的明星小例子已经给出了示例，它验证的是明星代言费。</em></p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="js"><code><span class="line"><span style="color:#F97583">let</span><span style="color:#E1E4E8"> validator </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#B392F0">  set</span><span style="color:#E1E4E8">: </span><span style="color:#F97583">function</span><span style="color:#E1E4E8">(</span><span style="color:#FFAB70">obj</span><span style="color:#E1E4E8">, </span><span style="color:#FFAB70">prop</span><span style="color:#E1E4E8">, </span><span style="color:#FFAB70">value</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#F97583">    if</span><span style="color:#E1E4E8"> (prop </span><span style="color:#F97583">===</span><span style="color:#9ECBFF"> 'age'</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#F97583">      if</span><span style="color:#E1E4E8"> (</span><span style="color:#F97583">!</span><span style="color:#E1E4E8">Number.</span><span style="color:#B392F0">isInteger</span><span style="color:#E1E4E8">(value)) {</span></span>
+<span class="line"><span style="color:#F97583">        throw</span><span style="color:#F97583"> new</span><span style="color:#B392F0"> TypeError</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">'The age is not an integer'</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#E1E4E8">      }</span></span>
+<span class="line"><span style="color:#F97583">      if</span><span style="color:#E1E4E8"> (value </span><span style="color:#F97583">></span><span style="color:#79B8FF"> 200</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#F97583">        throw</span><span style="color:#F97583"> new</span><span style="color:#B392F0"> RangeError</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">'The age seems invalid'</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#E1E4E8">      }</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">    // The default behavior to store the value</span></span>
+<span class="line"><span style="color:#E1E4E8">    obj[prop] </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> value;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">    // 表示成功</span></span>
+<span class="line"><span style="color:#F97583">    return</span><span style="color:#79B8FF"> true</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#E1E4E8">  }</span></span>
+<span class="line"><span style="color:#E1E4E8">};</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">let</span><span style="color:#E1E4E8"> person </span><span style="color:#F97583">=</span><span style="color:#F97583"> new</span><span style="color:#B392F0"> Proxy</span><span style="color:#E1E4E8">({}, validator);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">person.age </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> 100</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">console.</span><span style="color:#B392F0">log</span><span style="color:#E1E4E8">(person.age);</span></span>
+<span class="line"><span style="color:#6A737D">// 100</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">person.age </span><span style="color:#F97583">=</span><span style="color:#9ECBFF"> 'young'</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#6A737D">// 抛出异常: Uncaught TypeError: The age is not an integer</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">person.age </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> 300</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#6A737D">// 抛出异常: Uncaught RangeError: The age seems invalid</span></span></code></pre>
+<h4 id="扩展构造函数">扩展构造函数</h4>
+<p>这个就比较高级的用法了，Proxy 可以很轻松的扩展一个已有的构造函数。</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="js"><code><span class="line"><span style="color:#F97583">function</span><span style="color:#B392F0"> extend</span><span style="color:#E1E4E8">(</span><span style="color:#FFAB70">sup</span><span style="color:#E1E4E8">, </span><span style="color:#FFAB70">base</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#F97583">  var</span><span style="color:#E1E4E8"> descriptor </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> Object.</span><span style="color:#B392F0">getOwnPropertyDescriptor</span><span style="color:#E1E4E8">(</span></span>
+<span class="line"><span style="color:#79B8FF">    base</span><span style="color:#E1E4E8">.</span><span style="color:#79B8FF">prototype</span><span style="color:#E1E4E8">, </span><span style="color:#9ECBFF">"constructor"</span></span>
+<span class="line"><span style="color:#E1E4E8">  );</span></span>
+<span class="line"><span style="color:#79B8FF">  base</span><span style="color:#E1E4E8">.</span><span style="color:#79B8FF">prototype</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> Object.</span><span style="color:#B392F0">create</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">sup</span><span style="color:#E1E4E8">.</span><span style="color:#79B8FF">prototype</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#F97583">  var</span><span style="color:#E1E4E8"> handler </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#B392F0">    construct</span><span style="color:#E1E4E8">: </span><span style="color:#F97583">function</span><span style="color:#E1E4E8">(</span><span style="color:#FFAB70">target</span><span style="color:#E1E4E8">, </span><span style="color:#FFAB70">args</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#F97583">      var</span><span style="color:#E1E4E8"> obj </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> Object.</span><span style="color:#B392F0">create</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">base</span><span style="color:#E1E4E8">.</span><span style="color:#79B8FF">prototype</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#79B8FF">      this</span><span style="color:#E1E4E8">.</span><span style="color:#B392F0">apply</span><span style="color:#E1E4E8">(target, obj, args);</span></span>
+<span class="line"><span style="color:#F97583">      return</span><span style="color:#E1E4E8"> obj;</span></span>
+<span class="line"><span style="color:#E1E4E8">    },</span></span>
+<span class="line"><span style="color:#B392F0">    apply</span><span style="color:#E1E4E8">: </span><span style="color:#F97583">function</span><span style="color:#E1E4E8">(</span><span style="color:#FFAB70">target</span><span style="color:#E1E4E8">, </span><span style="color:#FFAB70">that</span><span style="color:#E1E4E8">, </span><span style="color:#FFAB70">args</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#E1E4E8">      sup.</span><span style="color:#B392F0">apply</span><span style="color:#E1E4E8">(that, args);</span></span>
+<span class="line"><span style="color:#E1E4E8">      base.</span><span style="color:#B392F0">apply</span><span style="color:#E1E4E8">(that, args);</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"><span style="color:#E1E4E8">  };</span></span>
+<span class="line"><span style="color:#F97583">  var</span><span style="color:#E1E4E8"> proxy </span><span style="color:#F97583">=</span><span style="color:#F97583"> new</span><span style="color:#B392F0"> Proxy</span><span style="color:#E1E4E8">(base, handler);</span></span>
+<span class="line"><span style="color:#E1E4E8">  descriptor.value </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> proxy;</span></span>
+<span class="line"><span style="color:#E1E4E8">  Object.</span><span style="color:#B392F0">defineProperty</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">base</span><span style="color:#E1E4E8">.</span><span style="color:#79B8FF">prototype</span><span style="color:#E1E4E8">, </span><span style="color:#9ECBFF">"constructor"</span><span style="color:#E1E4E8">, descriptor);</span></span>
+<span class="line"><span style="color:#F97583">  return</span><span style="color:#E1E4E8"> proxy;</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">var</span><span style="color:#B392F0"> Person</span><span style="color:#F97583"> =</span><span style="color:#F97583"> function</span><span style="color:#E1E4E8"> (</span><span style="color:#FFAB70">name</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#79B8FF">  this</span><span style="color:#E1E4E8">.name </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> name</span></span>
+<span class="line"><span style="color:#E1E4E8">};</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">var</span><span style="color:#E1E4E8"> Boy </span><span style="color:#F97583">=</span><span style="color:#B392F0"> extend</span><span style="color:#E1E4E8">(Person, </span><span style="color:#F97583">function</span><span style="color:#E1E4E8"> (</span><span style="color:#FFAB70">name</span><span style="color:#E1E4E8">, </span><span style="color:#FFAB70">age</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#79B8FF">  this</span><span style="color:#E1E4E8">.age </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> age;</span></span>
+<span class="line"><span style="color:#E1E4E8">});</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#79B8FF">Boy</span><span style="color:#E1E4E8">.</span><span style="color:#79B8FF">prototype</span><span style="color:#E1E4E8">.sex </span><span style="color:#F97583">=</span><span style="color:#9ECBFF"> "M"</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">var</span><span style="color:#E1E4E8"> Peter </span><span style="color:#F97583">=</span><span style="color:#F97583"> new</span><span style="color:#B392F0"> Boy</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">"Peter"</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">13</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#E1E4E8">console.</span><span style="color:#B392F0">log</span><span style="color:#E1E4E8">(Peter.sex);  </span><span style="color:#6A737D">// "M"</span></span>
+<span class="line"><span style="color:#E1E4E8">console.</span><span style="color:#B392F0">log</span><span style="color:#E1E4E8">(Peter.name); </span><span style="color:#6A737D">// "Peter"</span></span>
+<span class="line"><span style="color:#E1E4E8">console.</span><span style="color:#B392F0">log</span><span style="color:#E1E4E8">(Peter.age);  </span><span style="color:#6A737D">// 13</span></span></code></pre>
+<h4 id="一个完整的-traps-列表示例">一个完整的 traps 列表示例</h4>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="js"><code><span class="line"><span style="color:#6A737D">/*</span></span>
+<span class="line"><span style="color:#6A737D">  var docCookies = ... get the "docCookies" object here:  </span></span>
+<span class="line"><span style="color:#6A737D">  https://developer.mozilla.org/zh-CN/docs/DOM/document.cookie#A_little_framework.3A_a_complete_cookies_reader.2Fwriter_with_full_unicode_support</span></span>
+<span class="line"><span style="color:#6A737D">*/</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">var</span><span style="color:#E1E4E8"> docCookies </span><span style="color:#F97583">=</span><span style="color:#F97583"> new</span><span style="color:#B392F0"> Proxy</span><span style="color:#E1E4E8">(docCookies, {</span></span>
+<span class="line"><span style="color:#9ECBFF">  "get"</span><span style="color:#E1E4E8">: </span><span style="color:#F97583">function</span><span style="color:#E1E4E8"> (</span><span style="color:#FFAB70">oTarget</span><span style="color:#E1E4E8">, </span><span style="color:#FFAB70">sKey</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#F97583">    return</span><span style="color:#E1E4E8"> oTarget[sKey] </span><span style="color:#F97583">||</span><span style="color:#E1E4E8"> oTarget.</span><span style="color:#B392F0">getItem</span><span style="color:#E1E4E8">(sKey) </span><span style="color:#F97583">||</span><span style="color:#79B8FF"> undefined</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#E1E4E8">  },</span></span>
+<span class="line"><span style="color:#9ECBFF">  "set"</span><span style="color:#E1E4E8">: </span><span style="color:#F97583">function</span><span style="color:#E1E4E8"> (</span><span style="color:#FFAB70">oTarget</span><span style="color:#E1E4E8">, </span><span style="color:#FFAB70">sKey</span><span style="color:#E1E4E8">, </span><span style="color:#FFAB70">vValue</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#F97583">    if</span><span style="color:#E1E4E8"> (sKey </span><span style="color:#F97583">in</span><span style="color:#E1E4E8"> oTarget) { </span><span style="color:#F97583">return</span><span style="color:#79B8FF"> false</span><span style="color:#E1E4E8">; }</span></span>
+<span class="line"><span style="color:#F97583">    return</span><span style="color:#E1E4E8"> oTarget.</span><span style="color:#B392F0">setItem</span><span style="color:#E1E4E8">(sKey, vValue);</span></span>
+<span class="line"><span style="color:#E1E4E8">  },</span></span>
+<span class="line"><span style="color:#9ECBFF">  "deleteProperty"</span><span style="color:#E1E4E8">: </span><span style="color:#F97583">function</span><span style="color:#E1E4E8"> (</span><span style="color:#FFAB70">oTarget</span><span style="color:#E1E4E8">, </span><span style="color:#FFAB70">sKey</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#F97583">    if</span><span style="color:#E1E4E8"> (sKey </span><span style="color:#F97583">in</span><span style="color:#E1E4E8"> oTarget) { </span><span style="color:#F97583">return</span><span style="color:#79B8FF"> false</span><span style="color:#E1E4E8">; }</span></span>
+<span class="line"><span style="color:#F97583">    return</span><span style="color:#E1E4E8"> oTarget.</span><span style="color:#B392F0">removeItem</span><span style="color:#E1E4E8">(sKey);</span></span>
+<span class="line"><span style="color:#E1E4E8">  },</span></span>
+<span class="line"><span style="color:#9ECBFF">  "enumerate"</span><span style="color:#E1E4E8">: </span><span style="color:#F97583">function</span><span style="color:#E1E4E8"> (</span><span style="color:#FFAB70">oTarget</span><span style="color:#E1E4E8">, </span><span style="color:#FFAB70">sKey</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#F97583">    return</span><span style="color:#E1E4E8"> oTarget.</span><span style="color:#B392F0">keys</span><span style="color:#E1E4E8">();</span></span>
+<span class="line"><span style="color:#E1E4E8">  },</span></span>
+<span class="line"><span style="color:#9ECBFF">  "ownKeys"</span><span style="color:#E1E4E8">: </span><span style="color:#F97583">function</span><span style="color:#E1E4E8"> (</span><span style="color:#FFAB70">oTarget</span><span style="color:#E1E4E8">, </span><span style="color:#FFAB70">sKey</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#F97583">    return</span><span style="color:#E1E4E8"> oTarget.</span><span style="color:#B392F0">keys</span><span style="color:#E1E4E8">();</span></span>
+<span class="line"><span style="color:#E1E4E8">  },</span></span>
+<span class="line"><span style="color:#9ECBFF">  "has"</span><span style="color:#E1E4E8">: </span><span style="color:#F97583">function</span><span style="color:#E1E4E8"> (</span><span style="color:#FFAB70">oTarget</span><span style="color:#E1E4E8">, </span><span style="color:#FFAB70">sKey</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#F97583">    return</span><span style="color:#E1E4E8"> sKey </span><span style="color:#F97583">in</span><span style="color:#E1E4E8"> oTarget </span><span style="color:#F97583">||</span><span style="color:#E1E4E8"> oTarget.</span><span style="color:#B392F0">hasItem</span><span style="color:#E1E4E8">(sKey);</span></span>
+<span class="line"><span style="color:#E1E4E8">  },</span></span>
+<span class="line"><span style="color:#9ECBFF">  "defineProperty"</span><span style="color:#E1E4E8">: </span><span style="color:#F97583">function</span><span style="color:#E1E4E8"> (</span><span style="color:#FFAB70">oTarget</span><span style="color:#E1E4E8">, </span><span style="color:#FFAB70">sKey</span><span style="color:#E1E4E8">, </span><span style="color:#FFAB70">oDesc</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#F97583">    if</span><span style="color:#E1E4E8"> (oDesc </span><span style="color:#F97583">&#x26;&#x26;</span><span style="color:#9ECBFF"> "value"</span><span style="color:#F97583"> in</span><span style="color:#E1E4E8"> oDesc) { oTarget.</span><span style="color:#B392F0">setItem</span><span style="color:#E1E4E8">(sKey, oDesc.value); }</span></span>
+<span class="line"><span style="color:#F97583">    return</span><span style="color:#E1E4E8"> oTarget;</span></span>
+<span class="line"><span style="color:#E1E4E8">  },</span></span>
+<span class="line"><span style="color:#9ECBFF">  "getOwnPropertyDescriptor"</span><span style="color:#E1E4E8">: </span><span style="color:#F97583">function</span><span style="color:#E1E4E8"> (</span><span style="color:#FFAB70">oTarget</span><span style="color:#E1E4E8">, </span><span style="color:#FFAB70">sKey</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#F97583">    var</span><span style="color:#E1E4E8"> vValue </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> oTarget.</span><span style="color:#B392F0">getItem</span><span style="color:#E1E4E8">(sKey);</span></span>
+<span class="line"><span style="color:#F97583">    return</span><span style="color:#E1E4E8"> vValue </span><span style="color:#F97583">?</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#9ECBFF">      "value"</span><span style="color:#E1E4E8">: vValue,</span></span>
+<span class="line"><span style="color:#9ECBFF">      "writable"</span><span style="color:#E1E4E8">: </span><span style="color:#79B8FF">true</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#9ECBFF">      "enumerable"</span><span style="color:#E1E4E8">: </span><span style="color:#79B8FF">true</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#9ECBFF">      "configurable"</span><span style="color:#E1E4E8">: </span><span style="color:#79B8FF">false</span></span>
+<span class="line"><span style="color:#E1E4E8">    } </span><span style="color:#F97583">:</span><span style="color:#79B8FF"> undefined</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#E1E4E8">  },</span></span>
+<span class="line"><span style="color:#E1E4E8">});</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">/* Cookies 测试 */</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#B392F0">alert</span><span style="color:#E1E4E8">(docCookies.my_cookie1 </span><span style="color:#F97583">=</span><span style="color:#9ECBFF"> "First value"</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#B392F0">alert</span><span style="color:#E1E4E8">(docCookies.</span><span style="color:#B392F0">getItem</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">"my_cookie1"</span><span style="color:#E1E4E8">));</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">docCookies.</span><span style="color:#B392F0">setItem</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">"my_cookie1"</span><span style="color:#E1E4E8">, </span><span style="color:#9ECBFF">"Changed value"</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#B392F0">alert</span><span style="color:#E1E4E8">(docCookies.my_cookie1);</span></span></code></pre>
+<h3 id="实际使用">实际使用</h3>
+<p>相比其他 <code>handler</code>，生产中更多是大量的使用 <code>get</code> 和 <code>set</code>。</p>
+<p>比如，我们现在有一个对象，里面包含时间 <code>date</code> 字段。我们的需求是，希望外部有一个变量 <code>dynamicDate</code> 动态联动该 <code>date</code> 字段，当 <code>date</code> 字段改变时，<code>dynamicDate</code> 可以动态改变。</p>
+<p>我们现在将它做成一个代理。</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="js"><code><span class="line"><span style="color:#F97583">let</span><span style="color:#E1E4E8"> target </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> {date: </span><span style="color:#9ECBFF">"2020-07-28"</span><span style="color:#E1E4E8">};</span></span>
+<span class="line"><span style="color:#F97583">let</span><span style="color:#E1E4E8"> dynamicDate </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> null</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">let</span><span style="color:#E1E4E8"> p </span><span style="color:#F97583">=</span><span style="color:#F97583"> new</span><span style="color:#B392F0"> Proxy</span><span style="color:#E1E4E8">(target, {</span></span>
+<span class="line"><span style="color:#B392F0">    get</span><span style="color:#E1E4E8">: </span><span style="color:#F97583">function</span><span style="color:#E1E4E8">(</span><span style="color:#FFAB70">obj</span><span style="color:#E1E4E8">, </span><span style="color:#FFAB70">prop</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#F97583">        if</span><span style="color:#E1E4E8"> (prop </span><span style="color:#F97583">===</span><span style="color:#9ECBFF"> "date"</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#E1E4E8">            dynamicDate </span><span style="color:#F97583">=</span><span style="color:#F97583"> new</span><span style="color:#B392F0"> Date</span><span style="color:#E1E4E8">(obj[prop]);</span></span>
+<span class="line"><span style="color:#E1E4E8">        }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">        return</span><span style="color:#E1E4E8"> obj[prop];</span></span>
+<span class="line"><span style="color:#E1E4E8">    },</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#B392F0">    set</span><span style="color:#E1E4E8">: </span><span style="color:#F97583">function</span><span style="color:#E1E4E8">(</span><span style="color:#FFAB70">obj</span><span style="color:#E1E4E8">, </span><span style="color:#FFAB70">prop</span><span style="color:#E1E4E8">, </span><span style="color:#FFAB70">value</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#6A737D">        // 减少不必要的重复赋值操作</span></span>
+<span class="line"><span style="color:#F97583">        if</span><span style="color:#E1E4E8"> (obj[prop] </span><span style="color:#F97583">!==</span><span style="color:#E1E4E8"> value) {</span></span>
+<span class="line"><span style="color:#E1E4E8">            obj[prop] </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> value;</span></span>
+<span class="line"><span style="color:#E1E4E8">        }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">        return</span><span style="color:#79B8FF"> true</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"><span style="color:#E1E4E8">})</span></span></code></pre>
+<p>这时，当 <code>target</code> 的数据改变时，<code>dynamicDate</code> 和 <code>p</code> 可以同时更新。</p> </div> <!-- 悬浮 TOC --> <button class="toc-toggle" id="toc-toggle" aria-label="显示目录" data-astro-cid-iy4s3wf7> <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-list" data-astro-cid-iy4s3wf7> <line x1="8" y1="6" x2="21" y2="6" data-astro-cid-iy4s3wf7></line> <line x1="8" y1="12" x2="21" y2="12" data-astro-cid-iy4s3wf7></line> <line x1="8" y1="18" x2="21" y2="18" data-astro-cid-iy4s3wf7></line> <line x1="3" y1="6" x2="3.01" y2="6" data-astro-cid-iy4s3wf7></line> <line x1="3" y1="12" x2="3.01" y2="12" data-astro-cid-iy4s3wf7></line> <line x1="3" y1="18" x2="3.01" y2="18" data-astro-cid-iy4s3wf7></line> </svg> </button> <aside class="floating-toc" id="floating-toc" data-astro-cid-iy4s3wf7> <div class="toc-header" data-astro-cid-iy4s3wf7> <h3 data-astro-cid-iy4s3wf7>目录</h3> </div> <nav class="toc-nav" id="toc-nav" data-astro-cid-g3fimnfa> <!-- TOC 内容将由客户端脚本填充 --> </nav>  <script type="module">document.addEventListener("DOMContentLoaded",()=>{const n=document.getElementById("toc-nav"),a=document.querySelector(".toc-header h3");if(!n)return;const s=document.querySelector(".article-header h1")?.textContent||"目录";a&&(a.textContent=s);const c=Array.from(document.querySelectorAll(".article-content h2, .article-content h3, .article-content h4, .article-content h5, .article-content h6"));if(c.length===0){n.innerHTML='<p style="color: var(--color-text-secondary); padding: 0.5rem;">暂无目录</p>';return}c.forEach(e=>{e.id||(e.id=e.textContent?.toLowerCase().replace(/\s+/g,"-").replace(/[^\w\-\u4e00-\u9fa5]/g,"")||"")});const l=document.createElement("ul");c.forEach(e=>{const t=document.createElement("li"),o=document.createElement("a");o.href=`#${e.id}`,o.textContent=e.textContent||"",o.classList.add(`toc-${e.tagName.toLowerCase()}`),o.addEventListener("click",i=>{i.preventDefault();const r=document.getElementById(e.id);if(r){const u=r.getBoundingClientRect().top+window.pageYOffset-80;window.scrollTo({top:u,behavior:"smooth"}),history.pushState(null,"",`#${e.id}`)}}),t.appendChild(o),l.appendChild(t)}),n.appendChild(l);const d={root:null,rootMargin:"-60px 0px -80% 0px",threshold:0},h=new IntersectionObserver(e=>{e.forEach(t=>{if(t.isIntersecting){const o=t.target.id;n.querySelectorAll("a").forEach(r=>{r.classList.remove("active")});const i=n.querySelector(`a[href="#${o}"]`);i&&i.classList.add("active")}})},d);c.forEach(e=>h.observe(e)),setTimeout(()=>{if(window.location.hash){const t=n.querySelector(`a[href="${window.location.hash}"]`);if(t){n.querySelectorAll("a").forEach(o=>o.classList.remove("active")),t.classList.add("active");return}}let e="";for(const t of c)if(t.getBoundingClientRect().top<=150)e=t.id;else break;if(!e&&c.length>0&&window.scrollY<100&&(e=c[0].id),e){n.querySelectorAll("a").forEach(o=>o.classList.remove("active"));const t=n.querySelector(`a[href="#${e}"]`);t&&t.classList.add("active")}},100)});</script> </aside> <div class="toc-overlay" id="toc-overlay" data-astro-cid-iy4s3wf7></div> <section class="comments" data-astro-cid-iy4s3wf7> <div class="giscus-wrapper"> <script src="https://giscus.app/client.js" data-repo="jeremyjone/blog-comments" data-repo-id="R_kgDOQlVVGg" data-category="Announcements" data-category-id="DIC_kwDOQlVVGs4Czkir" data-mapping="title" data-term data-strict="0" data-reactions-enabled="1" data-emit-metadata="0" data-input-position="top" data-theme="preferred_color_scheme" data-lang="zh-CN" crossorigin="anonymous" async></script> <noscript>请启用 JavaScript 查看评论。</noscript> </div> </section> </article>  </main> <footer class="site-footer" data-astro-cid-x322jucz> <div class="container footer-content" data-astro-cid-x322jucz> <p data-astro-cid-x322jucz>
+&copy; 2025 <b data-astro-cid-x322jucz>JeremyJone.com</b> All rights reserved.
+</p> <div class="footer-links" data-astro-cid-x322jucz> <a href="https://github.com/jeremyjone" target="_blank" rel="noopener" data-astro-cid-x322jucz> GitHub </a> </div> </div> </footer> <script type="module" src="/_astro/BaseLayout.astro_astro_type_script_index_0_lang.D4h-rqQD.js"></script> <div id="search-modal" class="search-modal" style="display: none;" data-astro-cid-jwf5kjrd> <div class="search-overlay" data-astro-cid-jwf5kjrd></div> <div class="search-container" data-astro-cid-jwf5kjrd> <div class="search-header" data-astro-cid-jwf5kjrd> <input type="text" id="search-input-global" placeholder="搜索全站内容 (Cmd+K)..." autocomplete="off" data-astro-cid-jwf5kjrd> <button id="close-search" aria-label="Close search" data-astro-cid-jwf5kjrd>&times;</button> </div> <div id="search-results-global" class="search-results" data-astro-cid-jwf5kjrd> <div class="search-placeholder" data-astro-cid-jwf5kjrd>输入关键词开始搜索...</div> </div> </div> </div>  <script>
+    window.loadPagefind = async () => {
+        try {
+            return await import("/pagefind/pagefind.js");
+        } catch (e) {
+            console.warn("Failed to load pagefind:", e);
+            return null;
+        }
+    };
+</script> <script type="module" src="/_astro/SearchModal.astro_astro_type_script_index_0_lang.C4oQFeHw.js"></script> </body></html>  <script type="module">document.addEventListener("DOMContentLoaded",()=>{const c=document.getElementById("toc-toggle"),e=document.getElementById("floating-toc"),t=document.getElementById("toc-overlay");c?.addEventListener("click",()=>{e?.classList.add("active"),t?.classList.add("active")});const o=()=>{e?.classList.remove("active"),t?.classList.remove("active")};t?.addEventListener("click",o)});</script>

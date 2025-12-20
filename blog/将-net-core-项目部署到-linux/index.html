@@ -1,0 +1,131 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="dark" data-astro-cid-x322jucz> <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>将 .net core 项目部署到 Linux（含配置多个项目）</title><meta name="description" content="部署这事儿，要说简单，其实很简单，尤其巨硬官方文档写的那叫一个清晰。 ### 发布 写好的`.net core`项目，直接在vs中发布即可，需要注意选择linux： ![file](/images/2020/image-1592378..."><link rel="canonical" href="https://www.jeremyjone.com//blog/%E5%B0%86-net-core-%E9%A1%B9%E7%9B%AE%E9%83%A8%E7%BD%B2%E5%88%B0-linux/"><meta property="og:title" content="将 .net core 项目部署到 Linux（含配置多个项目）"><meta property="og:description" content="部署这事儿，要说简单，其实很简单，尤其巨硬官方文档写的那叫一个清晰。 ### 发布 写好的`.net core`项目，直接在vs中发布即可，需要注意选择linux： ![file](/images/2020/image-1592378..."><meta property="og:type" content="article"><meta property="og:url" content="https://www.jeremyjone.com//blog/%E5%B0%86-net-core-%E9%A1%B9%E7%9B%AE%E9%83%A8%E7%BD%B2%E5%88%B0-linux/"><meta property="og:site_name" content="JeremyJone's Blog"><meta property="og:locale" content="zh_CN"><link rel="icon" href="/favicon.ico"><link rel="stylesheet" href="/_astro/_year_.CFHYKZJi.css">
+<link rel="stylesheet" href="/_astro/_slug_.B1ShOm38.css"></head> <body data-astro-cid-x322jucz> <header class="site-header" data-astro-cid-x322jucz> <div class="container header-content" data-astro-cid-x322jucz> <a href="/" class="logo" data-astro-cid-x322jucz> <div class="logo-icon" data-astro-cid-x322jucz> <img src="/resources/avatar.png" alt="Logo" width="32" height="32" data-astro-cid-x322jucz> </div> <span class="logo-text" data-astro-cid-x322jucz>JeremyJone&#39;s Blog</span> </a> <div class="header-right" data-astro-cid-x322jucz> <nav class="nav" data-astro-cid-x322jucz> <a href="/" class="nav-link" data-astro-cid-x322jucz> 首页 </a><a href="/blog" class="nav-link active" data-astro-cid-x322jucz> 博客 </a><a href="/notes" class="nav-link" data-astro-cid-x322jucz> 笔记 </a> </nav> <button class="search-toggle" onclick="window.openSearchModal()" aria-label="搜索" data-astro-cid-x322jucz> <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-astro-cid-x322jucz><circle cx="11" cy="11" r="8" data-astro-cid-x322jucz></circle><line x1="21" y1="21" x2="16.65" y2="16.65" data-astro-cid-x322jucz></line></svg> <span class="search-placeholder" data-astro-cid-x322jucz>Ctrl+K 搜索...</span> </button> <button class="theme-toggle" id="theme-toggle" aria-label="切换主题" data-astro-cid-x322jucz> <svg class="sun-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" data-astro-cid-x322jucz> <circle cx="12" cy="12" r="5" data-astro-cid-x322jucz></circle> <line x1="12" y1="1" x2="12" y2="3" data-astro-cid-x322jucz></line> <line x1="12" y1="21" x2="12" y2="23" data-astro-cid-x322jucz></line> <line x1="4.22" y1="4.22" x2="5.64" y2="5.64" data-astro-cid-x322jucz></line> <line x1="18.36" y1="18.36" x2="19.78" y2="19.78" data-astro-cid-x322jucz></line> <line x1="1" y1="12" x2="3" y2="12" data-astro-cid-x322jucz></line> <line x1="21" y1="12" x2="23" y2="12" data-astro-cid-x322jucz></line> <line x1="4.22" y1="19.78" x2="5.64" y2="18.36" data-astro-cid-x322jucz></line> <line x1="18.36" y1="5.64" x2="19.78" y2="4.22" data-astro-cid-x322jucz></line> </svg> <svg class="moon-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" data-astro-cid-x322jucz> <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" data-astro-cid-x322jucz></path> </svg> </button> </div> </div> </header> <main class="container" data-astro-cid-x322jucz>  <article data-content-type="blog" data-pagefind-body data-pagefind-filter="type:blog" data-astro-cid-iy4s3wf7> <header class="article-header" data-astro-cid-iy4s3wf7> <h1 data-astro-cid-iy4s3wf7>将 .net core 项目部署到 Linux（含配置多个项目）</h1> <p class="meta" data-astro-cid-iy4s3wf7>
+发布于 2020-06-17 16:37:34 · 5 分钟 · 标签：<a href="/tags/.net" class="tag" data-astro-cid-iy4s3wf7> .net </a><a href="/tags/Apache" class="tag" data-astro-cid-iy4s3wf7> Apache </a><a href="/tags/Linux" class="tag" data-astro-cid-iy4s3wf7> Linux </a> </p> </header> <div class="article-content" data-astro-cid-iy4s3wf7> <p>部署这事儿，要说简单，其实很简单，尤其巨硬官方文档写的那叫一个清晰。</p>
+<h3 id="发布">发布</h3>
+<p>写好的<code>.net core</code>项目，直接在vs中发布即可，需要注意选择linux：</p>
+<p><img src="/images/2020/image-1592378681908.png" alt="file"></p>
+<p>这里不是重点，相信到了部署阶段，开发和发布并不是本文所要关注的。</p>
+<h3 id="部署">部署</h3>
+<p>本文用的<code>CentOS 7 + Apache</code>环境，如果有不一样的，大同小异，自行参阅文档。</p>
+<p>先挂上巨硬的官方文档，这份部署文档相当详细，我也搜了一下其他文章，基本上都是按照这份文档部署的，所以没啥可说的。</p>
+<p>巨硬的官方文档：<a href="https://docs.microsoft.com/zh-cn/aspnet/core/host-and-deploy/linux-apache?view=aspnetcore-3.1">https://docs.microsoft.com/zh-cn/aspnet/core/host-and-deploy/linux-apache?view=aspnetcore-3.1</a> ，如果你使用的是Nginx，他也有对应的文档，可以自行参阅。</p>
+<h4 id="1安装dotnet">1、安装dotnet</h4>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="shell"><code><span class="line"><span style="color:#B392F0">sudo</span><span style="color:#9ECBFF"> rpm</span><span style="color:#79B8FF"> -Uvh</span><span style="color:#9ECBFF"> https://packages.microsoft.com/config/centos/7/packages-microsoft-prod.rpm</span></span>
+<span class="line"><span style="color:#B392F0">sudo</span><span style="color:#9ECBFF"> yum</span><span style="color:#9ECBFF"> install</span><span style="color:#9ECBFF"> dotnet-sdk-3.1</span></span>
+<span class="line"><span style="color:#B392F0">sudo</span><span style="color:#9ECBFF"> yum</span><span style="color:#9ECBFF"> install</span><span style="color:#9ECBFF"> aspnetcore-runtime-3.1</span><span style="color:#6A737D">  # 逻辑上需要安装运行时，但是sdk已经包含了运行时，所以先装了sdk的话，这句可以跳过</span></span></code></pre>
+<p>这样就装完了环境，跑一下<code>dotnet</code>可以看到如下内容：</p>
+<p><img src="/images/2020/image-1592379579166.png" alt="file"></p>
+<h4 id="2把发布的文件放到服务器">2、把发布的文件放到服务器</h4>
+<p>理论上文件可以放到任意地方，只要你记得住就可以。</p>
+<p><img src="/images/2020/image-1592379858786.png" alt="file"></p>
+<p>将文件放好，测试一下效果，注意需要运行上图红框的dll文件：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="shell"><code><span class="line"><span style="color:#B392F0">dotnet</span><span style="color:#9ECBFF"> /var/www/servers/k-test/WebApplication1.dll</span></span></code></pre>
+<p><img src="/images/2020/image-1592379958781.png" alt="file"></p>
+<p>如果你发现报错了，很大几率都是端口冲突，这时需要注意更改端口，官方文档有详细的介绍，这里就不多说了。</p>
+<p>如果看到跟图中一样的绿色显示，则表示项目已经成功运行了，下一步就该挂载到apache中去了。</p>
+<h4 id="3设置apache">3、设置apache</h4>
+<p>根据官方文档的介绍：<strong>Apache 的配置文件位于 /etc/httpd/conf.d/ 目录内。 除了 /etc/httpd/conf.modules.d/ 中的模块配置文件外（其中包含加载模块所需的任何配置文件），将对任何带 .conf 扩展名的文件按字母顺序进行处理</strong>。</p>
+<p>所以，在/etc/httpd/conf.d/文件夹中创建一个配置文件，让我们的项目生效：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="shell"><code><span class="line"><span style="color:#B392F0">vim</span><span style="color:#9ECBFF"> /etc/httpd/conf.d/test.conf</span></span></code></pre>
+<p>并将如下内容粘贴到文件中：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="text"><code><span class="line"><span>&#x3C;VirtualHost *:*></span></span>
+<span class="line"><span>    RequestHeader set "X-Forwarded-Proto" expr=%{REQUEST_SCHEME}</span></span>
+<span class="line"><span>&#x3C;/VirtualHost></span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>&#x3C;VirtualHost *:80></span></span>
+<span class="line"><span>    ProxyPreserveHost On</span></span>
+<span class="line"><span>    ProxyPass / http://127.0.0.1:44001/</span></span>
+<span class="line"><span>    ProxyPassReverse / http://127.0.0.1:44001/</span></span>
+<span class="line"><span>    ServerName api.jeremyjone.com</span></span>
+<span class="line"><span>    ServerAlias api.jeremyjone.com</span></span>
+<span class="line"><span>    ErrorLog /var/log/httpd/api-error.log</span></span>
+<span class="line"><span>    CustomLog /var/log/httpd/api-access.log common</span></span>
+<span class="line"><span>&#x3C;/VirtualHost></span></span></code></pre>
+<p>这里有个问题，第2行的<code>expr=%{REQUEST_SCHEME}</code>，我这里总是报<code>%</code>的语法问题，删了百分号就成功了。</p>
+<p>然后检查、重启服务器：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="shell"><code><span class="line"><span style="color:#B392F0">sudo</span><span style="color:#9ECBFF"> service</span><span style="color:#9ECBFF"> httpd</span><span style="color:#9ECBFF"> configtest</span></span>
+<span class="line"><span style="color:#B392F0">sudo</span><span style="color:#9ECBFF"> systemctl</span><span style="color:#9ECBFF"> restart</span><span style="color:#9ECBFF"> httpd</span><span style="color:#6A737D">  # 如果上面运行正确，再运行该行</span></span></code></pre>
+<h4 id="4配置项目的服务项">4、配置项目的服务项</h4>
+<p>创建一个服务配置项的文件：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="shell"><code><span class="line"><span style="color:#B392F0">sudo</span><span style="color:#9ECBFF"> nano</span><span style="color:#9ECBFF"> /etc/systemd/system/k-test.service</span></span></code></pre>
+<p>内容如下：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="text"><code><span class="line"><span>[Unit]</span></span>
+<span class="line"><span>Description=Example .NET Web API App running on CentOS 7</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>[Service]</span></span>
+<span class="line"><span>WorkingDirectory=/var/www/servers/k-test</span></span>
+<span class="line"><span>ExecStart=/usr/local/bin/dotnet /var/www/servers/k-test/WebApplication1.dll</span></span>
+<span class="line"><span>Restart=always</span></span>
+<span class="line"><span># Restart service after 10 seconds if the dotnet service crashes:</span></span>
+<span class="line"><span>RestartSec=10</span></span>
+<span class="line"><span>KillSignal=SIGINT</span></span>
+<span class="line"><span>SyslogIdentifier=dotnet-test</span></span>
+<span class="line"><span>User=apache</span></span>
+<span class="line"><span>Environment=ASPNETCORE_ENVIRONMENT=Production </span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>[Install]</span></span>
+<span class="line"><span>WantedBy=multi-user.target</span></span></code></pre>
+<p>需要注意：里面的内容别忘了改成自己的。</p>
+<p>保存文件内容，将其挂到服务并启动：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="shell"><code><span class="line"><span style="color:#B392F0">sudo</span><span style="color:#9ECBFF"> systemctl</span><span style="color:#9ECBFF"> enable</span><span style="color:#9ECBFF"> k-test.service</span></span>
+<span class="line"><span style="color:#B392F0">sudo</span><span style="color:#9ECBFF"> systemctl</span><span style="color:#9ECBFF"> start</span><span style="color:#9ECBFF"> k-test.service</span></span>
+<span class="line"><span style="color:#B392F0">sudo</span><span style="color:#9ECBFF"> systemctl</span><span style="color:#9ECBFF"> status</span><span style="color:#9ECBFF"> k-test.service</span></span></code></pre>
+<p>如果看到如下内容，表示已经成功了：</p>
+<p><img src="/images/2020/image-1592381339174.png" alt="file"></p>
+<h4 id="5完成">5、完成</h4>
+<p>如果之前没有重启apache服务器，那么重启一下，现在可以访问了。</p>
+<p>我这里可以通过<code>api.jeremyjone.com</code>来访问：</p>
+<p><img src="/images/2020/image-1592381492698.png" alt="file"></p>
+<h3 id="部署多个项目">部署多个项目</h3>
+<p>这个我看了很多帖子，基本到上面就完事了，跟官方文档一毛一样，没有卵用。</p>
+<p>我希望通过<code>api.jeremyjone.com</code>一个地址部署多个项目，而不是每次都申请一个二级域名。通过代理可以解决，也深入的学习了一下apache的proxy模式。</p>
+<p>官方文档介绍：<a href="https://httpd.apache.org/docs/2.4/mod/mod_proxy.html">https://httpd.apache.org/docs/2.4/mod/mod_proxy.html</a> ，还是贴文档地址，有兴趣的朋友可以去看看。</p>
+<p>简单说一下，因为我看到部署的配置文件是这样的：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="text"><code><span class="line"><span>ProxyPass / http://127.0.0.1:44001/</span></span>
+<span class="line"><span>ProxyPassReverse / http://127.0.0.1:44001/</span></span></code></pre>
+<ul>
+<li>第一个参数是路径，官方叫<code>path</code>，其实就是匹配外部访问时url的除去域名部分。</li>
+<li>第二个参数是内部地址，代理的url。</li>
+</ul>
+<p>用官方的例子说明：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="text"><code><span class="line"><span>ProxyPass "/mirror/foo/" "http://backend.example.com/"</span></span></code></pre>
+<blockquote>
+<ul>
+<li>当我们访问<code>http://api.jeremyjone.com/mirror/foo</code>时，内部会调用<code>http://backend.example.com/</code>处理并返回结果。</li>
+<li>如果需要参数，那么使用访问<code>http://api.jeremyjone.com/mirror/foo/abc</code>时，内部会调用<code>http://backend.example.com/abc</code>处理并返回结果。</li>
+</ul>
+</blockquote>
+<p>大体的逻辑就是这样，更高级的用法参看文档使用。</p>
+<p>有了这样的代理，就可以在<code>api.jeremyjone.com</code>后面加上不同字段来调用不同代理，获取不同项目的结果。</p>
+<p>修改一下配置文件，<code>/etc/httpd/conf.d/test.conf</code>：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="text"><code><span class="line"><span>&#x3C;VirtualHost *:80></span></span>
+<span class="line"><span>    ProxyPreserveHost On</span></span>
+<span class="line"><span>    ProxyPass /test/ http://127.0.0.1:44001/</span></span>
+<span class="line"><span>    ProxyPassReverse /test/ http://127.0.0.1:44001/</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>    ProxyPass /test2/ http://127.0.0.1:44002/</span></span>
+<span class="line"><span>    ProxyPassReverse /test2/ http://127.0.0.1:44002/</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>    ServerName api.jeremyjone.com</span></span>
+<span class="line"><span>    ServerAlias api.jeremyjone.com</span></span>
+<span class="line"><span>    ErrorLog /var/log/httpd/api-error.log</span></span>
+<span class="line"><span>    CustomLog /var/log/httpd/api-access.log common</span></span>
+<span class="line"><span>&#x3C;/VirtualHost></span></span></code></pre>
+<p>这样，就可以通过<code>api.jeremyjone.com/test</code>和<code>api.jeremyjone.com/test2</code>分别访问不同项目了。</p>
+<h4 id="有个坑需要注意">有个坑，需要注意</h4>
+<p>其实也不是什么大问题，不过我没注意，整了半天，白耽误功夫了，特意说一下：</p>
+<p>第一个参数一定是以<code>/</code>开头并且以<code>/</code>结尾，比如：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="text"><code><span class="line"><span>ProxyPass / http://127.0.0.1:44001/</span></span>
+<span class="line"><span>ProxyPass /test/ http://127.0.0.1:44001/</span></span></code></pre>
+<p>我在<code>/test</code>后面忘了写<code>/</code>，导致怎么访问都是404，日志还没有其他错误，烦的一批，结果歇了会，回过头再来看，发现这里居然漏了一个<code>/</code>，也算是一种收获吧。</p> </div> <!-- 悬浮 TOC --> <button class="toc-toggle" id="toc-toggle" aria-label="显示目录" data-astro-cid-iy4s3wf7> <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-list" data-astro-cid-iy4s3wf7> <line x1="8" y1="6" x2="21" y2="6" data-astro-cid-iy4s3wf7></line> <line x1="8" y1="12" x2="21" y2="12" data-astro-cid-iy4s3wf7></line> <line x1="8" y1="18" x2="21" y2="18" data-astro-cid-iy4s3wf7></line> <line x1="3" y1="6" x2="3.01" y2="6" data-astro-cid-iy4s3wf7></line> <line x1="3" y1="12" x2="3.01" y2="12" data-astro-cid-iy4s3wf7></line> <line x1="3" y1="18" x2="3.01" y2="18" data-astro-cid-iy4s3wf7></line> </svg> </button> <aside class="floating-toc" id="floating-toc" data-astro-cid-iy4s3wf7> <div class="toc-header" data-astro-cid-iy4s3wf7> <h3 data-astro-cid-iy4s3wf7>目录</h3> </div> <nav class="toc-nav" id="toc-nav" data-astro-cid-g3fimnfa> <!-- TOC 内容将由客户端脚本填充 --> </nav>  <script type="module">document.addEventListener("DOMContentLoaded",()=>{const n=document.getElementById("toc-nav"),a=document.querySelector(".toc-header h3");if(!n)return;const s=document.querySelector(".article-header h1")?.textContent||"目录";a&&(a.textContent=s);const c=Array.from(document.querySelectorAll(".article-content h2, .article-content h3, .article-content h4, .article-content h5, .article-content h6"));if(c.length===0){n.innerHTML='<p style="color: var(--color-text-secondary); padding: 0.5rem;">暂无目录</p>';return}c.forEach(e=>{e.id||(e.id=e.textContent?.toLowerCase().replace(/\s+/g,"-").replace(/[^\w\-\u4e00-\u9fa5]/g,"")||"")});const l=document.createElement("ul");c.forEach(e=>{const t=document.createElement("li"),o=document.createElement("a");o.href=`#${e.id}`,o.textContent=e.textContent||"",o.classList.add(`toc-${e.tagName.toLowerCase()}`),o.addEventListener("click",i=>{i.preventDefault();const r=document.getElementById(e.id);if(r){const u=r.getBoundingClientRect().top+window.pageYOffset-80;window.scrollTo({top:u,behavior:"smooth"}),history.pushState(null,"",`#${e.id}`)}}),t.appendChild(o),l.appendChild(t)}),n.appendChild(l);const d={root:null,rootMargin:"-60px 0px -80% 0px",threshold:0},h=new IntersectionObserver(e=>{e.forEach(t=>{if(t.isIntersecting){const o=t.target.id;n.querySelectorAll("a").forEach(r=>{r.classList.remove("active")});const i=n.querySelector(`a[href="#${o}"]`);i&&i.classList.add("active")}})},d);c.forEach(e=>h.observe(e)),setTimeout(()=>{if(window.location.hash){const t=n.querySelector(`a[href="${window.location.hash}"]`);if(t){n.querySelectorAll("a").forEach(o=>o.classList.remove("active")),t.classList.add("active");return}}let e="";for(const t of c)if(t.getBoundingClientRect().top<=150)e=t.id;else break;if(!e&&c.length>0&&window.scrollY<100&&(e=c[0].id),e){n.querySelectorAll("a").forEach(o=>o.classList.remove("active"));const t=n.querySelector(`a[href="#${e}"]`);t&&t.classList.add("active")}},100)});</script> </aside> <div class="toc-overlay" id="toc-overlay" data-astro-cid-iy4s3wf7></div> <section class="comments" data-astro-cid-iy4s3wf7> <div class="giscus-wrapper"> <script src="https://giscus.app/client.js" data-repo="jeremyjone/blog-comments" data-repo-id="R_kgDOQlVVGg" data-category="Announcements" data-category-id="DIC_kwDOQlVVGs4Czkir" data-mapping="title" data-term data-strict="0" data-reactions-enabled="1" data-emit-metadata="0" data-input-position="top" data-theme="preferred_color_scheme" data-lang="zh-CN" crossorigin="anonymous" async></script> <noscript>请启用 JavaScript 查看评论。</noscript> </div> </section> </article>  </main> <footer class="site-footer" data-astro-cid-x322jucz> <div class="container footer-content" data-astro-cid-x322jucz> <p data-astro-cid-x322jucz>
+&copy; 2025 <b data-astro-cid-x322jucz>JeremyJone.com</b> All rights reserved.
+</p> <div class="footer-links" data-astro-cid-x322jucz> <a href="https://github.com/jeremyjone" target="_blank" rel="noopener" data-astro-cid-x322jucz> GitHub </a> </div> </div> </footer> <script type="module" src="/_astro/BaseLayout.astro_astro_type_script_index_0_lang.D4h-rqQD.js"></script> <div id="search-modal" class="search-modal" style="display: none;" data-astro-cid-jwf5kjrd> <div class="search-overlay" data-astro-cid-jwf5kjrd></div> <div class="search-container" data-astro-cid-jwf5kjrd> <div class="search-header" data-astro-cid-jwf5kjrd> <input type="text" id="search-input-global" placeholder="搜索全站内容 (Cmd+K)..." autocomplete="off" data-astro-cid-jwf5kjrd> <button id="close-search" aria-label="Close search" data-astro-cid-jwf5kjrd>&times;</button> </div> <div id="search-results-global" class="search-results" data-astro-cid-jwf5kjrd> <div class="search-placeholder" data-astro-cid-jwf5kjrd>输入关键词开始搜索...</div> </div> </div> </div>  <script>
+    window.loadPagefind = async () => {
+        try {
+            return await import("/pagefind/pagefind.js");
+        } catch (e) {
+            console.warn("Failed to load pagefind:", e);
+            return null;
+        }
+    };
+</script> <script type="module" src="/_astro/SearchModal.astro_astro_type_script_index_0_lang.C4oQFeHw.js"></script> </body></html>  <script type="module">document.addEventListener("DOMContentLoaded",()=>{const c=document.getElementById("toc-toggle"),e=document.getElementById("floating-toc"),t=document.getElementById("toc-overlay");c?.addEventListener("click",()=>{e?.classList.add("active"),t?.classList.add("active")});const o=()=>{e?.classList.remove("active"),t?.classList.remove("active")};t?.addEventListener("click",o)});</script>

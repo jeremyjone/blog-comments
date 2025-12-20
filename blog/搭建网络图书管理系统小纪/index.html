@@ -1,0 +1,141 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="dark" data-astro-cid-x322jucz> <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>搭建网络图书管理系统小纪</title><meta name="description" content="随着电子书越来越多，普通文件夹再也难以承受，（尤其是最近网盘收藏了亿些些），所以搞个图书管理系统，就摆上了日程。 因为没用过盖面神器，所以没有具体了解过这个领域。仅仅是知道一点点，但仅限于本地电脑上的 Calibre，知道这玩意好像可以推..."><link rel="canonical" href="https://www.jeremyjone.com//blog/%E6%90%AD%E5%BB%BA%E7%BD%91%E7%BB%9C%E5%9B%BE%E4%B9%A6%E7%AE%A1%E7%90%86%E7%B3%BB%E7%BB%9F%E5%B0%8F%E7%BA%AA/"><meta property="og:title" content="搭建网络图书管理系统小纪"><meta property="og:description" content="随着电子书越来越多，普通文件夹再也难以承受，（尤其是最近网盘收藏了亿些些），所以搞个图书管理系统，就摆上了日程。 因为没用过盖面神器，所以没有具体了解过这个领域。仅仅是知道一点点，但仅限于本地电脑上的 Calibre，知道这玩意好像可以推..."><meta property="og:type" content="article"><meta property="og:url" content="https://www.jeremyjone.com//blog/%E6%90%AD%E5%BB%BA%E7%BD%91%E7%BB%9C%E5%9B%BE%E4%B9%A6%E7%AE%A1%E7%90%86%E7%B3%BB%E7%BB%9F%E5%B0%8F%E7%BA%AA/"><meta property="og:site_name" content="JeremyJone's Blog"><meta property="og:locale" content="zh_CN"><link rel="icon" href="/favicon.ico"><link rel="stylesheet" href="/_astro/_year_.CFHYKZJi.css">
+<link rel="stylesheet" href="/_astro/_slug_.B1ShOm38.css"></head> <body data-astro-cid-x322jucz> <header class="site-header" data-astro-cid-x322jucz> <div class="container header-content" data-astro-cid-x322jucz> <a href="/" class="logo" data-astro-cid-x322jucz> <div class="logo-icon" data-astro-cid-x322jucz> <img src="/resources/avatar.png" alt="Logo" width="32" height="32" data-astro-cid-x322jucz> </div> <span class="logo-text" data-astro-cid-x322jucz>JeremyJone&#39;s Blog</span> </a> <div class="header-right" data-astro-cid-x322jucz> <nav class="nav" data-astro-cid-x322jucz> <a href="/" class="nav-link" data-astro-cid-x322jucz> 首页 </a><a href="/blog" class="nav-link active" data-astro-cid-x322jucz> 博客 </a><a href="/notes" class="nav-link" data-astro-cid-x322jucz> 笔记 </a> </nav> <button class="search-toggle" onclick="window.openSearchModal()" aria-label="搜索" data-astro-cid-x322jucz> <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-astro-cid-x322jucz><circle cx="11" cy="11" r="8" data-astro-cid-x322jucz></circle><line x1="21" y1="21" x2="16.65" y2="16.65" data-astro-cid-x322jucz></line></svg> <span class="search-placeholder" data-astro-cid-x322jucz>Ctrl+K 搜索...</span> </button> <button class="theme-toggle" id="theme-toggle" aria-label="切换主题" data-astro-cid-x322jucz> <svg class="sun-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" data-astro-cid-x322jucz> <circle cx="12" cy="12" r="5" data-astro-cid-x322jucz></circle> <line x1="12" y1="1" x2="12" y2="3" data-astro-cid-x322jucz></line> <line x1="12" y1="21" x2="12" y2="23" data-astro-cid-x322jucz></line> <line x1="4.22" y1="4.22" x2="5.64" y2="5.64" data-astro-cid-x322jucz></line> <line x1="18.36" y1="18.36" x2="19.78" y2="19.78" data-astro-cid-x322jucz></line> <line x1="1" y1="12" x2="3" y2="12" data-astro-cid-x322jucz></line> <line x1="21" y1="12" x2="23" y2="12" data-astro-cid-x322jucz></line> <line x1="4.22" y1="19.78" x2="5.64" y2="18.36" data-astro-cid-x322jucz></line> <line x1="18.36" y1="5.64" x2="19.78" y2="4.22" data-astro-cid-x322jucz></line> </svg> <svg class="moon-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" data-astro-cid-x322jucz> <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" data-astro-cid-x322jucz></path> </svg> </button> </div> </div> </header> <main class="container" data-astro-cid-x322jucz>  <article data-content-type="blog" data-pagefind-body data-pagefind-filter="type:blog" data-astro-cid-iy4s3wf7> <header class="article-header" data-astro-cid-iy4s3wf7> <h1 data-astro-cid-iy4s3wf7>搭建网络图书管理系统小纪</h1> <p class="meta" data-astro-cid-iy4s3wf7>
+发布于 2023-07-06 12:44:06 · 5 分钟 · 标签： </p> </header> <div class="article-content" data-astro-cid-iy4s3wf7> <p>随着电子书越来越多，普通文件夹再也难以承受，（尤其是最近网盘收藏了亿些些），所以搞个图书管理系统，就摆上了日程。</p>
+<p>因为没用过盖面神器，所以没有具体了解过这个领域。仅仅是知道一点点，但仅限于本地电脑上的 Calibre，知道这玩意好像可以推送到 kandle，具体不了解。</p>
+<p>我的需求：</p>
+<ul>
+<li>电脑能看</li>
+<li>手机能看</li>
+<li>它们能同步看，也就是电脑上看了一半，手机上可以继续，而不用手动记录阅读点</li>
+<li>能统一管理书籍</li>
+</ul>
+<p>需求很简单，所以网上查了查，还是基于 Calibre，这玩意有 calibre-web，而且还是 docker 的方式，正好我有 nas，搞起~</p>
+<p>先来看一下完成的界面：</p>
+<p><img src="/images/2023/image-1688611496481.png" alt="file"></p>
+<h2 id="安装-docker">安装 docker</h2>
+<blockquote>
+<p>如果您的 nas 自带 docker，可以直接跳到下一阶段。</p>
+</blockquote>
+<p>我家是入门级 nas，群晖218play，这玩意没有 docker 啊。就在我最近为了能够支持 docker 想换一个的时候，无意中发现了一个社群，居然可以安装 docker，完美解决。</p>
+<p>贴个整活地址：<a href="https://www.imnks.com/2833.html">我不是矿神</a></p>
+<p>这玩意直接让我的小 nas 起飞。提供了 docker 安装以及 Portainer 中文界面。</p>
+<p>安装好了 docker，进入 Portainer。它默认是 9000 端口。</p>
+<p><img src="/images/2023/image-1688611440471.png" alt="file"></p>
+<blockquote>
+<p>如果没有进来，返回去看一下上面的整活地址帖子，讲的很详细，一定是哪里出现了问题</p>
+</blockquote>
+<h2 id="创建图书文件夹">创建图书文件夹</h2>
+<p>在 nas 的控制面板的文件管理中，创建一个根目录，名字随意，比如就叫 <code>calibre-web</code>，然后分别添加 <code>library</code>、<code>config</code> 以及 <code>autoaddbooks</code> 三个文件夹：</p>
+<p><img src="/images/2023/image-1688612345115.png" alt="file"></p>
+<p>然后给根文件夹赋权限，这里要给 <code>administrators</code> 和 <code>users</code> 群组赋上可读写的权限。</p>
+<blockquote>
+<p><code>administrators</code> 组保证 docker 能够正常读取文件夹内容</p>
+</blockquote>
+<h2 id="安装-calibre-web">安装 calibre-web</h2>
+<h3 id="1先拉取镜像">1、先拉取镜像：</h3>
+<blockquote>
+<p>这里建议拉取 <code>johngong/calibre-web:latest</code> 的，目前还在维护(2023年7月)</p>
+</blockquote>
+<p><img src="/images/2023/image-1688611827220.png" alt="file"></p>
+<p>需要等待一段时间，这个包接近 1G，所以时间有点长，慢慢等，好了之后就会出现在下面的列表中。</p>
+<h3 id="2创建容器">2、创建容器</h3>
+<p>进入容器菜单，点击 <code>添加容器</code>：</p>
+<p><img src="/images/2023/image-1688611979003.png" alt="file"></p>
+<p>在创建容器的页面中，依次按顺序添加、选择内容：</p>
+<p><img src="/images/2023/image-1688612132171.png" alt="file"></p>
+<p>这时不要点部署，直接拉到页面最下面的 <code>高级容器设置</code>：</p>
+<h4 id="1存储卷按照下图直接写">1）存储卷，按照下图直接写：</h4>
+<p><img src="/images/2023/image-1688612692815.png" alt="file"></p>
+<ul>
+<li><code>/config</code> -> <code>/volume1/calibre-web/config</code></li>
+<li><code>/dev</code> -> <code>/dev</code></li>
+<li><code>/library</code> -> <code>/volume1/calibre-web/library</code></li>
+<li><code>/autoaddbooks</code> -> <code>/volume1/calibre-web/autoaddbooks</code></li>
+</ul>
+<blockquote>
+<p>1、<code>volume1</code> 为 nas 卷号，根据实际情况填写 2、其他路径根据上面创建的文件夹路径填写映射</p>
+</blockquote>
+<h4 id="2网络直接选择-host其他不用动">2）网络，直接选择 host，其他不用动：</h4>
+<p><img src="/images/2023/image-1688612871109.png" alt="file"></p>
+<h4 id="3环境变量可以参照-官网httpshubdockercomrjohngongcalibre-web-写它这个根据版本不同参数略有不同基本我们可以不用填写任何内容可以添加如下">3）环境变量，可以参照 [官网]()<a href="https://hub.docker.com/r/johngong/calibre-web">https://hub.docker.com/r/johngong/calibre-web</a># 写，它这个根据版本不同，参数略有不同，基本我们可以不用填写任何内容，可以添加如下：</h4>
+<ul>
+<li>PUID：1000</li>
+<li>PGID：1000</li>
+<li>CALIBRE_SERVER_USER：xxx</li>
+<li>CALIBRE_SERVER_PASSWORD：xxx</li>
+</ul>
+<blockquote>
+<p>xxx 随意填。服务端页面登录用</p>
+</blockquote>
+<h4 id="4重启策略选择-非停止">4）重启策略，选择 <code>非停止</code>：</h4>
+<p><img src="/images/2023/image-1688613558407.png" alt="file"></p>
+<p>最后，我们再点击上面的部署容器，然后看到按钮一直在 loading，直到成功，这个过程可能会有点长，需要等一会儿：</p>
+<p><img src="/images/2023/image-1688613640926.png" alt="file"></p>
+<p>成功后，在容器列表中就可以看到我们的容器正在运行：</p>
+<p><img src="/images/2023/image-1688613870786.png" alt="file"></p>
+<h2 id="配置-calibre-web">配置 calibre-web</h2>
+<p>前台端口：8083 后台端口：8080</p>
+<p>我们这里基本只需要前台即可。</p>
+<blockquote>
+<p>注意，前台用户名和密码为：</p>
+<ul>
+<li>user: <code>admin</code></li>
+<li>pswd: <code>admin123</code></li>
+</ul>
+<p>这个是固定的，需要首次登录后，在界面中修改</p>
+</blockquote>
+<p>按照界面流程配置，直接进入系统即可。</p>
+<h2 id="管理书库">管理书库</h2>
+<p>虽然 web 端提供了上传图书的功能，但我并不希望通过这种低效的方式管理。所以还需要本地的 calibre 工具，在本地直接管理。</p>
+<p>下载地址：<a href="https://calibre-ebook.com/">calibre</a></p>
+<p>将书库直接设置为 nas 文件夹中的 <code>/calibre-web/library/</code> 目录，</p>
+<p><img src="/images/2023/image-1688616608295.png" alt="file"></p>
+<p>具体使用，不在这里讨论。我们只说对应的本地管理方式。</p>
+<p>我们可以直接将书拖到 calibre 界面中，它会自动导入，然后编辑 meta 信息即可。如果你之前有一个书库，那么直接倒过来，是一个不错的选择。</p>
+<p><img src="/images/2023/image-1688616800186.png" alt="file"></p>
+<p>我们可以通过标签，对图书进行分类管理。我在本地的 calibre 里没有找到 <code>分类</code>，只有 <code>标签</code>。添加之后，会在 calibre-web 中的标签分组中看到对应的标签集，方便在 web 端查看。</p>
+<h3 id="本地管理同步问题">本地管理同步问题</h3>
+<p>需要注意的是，有时我们在本地更新了书库内容，但在 web 端没有得到体现，比如添加图书、删除图书、修改图书原信息等。</p>
+<blockquote>
+<p>此时，不要慌，像我以为没有成功连接，又重新部署了一次，但是问题依旧。</p>
+</blockquote>
+<p>多半是数据没有同步，有缓存的问题导致。我们可以在 web 端通过 <code>重新连接到 CALIBRE 库</code> 或 <code>重启</code> 的方式，来更新 web 端：</p>
+<p><img src="/images/2023/image-1688617117309.png" alt="file"></p>
+<p>此外，我们还可以设置自动重连的计划任务，来让 web 端自动重连，这大大减少了上面的不同步情况的出现：</p>
+<p>点击 <code>编辑计划任务设置</code>：</p>
+<p><img src="/images/2023/image-1688617218611.png" alt="file"></p>
+<p>这样它会在一定时间内自动重连，只需要在本地管理基本可以解决问题。如果还有问题，可以通过重启 docker 容器的方式来解决。总之一句话：</p>
+<p><strong>重启大法好!</strong></p>
+<h2 id="阅读">阅读</h2>
+<p>现在我们只需要上传一些书籍，就可以在线阅读了。</p>
+<h3 id="1web-端">1、web 端</h3>
+<p>web 端我们可以直接在浏览器中阅读，随便点击一本书，然后点击阅读按钮，如果有多种图书格式，会有选择格式的提示：</p>
+<p><img src="/images/2023/image-1688617464080.png" alt="file"></p>
+<p>阅读界面稍微有些简单，但并不影响，我们看的是内容。</p>
+<h3 id="2手机端">2、手机端</h3>
+<p>首先，我不太喜欢那种推送的方式，所以类似 kandle 的邮箱推送方式我没有考虑，如果有这方面需求的朋友可以自行探索。</p>
+<h3 id="直接浏览器">直接浏览器</h3>
+<p>最简单的浏览方式，直接从手机浏览器进入 web 端的地址，登录即可。这种方式简单，每个手机都有浏览器，同时可以直接阅读，因为我们的 web 端本身就支持阅读。</p>
+<p>再说一下其他方式。</p>
+<h3 id="opds-订阅">opds 订阅</h3>
+<p>首先要简单说一下 <code>opds</code>：开放出版发行系统，它是一个标准，是电子图书的 RSS。过多的内容，有兴趣的小伙伴可以自行探索。</p>
+<p>这里要说的是，我们的 calibre-web 支持 opds，所以我们可以让 web 端变身一个 opds 服务器，再搞一个支持 opds 的 app。</p>
+<p>我们 web 端的 opds 默认地址是 <code>http://your-calibre-web-address:8083/opds</code>(替换成你的地址)，然后就没有然后了，就可以直接阅读了。</p>
+<h3 id="web_view">web_view</h3>
+<p>有一些软件，内嵌了 web view，我们可以通过这种方式浏览页面，开始阅读。</p>
+<p>这种方式相比浏览器的好处是做了一定的适配，同时拥有比较好的浏览模式。</p>
+<p>这里我用的是开源软件：<a href="https://github.com/gedoor/legado">阅读</a></p>
+<p>安装好后，在订阅中，配置我们的地址，然后就可以开始登录阅读了~</p>
+<h2 id="最后">最后</h2>
+<p>一切都配置好后，我们就可以静心的开始阅读了。</p> </div> <!-- 悬浮 TOC --> <button class="toc-toggle" id="toc-toggle" aria-label="显示目录" data-astro-cid-iy4s3wf7> <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-list" data-astro-cid-iy4s3wf7> <line x1="8" y1="6" x2="21" y2="6" data-astro-cid-iy4s3wf7></line> <line x1="8" y1="12" x2="21" y2="12" data-astro-cid-iy4s3wf7></line> <line x1="8" y1="18" x2="21" y2="18" data-astro-cid-iy4s3wf7></line> <line x1="3" y1="6" x2="3.01" y2="6" data-astro-cid-iy4s3wf7></line> <line x1="3" y1="12" x2="3.01" y2="12" data-astro-cid-iy4s3wf7></line> <line x1="3" y1="18" x2="3.01" y2="18" data-astro-cid-iy4s3wf7></line> </svg> </button> <aside class="floating-toc" id="floating-toc" data-astro-cid-iy4s3wf7> <div class="toc-header" data-astro-cid-iy4s3wf7> <h3 data-astro-cid-iy4s3wf7>目录</h3> </div> <nav class="toc-nav" id="toc-nav" data-astro-cid-g3fimnfa> <!-- TOC 内容将由客户端脚本填充 --> </nav>  <script type="module">document.addEventListener("DOMContentLoaded",()=>{const n=document.getElementById("toc-nav"),a=document.querySelector(".toc-header h3");if(!n)return;const s=document.querySelector(".article-header h1")?.textContent||"目录";a&&(a.textContent=s);const c=Array.from(document.querySelectorAll(".article-content h2, .article-content h3, .article-content h4, .article-content h5, .article-content h6"));if(c.length===0){n.innerHTML='<p style="color: var(--color-text-secondary); padding: 0.5rem;">暂无目录</p>';return}c.forEach(e=>{e.id||(e.id=e.textContent?.toLowerCase().replace(/\s+/g,"-").replace(/[^\w\-\u4e00-\u9fa5]/g,"")||"")});const l=document.createElement("ul");c.forEach(e=>{const t=document.createElement("li"),o=document.createElement("a");o.href=`#${e.id}`,o.textContent=e.textContent||"",o.classList.add(`toc-${e.tagName.toLowerCase()}`),o.addEventListener("click",i=>{i.preventDefault();const r=document.getElementById(e.id);if(r){const u=r.getBoundingClientRect().top+window.pageYOffset-80;window.scrollTo({top:u,behavior:"smooth"}),history.pushState(null,"",`#${e.id}`)}}),t.appendChild(o),l.appendChild(t)}),n.appendChild(l);const d={root:null,rootMargin:"-60px 0px -80% 0px",threshold:0},h=new IntersectionObserver(e=>{e.forEach(t=>{if(t.isIntersecting){const o=t.target.id;n.querySelectorAll("a").forEach(r=>{r.classList.remove("active")});const i=n.querySelector(`a[href="#${o}"]`);i&&i.classList.add("active")}})},d);c.forEach(e=>h.observe(e)),setTimeout(()=>{if(window.location.hash){const t=n.querySelector(`a[href="${window.location.hash}"]`);if(t){n.querySelectorAll("a").forEach(o=>o.classList.remove("active")),t.classList.add("active");return}}let e="";for(const t of c)if(t.getBoundingClientRect().top<=150)e=t.id;else break;if(!e&&c.length>0&&window.scrollY<100&&(e=c[0].id),e){n.querySelectorAll("a").forEach(o=>o.classList.remove("active"));const t=n.querySelector(`a[href="#${e}"]`);t&&t.classList.add("active")}},100)});</script> </aside> <div class="toc-overlay" id="toc-overlay" data-astro-cid-iy4s3wf7></div> <section class="comments" data-astro-cid-iy4s3wf7> <div class="giscus-wrapper"> <script src="https://giscus.app/client.js" data-repo="jeremyjone/blog-comments" data-repo-id="R_kgDOQlVVGg" data-category="Announcements" data-category-id="DIC_kwDOQlVVGs4Czkir" data-mapping="title" data-term data-strict="0" data-reactions-enabled="1" data-emit-metadata="0" data-input-position="top" data-theme="preferred_color_scheme" data-lang="zh-CN" crossorigin="anonymous" async></script> <noscript>请启用 JavaScript 查看评论。</noscript> </div> </section> </article>  </main> <footer class="site-footer" data-astro-cid-x322jucz> <div class="container footer-content" data-astro-cid-x322jucz> <p data-astro-cid-x322jucz>
+&copy; 2025 <b data-astro-cid-x322jucz>JeremyJone.com</b> All rights reserved.
+</p> <div class="footer-links" data-astro-cid-x322jucz> <a href="https://github.com/jeremyjone" target="_blank" rel="noopener" data-astro-cid-x322jucz> GitHub </a> </div> </div> </footer> <script type="module" src="/_astro/BaseLayout.astro_astro_type_script_index_0_lang.D4h-rqQD.js"></script> <div id="search-modal" class="search-modal" style="display: none;" data-astro-cid-jwf5kjrd> <div class="search-overlay" data-astro-cid-jwf5kjrd></div> <div class="search-container" data-astro-cid-jwf5kjrd> <div class="search-header" data-astro-cid-jwf5kjrd> <input type="text" id="search-input-global" placeholder="搜索全站内容 (Cmd+K)..." autocomplete="off" data-astro-cid-jwf5kjrd> <button id="close-search" aria-label="Close search" data-astro-cid-jwf5kjrd>&times;</button> </div> <div id="search-results-global" class="search-results" data-astro-cid-jwf5kjrd> <div class="search-placeholder" data-astro-cid-jwf5kjrd>输入关键词开始搜索...</div> </div> </div> </div>  <script>
+    window.loadPagefind = async () => {
+        try {
+            return await import("/pagefind/pagefind.js");
+        } catch (e) {
+            console.warn("Failed to load pagefind:", e);
+            return null;
+        }
+    };
+</script> <script type="module" src="/_astro/SearchModal.astro_astro_type_script_index_0_lang.C4oQFeHw.js"></script> </body></html>  <script type="module">document.addEventListener("DOMContentLoaded",()=>{const c=document.getElementById("toc-toggle"),e=document.getElementById("floating-toc"),t=document.getElementById("toc-overlay");c?.addEventListener("click",()=>{e?.classList.add("active"),t?.classList.add("active")});const o=()=>{e?.classList.remove("active"),t?.classList.remove("active")};t?.addEventListener("click",o)});</script>

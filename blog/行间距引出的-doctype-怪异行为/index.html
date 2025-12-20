@@ -1,0 +1,139 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="dark" data-astro-cid-x322jucz> <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>行间距引出的 DOCTYPE 怪异行为</title><meta name="description" content="今天有领导找到我，说让看个奇怪问题。在发布公司内部文章的时候，预览的效果是好的，但发布完了就坏了。我一脸疑惑的接了这个问题，开始对比起它们的区别，那就是没区别。。。 本来呢，应该是具有一个 `line-height:1.75` 的效果，但..."><link rel="canonical" href="https://www.jeremyjone.com//blog/%E8%A1%8C%E9%97%B4%E8%B7%9D%E5%BC%95%E5%87%BA%E7%9A%84-doctype-%E6%80%AA%E5%BC%82%E8%A1%8C%E4%B8%BA/"><meta property="og:title" content="行间距引出的 DOCTYPE 怪异行为"><meta property="og:description" content="今天有领导找到我，说让看个奇怪问题。在发布公司内部文章的时候，预览的效果是好的，但发布完了就坏了。我一脸疑惑的接了这个问题，开始对比起它们的区别，那就是没区别。。。 本来呢，应该是具有一个 `line-height:1.75` 的效果，但..."><meta property="og:type" content="article"><meta property="og:url" content="https://www.jeremyjone.com//blog/%E8%A1%8C%E9%97%B4%E8%B7%9D%E5%BC%95%E5%87%BA%E7%9A%84-doctype-%E6%80%AA%E5%BC%82%E8%A1%8C%E4%B8%BA/"><meta property="og:site_name" content="JeremyJone's Blog"><meta property="og:locale" content="zh_CN"><link rel="icon" href="/favicon.ico"><link rel="stylesheet" href="/_astro/_year_.CFHYKZJi.css">
+<link rel="stylesheet" href="/_astro/_slug_.B1ShOm38.css"></head> <body data-astro-cid-x322jucz> <header class="site-header" data-astro-cid-x322jucz> <div class="container header-content" data-astro-cid-x322jucz> <a href="/" class="logo" data-astro-cid-x322jucz> <div class="logo-icon" data-astro-cid-x322jucz> <img src="/resources/avatar.png" alt="Logo" width="32" height="32" data-astro-cid-x322jucz> </div> <span class="logo-text" data-astro-cid-x322jucz>JeremyJone&#39;s Blog</span> </a> <div class="header-right" data-astro-cid-x322jucz> <nav class="nav" data-astro-cid-x322jucz> <a href="/" class="nav-link" data-astro-cid-x322jucz> 首页 </a><a href="/blog" class="nav-link active" data-astro-cid-x322jucz> 博客 </a><a href="/notes" class="nav-link" data-astro-cid-x322jucz> 笔记 </a> </nav> <button class="search-toggle" onclick="window.openSearchModal()" aria-label="搜索" data-astro-cid-x322jucz> <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-astro-cid-x322jucz><circle cx="11" cy="11" r="8" data-astro-cid-x322jucz></circle><line x1="21" y1="21" x2="16.65" y2="16.65" data-astro-cid-x322jucz></line></svg> <span class="search-placeholder" data-astro-cid-x322jucz>Ctrl+K 搜索...</span> </button> <button class="theme-toggle" id="theme-toggle" aria-label="切换主题" data-astro-cid-x322jucz> <svg class="sun-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" data-astro-cid-x322jucz> <circle cx="12" cy="12" r="5" data-astro-cid-x322jucz></circle> <line x1="12" y1="1" x2="12" y2="3" data-astro-cid-x322jucz></line> <line x1="12" y1="21" x2="12" y2="23" data-astro-cid-x322jucz></line> <line x1="4.22" y1="4.22" x2="5.64" y2="5.64" data-astro-cid-x322jucz></line> <line x1="18.36" y1="18.36" x2="19.78" y2="19.78" data-astro-cid-x322jucz></line> <line x1="1" y1="12" x2="3" y2="12" data-astro-cid-x322jucz></line> <line x1="21" y1="12" x2="23" y2="12" data-astro-cid-x322jucz></line> <line x1="4.22" y1="19.78" x2="5.64" y2="18.36" data-astro-cid-x322jucz></line> <line x1="18.36" y1="5.64" x2="19.78" y2="4.22" data-astro-cid-x322jucz></line> </svg> <svg class="moon-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" data-astro-cid-x322jucz> <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" data-astro-cid-x322jucz></path> </svg> </button> </div> </div> </header> <main class="container" data-astro-cid-x322jucz>  <article data-content-type="blog" data-pagefind-body data-pagefind-filter="type:blog" data-astro-cid-iy4s3wf7> <header class="article-header" data-astro-cid-iy4s3wf7> <h1 data-astro-cid-iy4s3wf7>行间距引出的 DOCTYPE 怪异行为</h1> <p class="meta" data-astro-cid-iy4s3wf7>
+发布于 2025-08-20 13:44:49 · 4 分钟 · 标签：<a href="/tags/HTML" class="tag" data-astro-cid-iy4s3wf7> HTML </a> </p> </header> <div class="article-content" data-astro-cid-iy4s3wf7> <p>今天有领导找到我，说让看个奇怪问题。在发布公司内部文章的时候，预览的效果是好的，但发布完了就坏了。我一脸疑惑的接了这个问题，开始对比起它们的区别，那就是没区别。。。</p>
+<p>本来呢，应该是具有一个 <code>line-height:1.75</code> 的效果，但一发布就挤到一起去了，如下图：</p>
+<p><img src="/images/2025/image-1755668583512.png" alt="file"></p>
+<h2 id="找原因">找原因</h2>
+<p>这里面有两个逻辑：发布和预览。</p>
+<ul>
+<li>
+<p>发布是后台直接生成的静态 HTML</p>
+</li>
+<li>
+<p>预览是前端自己写的单独组件</p>
+</li>
+</ul>
+<p>所以这确实可能造成差异，看吧。完整的检查 html 树，它们结构都是一样的：</p>
+<p><img src="/images/2025/image-1755668593966.png" alt="file"></p>
+<p>既然是 <code>line-height</code> 出了问题，那就从下自上一点一点看哪里出了问题。</p>
+<p>1、默认标准都是在 <code>div.bodyStyle</code> 中定义了 <code>line-height</code>，并且为了避免出问题，还特意添加了对应的 style 来防止 css 出问题。</p>
+<p>2、内部所有元素都应当继承它。而预览中确实继承了，但是发布的文章却丢失了。</p>
+<p>一层一层看的时候，突然发现 <code>table</code> 元素出现了异常：</p>
+<p><img src="/images/2025/image-1755668606013.png" alt="file"></p>
+<p>可以看到，在发布的页面中，<code>table</code> 元素多了好多内容，其中就包括 <code>line-height: normal</code> 这样的属性，所以就导致 <code>line-height</code> 在这里断层了。而右侧预览的样式表中，可以明确看到 <code>line-height</code> 继承了 bodyStyle 中的属性。</p>
+<h2 id="差异的原因">差异的原因</h2>
+<p>因为这个样式表是浏览器提供的，首先，我用的同一浏览器，排除了浏览器问题。那么剩下就是代码问题了。能够导致就剩下：</p>
+<ul>
+<li>HTML生成环境的差异</li>
+<li>CSS 层叠继承干扰</li>
+<li>浏览器的上下文感知出现问题</li>
+</ul>
+<p>确保排除 CSS 的继承问题，也排除浏览器上下文感知出现问题（因为确保 JS 内容没有问题）。大概率就是 HTML生成环境：</p>
+<ul>
+<li>字符编码</li>
+<li>DOCTYPE 缺失</li>
+</ul>
+<p>前者可能会把特殊字符转义导致页面渲染不出来，而后者恰恰会让浏览器进入怪异模式，导致 UA 样式与标准模式不一致。</p>
+<p>于是乎，查看两个页面的顶部，确实发布的页面少了这句话，那么就基本锁定问题了。预览是前端代码控制的，可以本地直接跑。直接在 <code>index.html</code> 中删掉顶部的 <code>&#x3C;!doctype html></code>，发现确实行间距变了，再加回来这个声明，行间距又好了。</p>
+<h2 id="doctype">DOCTYPE</h2>
+<p>DOCTYPE 声明了当前文档是什么类型，它不是 HTML 标签，只是告诉浏览器当前 HTML 使用什么版本的文档类型编写的，该如何解析。</p>
+<p>如果没有提供声明标识，那么浏览器就会使用默认方式进行渲染，也就是 <code>BackCompat</code> 模式，这样就会造成在不同浏览器下的显示会有所不同。</p>
+<p>而提供了声明标识，那么浏览器就会按照 <code>W3C</code> 的标准模式进行渲染，这样所有浏览器会得到同样的显示效果。</p>
+<h3 id="行为差异">行为差异</h3>
+<h4 id="1-盒模型box-model">1. <strong>盒模型（Box Model）</strong></h4>
+<ul>
+<li>
+<p><strong>标准模式</strong>：元素的 <code>width</code> 和 <code>height</code> 仅包含内容区域（<code>content-box</code>），<code>padding</code> 和 <code>border</code> 需额外计算。</p>
+</li>
+<li>
+<p><strong>怪异模式</strong>：<code>width</code> 和 <code>height</code> 包含内容、<code>padding</code> 和 <code>border</code>（<code>border-box</code>），可能导致布局尺寸差异。</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="css"><code><span class="line"><span style="color:#6A737D">/* 怪异模式下，实际宽度 = width + padding + border */</span></span>
+<span class="line"><span style="color:#85E89D">div</span><span style="color:#E1E4E8"> { </span><span style="color:#79B8FF">width</span><span style="color:#E1E4E8">: </span><span style="color:#79B8FF">200</span><span style="color:#F97583">px</span><span style="color:#E1E4E8">; </span><span style="color:#79B8FF">padding</span><span style="color:#E1E4E8">: </span><span style="color:#79B8FF">10</span><span style="color:#F97583">px</span><span style="color:#E1E4E8">; } </span><span style="color:#6A737D">/* 总宽度为 200px */</span></span></code></pre>
+<p><strong>影响</strong>：盒模型差异会间接改变元素的默认尺寸，触发浏览器的不同默认样式规则。</p>
+</li>
+</ul>
+<h4 id="2-行内元素垂直对齐">2. <strong>行内元素垂直对齐</strong></h4>
+<ul>
+<li>
+<p><strong>标准模式</strong>：行内元素（如 <code>img</code>、<code>span</code>）默认基线对齐（<code>vertical-align: baseline</code>）。</p>
+</li>
+<li>
+<p><strong>怪异模式</strong>：行内元素默认底部对齐（<code>vertical-align: bottom</code>）。</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="html"><code><span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">文本</span></span></code></pre>
+</li>
+</ul>
+<h4 id="3-字体与表格样式">3. <strong>字体与表格样式</strong></h4>
+<ul>
+<li>
+<p><strong>标准模式</strong>：</p>
+<ul>
+<li><code>table</code> 元素的 <code>font-size</code>、<code>line-height</code> 等属性继承自父元素。</li>
+<li><code>body</code> 的 <code>margin</code> 默认为 <code>8px</code>。</li>
+</ul>
+</li>
+<li>
+<p><strong>怪异模式</strong>：</p>
+<ul>
+<li><code>table</code> 的字体属性可能不继承父元素（如 <code>font-size</code> 固定为 <code>medium</code>）。</li>
+<li><code>body</code> 的 <code>margin</code> 可能为 <code>0</code>，需手动重置。</li>
+</ul>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="css"><code><span class="line"><span style="color:#6A737D">/* 怪异模式下，table 的 line-height 可能为 normal */</span></span>
+<span class="line"><span style="color:#85E89D">table</span><span style="color:#E1E4E8"> { </span><span style="color:#79B8FF">line-height</span><span style="color:#E1E4E8">: </span><span style="color:#79B8FF">inherit</span><span style="color:#E1E4E8">; } </span><span style="color:#6A737D">/* 需显式覆盖 */</span></span></code></pre>
+</li>
+</ul>
+<h4 id="4-css-特性支持">4. <strong>CSS 特性支持</strong></h4>
+<ul>
+<li><strong>标准模式</strong>：严格遵循 CSS 规范，支持现代特性（如 Flexbox、Grid）。</li>
+<li><strong>怪异模式</strong>：可能忽略部分 CSS3 规则，或采用旧版浏览器兼容逻辑（如 <code>position: fixed</code> 在 IE6 中失效）。</li>
+</ul>
+<h4 id="5-javascript-行为">5. <strong>JavaScript 行为</strong></h4>
+<ul>
+<li><strong>标准模式</strong>：<code>document.compatMode</code> 返回 <code>CSS1Compat</code>，DOM 操作符合标准。</li>
+<li><strong>怪异模式</strong>：<code>document.compatMode</code> 返回 <code>BackCompat</code>，部分旧版 API 行为可能不同（如 <code>getElementById</code> 的大小写敏感性）。</li>
+</ul>
+<h3 id="用户代理样式表的差异根源">用户代理样式表的差异根源</h3>
+<p>浏览器通过 <code>DOCTYPE</code> 判断渲染模式后，会加载不同的 <strong>内部样式表</strong>（Internal Stylesheet）。例如：</p>
+<ul>
+<li><strong>标准模式</strong>：UA 样式表可能包含更严格的默认值（如 <code>box-sizing: content-box</code>）。</li>
+<li><strong>怪异模式</strong>：UA 样式表可能模拟旧版浏览器行为（如 <code>box-sizing: border-box</code>）。</li>
+</ul>
+<p>以 <code>table</code> 为例：</p>
+<ul>
+<li>在标准模式下，浏览器可能默认应用 W3C 的 <code>border-collapse: separate</code> 和 <code>border-spacing: 2px</code>。</li>
+<li>在怪异模式下，可能继承 IE 的宽松处理逻辑，导致 <code>line-height</code>、<code>font</code> 等属性被强制重置。</li>
+</ul>
+<h3 id="验证与调试方法">验证与调试方法</h3>
+<ol>
+<li>
+<p><strong>检查渲染模式</strong> 在浏览器控制台执行：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="javascript"><code><span class="line"><span style="color:#E1E4E8">console.</span><span style="color:#B392F0">log</span><span style="color:#E1E4E8">(document.compatMode); </span><span style="color:#6A737D">// 输出 "CSS1Compat"（标准）或 "BackCompat"（怪异）</span></span></code></pre>
+</li>
+<li>
+<p><strong>对比样式来源</strong> 使用开发者工具的 <strong>Computed Styles</strong> 面板，观察属性是否带有 <code>initial</code> 或 <code>-internal-quirk-inherit</code> 等标记，这些通常是 UA 样式的特征。</p>
+</li>
+<li>
+<p><strong>强制切换模式</strong> 修改 <code>DOCTYPE</code> 声明后刷新页面，观察样式变化。</p>
+</li>
+</ol>
+<h2 id="终极解决方案">终极解决方案</h2>
+<p>有了上面的论述，可以有两种解决这个问题的途径：</p>
+<p><strong>1、显式声明标准模式</strong> 使用 HTML5 的简化声明：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="html"><code><span class="line"><span style="color:#E1E4E8">&#x3C;!</span><span style="color:#85E89D">DOCTYPE</span><span style="color:#B392F0"> html</span><span style="color:#E1E4E8">></span></span></code></pre>
+<p>另外，还需要统一开发环境，确保前后端生成的 HTML 均包含完整的 <code>DOCTYPE</code> 和 <code>&#x3C;meta charset="UTF-8"></code>，避免因编码问题触发怪异模式。</p>
+<p><strong>2、重置 UA 样式差异</strong> 在 CSS 中覆盖关键属性：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="css"><code><span class="line"><span style="color:#85E89D">table</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#79B8FF">  line-height</span><span style="color:#E1E4E8">: </span><span style="color:#79B8FF">inherit</span><span style="color:#E1E4E8">; </span><span style="color:#6A737D">/* 强制覆盖怪异模式下的继承 */</span></span>
+<span class="line"><span style="color:#79B8FF">  font</span><span style="color:#E1E4E8">: </span><span style="color:#79B8FF">inherit</span><span style="color:#E1E4E8">;  </span><span style="color:#6A737D">/* 修复字体继承问题 */</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre> </div> <!-- 悬浮 TOC --> <button class="toc-toggle" id="toc-toggle" aria-label="显示目录" data-astro-cid-iy4s3wf7> <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-list" data-astro-cid-iy4s3wf7> <line x1="8" y1="6" x2="21" y2="6" data-astro-cid-iy4s3wf7></line> <line x1="8" y1="12" x2="21" y2="12" data-astro-cid-iy4s3wf7></line> <line x1="8" y1="18" x2="21" y2="18" data-astro-cid-iy4s3wf7></line> <line x1="3" y1="6" x2="3.01" y2="6" data-astro-cid-iy4s3wf7></line> <line x1="3" y1="12" x2="3.01" y2="12" data-astro-cid-iy4s3wf7></line> <line x1="3" y1="18" x2="3.01" y2="18" data-astro-cid-iy4s3wf7></line> </svg> </button> <aside class="floating-toc" id="floating-toc" data-astro-cid-iy4s3wf7> <div class="toc-header" data-astro-cid-iy4s3wf7> <h3 data-astro-cid-iy4s3wf7>目录</h3> </div> <nav class="toc-nav" id="toc-nav" data-astro-cid-g3fimnfa> <!-- TOC 内容将由客户端脚本填充 --> </nav>  <script type="module">document.addEventListener("DOMContentLoaded",()=>{const n=document.getElementById("toc-nav"),a=document.querySelector(".toc-header h3");if(!n)return;const s=document.querySelector(".article-header h1")?.textContent||"目录";a&&(a.textContent=s);const c=Array.from(document.querySelectorAll(".article-content h2, .article-content h3, .article-content h4, .article-content h5, .article-content h6"));if(c.length===0){n.innerHTML='<p style="color: var(--color-text-secondary); padding: 0.5rem;">暂无目录</p>';return}c.forEach(e=>{e.id||(e.id=e.textContent?.toLowerCase().replace(/\s+/g,"-").replace(/[^\w\-\u4e00-\u9fa5]/g,"")||"")});const l=document.createElement("ul");c.forEach(e=>{const t=document.createElement("li"),o=document.createElement("a");o.href=`#${e.id}`,o.textContent=e.textContent||"",o.classList.add(`toc-${e.tagName.toLowerCase()}`),o.addEventListener("click",i=>{i.preventDefault();const r=document.getElementById(e.id);if(r){const u=r.getBoundingClientRect().top+window.pageYOffset-80;window.scrollTo({top:u,behavior:"smooth"}),history.pushState(null,"",`#${e.id}`)}}),t.appendChild(o),l.appendChild(t)}),n.appendChild(l);const d={root:null,rootMargin:"-60px 0px -80% 0px",threshold:0},h=new IntersectionObserver(e=>{e.forEach(t=>{if(t.isIntersecting){const o=t.target.id;n.querySelectorAll("a").forEach(r=>{r.classList.remove("active")});const i=n.querySelector(`a[href="#${o}"]`);i&&i.classList.add("active")}})},d);c.forEach(e=>h.observe(e)),setTimeout(()=>{if(window.location.hash){const t=n.querySelector(`a[href="${window.location.hash}"]`);if(t){n.querySelectorAll("a").forEach(o=>o.classList.remove("active")),t.classList.add("active");return}}let e="";for(const t of c)if(t.getBoundingClientRect().top<=150)e=t.id;else break;if(!e&&c.length>0&&window.scrollY<100&&(e=c[0].id),e){n.querySelectorAll("a").forEach(o=>o.classList.remove("active"));const t=n.querySelector(`a[href="#${e}"]`);t&&t.classList.add("active")}},100)});</script> </aside> <div class="toc-overlay" id="toc-overlay" data-astro-cid-iy4s3wf7></div> <section class="comments" data-astro-cid-iy4s3wf7> <div class="giscus-wrapper"> <script src="https://giscus.app/client.js" data-repo="jeremyjone/blog-comments" data-repo-id="R_kgDOQlVVGg" data-category="Announcements" data-category-id="DIC_kwDOQlVVGs4Czkir" data-mapping="title" data-term data-strict="0" data-reactions-enabled="1" data-emit-metadata="0" data-input-position="top" data-theme="preferred_color_scheme" data-lang="zh-CN" crossorigin="anonymous" async></script> <noscript>请启用 JavaScript 查看评论。</noscript> </div> </section> </article>  </main> <footer class="site-footer" data-astro-cid-x322jucz> <div class="container footer-content" data-astro-cid-x322jucz> <p data-astro-cid-x322jucz>
+&copy; 2025 <b data-astro-cid-x322jucz>JeremyJone.com</b> All rights reserved.
+</p> <div class="footer-links" data-astro-cid-x322jucz> <a href="https://github.com/jeremyjone" target="_blank" rel="noopener" data-astro-cid-x322jucz> GitHub </a> </div> </div> </footer> <script type="module" src="/_astro/BaseLayout.astro_astro_type_script_index_0_lang.D4h-rqQD.js"></script> <div id="search-modal" class="search-modal" style="display: none;" data-astro-cid-jwf5kjrd> <div class="search-overlay" data-astro-cid-jwf5kjrd></div> <div class="search-container" data-astro-cid-jwf5kjrd> <div class="search-header" data-astro-cid-jwf5kjrd> <input type="text" id="search-input-global" placeholder="搜索全站内容 (Cmd+K)..." autocomplete="off" data-astro-cid-jwf5kjrd> <button id="close-search" aria-label="Close search" data-astro-cid-jwf5kjrd>&times;</button> </div> <div id="search-results-global" class="search-results" data-astro-cid-jwf5kjrd> <div class="search-placeholder" data-astro-cid-jwf5kjrd>输入关键词开始搜索...</div> </div> </div> </div>  <script>
+    window.loadPagefind = async () => {
+        try {
+            return await import("/pagefind/pagefind.js");
+        } catch (e) {
+            console.warn("Failed to load pagefind:", e);
+            return null;
+        }
+    };
+</script> <script type="module" src="/_astro/SearchModal.astro_astro_type_script_index_0_lang.C4oQFeHw.js"></script> </body></html>  <script type="module">document.addEventListener("DOMContentLoaded",()=>{const c=document.getElementById("toc-toggle"),e=document.getElementById("floating-toc"),t=document.getElementById("toc-overlay");c?.addEventListener("click",()=>{e?.classList.add("active"),t?.classList.add("active")});const o=()=>{e?.classList.remove("active"),t?.classList.remove("active")};t?.addEventListener("click",o)});</script>

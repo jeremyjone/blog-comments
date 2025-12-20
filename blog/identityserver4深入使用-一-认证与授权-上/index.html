@@ -1,0 +1,296 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="dark" data-astro-cid-x322jucz> <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>IdentityServer4深入使用（一）-- 认证与授权（上）</title><meta name="description" content="## 开始之前 更多学习内容，可以看我的 [.NET 学习之路系列-认证与授权](https://jeremyjone.github.io/docs/document/roadmap/dotnetcore/auth/)。 先贴上官方地址..."><link rel="canonical" href="https://www.jeremyjone.com//blog/identityserver4%E6%B7%B1%E5%85%A5%E4%BD%BF%E7%94%A8-%E4%B8%80-%E8%AE%A4%E8%AF%81%E4%B8%8E%E6%8E%88%E6%9D%83-%E4%B8%8A/"><meta property="og:title" content="IdentityServer4深入使用（一）-- 认证与授权（上）"><meta property="og:description" content="## 开始之前 更多学习内容，可以看我的 [.NET 学习之路系列-认证与授权](https://jeremyjone.github.io/docs/document/roadmap/dotnetcore/auth/)。 先贴上官方地址..."><meta property="og:type" content="article"><meta property="og:url" content="https://www.jeremyjone.com//blog/identityserver4%E6%B7%B1%E5%85%A5%E4%BD%BF%E7%94%A8-%E4%B8%80-%E8%AE%A4%E8%AF%81%E4%B8%8E%E6%8E%88%E6%9D%83-%E4%B8%8A/"><meta property="og:site_name" content="JeremyJone's Blog"><meta property="og:locale" content="zh_CN"><link rel="icon" href="/favicon.ico"><link rel="stylesheet" href="/_astro/_year_.CFHYKZJi.css">
+<link rel="stylesheet" href="/_astro/_slug_.B1ShOm38.css"></head> <body data-astro-cid-x322jucz> <header class="site-header" data-astro-cid-x322jucz> <div class="container header-content" data-astro-cid-x322jucz> <a href="/" class="logo" data-astro-cid-x322jucz> <div class="logo-icon" data-astro-cid-x322jucz> <img src="/resources/avatar.png" alt="Logo" width="32" height="32" data-astro-cid-x322jucz> </div> <span class="logo-text" data-astro-cid-x322jucz>JeremyJone&#39;s Blog</span> </a> <div class="header-right" data-astro-cid-x322jucz> <nav class="nav" data-astro-cid-x322jucz> <a href="/" class="nav-link" data-astro-cid-x322jucz> 首页 </a><a href="/blog" class="nav-link active" data-astro-cid-x322jucz> 博客 </a><a href="/notes" class="nav-link" data-astro-cid-x322jucz> 笔记 </a> </nav> <button class="search-toggle" onclick="window.openSearchModal()" aria-label="搜索" data-astro-cid-x322jucz> <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-astro-cid-x322jucz><circle cx="11" cy="11" r="8" data-astro-cid-x322jucz></circle><line x1="21" y1="21" x2="16.65" y2="16.65" data-astro-cid-x322jucz></line></svg> <span class="search-placeholder" data-astro-cid-x322jucz>Ctrl+K 搜索...</span> </button> <button class="theme-toggle" id="theme-toggle" aria-label="切换主题" data-astro-cid-x322jucz> <svg class="sun-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" data-astro-cid-x322jucz> <circle cx="12" cy="12" r="5" data-astro-cid-x322jucz></circle> <line x1="12" y1="1" x2="12" y2="3" data-astro-cid-x322jucz></line> <line x1="12" y1="21" x2="12" y2="23" data-astro-cid-x322jucz></line> <line x1="4.22" y1="4.22" x2="5.64" y2="5.64" data-astro-cid-x322jucz></line> <line x1="18.36" y1="18.36" x2="19.78" y2="19.78" data-astro-cid-x322jucz></line> <line x1="1" y1="12" x2="3" y2="12" data-astro-cid-x322jucz></line> <line x1="21" y1="12" x2="23" y2="12" data-astro-cid-x322jucz></line> <line x1="4.22" y1="19.78" x2="5.64" y2="18.36" data-astro-cid-x322jucz></line> <line x1="18.36" y1="5.64" x2="19.78" y2="4.22" data-astro-cid-x322jucz></line> </svg> <svg class="moon-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" data-astro-cid-x322jucz> <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" data-astro-cid-x322jucz></path> </svg> </button> </div> </div> </header> <main class="container" data-astro-cid-x322jucz>  <article data-content-type="blog" data-pagefind-body data-pagefind-filter="type:blog" data-astro-cid-iy4s3wf7> <header class="article-header" data-astro-cid-iy4s3wf7> <h1 data-astro-cid-iy4s3wf7>IdentityServer4深入使用（一）-- 认证与授权（上）</h1> <p class="meta" data-astro-cid-iy4s3wf7>
+发布于 2021-03-22 16:59:06 · 9 分钟 · 标签：<a href="/tags/IdentityServer" class="tag" data-astro-cid-iy4s3wf7> IdentityServer </a> </p> </header> <div class="article-content" data-astro-cid-iy4s3wf7> <h2 id="开始之前">开始之前</h2>
+<p>更多学习内容，可以看我的 <a href="https://jeremyjone.github.io/docs/document/roadmap/dotnetcore/auth/">.NET 学习之路系列-认证与授权</a>。</p>
+<p>先贴上官方地址： <a href="https://identityserver4.readthedocs.io/en/latest/">IdentityServer 官方文档（英文）</a></p>
+<p>英文麻烦的，可以看中文，但并不是官方的，同时内容也不是很全： <a href="http://www.identityserver.com.cn/">中文文档</a></p>
+<p>学习之前，需要了解：</p>
+<p>OAuth2 和 OpenID Connect 两种协议机制。</p>
+<h3 id="oauth-20">OAuth 2.0</h3>
+<p>OAuth2是一种协议，允许应用程序从安全令牌服务请求访问令牌并使用它们与API进行通信。由于可以集中身份验证和授权，因此这种委派降低了客户端应用程序和API的复杂性。</p>
+<h3 id="openid-connect">OpenID Connect</h3>
+<p>OpenID Connect是一种身份验证协议。它被认为是未来，因为它在现代应用程序中具有最大的潜力。它从一开始就针对移动应用程序场景而构建，并且旨在实现API友好。</p>
+<h3 id="结合-oauth2-与-openid-connect">结合 OAuth2 与 OpenID Connect</h3>
+<p>实际上，OpenID Connect是OAuth 2.0的扩展。身份验证和API访问这两个基本的安全问题被组合为一个协议，通常只需一次往返于安全令牌服务即可。在可预见的将来，OpenID Connect和OAuth 2.0的结合是保护现代应用程序安全的最佳方法。</p>
+<p><img src="/images/2021/image-1616402595899.png" alt="file"></p>
+<h3 id="identityserver">IdentityServer</h3>
+<p>IdentityServer是将符合规范的OpenID Connect和OAuth 2.0端点添加到任意ASP.NET Core应用程序的中间件。</p>
+<h2 id="认证与授权">认证与授权</h2>
+<p>在学习 IdentityServer 之前，需要系统的了解认证与授权。</p>
+<h3 id="认证介绍">认证介绍</h3>
+<p>认证又称身份验证、鉴权等，其英文都是 Authentication。</p>
+<p>认证是对用户进行身份校验。由用户提供凭据，然后将其与存储在服务端的凭据进行比较，如果匹配，则身份验证成功。只有在用户认证通过之后，系统才会执行向其授权的操作。</p>
+<h3 id="授权介绍">授权介绍</h3>
+<p>授权（Authorization）是指确定用户可执行的操作的过程。例如，允许管理用户创建文档库、添加文档、编辑文档和删除文档。使用库的非管理用户仅获得读取文档的权限。</p>
+<p>授权有多种形式。 ASP.NET Core 的授权提供简单的声明性角色和基于策略的丰富模型。</p>
+<h3 id="对比认证与授权的例子">对比认证与授权的例子</h3>
+<p>简单来说，就是你要去 ATM 机取钱：</p>
+<ul>
+<li>首先你要输密码，密码正确才能进入取钱的界面，否则可能被吞卡。这个过程就是认证。</li>
+<li>进入取钱界面，发现你是个普通用户，每天只能取 5000 块，所以你取 5000 块之内都是可以的。这就是授权。</li>
+<li>超过 5000 块怎么办？当然是被拒绝，因为没有权限嘛。这时候就要尝试提升权限啥的，这都是后话了。</li>
+</ul>
+<h2 id="认证">认证</h2>
+<p>认证是确定用户身份的过程。在 .NET 中，身份验证由 <code>IAuthenticationService</code> 负责，而它供身份验证中间件使用。身份验证由 Startup.ConfigureServices 中的注册身份验证服务指定。</p>
+<h3 id="添加认证服务">添加认证服务</h3>
+<p>例如，为程序添加 cookie 和 JWT 持有者分身验证方案：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="csharp"><code><span class="line"><span style="color:#E1E4E8">services.</span><span style="color:#B392F0">AddAuthentication</span><span style="color:#E1E4E8">(JwtBearerDefaults.AuthenticationScheme)</span></span>
+<span class="line"><span style="color:#E1E4E8">    .</span><span style="color:#B392F0">AddJwtBearer</span><span style="color:#E1E4E8">(JwtBearerDefaults.AuthenticationScheme, </span><span style="color:#B392F0">options</span><span style="color:#F97583"> =></span><span style="color:#E1E4E8"> Configuration.</span><span style="color:#B392F0">Bind</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">"JwtSettings"</span><span style="color:#E1E4E8">, options))</span></span>
+<span class="line"><span style="color:#E1E4E8">    .</span><span style="color:#B392F0">AddCookie</span><span style="color:#E1E4E8">(CookieAuthenticationDefaults.AuthenticationScheme, </span><span style="color:#B392F0">options</span><span style="color:#F97583"> =></span><span style="color:#E1E4E8"> Configuration.</span><span style="color:#B392F0">Bind</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">"CookieSettings"</span><span style="color:#E1E4E8">, options));</span></span></code></pre>
+<p>其中，<code>JwtBearerDefaults.AuthenticationScheme</code> 是方案名称，为请求特定方案时，都会默认使用此名称。</p>
+<p>如果使用了多个方案，授权策略可指定对用户进行身份验证时要依据的一个或多个身份验证方案。如上，可通过指定 cookie 方案的名称来使用该方案进行验证。</p>
+<h3 id="添加认证中间件">添加认证中间件</h3>
+<p>在 Startup.Configure 中添加身份验证中间件，通过调用 <code>UseAuthenticaiton</code> 扩展方法来实现。中间件的添加需要顺序，要保持：</p>
+<ul>
+<li>在 <code>UseRouting</code> 之后调用，以便路由信息可用于身份验证。</li>
+<li>在 <code>UseEndpoints</code> 之前调用，以便用户在经过身份验证之后才能访问端点。</li>
+</ul>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="csharp"><code><span class="line"><span style="color:#F97583">public</span><span style="color:#F97583"> void</span><span style="color:#B392F0"> Configure</span><span style="color:#E1E4E8">(</span><span style="color:#B392F0">IApplicationBuilder</span><span style="color:#B392F0"> app</span><span style="color:#E1E4E8">, </span><span style="color:#B392F0">IWebHostEnvironment</span><span style="color:#B392F0"> env</span><span style="color:#E1E4E8">)</span></span>
+<span class="line"><span style="color:#E1E4E8">{</span></span>
+<span class="line"><span style="color:#F97583">    if</span><span style="color:#E1E4E8"> (env.</span><span style="color:#B392F0">IsDevelopment</span><span style="color:#E1E4E8">())</span></span>
+<span class="line"><span style="color:#E1E4E8">    {</span></span>
+<span class="line"><span style="color:#E1E4E8">        app.</span><span style="color:#B392F0">UseDeveloperExceptionPage</span><span style="color:#E1E4E8">();</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"><span style="color:#F97583">    else</span></span>
+<span class="line"><span style="color:#E1E4E8">    {</span></span>
+<span class="line"><span style="color:#E1E4E8">        app.</span><span style="color:#B392F0">UseExceptionHandler</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">"/Error"</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">    app.</span><span style="color:#B392F0">UseStaticFiles</span><span style="color:#E1E4E8">();</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">    app.</span><span style="color:#B392F0">UseRouting</span><span style="color:#E1E4E8">();</span></span>
+<span class="line"><span style="color:#6A737D">    // 鉴权放在路由之后，授权之前</span></span>
+<span class="line"><span style="color:#E1E4E8">    app.</span><span style="color:#B392F0">UseAuthentication</span><span style="color:#E1E4E8">();</span></span>
+<span class="line"><span style="color:#6A737D">    // 授权</span></span>
+<span class="line"><span style="color:#E1E4E8">    app.</span><span style="color:#B392F0">UseAuthorization</span><span style="color:#E1E4E8">();</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">    app.</span><span style="color:#B392F0">UseEndpoints</span><span style="color:#E1E4E8">(</span><span style="color:#B392F0">endpoints</span><span style="color:#F97583"> =></span></span>
+<span class="line"><span style="color:#E1E4E8">    {</span></span>
+<span class="line"><span style="color:#E1E4E8">        endpoints.</span><span style="color:#B392F0">MapDefaultControllerRoute</span><span style="color:#E1E4E8">();</span></span>
+<span class="line"><span style="color:#E1E4E8">    });</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<h3 id="使用-cookie-认证">使用 Cookie 认证</h3>
+<p>添加一个简单的 Cookie 认证方案，每次请求需要携带对应的 Cookie 才可以访问。具体代码可以看 <a href="https://github.com/jeremyjone/dotnet-study-road/tree/master/AuthenticationAndAuthorization/AuthenticationAndAuthorization.Basic">示例代码</a></p>
+<p>首先在 <code>Startup.cs</code> 中添加服务：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="csharp"><code><span class="line"><span style="color:#E1E4E8">services.</span><span style="color:#B392F0">AddAuthentication</span><span style="color:#E1E4E8">(CookieAuthenticationDefaults.AuthenticationScheme)</span></span>
+<span class="line"><span style="color:#E1E4E8">    .</span><span style="color:#B392F0">AddCookie</span><span style="color:#E1E4E8">(CookieAuthenticationDefaults.AuthenticationScheme, </span><span style="color:#B392F0">config</span><span style="color:#F97583"> =></span></span>
+<span class="line"><span style="color:#E1E4E8">    {</span></span>
+<span class="line"><span style="color:#E1E4E8">        config.Cookie.Name </span><span style="color:#F97583">=</span><span style="color:#9ECBFF"> "MyCookie"</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#6A737D">        // 没有授权时，跳转到该页面</span></span>
+<span class="line"><span style="color:#E1E4E8">        config.LoginPath </span><span style="color:#F97583">=</span><span style="color:#9ECBFF"> "/Home/Auth"</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#E1E4E8">    });</span></span></code></pre>
+<p>然后在 <code>HomeController</code> 控制器前添加授权方案：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="csharp"><code><span class="line"><span style="color:#E1E4E8">[</span><span style="color:#B392F0">Authorize</span><span style="color:#E1E4E8">]</span></span>
+<span class="line"><span style="color:#F97583">public</span><span style="color:#F97583"> class</span><span style="color:#B392F0"> HomeController</span><span style="color:#E1E4E8"> : </span><span style="color:#B392F0">Controller</span></span>
+<span class="line"><span style="color:#E1E4E8">{</span></span>
+<span class="line"><span style="color:#F97583">    public</span><span style="color:#B392F0"> IActionResult</span><span style="color:#B392F0"> Index</span><span style="color:#E1E4E8">()</span></span>
+<span class="line"><span style="color:#E1E4E8">    {</span></span>
+<span class="line"><span style="color:#F97583">        return</span><span style="color:#B392F0"> View</span><span style="color:#E1E4E8">();</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">    public</span><span style="color:#B392F0"> IActionResult</span><span style="color:#B392F0"> Secret</span><span style="color:#E1E4E8">()</span></span>
+<span class="line"><span style="color:#E1E4E8">    {</span></span>
+<span class="line"><span style="color:#F97583">        return</span><span style="color:#B392F0"> View</span><span style="color:#E1E4E8">();</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<p>并在控制器中添加一个名为 <code>Auth</code> 的应用：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="csharp"><code><span class="line"><span style="color:#6A737D">/// &#x3C;</span><span style="color:#85E89D">summary</span><span style="color:#6A737D">></span></span>
+<span class="line"><span style="color:#6A737D">/// 认证</span></span>
+<span class="line"><span style="color:#6A737D">/// &#x3C;/</span><span style="color:#85E89D">summary</span><span style="color:#6A737D">></span></span>
+<span class="line"><span style="color:#6A737D">/// &#x3C;</span><span style="color:#85E89D">returns</span><span style="color:#6A737D">>&#x3C;/</span><span style="color:#85E89D">returns</span><span style="color:#6A737D">></span></span>
+<span class="line"><span style="color:#6A737D">// 不需要任何授权</span></span>
+<span class="line"><span style="color:#E1E4E8">[</span><span style="color:#B392F0">AllowAnonymous</span><span style="color:#E1E4E8">]</span></span>
+<span class="line"><span style="color:#F97583">public</span><span style="color:#B392F0"> IActionResult</span><span style="color:#B392F0"> Auth</span><span style="color:#E1E4E8">()</span></span>
+<span class="line"><span style="color:#E1E4E8">{</span></span>
+<span class="line"><span style="color:#6A737D">    // 添加一些声明</span></span>
+<span class="line"><span style="color:#F97583">    var</span><span style="color:#B392F0"> claims1</span><span style="color:#F97583"> =</span><span style="color:#F97583"> new</span><span style="color:#B392F0"> List</span><span style="color:#E1E4E8">&#x3C;</span><span style="color:#B392F0">Claim</span><span style="color:#E1E4E8">>()</span></span>
+<span class="line"><span style="color:#E1E4E8">    {</span></span>
+<span class="line"><span style="color:#F97583">        new</span><span style="color:#B392F0"> Claim</span><span style="color:#E1E4E8">(ClaimTypes.Name, </span><span style="color:#9ECBFF">"Jz"</span><span style="color:#E1E4E8">),</span></span>
+<span class="line"><span style="color:#F97583">        new</span><span style="color:#B392F0"> Claim</span><span style="color:#E1E4E8">(ClaimTypes.Email, </span><span style="color:#9ECBFF">"Jz@qq.com"</span><span style="color:#E1E4E8">),</span></span>
+<span class="line"><span style="color:#6A737D">        // 声明的键是可以自定义的</span></span>
+<span class="line"><span style="color:#F97583">        new</span><span style="color:#B392F0"> Claim</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">"Custom-Claim"</span><span style="color:#E1E4E8">, </span><span style="color:#9ECBFF">"This is a custom claim."</span><span style="color:#E1E4E8">)</span></span>
+<span class="line"><span style="color:#E1E4E8">    };</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">    // 创建一个身份声明</span></span>
+<span class="line"><span style="color:#F97583">    var</span><span style="color:#B392F0"> identity1</span><span style="color:#F97583"> =</span><span style="color:#F97583"> new</span><span style="color:#B392F0"> ClaimsIdentity</span><span style="color:#E1E4E8">(claims1, </span><span style="color:#9ECBFF">"Claims1"</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">    // 添加第二个声明</span></span>
+<span class="line"><span style="color:#F97583">    var</span><span style="color:#B392F0"> claims2</span><span style="color:#F97583"> =</span><span style="color:#F97583"> new</span><span style="color:#B392F0"> List</span><span style="color:#E1E4E8">&#x3C;</span><span style="color:#B392F0">Claim</span><span style="color:#E1E4E8">>()</span></span>
+<span class="line"><span style="color:#E1E4E8">    {</span></span>
+<span class="line"><span style="color:#F97583">        new</span><span style="color:#B392F0"> Claim</span><span style="color:#E1E4E8">(ClaimTypes.Name, </span><span style="color:#9ECBFF">"Tom"</span><span style="color:#E1E4E8">),</span></span>
+<span class="line"><span style="color:#F97583">        new</span><span style="color:#B392F0"> Claim</span><span style="color:#E1E4E8">(ClaimTypes.Email, </span><span style="color:#9ECBFF">"Tom@qq.com"</span><span style="color:#E1E4E8">)</span></span>
+<span class="line"><span style="color:#E1E4E8">    };</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">    // 创建第二个身份声明</span></span>
+<span class="line"><span style="color:#F97583">    var</span><span style="color:#B392F0"> identity2</span><span style="color:#F97583"> =</span><span style="color:#F97583"> new</span><span style="color:#B392F0"> ClaimsIdentity</span><span style="color:#E1E4E8">(claims2, </span><span style="color:#9ECBFF">"Claims2"</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">    // 将两个身份声明放到用户身份中</span></span>
+<span class="line"><span style="color:#F97583">    var</span><span style="color:#B392F0"> principal</span><span style="color:#F97583"> =</span><span style="color:#F97583"> new</span><span style="color:#B392F0"> ClaimsPrincipal</span><span style="color:#E1E4E8">(</span><span style="color:#F97583">new</span><span style="color:#E1E4E8">[] {identity1, identity2});</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">    // 签入身份验证方案的主体</span></span>
+<span class="line"><span style="color:#E1E4E8">    HttpContext.</span><span style="color:#B392F0">SignInAsync</span><span style="color:#E1E4E8">(principal);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">    return</span><span style="color:#B392F0"> RedirectToAction</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">"Index"</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<p>是的，这样就完成了一个非常简单的认证。当我们第一次登录 Index 的时候，因为没有权限，会跳转到我们配置好的目录：<code>/Home/Auth</code>，然后获取到身份验证内容后，重新跳转回 Index，这一切都是这么的丝滑。</p>
+<h3 id="使用-jwt-认证">使用 JWT 认证</h3>
+<h4 id="什么是-jwt">什么是 JWT</h4>
+<p>Jwt，Json Web Token 是一个开放标准（<a href="https://tools.ietf.org/html/rfc7519">RFC 7519</a>），它定义了一种紧凑且独立的方法，用于在各方之间安全地将信息作为 JSON 对象传输。由于此信息是经过数字签名的，因此可以被验证和信任。可以使用密码（使用 HMAC 算法）或使用 RSA 或 ECDSA 的公钥/私钥对对 JWT 进行签名。</p>
+<p>基于 Token 的鉴权机制类似于 http 协议，也是无状态的，它不需要在服务端保留用户的认证信息，这也就意味着基于 Token 认证机制的应用不需要去考虑用户在哪一台设备登录，这为应用扩展提供了便利。</p>
+<h4 id="什么时候使用-jwt">什么时候使用 JWT</h4>
+<p>以下是 JWT 有用的一些情况：</p>
+<ul>
+<li>
+<p>授权：这是使用 JWT 最常见的方案。用户登录后，每个后续请求都将包含 JWT，从而允许用户访问该令牌锁允许的路由、服务和资源。单一登录是当今广泛使用 JWT 的一项功能，因为它的开销很小并且可以在不同的域中轻松使用。</p>
+</li>
+<li>
+<p>信息交换：JWT 是在各方之间安全地传输信息的一种好方法。因为可以对 JWT 进行签名，所以您可以确定发件人是他们所说的人。此外，由于签名是使用标头和有效负载计算的，因此还可以验证内容是否被篡改。</p>
+</li>
+</ul>
+<h4 id="jwt-的结构">JWT 的结构</h4>
+<p>JWT 以紧凑的形式将三部分内容由点（.）分隔，其三部分内容分别是：</p>
+<ul>
+<li>标头</li>
+<li>有效载荷</li>
+<li>签名</li>
+</ul>
+<p>因此，JWT 通常如下所示：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="plaintext"><code><span class="line"><span>xxxxx.yyyyy.zzzzz</span></span></code></pre>
+<h5 id="标头-header">标头 Header</h5>
+<p>标头通常由两部分组成：令牌类型（即 JWT）和所使用的签名算法。</p>
+<p>算法通常为：</p>
+<ul>
+<li>HMAC</li>
+<li>SHA256</li>
+<li>RSA</li>
+</ul>
+<p>例如：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="json"><code><span class="line"><span style="color:#E1E4E8">{</span></span>
+<span class="line"><span style="color:#79B8FF">  "alg"</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">"HS256"</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#79B8FF">  "typ"</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">"JWT"</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<p>然后，此 JSON 以 Base64Url 编码格式形成 JWT 的第一部分。</p>
+<h5 id="有效载荷-payload">有效载荷 Payload</h5>
+<p>JWT 的第二部分是有效载荷，其中包含声明。声明有关实体和其他数据声明。声明有三种类型：注册声明、公共声明以及私有声明。</p>
+<ul>
+<li>
+<p><a href="https://tools.ietf.org/html/rfc7519#section-4.1"><strong>注册声明</strong></a>：这些是一组非强制性的但建议使用的预定义声明，以提供一组有用的可互操作的声明。包含：</p>
+<ul>
+<li>iss（发布者）</li>
+<li>exp（到期时间）</li>
+<li>sub（主题）</li>
+<li>aud （受众）</li>
+</ul>
+<p>等。需要注意，声明名称是三个字符，因为 JWT 的含义是紧凑的。</p>
+</li>
+<li>
+<p><a href="https://tools.ietf.org/html/rfc7519#section-4.2"><strong>公共声明</strong></a>：这些可以由使用 JWT 的人员随意定义。但为了避免冲突，应在 <a href="https://www.iana.org/assignments/jwt/jwt.xhtml">IANA JSON Web Token 注册表</a>中定义它们，或将其定义为包含抗冲突名称空间的 URI。</p>
+</li>
+<li>
+<p><a href="https://tools.ietf.org/html/rfc7519#section-4.3"><strong>私有声明</strong></a>：这些是自定义声明，旨在在同意使用它们的各方之间共享信息，既不是注册声明也不是公共声明。</p>
+</li>
+</ul>
+<p>有效载荷的示例：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="json"><code><span class="line"><span style="color:#E1E4E8">{</span></span>
+<span class="line"><span style="color:#79B8FF">  "sub"</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">"1234567890"</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#79B8FF">  "name"</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">"Jeremy Jone"</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#79B8FF">  "admin"</span><span style="color:#E1E4E8">: </span><span style="color:#79B8FF">true</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<p>然后，对此载荷进行 Base64Url 编码，以形成 JWT 的第二部分。</p>
+<p>注意：对于已签名的令牌，此信息尽管可以防止篡改，但任何人都可以读取，除非将其加密，否则请勿将机密信息放入其中。</p>
+<h5 id="签名-signature">签名 Signature</h5>
+<p>要创建签名部分，您必须获取编码的标头、有效载荷、秘钥和标头中制定算法，并对其进行签名。</p>
+<p>例如，如果要使用 HMAC SHA256 算法，则将通过以下方式创建签名：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="plaintext"><code><span class="line"><span>HMACSHA256(</span></span>
+<span class="line"><span>  base64UrlEncode(header) + "." +</span></span>
+<span class="line"><span>  base64UrlEncode(payload),</span></span>
+<span class="line"><span>  www.jermeyjone.com)</span></span></code></pre>
+<p>签名用于验证消息在此过程中没有更改，并且对于使用私钥进行签名的令牌，它还可以验证 JWT 的发送者是它所说的真实身份。</p>
+<h5 id="拼在一起">拼在一起</h5>
+<p>将上述三部分拼在一起，得到一个完整的 JWT：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="plaintext"><code><span class="line"><span>eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkplcmVteSBKb25lIiwiYWRtaW4iOnRydWV9.Vyj5QsI_6T4R5lJH-1uS1lpwDo1uIfosYmrOIdd9L18</span></span></code></pre>
+<p>将其放在 <a href="https://jwt.io">jwt.io</a> 中进行验证：</p>
+<p><img src="/images/2021/jwt1.png" alt="jwt 验证"></p>
+<h4 id="jwt-如何工作">JWT 如何工作</h4>
+<p>在身份验证中，当用户使用凭据登录成功时，服务器将返回 JWT。由于 token 是凭据，因此必须格外小心，防止出现安全问题。通常，token 的保留时间不应超过要求的时间。</p>
+<p>每当用户想要访问受保护的路由或资源时，user agent 都会发送 JWT，通常使用 Bearer 模式的 Authorization 标头，内容如下：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="plaintext"><code><span class="line"><span>Authorization: Bearer &#x3C;token></span></span></code></pre>
+<p>在某些情况下，这可以是无状态授权机制。服务器的受保护路由将在 Authorization 标头中检查有效的 JWT，如果存在，则将允许用户访问受保护的资源。如果 JWT 包含必要的数据，则可以减少查询数据库以进行某些操作的需求，尽管这种情况并非总是如此。</p>
+<p>如果 token 在授权标头中发送，则跨域资源共享（CORS）不会成为问题，因为它不使用 cookie。</p>
+<h3 id="在-net-中使用-jwt">在 .NET 中使用 JWT</h3>
+<p>创建一个 web 控制器项目，具体代码可以参考 <a href="https://github.com/jeremyjone/dotnet-study-road/tree/master/AuthenticationAndAuthorization/AuthenticationAndAuthorization.Jwt">示例代码</a></p>
+<h4 id="安装">安装</h4>
+<p>在 NuGet 中搜索 <code>Microsoft.AspNetCore.Authentication.JwtBearer</code> 并安装。</p>
+<h4 id="生成-token">生成 token</h4>
+<p>在控制器添加一个 <code>GetToken</code> 的方法：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="csharp"><code><span class="line"><span style="color:#6A737D">/// &#x3C;</span><span style="color:#85E89D">summary</span><span style="color:#6A737D">></span></span>
+<span class="line"><span style="color:#6A737D">/// 颁发 token</span></span>
+<span class="line"><span style="color:#6A737D">/// &#x3C;/</span><span style="color:#85E89D">summary</span><span style="color:#6A737D">></span></span>
+<span class="line"><span style="color:#6A737D">/// &#x3C;</span><span style="color:#85E89D">returns</span><span style="color:#6A737D">>&#x3C;/</span><span style="color:#85E89D">returns</span><span style="color:#6A737D">></span></span>
+<span class="line"><span style="color:#E1E4E8">[</span><span style="color:#B392F0">HttpGet</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">"token"</span><span style="color:#E1E4E8">)]</span></span>
+<span class="line"><span style="color:#F97583">public</span><span style="color:#B392F0"> ActionResult</span><span style="color:#B392F0"> GetToken</span><span style="color:#E1E4E8">()</span></span>
+<span class="line"><span style="color:#E1E4E8">{</span></span>
+<span class="line"><span style="color:#6A737D">    // 秘钥，绝对私有的，使用该秘钥可以生成和验证所有 token</span></span>
+<span class="line"><span style="color:#F97583">    var</span><span style="color:#B392F0"> key</span><span style="color:#F97583"> =</span><span style="color:#F97583"> new</span><span style="color:#B392F0"> SymmetricSecurityKey</span><span style="color:#E1E4E8">(Encoding.ASCII.</span><span style="color:#B392F0">GetBytes</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">"www.jeremyjone.com"</span><span style="color:#E1E4E8">));</span></span>
+<span class="line"><span style="color:#6A737D">    // 创建令牌</span></span>
+<span class="line"><span style="color:#F97583">    var</span><span style="color:#B392F0"> token</span><span style="color:#F97583"> =</span><span style="color:#F97583"> new</span><span style="color:#B392F0"> JwtSecurityToken</span><span style="color:#E1E4E8">(</span></span>
+<span class="line"><span style="color:#6A737D">        // 发行人</span></span>
+<span class="line"><span style="color:#B392F0">        issuer</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">"jeremyjone@qq.com"</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#6A737D">        // 接收人</span></span>
+<span class="line"><span style="color:#B392F0">        audience</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">"jeremyjone"</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#6A737D">        // 有效时间</span></span>
+<span class="line"><span style="color:#B392F0">        expires</span><span style="color:#E1E4E8">: DateTime.UtcNow.</span><span style="color:#B392F0">AddHours</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">1</span><span style="color:#E1E4E8">),</span></span>
+<span class="line"><span style="color:#6A737D">        // 数字签名，使用指定的加密方式对秘钥进行加密</span></span>
+<span class="line"><span style="color:#B392F0">        signingCredentials</span><span style="color:#E1E4E8">: </span><span style="color:#F97583">new</span><span style="color:#B392F0"> SigningCredentials</span><span style="color:#E1E4E8">(key, SecurityAlgorithms.HmacSha256),</span></span>
+<span class="line"><span style="color:#6A737D">        // 其他声明，这里可以任意填写</span></span>
+<span class="line"><span style="color:#B392F0">        claims</span><span style="color:#E1E4E8">: </span><span style="color:#F97583">new</span><span style="color:#B392F0"> Claim</span><span style="color:#E1E4E8">[]</span></span>
+<span class="line"><span style="color:#E1E4E8">        {</span></span>
+<span class="line"><span style="color:#6A737D">            // 角色需要在这里填写</span></span>
+<span class="line"><span style="color:#F97583">            new</span><span style="color:#B392F0"> Claim</span><span style="color:#E1E4E8">(ClaimTypes.Role, </span><span style="color:#9ECBFF">"Admin"</span><span style="color:#E1E4E8">),</span></span>
+<span class="line"><span style="color:#6A737D">            // 多个角色可以重复写，生成的 JWT 会是一个数组</span></span>
+<span class="line"><span style="color:#F97583">            new</span><span style="color:#B392F0"> Claim</span><span style="color:#E1E4E8">(ClaimTypes.Role, </span><span style="color:#9ECBFF">"Super"</span><span style="color:#E1E4E8">)</span></span>
+<span class="line"><span style="color:#E1E4E8">        });</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">    // 写入 token 并生成 JWT</span></span>
+<span class="line"><span style="color:#F97583">    return</span><span style="color:#B392F0"> Ok</span><span style="color:#E1E4E8">(</span><span style="color:#F97583">new</span><span style="color:#B392F0"> JwtSecurityTokenHandler</span><span style="color:#E1E4E8">().</span><span style="color:#B392F0">WriteToken</span><span style="color:#E1E4E8">(token));</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<h4 id="验证-token">验证 token</h4>
+<p>在 <code>Startup.cs</code> 中的服务添加验证即可：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="csharp"><code><span class="line"><span style="color:#6A737D">// 注入认证</span></span>
+<span class="line"><span style="color:#E1E4E8">services.</span><span style="color:#B392F0">AddAuthentication</span><span style="color:#E1E4E8">(JwtBearerDefaults.AuthenticationScheme)</span></span>
+<span class="line"><span style="color:#6A737D">    // 需要认证哪些内容，就填写哪些</span></span>
+<span class="line"><span style="color:#E1E4E8">    .</span><span style="color:#B392F0">AddJwtBearer</span><span style="color:#E1E4E8">(</span><span style="color:#B392F0">options</span><span style="color:#F97583"> =></span><span style="color:#E1E4E8"> options.TokenValidationParameters </span><span style="color:#F97583">=</span><span style="color:#F97583"> new</span><span style="color:#B392F0"> TokenValidationParameters</span></span>
+<span class="line"><span style="color:#E1E4E8">    {</span></span>
+<span class="line"><span style="color:#6A737D">        // 这里将 audience 的值修改。如果不验证，则通过，需要验证则不通过，可以修改 false 为 true 测试</span></span>
+<span class="line"><span style="color:#E1E4E8">        ValidateAudience </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> false</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">        ValidAudience </span><span style="color:#F97583">=</span><span style="color:#9ECBFF"> "jeremyjone1"</span><span style="color:#E1E4E8">, </span><span style="color:#6A737D">// 应该是 jeremyjone</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">        // 所有验证内容需要和颁发时的内容一致</span></span>
+<span class="line"><span style="color:#E1E4E8">        ValidateIssuer </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> true</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">        ValidIssuer </span><span style="color:#F97583">=</span><span style="color:#9ECBFF"> "jeremyjone@qq.com"</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">        // 尤其是该秘钥字段，该字段属于绝密内容</span></span>
+<span class="line"><span style="color:#E1E4E8">        ValidateIssuerSigningKey </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> true</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">        IssuerSigningKey </span><span style="color:#F97583">=</span><span style="color:#F97583"> new</span><span style="color:#B392F0"> SymmetricSecurityKey</span><span style="color:#E1E4E8">(Encoding.ASCII.</span><span style="color:#B392F0">GetBytes</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">"www.jeremyjone.com"</span><span style="color:#E1E4E8">)),</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">        // 验证有效期</span></span>
+<span class="line"><span style="color:#E1E4E8">        ValidateLifetime </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> true</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">        // 上面的内容属于建议但不强制验证</span></span>
+<span class="line"><span style="color:#6A737D">        // 还可以添加其他内容</span></span>
+<span class="line"><span style="color:#E1E4E8">    });</span></span></code></pre>
+<h4 id="添加授权">添加授权</h4>
+<p>给控制器中的 <code>Get</code> 方法添加 <code>[Authorize]</code> 属性。</p>
+<h4 id="测试">测试</h4>
+<p>可以通过 Postman 进行测试，因为验证中 <code>ValidAudience</code> 不匹配，所以不能访问到 <code>Get</code> 方法了。</p> </div> <!-- 悬浮 TOC --> <button class="toc-toggle" id="toc-toggle" aria-label="显示目录" data-astro-cid-iy4s3wf7> <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-list" data-astro-cid-iy4s3wf7> <line x1="8" y1="6" x2="21" y2="6" data-astro-cid-iy4s3wf7></line> <line x1="8" y1="12" x2="21" y2="12" data-astro-cid-iy4s3wf7></line> <line x1="8" y1="18" x2="21" y2="18" data-astro-cid-iy4s3wf7></line> <line x1="3" y1="6" x2="3.01" y2="6" data-astro-cid-iy4s3wf7></line> <line x1="3" y1="12" x2="3.01" y2="12" data-astro-cid-iy4s3wf7></line> <line x1="3" y1="18" x2="3.01" y2="18" data-astro-cid-iy4s3wf7></line> </svg> </button> <aside class="floating-toc" id="floating-toc" data-astro-cid-iy4s3wf7> <div class="toc-header" data-astro-cid-iy4s3wf7> <h3 data-astro-cid-iy4s3wf7>目录</h3> </div> <nav class="toc-nav" id="toc-nav" data-astro-cid-g3fimnfa> <!-- TOC 内容将由客户端脚本填充 --> </nav>  <script type="module">document.addEventListener("DOMContentLoaded",()=>{const n=document.getElementById("toc-nav"),a=document.querySelector(".toc-header h3");if(!n)return;const s=document.querySelector(".article-header h1")?.textContent||"目录";a&&(a.textContent=s);const c=Array.from(document.querySelectorAll(".article-content h2, .article-content h3, .article-content h4, .article-content h5, .article-content h6"));if(c.length===0){n.innerHTML='<p style="color: var(--color-text-secondary); padding: 0.5rem;">暂无目录</p>';return}c.forEach(e=>{e.id||(e.id=e.textContent?.toLowerCase().replace(/\s+/g,"-").replace(/[^\w\-\u4e00-\u9fa5]/g,"")||"")});const l=document.createElement("ul");c.forEach(e=>{const t=document.createElement("li"),o=document.createElement("a");o.href=`#${e.id}`,o.textContent=e.textContent||"",o.classList.add(`toc-${e.tagName.toLowerCase()}`),o.addEventListener("click",i=>{i.preventDefault();const r=document.getElementById(e.id);if(r){const u=r.getBoundingClientRect().top+window.pageYOffset-80;window.scrollTo({top:u,behavior:"smooth"}),history.pushState(null,"",`#${e.id}`)}}),t.appendChild(o),l.appendChild(t)}),n.appendChild(l);const d={root:null,rootMargin:"-60px 0px -80% 0px",threshold:0},h=new IntersectionObserver(e=>{e.forEach(t=>{if(t.isIntersecting){const o=t.target.id;n.querySelectorAll("a").forEach(r=>{r.classList.remove("active")});const i=n.querySelector(`a[href="#${o}"]`);i&&i.classList.add("active")}})},d);c.forEach(e=>h.observe(e)),setTimeout(()=>{if(window.location.hash){const t=n.querySelector(`a[href="${window.location.hash}"]`);if(t){n.querySelectorAll("a").forEach(o=>o.classList.remove("active")),t.classList.add("active");return}}let e="";for(const t of c)if(t.getBoundingClientRect().top<=150)e=t.id;else break;if(!e&&c.length>0&&window.scrollY<100&&(e=c[0].id),e){n.querySelectorAll("a").forEach(o=>o.classList.remove("active"));const t=n.querySelector(`a[href="#${e}"]`);t&&t.classList.add("active")}},100)});</script> </aside> <div class="toc-overlay" id="toc-overlay" data-astro-cid-iy4s3wf7></div> <section class="comments" data-astro-cid-iy4s3wf7> <div class="giscus-wrapper"> <script src="https://giscus.app/client.js" data-repo="jeremyjone/blog-comments" data-repo-id="R_kgDOQlVVGg" data-category="Announcements" data-category-id="DIC_kwDOQlVVGs4Czkir" data-mapping="title" data-term data-strict="0" data-reactions-enabled="1" data-emit-metadata="0" data-input-position="top" data-theme="preferred_color_scheme" data-lang="zh-CN" crossorigin="anonymous" async></script> <noscript>请启用 JavaScript 查看评论。</noscript> </div> </section> </article>  </main> <footer class="site-footer" data-astro-cid-x322jucz> <div class="container footer-content" data-astro-cid-x322jucz> <p data-astro-cid-x322jucz>
+&copy; 2025 <b data-astro-cid-x322jucz>JeremyJone.com</b> All rights reserved.
+</p> <div class="footer-links" data-astro-cid-x322jucz> <a href="https://github.com/jeremyjone" target="_blank" rel="noopener" data-astro-cid-x322jucz> GitHub </a> </div> </div> </footer> <script type="module" src="/_astro/BaseLayout.astro_astro_type_script_index_0_lang.D4h-rqQD.js"></script> <div id="search-modal" class="search-modal" style="display: none;" data-astro-cid-jwf5kjrd> <div class="search-overlay" data-astro-cid-jwf5kjrd></div> <div class="search-container" data-astro-cid-jwf5kjrd> <div class="search-header" data-astro-cid-jwf5kjrd> <input type="text" id="search-input-global" placeholder="搜索全站内容 (Cmd+K)..." autocomplete="off" data-astro-cid-jwf5kjrd> <button id="close-search" aria-label="Close search" data-astro-cid-jwf5kjrd>&times;</button> </div> <div id="search-results-global" class="search-results" data-astro-cid-jwf5kjrd> <div class="search-placeholder" data-astro-cid-jwf5kjrd>输入关键词开始搜索...</div> </div> </div> </div>  <script>
+    window.loadPagefind = async () => {
+        try {
+            return await import("/pagefind/pagefind.js");
+        } catch (e) {
+            console.warn("Failed to load pagefind:", e);
+            return null;
+        }
+    };
+</script> <script type="module" src="/_astro/SearchModal.astro_astro_type_script_index_0_lang.C4oQFeHw.js"></script> </body></html>  <script type="module">document.addEventListener("DOMContentLoaded",()=>{const c=document.getElementById("toc-toggle"),e=document.getElementById("floating-toc"),t=document.getElementById("toc-overlay");c?.addEventListener("click",()=>{e?.classList.add("active"),t?.classList.add("active")});const o=()=>{e?.classList.remove("active"),t?.classList.remove("active")};t?.addEventListener("click",o)});</script>

@@ -1,0 +1,121 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="dark" data-astro-cid-x322jucz> <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>美化 Windows Terminal（升级版）</title><meta name="description" content="## 开始之前 为什么说是升级版呢？因为之前写过一篇关于美化终端的文章 [美化PowerShell（含WindowsTerminal和VSCode终端）](https://www.jeremyjone.com/671/)，这次虽然大同小异..."><link rel="canonical" href="https://www.jeremyjone.com//blog/%E7%BE%8E%E5%8C%96-windows-terminal-%E5%8D%87%E7%BA%A7%E7%89%88/"><meta property="og:title" content="美化 Windows Terminal（升级版）"><meta property="og:description" content="## 开始之前 为什么说是升级版呢？因为之前写过一篇关于美化终端的文章 [美化PowerShell（含WindowsTerminal和VSCode终端）](https://www.jeremyjone.com/671/)，这次虽然大同小异..."><meta property="og:type" content="article"><meta property="og:url" content="https://www.jeremyjone.com//blog/%E7%BE%8E%E5%8C%96-windows-terminal-%E5%8D%87%E7%BA%A7%E7%89%88/"><meta property="og:site_name" content="JeremyJone's Blog"><meta property="og:locale" content="zh_CN"><link rel="icon" href="/favicon.ico"><link rel="stylesheet" href="/_astro/_year_.CFHYKZJi.css">
+<link rel="stylesheet" href="/_astro/_slug_.B1ShOm38.css"></head> <body data-astro-cid-x322jucz> <header class="site-header" data-astro-cid-x322jucz> <div class="container header-content" data-astro-cid-x322jucz> <a href="/" class="logo" data-astro-cid-x322jucz> <div class="logo-icon" data-astro-cid-x322jucz> <img src="/resources/avatar.png" alt="Logo" width="32" height="32" data-astro-cid-x322jucz> </div> <span class="logo-text" data-astro-cid-x322jucz>JeremyJone&#39;s Blog</span> </a> <div class="header-right" data-astro-cid-x322jucz> <nav class="nav" data-astro-cid-x322jucz> <a href="/" class="nav-link" data-astro-cid-x322jucz> 首页 </a><a href="/blog" class="nav-link active" data-astro-cid-x322jucz> 博客 </a><a href="/notes" class="nav-link" data-astro-cid-x322jucz> 笔记 </a> </nav> <button class="search-toggle" onclick="window.openSearchModal()" aria-label="搜索" data-astro-cid-x322jucz> <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-astro-cid-x322jucz><circle cx="11" cy="11" r="8" data-astro-cid-x322jucz></circle><line x1="21" y1="21" x2="16.65" y2="16.65" data-astro-cid-x322jucz></line></svg> <span class="search-placeholder" data-astro-cid-x322jucz>Ctrl+K 搜索...</span> </button> <button class="theme-toggle" id="theme-toggle" aria-label="切换主题" data-astro-cid-x322jucz> <svg class="sun-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" data-astro-cid-x322jucz> <circle cx="12" cy="12" r="5" data-astro-cid-x322jucz></circle> <line x1="12" y1="1" x2="12" y2="3" data-astro-cid-x322jucz></line> <line x1="12" y1="21" x2="12" y2="23" data-astro-cid-x322jucz></line> <line x1="4.22" y1="4.22" x2="5.64" y2="5.64" data-astro-cid-x322jucz></line> <line x1="18.36" y1="18.36" x2="19.78" y2="19.78" data-astro-cid-x322jucz></line> <line x1="1" y1="12" x2="3" y2="12" data-astro-cid-x322jucz></line> <line x1="21" y1="12" x2="23" y2="12" data-astro-cid-x322jucz></line> <line x1="4.22" y1="19.78" x2="5.64" y2="18.36" data-astro-cid-x322jucz></line> <line x1="18.36" y1="5.64" x2="19.78" y2="4.22" data-astro-cid-x322jucz></line> </svg> <svg class="moon-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" data-astro-cid-x322jucz> <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" data-astro-cid-x322jucz></path> </svg> </button> </div> </div> </header> <main class="container" data-astro-cid-x322jucz>  <article data-content-type="blog" data-pagefind-body data-pagefind-filter="type:blog" data-astro-cid-iy4s3wf7> <header class="article-header" data-astro-cid-iy4s3wf7> <h1 data-astro-cid-iy4s3wf7>美化 Windows Terminal（升级版）</h1> <p class="meta" data-astro-cid-iy4s3wf7>
+发布于 2022-03-09 15:33:23 · 5 分钟 · 标签：<a href="/tags/terminal" class="tag" data-astro-cid-iy4s3wf7> terminal </a> </p> </header> <div class="article-content" data-astro-cid-iy4s3wf7> <h2 id="开始之前">开始之前</h2>
+<p>为什么说是升级版呢？因为之前写过一篇关于美化终端的文章 <a href="https://www.jeremyjone.com/671/">美化PowerShell（含WindowsTerminal和VSCode终端）</a>，这次虽然大同小异，但是方法还是升级了很多，而且上次只针对 PowerShell，这次针对的是全终端，包括 cmd、bash、以及 wsl，所以叫个升级版应该没什么问题~</p>
+<p>先看一下我目前使用的样子吧~ <img src="/images/2022/image-1646804356210.png" alt="file"></p>
+<p>更有很多样子可以自行选择~</p>
+<h2 id="安装-oh-my-posh">安装 oh-my-posh</h2>
+<p>这次我们全局安装它，不用 PowerShell 安装了。</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="sh"><code><span class="line"><span style="color:#B392F0">choco</span><span style="color:#9ECBFF"> install</span><span style="color:#9ECBFF"> oh-my-posh</span></span>
+<span class="line"><span style="color:#6A737D"># or</span></span>
+<span class="line"><span style="color:#B392F0">scoop</span><span style="color:#9ECBFF"> install</span><span style="color:#9ECBFF"> https://github.com/JanDeDobbeleer/oh-my-posh/releases/latest/download/oh-my-posh.json</span></span></code></pre>
+<p>使用 <code>choco</code> 或者 <code>scoop</code> 都可以，看你熟悉哪个就用哪个。</p>
+<blockquote>
+<p><code>scoop</code> 安装程序可以参照 <a href="https://scoop.sh/">官网</a> 来自行安装，这里不再赘述 <code>choco</code> 包管理器可以参照 <a href="https://chocolatey.org/">官网</a> 来自行安装，这里不再赘述（<em>我发现安装 node 的时候可以选择安装 chocolatey，这样也很方便</em>）</p>
+</blockquote>
+<p>安装成功后，通过:</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="sh"><code><span class="line"><span style="color:#B392F0">oh-my-posh</span><span style="color:#79B8FF"> --print-shell</span></span></code></pre>
+<p>可以查看到当前的终端名称，此时说明已经安装成功啦~</p>
+<p><img src="/images/2022/image-1646797171293.png" alt="file"></p>
+<h2 id="替换样式">替换样式</h2>
+<p>如果上面安装成功了，那么距离完成已经很接近了，是不是很简单。</p>
+<p>下面就可以根据不同终端进行单独配置了。</p>
+<h3 id="powershell">PowerShell</h3>
+<p>与上一篇内容一样，还是配置 <code>$PROFILE</code> 文件：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="sh"><code><span class="line"><span style="color:#F97583">if</span><span style="color:#E1E4E8"> (</span><span style="color:#F97583">!</span><span style="color:#E1E4E8">(</span><span style="color:#B392F0">Test-Path</span><span style="color:#79B8FF"> -Path</span><span style="color:#E1E4E8"> $PROFILE )) { </span><span style="color:#B392F0">New-Item</span><span style="color:#79B8FF"> -Type</span><span style="color:#9ECBFF"> File</span><span style="color:#79B8FF"> -Path</span><span style="color:#E1E4E8"> $PROFILE </span><span style="color:#79B8FF">-Force</span><span style="color:#9ECBFF"> }</span></span>
+<span class="line"><span style="color:#B392F0">notepad</span><span style="color:#E1E4E8"> $PROFILE</span></span></code></pre>
+<p>回车后编辑内容，与上次不同，这次我们输入：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="text"><code><span class="line"><span>oh-my-posh --init --shell pwsh --config https://raw.githubusercontent.com/JanDeDobbeleer/oh-my-posh/v$(oh-my-posh --version)/themes/jandedobbeleer.omp.json | Invoke-Expression</span></span></code></pre>
+<blockquote>
+<p><strong>如果文件中有其他内容，在后面追加一行即可。</strong></p>
+</blockquote>
+<p>现在打开就应该是对应的内容了。</p>
+<h3 id="cmd">cmd</h3>
+<p><code>cmd</code> 的修改需要借助一个工具 <code>clink</code>，这个工具可以帮助我们的 cmd 有一个质的飞跃，功能也是很强大的，就算不安装皮肤，也是推荐安装使用的。</p>
+<blockquote>
+<p><a href="https://chrisant996.github.io/clink/">clink</a> 直接在官网首页右上角下载 <code>exe</code> 安装包即可。</p>
+</blockquote>
+<p>安装之后我们可以通过 <code>clink info</code> 来查看是否成功，同时查看 <code>scripts</code> 对应路径，并打开改路径，新建一个名为 <code>oj-my-posh.lua</code> 的文件，键入：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="lua"><code><span class="line"><span style="color:#79B8FF">load</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">io.popen</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">'oh-my-posh --config="https://raw.githubusercontent.com/JanDeDobbeleer/oh-my-posh/main/themes/jandedobbeleer.omp.json" --init --shell cmd'</span><span style="color:#E1E4E8">):</span><span style="color:#79B8FF">read</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">"*a"</span><span style="color:#E1E4E8">))()</span></span></code></pre>
+<p>现在打开 <code>cmd</code> 就应该是对应的内容了。</p>
+<h3 id="git-bash">Git bash</h3>
+<p>与 <code>PowerShell</code> 类似，找到 <code>~/.bashrc</code> 或 <code>~/.prifile</code> 文件（没有就新建一个），输入：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="sh"><code><span class="line"><span style="color:#79B8FF">eval</span><span style="color:#9ECBFF"> "$(</span><span style="color:#B392F0">oh-my-posh</span><span style="color:#79B8FF"> --init</span><span style="color:#79B8FF"> --shell</span><span style="color:#9ECBFF"> bash </span><span style="color:#79B8FF">--config</span><span style="color:#9ECBFF"> https://raw.githubusercontent.com/JanDeDobbeleer/oh-my-posh/v$(</span><span style="color:#B392F0">oh-my-posh</span><span style="color:#79B8FF"> --version</span><span style="color:#9ECBFF">)/themes/jandedobbeleer.omp.json)"</span></span></code></pre>
+<p>然后执行 bash（<code>exec bash</code>），就可以看到对应的内容了。</p>
+<h3 id="wsl">wsl</h3>
+<p><code>wsl</code> 与 <code>bash</code> 类似，毕竟都是 <code>Linux</code> 环境产物，但是首先你需要安装 <code>wsl</code>。</p>
+<p>进入子系统后，安装 <code>oh-my-posh</code>：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="sh"><code><span class="line"><span style="color:#B392F0">sudo</span><span style="color:#9ECBFF"> wget</span><span style="color:#9ECBFF"> https://github.com/JanDeDobbeleer/oh-my-posh/releases/latest/download/posh-linux-amd64</span><span style="color:#79B8FF"> -O</span><span style="color:#9ECBFF"> /usr/local/bin/oh-my-posh</span></span>
+<span class="line"><span style="color:#B392F0">sudo</span><span style="color:#9ECBFF"> chmod</span><span style="color:#9ECBFF"> +x</span><span style="color:#9ECBFF"> /usr/local/bin/oh-my-posh</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#B392F0">mkdir</span><span style="color:#9ECBFF"> ~/.poshthemes</span></span>
+<span class="line"><span style="color:#B392F0">wget</span><span style="color:#9ECBFF"> https://github.com/JanDeDobbeleer/oh-my-posh/releases/latest/download/themes.zip</span><span style="color:#79B8FF"> -O</span><span style="color:#9ECBFF"> ~/.poshthemes/themes.zip</span></span>
+<span class="line"><span style="color:#B392F0">unzip</span><span style="color:#9ECBFF"> ~/.poshthemes/themes.zip</span><span style="color:#79B8FF"> -d</span><span style="color:#9ECBFF"> ~/.poshthemes</span></span>
+<span class="line"><span style="color:#B392F0">chmod</span><span style="color:#9ECBFF"> u+rw</span><span style="color:#9ECBFF"> ~/.poshthemes/</span><span style="color:#79B8FF">*</span><span style="color:#9ECBFF">.json</span></span>
+<span class="line"><span style="color:#B392F0">rm</span><span style="color:#9ECBFF"> ~/.poshthemes/themes.zip</span></span></code></pre>
+<p>上面命令逐条执行，然后验证是否安装成功：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="sh"><code><span class="line"><span style="color:#B392F0">oh-my-posh</span><span style="color:#79B8FF"> --print-shell</span></span></code></pre>
+<p>接着打开或创建 <code>~/.bashrc</code> 或者 <code>~/.profile</code> 文件（通常 linux 下这两个文件都存在，并且有内容，追加即可），输入：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="sh"><code><span class="line"><span style="color:#79B8FF">eval</span><span style="color:#9ECBFF"> "$(</span><span style="color:#B392F0">oh-my-posh</span><span style="color:#79B8FF"> --init</span><span style="color:#79B8FF"> --shell</span><span style="color:#9ECBFF"> bash </span><span style="color:#79B8FF">--config</span><span style="color:#9ECBFF"> https://raw.githubusercontent.com/JanDeDobbeleer/oh-my-posh/v$(</span><span style="color:#B392F0">oh-my-posh</span><span style="color:#79B8FF"> --version</span><span style="color:#9ECBFF">)/themes/jandedobbeleer.omp.json)"</span></span></code></pre>
+<p>然后执行：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="sh"><code><span class="line"><span style="color:#79B8FF">exec</span><span style="color:#9ECBFF"> bash</span></span></code></pre>
+<p>这样就可以看到 <code>wsl</code> 也已经变形成功了~</p>
+<h2 id="修改样式">修改样式</h2>
+<p>上面我们所有的样式都一样，并且都是从远程拉取，如果网络不好或者没有网，每次打开还是很痛苦的，所以我们可以替换成本地样式。</p>
+<p>其实我们在全局安装了 <code>oh-my-posh</code> 之后，所有这些样式已经就在本地了。</p>
+<p>我们可以在 <code>PowerShell</code> 中通过 <code>Get-PoshThemes</code> 命令来查看样式效果。</p>
+<p>同时：</p>
+<ul>
+<li>如果我们使用的是 <code>scoop</code> 安装的，则样式路径为：<code>$(scoop prefix oh-my-posh)\themes\</code></li>
+<li>如果我们使用的是 <code>chocolatey</code> 安装，则样式路径为：<code>$HOME\AppData\Local\Programs\oh-my-posh\themes\</code></li>
+</ul>
+<p>接下来，我们可以根据喜欢的样式，进行替换。比如替换 <code>PowerShell</code>：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="plaintext"><code><span class="line"><span>// 修改之前</span></span>
+<span class="line"><span>oh-my-posh --init --shell pwsh --config https://raw.githubusercontent.com/JanDeDobbeleer/oh-my-posh/v$(oh-my-posh --version)/themes/jandedobbeleer.omp.json | Invoke-Expression</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>// 修改之后</span></span>
+<span class="line"><span>oh-my-posh --init --shell pwsh --config "$HOME/AppData/Local/Programs/oh-my-posh/themes/montys.omp.json" | Invoke-Expression</span></span></code></pre>
+<p>与之类似，仅仅修改路径即可，其他参数不变：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="plaintext"><code><span class="line"><span>// cmd</span></span>
+<span class="line"><span>load(io.popen('oh-my-posh --config="~/AppData/Local/Programs/oh-my-posh/themes/cinnamon.omp.json" --init --shell cmd'):read("*a"))()</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>// bash</span></span>
+<span class="line"><span>eval "$(oh-my-posh --init --shell bash --config '$HOME/AppData/Local/Programs/oh-my-posh/themes/ys.omp.json')"</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>// wsl，该路径是单独安装在 wsl 中的</span></span>
+<span class="line"><span>eval "$(oh-my-posh --init --shell bash --config '~/.poshthemes/unicorn.omp.json')"</span></span></code></pre>
+<h2 id="字体修改">字体修改</h2>
+<p>之前使用的字体是 <code>Cascadia Code</code>，也很好用，但是有一些特殊字符好像还是支持的不全面。这次换用官方推荐的 <code>Nerd Font</code>，该字体对特殊符号有更好的支持。</p>
+<p>打开 <a href="https://www.jeremyjone.com/671/">Nerd Font</a> 官网，找到对应喜欢的字体并下载即可。</p>
+<p>该字体库不大，每个下载包只有一种字体，相对 <code>Cascadia Code</code> 更加灵活方便。使用方式没有什么区别，直接安装字体，然后在对应的终端中选择对应字体即可。</p>
+<blockquote>
+<p>不要忘记修改每个终端的字体库。</p>
+<p>如果有 vscode，不要忘记修改它的终端字体。<code>文件>首选项</code> 中搜索 <code>terminal font</code>，添加对应的字体名称即可。</p>
+</blockquote>
+<h2 id="使用-posh-git">使用 Posh-Git</h2>
+<p><code>posh-git</code> 会帮助我们快速查看仓库信息，实在是开发必备良药。</p>
+<p>两种方式安装：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="plaintext"><code><span class="line"><span>// choco</span></span>
+<span class="line"><span>choco install poshgit</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>// scoop (使用 scoop 需要手动导入到 profile 中)</span></span>
+<span class="line"><span>scoop install posh-git</span></span>
+<span class="line"><span>Add-PoshGitToProfile</span></span></code></pre>
+<p>安装完成后，就可以看到变化了。</p>
+<blockquote>
+<p>注意，<code>posh-git</code> 与 <code>oh-my-posh</code> 的样式可能会有冲突，有一些样式会觉得没有变化。如果只是单独安装了 <code>posh-git</code>，那实际效果还是很明显的。 <img src="/images/2022/image-1646810969897.png" alt="file"></p>
+<p>可以选择一个带 git 的文件夹打开，通过 <code>Get-PoshThemes</code> 命令查看一下实际效果。</p>
+</blockquote>
+<p><img src="/images/2022/image-1646810812498.png" alt="file"></p>
+<p>更可以自定义修改，具体可以参考 <a href="https://github.com/dahlbyk/posh-git/">仓库文档</a>。</p> </div> <!-- 悬浮 TOC --> <button class="toc-toggle" id="toc-toggle" aria-label="显示目录" data-astro-cid-iy4s3wf7> <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-list" data-astro-cid-iy4s3wf7> <line x1="8" y1="6" x2="21" y2="6" data-astro-cid-iy4s3wf7></line> <line x1="8" y1="12" x2="21" y2="12" data-astro-cid-iy4s3wf7></line> <line x1="8" y1="18" x2="21" y2="18" data-astro-cid-iy4s3wf7></line> <line x1="3" y1="6" x2="3.01" y2="6" data-astro-cid-iy4s3wf7></line> <line x1="3" y1="12" x2="3.01" y2="12" data-astro-cid-iy4s3wf7></line> <line x1="3" y1="18" x2="3.01" y2="18" data-astro-cid-iy4s3wf7></line> </svg> </button> <aside class="floating-toc" id="floating-toc" data-astro-cid-iy4s3wf7> <div class="toc-header" data-astro-cid-iy4s3wf7> <h3 data-astro-cid-iy4s3wf7>目录</h3> </div> <nav class="toc-nav" id="toc-nav" data-astro-cid-g3fimnfa> <!-- TOC 内容将由客户端脚本填充 --> </nav>  <script type="module">document.addEventListener("DOMContentLoaded",()=>{const n=document.getElementById("toc-nav"),a=document.querySelector(".toc-header h3");if(!n)return;const s=document.querySelector(".article-header h1")?.textContent||"目录";a&&(a.textContent=s);const c=Array.from(document.querySelectorAll(".article-content h2, .article-content h3, .article-content h4, .article-content h5, .article-content h6"));if(c.length===0){n.innerHTML='<p style="color: var(--color-text-secondary); padding: 0.5rem;">暂无目录</p>';return}c.forEach(e=>{e.id||(e.id=e.textContent?.toLowerCase().replace(/\s+/g,"-").replace(/[^\w\-\u4e00-\u9fa5]/g,"")||"")});const l=document.createElement("ul");c.forEach(e=>{const t=document.createElement("li"),o=document.createElement("a");o.href=`#${e.id}`,o.textContent=e.textContent||"",o.classList.add(`toc-${e.tagName.toLowerCase()}`),o.addEventListener("click",i=>{i.preventDefault();const r=document.getElementById(e.id);if(r){const u=r.getBoundingClientRect().top+window.pageYOffset-80;window.scrollTo({top:u,behavior:"smooth"}),history.pushState(null,"",`#${e.id}`)}}),t.appendChild(o),l.appendChild(t)}),n.appendChild(l);const d={root:null,rootMargin:"-60px 0px -80% 0px",threshold:0},h=new IntersectionObserver(e=>{e.forEach(t=>{if(t.isIntersecting){const o=t.target.id;n.querySelectorAll("a").forEach(r=>{r.classList.remove("active")});const i=n.querySelector(`a[href="#${o}"]`);i&&i.classList.add("active")}})},d);c.forEach(e=>h.observe(e)),setTimeout(()=>{if(window.location.hash){const t=n.querySelector(`a[href="${window.location.hash}"]`);if(t){n.querySelectorAll("a").forEach(o=>o.classList.remove("active")),t.classList.add("active");return}}let e="";for(const t of c)if(t.getBoundingClientRect().top<=150)e=t.id;else break;if(!e&&c.length>0&&window.scrollY<100&&(e=c[0].id),e){n.querySelectorAll("a").forEach(o=>o.classList.remove("active"));const t=n.querySelector(`a[href="#${e}"]`);t&&t.classList.add("active")}},100)});</script> </aside> <div class="toc-overlay" id="toc-overlay" data-astro-cid-iy4s3wf7></div> <section class="comments" data-astro-cid-iy4s3wf7> <div class="giscus-wrapper"> <script src="https://giscus.app/client.js" data-repo="jeremyjone/blog-comments" data-repo-id="R_kgDOQlVVGg" data-category="Announcements" data-category-id="DIC_kwDOQlVVGs4Czkir" data-mapping="title" data-term data-strict="0" data-reactions-enabled="1" data-emit-metadata="0" data-input-position="top" data-theme="preferred_color_scheme" data-lang="zh-CN" crossorigin="anonymous" async></script> <noscript>请启用 JavaScript 查看评论。</noscript> </div> </section> </article>  </main> <footer class="site-footer" data-astro-cid-x322jucz> <div class="container footer-content" data-astro-cid-x322jucz> <p data-astro-cid-x322jucz>
+&copy; 2025 <b data-astro-cid-x322jucz>JeremyJone.com</b> All rights reserved.
+</p> <div class="footer-links" data-astro-cid-x322jucz> <a href="https://github.com/jeremyjone" target="_blank" rel="noopener" data-astro-cid-x322jucz> GitHub </a> </div> </div> </footer> <script type="module" src="/_astro/BaseLayout.astro_astro_type_script_index_0_lang.D4h-rqQD.js"></script> <div id="search-modal" class="search-modal" style="display: none;" data-astro-cid-jwf5kjrd> <div class="search-overlay" data-astro-cid-jwf5kjrd></div> <div class="search-container" data-astro-cid-jwf5kjrd> <div class="search-header" data-astro-cid-jwf5kjrd> <input type="text" id="search-input-global" placeholder="搜索全站内容 (Cmd+K)..." autocomplete="off" data-astro-cid-jwf5kjrd> <button id="close-search" aria-label="Close search" data-astro-cid-jwf5kjrd>&times;</button> </div> <div id="search-results-global" class="search-results" data-astro-cid-jwf5kjrd> <div class="search-placeholder" data-astro-cid-jwf5kjrd>输入关键词开始搜索...</div> </div> </div> </div>  <script>
+    window.loadPagefind = async () => {
+        try {
+            return await import("/pagefind/pagefind.js");
+        } catch (e) {
+            console.warn("Failed to load pagefind:", e);
+            return null;
+        }
+    };
+</script> <script type="module" src="/_astro/SearchModal.astro_astro_type_script_index_0_lang.C4oQFeHw.js"></script> </body></html>  <script type="module">document.addEventListener("DOMContentLoaded",()=>{const c=document.getElementById("toc-toggle"),e=document.getElementById("floating-toc"),t=document.getElementById("toc-overlay");c?.addEventListener("click",()=>{e?.classList.add("active"),t?.classList.add("active")});const o=()=>{e?.classList.remove("active"),t?.classList.remove("active")};t?.addEventListener("click",o)});</script>

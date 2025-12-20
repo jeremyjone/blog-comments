@@ -1,0 +1,423 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="dark" data-astro-cid-x322jucz> <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>.net core 中使用 websocket</title><meta name="description" content="感觉放了好长时间的假期。贴个 websocket 的简单示例。 ## 整体文件结构 ``` - 项目(WebSockets.Test) |-- Extensions |      |-- SocketsExtension.cs |-- ..."><link rel="canonical" href="https://www.jeremyjone.com//blog/net-core-%E4%B8%AD%E4%BD%BF%E7%94%A8-websocket/"><meta property="og:title" content=".net core 中使用 websocket"><meta property="og:description" content="感觉放了好长时间的假期。贴个 websocket 的简单示例。 ## 整体文件结构 ``` - 项目(WebSockets.Test) |-- Extensions |      |-- SocketsExtension.cs |-- ..."><meta property="og:type" content="article"><meta property="og:url" content="https://www.jeremyjone.com//blog/net-core-%E4%B8%AD%E4%BD%BF%E7%94%A8-websocket/"><meta property="og:site_name" content="JeremyJone's Blog"><meta property="og:locale" content="zh_CN"><link rel="icon" href="/favicon.ico"><link rel="stylesheet" href="/_astro/_year_.CFHYKZJi.css">
+<link rel="stylesheet" href="/_astro/_slug_.B1ShOm38.css"></head> <body data-astro-cid-x322jucz> <header class="site-header" data-astro-cid-x322jucz> <div class="container header-content" data-astro-cid-x322jucz> <a href="/" class="logo" data-astro-cid-x322jucz> <div class="logo-icon" data-astro-cid-x322jucz> <img src="/resources/avatar.png" alt="Logo" width="32" height="32" data-astro-cid-x322jucz> </div> <span class="logo-text" data-astro-cid-x322jucz>JeremyJone&#39;s Blog</span> </a> <div class="header-right" data-astro-cid-x322jucz> <nav class="nav" data-astro-cid-x322jucz> <a href="/" class="nav-link" data-astro-cid-x322jucz> 首页 </a><a href="/blog" class="nav-link active" data-astro-cid-x322jucz> 博客 </a><a href="/notes" class="nav-link" data-astro-cid-x322jucz> 笔记 </a> </nav> <button class="search-toggle" onclick="window.openSearchModal()" aria-label="搜索" data-astro-cid-x322jucz> <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-astro-cid-x322jucz><circle cx="11" cy="11" r="8" data-astro-cid-x322jucz></circle><line x1="21" y1="21" x2="16.65" y2="16.65" data-astro-cid-x322jucz></line></svg> <span class="search-placeholder" data-astro-cid-x322jucz>Ctrl+K 搜索...</span> </button> <button class="theme-toggle" id="theme-toggle" aria-label="切换主题" data-astro-cid-x322jucz> <svg class="sun-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" data-astro-cid-x322jucz> <circle cx="12" cy="12" r="5" data-astro-cid-x322jucz></circle> <line x1="12" y1="1" x2="12" y2="3" data-astro-cid-x322jucz></line> <line x1="12" y1="21" x2="12" y2="23" data-astro-cid-x322jucz></line> <line x1="4.22" y1="4.22" x2="5.64" y2="5.64" data-astro-cid-x322jucz></line> <line x1="18.36" y1="18.36" x2="19.78" y2="19.78" data-astro-cid-x322jucz></line> <line x1="1" y1="12" x2="3" y2="12" data-astro-cid-x322jucz></line> <line x1="21" y1="12" x2="23" y2="12" data-astro-cid-x322jucz></line> <line x1="4.22" y1="19.78" x2="5.64" y2="18.36" data-astro-cid-x322jucz></line> <line x1="18.36" y1="5.64" x2="19.78" y2="4.22" data-astro-cid-x322jucz></line> </svg> <svg class="moon-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" data-astro-cid-x322jucz> <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" data-astro-cid-x322jucz></path> </svg> </button> </div> </div> </header> <main class="container" data-astro-cid-x322jucz>  <article data-content-type="blog" data-pagefind-body data-pagefind-filter="type:blog" data-astro-cid-iy4s3wf7> <header class="article-header" data-astro-cid-iy4s3wf7> <h1 data-astro-cid-iy4s3wf7>.net core 中使用 websocket</h1> <p class="meta" data-astro-cid-iy4s3wf7>
+发布于 2021-02-23 11:26:13 · 6 分钟 · 标签：<a href="/tags/.net" class="tag" data-astro-cid-iy4s3wf7> .net </a><a href="/tags/websocket" class="tag" data-astro-cid-iy4s3wf7> websocket </a> </p> </header> <div class="article-content" data-astro-cid-iy4s3wf7> <p>感觉放了好长时间的假期。贴个 websocket 的简单示例。</p>
+<h2 id="整体文件结构">整体文件结构</h2>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="plaintext"><code><span class="line"><span>- 项目(WebSockets.Test)</span></span>
+<span class="line"><span>|-- Extensions</span></span>
+<span class="line"><span>|      |-- SocketsExtension.cs</span></span>
+<span class="line"><span>|-- Handlers</span></span>
+<span class="line"><span>|      |-- WebSocketMessageHandler.cs</span></span>
+<span class="line"><span>|-- SocketsManager</span></span>
+<span class="line"><span>|      |-- SocketsHandler.cs</span></span>
+<span class="line"><span>|      |-- SocketsManager.cs</span></span>
+<span class="line"><span>|      |-- SocketsMiddleware.cs</span></span>
+<span class="line"><span>|-- Program.cs</span></span>
+<span class="line"><span>|-- Startup.cs</span></span></code></pre>
+<p>大体需要的文件是这些，这是最基本的示例，可以按需自行修改。</p>
+<h2 id="1创建保存-websocket-的类">1、创建保存 WebSocket 的类</h2>
+<p>该类用于保存所有 WebSocket。</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="csharp"><code><span class="line"><span style="color:#6A737D">// 文件：SocketsManager/SocketsManager.cs</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">using</span><span style="color:#B392F0"> System</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">using</span><span style="color:#B392F0"> System</span><span style="color:#E1E4E8">.</span><span style="color:#B392F0">Collections</span><span style="color:#E1E4E8">.</span><span style="color:#B392F0">Concurrent</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">using</span><span style="color:#B392F0"> System</span><span style="color:#E1E4E8">.</span><span style="color:#B392F0">Linq</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">using</span><span style="color:#B392F0"> System</span><span style="color:#E1E4E8">.</span><span style="color:#B392F0">Net</span><span style="color:#E1E4E8">.</span><span style="color:#B392F0">WebSockets</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">using</span><span style="color:#B392F0"> System</span><span style="color:#E1E4E8">.</span><span style="color:#B392F0">Threading</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">using</span><span style="color:#B392F0"> System</span><span style="color:#E1E4E8">.</span><span style="color:#B392F0">Threading</span><span style="color:#E1E4E8">.</span><span style="color:#B392F0">Tasks</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">namespace</span><span style="color:#B392F0"> WebSockets</span><span style="color:#E1E4E8">.</span><span style="color:#B392F0">Test</span><span style="color:#E1E4E8">.</span><span style="color:#B392F0">SocketsManager</span></span>
+<span class="line"><span style="color:#E1E4E8">{</span></span>
+<span class="line"><span style="color:#F97583">    public</span><span style="color:#F97583"> class</span><span style="color:#B392F0"> SocketsManager</span></span>
+<span class="line"><span style="color:#E1E4E8">    {</span></span>
+<span class="line"><span style="color:#F97583">        private</span><span style="color:#F97583"> readonly</span><span style="color:#B392F0"> ConcurrentDictionary</span><span style="color:#E1E4E8">&#x3C;</span><span style="color:#F97583">string</span><span style="color:#E1E4E8">, </span><span style="color:#B392F0">WebSocket</span><span style="color:#E1E4E8">> </span><span style="color:#B392F0">_connections</span><span style="color:#F97583"> =</span></span>
+<span class="line"><span style="color:#F97583">            new</span><span style="color:#B392F0"> ConcurrentDictionary</span><span style="color:#E1E4E8">&#x3C;</span><span style="color:#F97583">string</span><span style="color:#E1E4E8">, </span><span style="color:#B392F0">WebSocket</span><span style="color:#E1E4E8">>();</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">        /// &#x3C;</span><span style="color:#85E89D">summary</span><span style="color:#6A737D">></span></span>
+<span class="line"><span style="color:#6A737D">        /// 获取所有 sockets 的字典集合</span></span>
+<span class="line"><span style="color:#6A737D">        /// &#x3C;/</span><span style="color:#85E89D">summary</span><span style="color:#6A737D">></span></span>
+<span class="line"><span style="color:#6A737D">        /// &#x3C;</span><span style="color:#85E89D">returns</span><span style="color:#6A737D">>&#x3C;/</span><span style="color:#85E89D">returns</span><span style="color:#6A737D">></span></span>
+<span class="line"><span style="color:#F97583">        public</span><span style="color:#B392F0"> ConcurrentDictionary</span><span style="color:#E1E4E8">&#x3C;</span><span style="color:#F97583">string</span><span style="color:#E1E4E8">, </span><span style="color:#B392F0">WebSocket</span><span style="color:#E1E4E8">> </span><span style="color:#B392F0">GetAllConnections</span><span style="color:#E1E4E8">()</span></span>
+<span class="line"><span style="color:#E1E4E8">        {</span></span>
+<span class="line"><span style="color:#F97583">            return</span><span style="color:#E1E4E8"> _connections;</span></span>
+<span class="line"><span style="color:#E1E4E8">        }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">        /// &#x3C;</span><span style="color:#85E89D">summary</span><span style="color:#6A737D">></span></span>
+<span class="line"><span style="color:#6A737D">        ///     获取指定 id 的 socket</span></span>
+<span class="line"><span style="color:#6A737D">        /// &#x3C;/</span><span style="color:#85E89D">summary</span><span style="color:#6A737D">></span></span>
+<span class="line"><span style="color:#6A737D">        /// &#x3C;</span><span style="color:#85E89D">param</span><span style="color:#B392F0"> name</span><span style="color:#6A737D">=</span><span style="color:#9ECBFF">"id"</span><span style="color:#6A737D">>&#x3C;/</span><span style="color:#85E89D">param</span><span style="color:#6A737D">></span></span>
+<span class="line"><span style="color:#6A737D">        /// &#x3C;</span><span style="color:#85E89D">returns</span><span style="color:#6A737D">>&#x3C;/</span><span style="color:#85E89D">returns</span><span style="color:#6A737D">></span></span>
+<span class="line"><span style="color:#F97583">        public</span><span style="color:#B392F0"> WebSocket</span><span style="color:#B392F0"> GetSocketById</span><span style="color:#E1E4E8">(</span><span style="color:#F97583">string</span><span style="color:#B392F0"> id</span><span style="color:#E1E4E8">)</span></span>
+<span class="line"><span style="color:#E1E4E8">        {</span></span>
+<span class="line"><span style="color:#F97583">            return</span><span style="color:#E1E4E8"> _connections.</span><span style="color:#B392F0">FirstOrDefault</span><span style="color:#E1E4E8">(</span><span style="color:#B392F0">x</span><span style="color:#F97583"> =></span><span style="color:#E1E4E8"> x.Key </span><span style="color:#F97583">==</span><span style="color:#E1E4E8"> id).Value;</span></span>
+<span class="line"><span style="color:#E1E4E8">        }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">        /// &#x3C;</span><span style="color:#85E89D">summary</span><span style="color:#6A737D">></span></span>
+<span class="line"><span style="color:#6A737D">        /// 根据 socket 获取其 id</span></span>
+<span class="line"><span style="color:#6A737D">        /// &#x3C;/</span><span style="color:#85E89D">summary</span><span style="color:#6A737D">></span></span>
+<span class="line"><span style="color:#6A737D">        /// &#x3C;</span><span style="color:#85E89D">param</span><span style="color:#B392F0"> name</span><span style="color:#6A737D">=</span><span style="color:#9ECBFF">"socket"</span><span style="color:#6A737D">>&#x3C;/</span><span style="color:#85E89D">param</span><span style="color:#6A737D">></span></span>
+<span class="line"><span style="color:#6A737D">        /// &#x3C;</span><span style="color:#85E89D">returns</span><span style="color:#6A737D">>&#x3C;/</span><span style="color:#85E89D">returns</span><span style="color:#6A737D">></span></span>
+<span class="line"><span style="color:#F97583">        public</span><span style="color:#F97583"> string</span><span style="color:#B392F0"> GetId</span><span style="color:#E1E4E8">(</span><span style="color:#B392F0">WebSocket</span><span style="color:#B392F0"> socket</span><span style="color:#E1E4E8">)</span></span>
+<span class="line"><span style="color:#E1E4E8">        {</span></span>
+<span class="line"><span style="color:#F97583">            return</span><span style="color:#E1E4E8"> _connections.</span><span style="color:#B392F0">FirstOrDefault</span><span style="color:#E1E4E8">(</span><span style="color:#B392F0">x</span><span style="color:#F97583"> =></span><span style="color:#E1E4E8"> x.Value </span><span style="color:#F97583">==</span><span style="color:#E1E4E8"> socket).Key;</span></span>
+<span class="line"><span style="color:#E1E4E8">        }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">        /// &#x3C;</span><span style="color:#85E89D">summary</span><span style="color:#6A737D">></span></span>
+<span class="line"><span style="color:#6A737D">        /// 删除指定 id 的 socket，并关闭该链接</span></span>
+<span class="line"><span style="color:#6A737D">        /// &#x3C;/</span><span style="color:#85E89D">summary</span><span style="color:#6A737D">></span></span>
+<span class="line"><span style="color:#6A737D">        /// &#x3C;</span><span style="color:#85E89D">param</span><span style="color:#B392F0"> name</span><span style="color:#6A737D">=</span><span style="color:#9ECBFF">"id"</span><span style="color:#6A737D">>&#x3C;/</span><span style="color:#85E89D">param</span><span style="color:#6A737D">></span></span>
+<span class="line"><span style="color:#6A737D">        /// &#x3C;</span><span style="color:#85E89D">returns</span><span style="color:#6A737D">>&#x3C;/</span><span style="color:#85E89D">returns</span><span style="color:#6A737D">></span></span>
+<span class="line"><span style="color:#F97583">        public</span><span style="color:#F97583"> async</span><span style="color:#B392F0"> Task</span><span style="color:#B392F0"> RemoveSocketAsync</span><span style="color:#E1E4E8">(</span><span style="color:#F97583">string</span><span style="color:#B392F0"> id</span><span style="color:#E1E4E8">)</span></span>
+<span class="line"><span style="color:#E1E4E8">        {</span></span>
+<span class="line"><span style="color:#E1E4E8">            _connections.</span><span style="color:#B392F0">TryRemove</span><span style="color:#E1E4E8">(id, </span><span style="color:#F97583">out</span><span style="color:#F97583"> var</span><span style="color:#B392F0"> socket</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#F97583">            await</span><span style="color:#E1E4E8"> socket.</span><span style="color:#B392F0">CloseAsync</span><span style="color:#E1E4E8">(WebSocketCloseStatus.NormalClosure, </span><span style="color:#9ECBFF">"socket connection closed"</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">                CancellationToken.None);</span></span>
+<span class="line"><span style="color:#E1E4E8">        }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">        /// &#x3C;</span><span style="color:#85E89D">summary</span><span style="color:#6A737D">></span></span>
+<span class="line"><span style="color:#6A737D">        /// 添加一个 socket</span></span>
+<span class="line"><span style="color:#6A737D">        /// &#x3C;/</span><span style="color:#85E89D">summary</span><span style="color:#6A737D">></span></span>
+<span class="line"><span style="color:#6A737D">        /// &#x3C;</span><span style="color:#85E89D">param</span><span style="color:#B392F0"> name</span><span style="color:#6A737D">=</span><span style="color:#9ECBFF">"socket"</span><span style="color:#6A737D">>&#x3C;/</span><span style="color:#85E89D">param</span><span style="color:#6A737D">></span></span>
+<span class="line"><span style="color:#F97583">        public</span><span style="color:#F97583"> void</span><span style="color:#B392F0"> AddSocket</span><span style="color:#E1E4E8">(</span><span style="color:#B392F0">WebSocket</span><span style="color:#B392F0"> socket</span><span style="color:#E1E4E8">)</span></span>
+<span class="line"><span style="color:#E1E4E8">        {</span></span>
+<span class="line"><span style="color:#E1E4E8">            _connections.</span><span style="color:#B392F0">TryAdd</span><span style="color:#E1E4E8">(</span><span style="color:#B392F0">CreateId</span><span style="color:#E1E4E8">(), socket);</span></span>
+<span class="line"><span style="color:#E1E4E8">        }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">        /// &#x3C;</span><span style="color:#85E89D">summary</span><span style="color:#6A737D">></span></span>
+<span class="line"><span style="color:#6A737D">        /// 创建 id</span></span>
+<span class="line"><span style="color:#6A737D">        /// &#x3C;/</span><span style="color:#85E89D">summary</span><span style="color:#6A737D">></span></span>
+<span class="line"><span style="color:#6A737D">        /// &#x3C;</span><span style="color:#85E89D">returns</span><span style="color:#6A737D">>&#x3C;/</span><span style="color:#85E89D">returns</span><span style="color:#6A737D">></span></span>
+<span class="line"><span style="color:#F97583">        private</span><span style="color:#F97583"> string</span><span style="color:#B392F0"> CreateId</span><span style="color:#E1E4E8">()</span></span>
+<span class="line"><span style="color:#E1E4E8">        {</span></span>
+<span class="line"><span style="color:#F97583">            return</span><span style="color:#E1E4E8"> Guid.</span><span style="color:#B392F0">NewGuid</span><span style="color:#E1E4E8">().</span><span style="color:#B392F0">ToString</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">"N"</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#E1E4E8">        }</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<h2 id="2创建管理和操作-websocket-的基类">2、创建管理和操作 WebSocket 的基类</h2>
+<p>该类旨在处理 socket 的连接和断连，以及接收和发送消息，属于基类。</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="csharp"><code><span class="line"><span style="color:#6A737D">// 文件： SocketsManager/SocketsHandle.cs</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">using</span><span style="color:#B392F0"> System</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">using</span><span style="color:#B392F0"> System</span><span style="color:#E1E4E8">.</span><span style="color:#B392F0">Net</span><span style="color:#E1E4E8">.</span><span style="color:#B392F0">WebSockets</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">using</span><span style="color:#B392F0"> System</span><span style="color:#E1E4E8">.</span><span style="color:#B392F0">Text</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">using</span><span style="color:#B392F0"> System</span><span style="color:#E1E4E8">.</span><span style="color:#B392F0">Threading</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">using</span><span style="color:#B392F0"> System</span><span style="color:#E1E4E8">.</span><span style="color:#B392F0">Threading</span><span style="color:#E1E4E8">.</span><span style="color:#B392F0">Tasks</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">namespace</span><span style="color:#B392F0"> WebSockets</span><span style="color:#E1E4E8">.</span><span style="color:#B392F0">Test</span><span style="color:#E1E4E8">.</span><span style="color:#B392F0">SocketsManager</span></span>
+<span class="line"><span style="color:#E1E4E8">{</span></span>
+<span class="line"><span style="color:#F97583">    public</span><span style="color:#F97583"> abstract</span><span style="color:#F97583"> class</span><span style="color:#B392F0"> SocketsHandler</span></span>
+<span class="line"><span style="color:#E1E4E8">    {</span></span>
+<span class="line"><span style="color:#F97583">        protected</span><span style="color:#B392F0"> SocketsHandler</span><span style="color:#E1E4E8">(</span><span style="color:#B392F0">SocketsManager</span><span style="color:#B392F0"> sockets</span><span style="color:#E1E4E8">)</span></span>
+<span class="line"><span style="color:#E1E4E8">        {</span></span>
+<span class="line"><span style="color:#E1E4E8">            Sockets </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> sockets;</span></span>
+<span class="line"><span style="color:#E1E4E8">        }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">        public</span><span style="color:#B392F0"> SocketsManager</span><span style="color:#B392F0"> Sockets</span><span style="color:#E1E4E8"> { </span><span style="color:#F97583">get</span><span style="color:#E1E4E8">; </span><span style="color:#F97583">set</span><span style="color:#E1E4E8">; }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">        /// &#x3C;</span><span style="color:#85E89D">summary</span><span style="color:#6A737D">></span></span>
+<span class="line"><span style="color:#6A737D">        /// 连接一个 socket</span></span>
+<span class="line"><span style="color:#6A737D">        /// &#x3C;/</span><span style="color:#85E89D">summary</span><span style="color:#6A737D">></span></span>
+<span class="line"><span style="color:#6A737D">        /// &#x3C;</span><span style="color:#85E89D">param</span><span style="color:#B392F0"> name</span><span style="color:#6A737D">=</span><span style="color:#9ECBFF">"socket"</span><span style="color:#6A737D">>&#x3C;/</span><span style="color:#85E89D">param</span><span style="color:#6A737D">></span></span>
+<span class="line"><span style="color:#6A737D">        /// &#x3C;</span><span style="color:#85E89D">returns</span><span style="color:#6A737D">>&#x3C;/</span><span style="color:#85E89D">returns</span><span style="color:#6A737D">></span></span>
+<span class="line"><span style="color:#F97583">        public</span><span style="color:#F97583"> virtual</span><span style="color:#F97583"> async</span><span style="color:#B392F0"> Task</span><span style="color:#B392F0"> OnConnected</span><span style="color:#E1E4E8">(</span><span style="color:#B392F0">WebSocket</span><span style="color:#B392F0"> socket</span><span style="color:#E1E4E8">)</span></span>
+<span class="line"><span style="color:#E1E4E8">        {</span></span>
+<span class="line"><span style="color:#F97583">            await</span><span style="color:#E1E4E8"> Task.</span><span style="color:#B392F0">Run</span><span style="color:#E1E4E8">(() </span><span style="color:#F97583">=></span><span style="color:#E1E4E8"> { Sockets.</span><span style="color:#B392F0">AddSocket</span><span style="color:#E1E4E8">(socket); });</span></span>
+<span class="line"><span style="color:#E1E4E8">        }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">        /// &#x3C;</span><span style="color:#85E89D">summary</span><span style="color:#6A737D">></span></span>
+<span class="line"><span style="color:#6A737D">        /// 断开指定 socket</span></span>
+<span class="line"><span style="color:#6A737D">        /// &#x3C;/</span><span style="color:#85E89D">summary</span><span style="color:#6A737D">></span></span>
+<span class="line"><span style="color:#6A737D">        /// &#x3C;</span><span style="color:#85E89D">param</span><span style="color:#B392F0"> name</span><span style="color:#6A737D">=</span><span style="color:#9ECBFF">"socket"</span><span style="color:#6A737D">>&#x3C;/</span><span style="color:#85E89D">param</span><span style="color:#6A737D">></span></span>
+<span class="line"><span style="color:#6A737D">        /// &#x3C;</span><span style="color:#85E89D">returns</span><span style="color:#6A737D">>&#x3C;/</span><span style="color:#85E89D">returns</span><span style="color:#6A737D">></span></span>
+<span class="line"><span style="color:#F97583">        public</span><span style="color:#F97583"> virtual</span><span style="color:#F97583"> async</span><span style="color:#B392F0"> Task</span><span style="color:#B392F0"> OnDisconnected</span><span style="color:#E1E4E8">(</span><span style="color:#B392F0">WebSocket</span><span style="color:#B392F0"> socket</span><span style="color:#E1E4E8">)</span></span>
+<span class="line"><span style="color:#E1E4E8">        {</span></span>
+<span class="line"><span style="color:#F97583">            await</span><span style="color:#E1E4E8"> Sockets.</span><span style="color:#B392F0">RemoveSocketAsync</span><span style="color:#E1E4E8">(Sockets.</span><span style="color:#B392F0">GetId</span><span style="color:#E1E4E8">(socket));</span></span>
+<span class="line"><span style="color:#E1E4E8">        }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">        /// &#x3C;</span><span style="color:#85E89D">summary</span><span style="color:#6A737D">></span></span>
+<span class="line"><span style="color:#6A737D">        /// 发送消息给指定 socket</span></span>
+<span class="line"><span style="color:#6A737D">        /// &#x3C;/</span><span style="color:#85E89D">summary</span><span style="color:#6A737D">></span></span>
+<span class="line"><span style="color:#6A737D">        /// &#x3C;</span><span style="color:#85E89D">param</span><span style="color:#B392F0"> name</span><span style="color:#6A737D">=</span><span style="color:#9ECBFF">"socket"</span><span style="color:#6A737D">>&#x3C;/</span><span style="color:#85E89D">param</span><span style="color:#6A737D">></span></span>
+<span class="line"><span style="color:#6A737D">        /// &#x3C;</span><span style="color:#85E89D">param</span><span style="color:#B392F0"> name</span><span style="color:#6A737D">=</span><span style="color:#9ECBFF">"message"</span><span style="color:#6A737D">>&#x3C;/</span><span style="color:#85E89D">param</span><span style="color:#6A737D">></span></span>
+<span class="line"><span style="color:#6A737D">        /// &#x3C;</span><span style="color:#85E89D">returns</span><span style="color:#6A737D">>&#x3C;/</span><span style="color:#85E89D">returns</span><span style="color:#6A737D">></span></span>
+<span class="line"><span style="color:#F97583">        public</span><span style="color:#F97583"> async</span><span style="color:#B392F0"> Task</span><span style="color:#B392F0"> SendMessage</span><span style="color:#E1E4E8">(</span><span style="color:#B392F0">WebSocket</span><span style="color:#B392F0"> socket</span><span style="color:#E1E4E8">, </span><span style="color:#F97583">string</span><span style="color:#B392F0"> message</span><span style="color:#E1E4E8">)</span></span>
+<span class="line"><span style="color:#E1E4E8">        {</span></span>
+<span class="line"><span style="color:#F97583">            if</span><span style="color:#E1E4E8"> (socket.State </span><span style="color:#F97583">!=</span><span style="color:#E1E4E8"> WebSocketState.Open) </span><span style="color:#F97583">return</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">            await</span><span style="color:#E1E4E8"> socket.</span><span style="color:#B392F0">SendAsync</span><span style="color:#E1E4E8">(</span><span style="color:#F97583">new</span><span style="color:#B392F0"> ArraySegment</span><span style="color:#E1E4E8">&#x3C;</span><span style="color:#F97583">byte</span><span style="color:#E1E4E8">>(Encoding.UTF8.</span><span style="color:#B392F0">GetBytes</span><span style="color:#E1E4E8">(message)),</span></span>
+<span class="line"><span style="color:#E1E4E8">                WebSocketMessageType.Text, </span><span style="color:#79B8FF">true</span><span style="color:#E1E4E8">, CancellationToken.None);</span></span>
+<span class="line"><span style="color:#E1E4E8">        }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">        /// &#x3C;</span><span style="color:#85E89D">summary</span><span style="color:#6A737D">></span></span>
+<span class="line"><span style="color:#6A737D">        /// 发送消息给指定 id 的 socket</span></span>
+<span class="line"><span style="color:#6A737D">        /// &#x3C;/</span><span style="color:#85E89D">summary</span><span style="color:#6A737D">></span></span>
+<span class="line"><span style="color:#6A737D">        /// &#x3C;</span><span style="color:#85E89D">param</span><span style="color:#B392F0"> name</span><span style="color:#6A737D">=</span><span style="color:#9ECBFF">"id"</span><span style="color:#6A737D">>&#x3C;/</span><span style="color:#85E89D">param</span><span style="color:#6A737D">></span></span>
+<span class="line"><span style="color:#6A737D">        /// &#x3C;</span><span style="color:#85E89D">param</span><span style="color:#B392F0"> name</span><span style="color:#6A737D">=</span><span style="color:#9ECBFF">"message"</span><span style="color:#6A737D">>&#x3C;/</span><span style="color:#85E89D">param</span><span style="color:#6A737D">></span></span>
+<span class="line"><span style="color:#6A737D">        /// &#x3C;</span><span style="color:#85E89D">returns</span><span style="color:#6A737D">>&#x3C;/</span><span style="color:#85E89D">returns</span><span style="color:#6A737D">></span></span>
+<span class="line"><span style="color:#F97583">        public</span><span style="color:#F97583"> async</span><span style="color:#B392F0"> Task</span><span style="color:#B392F0"> SendMessage</span><span style="color:#E1E4E8">(</span><span style="color:#F97583">string</span><span style="color:#B392F0"> id</span><span style="color:#E1E4E8">, </span><span style="color:#F97583">string</span><span style="color:#B392F0"> message</span><span style="color:#E1E4E8">)</span></span>
+<span class="line"><span style="color:#E1E4E8">        {</span></span>
+<span class="line"><span style="color:#F97583">            await</span><span style="color:#B392F0"> SendMessage</span><span style="color:#E1E4E8">(Sockets.</span><span style="color:#B392F0">GetSocketById</span><span style="color:#E1E4E8">(id), message);</span></span>
+<span class="line"><span style="color:#E1E4E8">        }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">        /// &#x3C;</span><span style="color:#85E89D">summary</span><span style="color:#6A737D">></span></span>
+<span class="line"><span style="color:#6A737D">        /// 给所有 sockets 发送消息</span></span>
+<span class="line"><span style="color:#6A737D">        /// &#x3C;/</span><span style="color:#85E89D">summary</span><span style="color:#6A737D">></span></span>
+<span class="line"><span style="color:#6A737D">        /// &#x3C;</span><span style="color:#85E89D">param</span><span style="color:#B392F0"> name</span><span style="color:#6A737D">=</span><span style="color:#9ECBFF">"message"</span><span style="color:#6A737D">>&#x3C;/</span><span style="color:#85E89D">param</span><span style="color:#6A737D">></span></span>
+<span class="line"><span style="color:#6A737D">        /// &#x3C;</span><span style="color:#85E89D">returns</span><span style="color:#6A737D">>&#x3C;/</span><span style="color:#85E89D">returns</span><span style="color:#6A737D">></span></span>
+<span class="line"><span style="color:#F97583">        public</span><span style="color:#F97583"> async</span><span style="color:#B392F0"> Task</span><span style="color:#B392F0"> SendMessageToAll</span><span style="color:#E1E4E8">(</span><span style="color:#F97583">string</span><span style="color:#B392F0"> message</span><span style="color:#E1E4E8">)</span></span>
+<span class="line"><span style="color:#E1E4E8">        {</span></span>
+<span class="line"><span style="color:#F97583">            foreach</span><span style="color:#E1E4E8"> (</span><span style="color:#F97583">var</span><span style="color:#B392F0"> connection</span><span style="color:#F97583"> in</span><span style="color:#E1E4E8"> Sockets.</span><span style="color:#B392F0">GetAllConnections</span><span style="color:#E1E4E8">()) </span><span style="color:#F97583">await</span><span style="color:#B392F0"> SendMessage</span><span style="color:#E1E4E8">(connection.Value, message);</span></span>
+<span class="line"><span style="color:#E1E4E8">        }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">        /// &#x3C;</span><span style="color:#85E89D">summary</span><span style="color:#6A737D">></span></span>
+<span class="line"><span style="color:#6A737D">        /// 接收到消息</span></span>
+<span class="line"><span style="color:#6A737D">        /// &#x3C;/</span><span style="color:#85E89D">summary</span><span style="color:#6A737D">></span></span>
+<span class="line"><span style="color:#6A737D">        /// &#x3C;</span><span style="color:#85E89D">param</span><span style="color:#B392F0"> name</span><span style="color:#6A737D">=</span><span style="color:#9ECBFF">"socket"</span><span style="color:#6A737D">>&#x3C;/</span><span style="color:#85E89D">param</span><span style="color:#6A737D">></span></span>
+<span class="line"><span style="color:#6A737D">        /// &#x3C;</span><span style="color:#85E89D">param</span><span style="color:#B392F0"> name</span><span style="color:#6A737D">=</span><span style="color:#9ECBFF">"result"</span><span style="color:#6A737D">>&#x3C;/</span><span style="color:#85E89D">param</span><span style="color:#6A737D">></span></span>
+<span class="line"><span style="color:#6A737D">        /// &#x3C;</span><span style="color:#85E89D">param</span><span style="color:#B392F0"> name</span><span style="color:#6A737D">=</span><span style="color:#9ECBFF">"buffer"</span><span style="color:#6A737D">>&#x3C;/</span><span style="color:#85E89D">param</span><span style="color:#6A737D">></span></span>
+<span class="line"><span style="color:#6A737D">        /// &#x3C;</span><span style="color:#85E89D">returns</span><span style="color:#6A737D">>&#x3C;/</span><span style="color:#85E89D">returns</span><span style="color:#6A737D">></span></span>
+<span class="line"><span style="color:#F97583">        public</span><span style="color:#F97583"> abstract</span><span style="color:#B392F0"> Task</span><span style="color:#B392F0"> Receive</span><span style="color:#E1E4E8">(</span><span style="color:#B392F0">WebSocket</span><span style="color:#B392F0"> socket</span><span style="color:#E1E4E8">, </span><span style="color:#B392F0">WebSocketReceiveResult</span><span style="color:#B392F0"> result</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#F97583">            byte</span><span style="color:#E1E4E8">[] </span><span style="color:#B392F0">buffer</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<h2 id="3创建-websocket-的中间件">3、创建 WebSocket 的中间件</h2>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="csharp"><code><span class="line"><span style="color:#6A737D">// 文件：SocketsManager/SocketsMiddleware.cs</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">using</span><span style="color:#B392F0"> System</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">using</span><span style="color:#B392F0"> System</span><span style="color:#E1E4E8">.</span><span style="color:#B392F0">Net</span><span style="color:#E1E4E8">.</span><span style="color:#B392F0">WebSockets</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">using</span><span style="color:#B392F0"> System</span><span style="color:#E1E4E8">.</span><span style="color:#B392F0">Threading</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">using</span><span style="color:#B392F0"> System</span><span style="color:#E1E4E8">.</span><span style="color:#B392F0">Threading</span><span style="color:#E1E4E8">.</span><span style="color:#B392F0">Tasks</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">using</span><span style="color:#B392F0"> Microsoft</span><span style="color:#E1E4E8">.</span><span style="color:#B392F0">AspNetCore</span><span style="color:#E1E4E8">.</span><span style="color:#B392F0">Http</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">namespace</span><span style="color:#B392F0"> WebSockets</span><span style="color:#E1E4E8">.</span><span style="color:#B392F0">Test</span><span style="color:#E1E4E8">.</span><span style="color:#B392F0">SocketsManager</span></span>
+<span class="line"><span style="color:#E1E4E8">{</span></span>
+<span class="line"><span style="color:#F97583">    public</span><span style="color:#F97583"> class</span><span style="color:#B392F0"> SocketsMiddleware</span></span>
+<span class="line"><span style="color:#E1E4E8">    {</span></span>
+<span class="line"><span style="color:#F97583">        private</span><span style="color:#F97583"> readonly</span><span style="color:#B392F0"> RequestDelegate</span><span style="color:#B392F0"> _next</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">        public</span><span style="color:#B392F0"> SocketsMiddleware</span><span style="color:#E1E4E8">(</span><span style="color:#B392F0">RequestDelegate</span><span style="color:#B392F0"> next</span><span style="color:#E1E4E8">, </span><span style="color:#B392F0">SocketsHandler</span><span style="color:#B392F0"> handler</span><span style="color:#E1E4E8">)</span></span>
+<span class="line"><span style="color:#E1E4E8">        {</span></span>
+<span class="line"><span style="color:#E1E4E8">            _next </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> next;</span></span>
+<span class="line"><span style="color:#E1E4E8">            Handler </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> handler;</span></span>
+<span class="line"><span style="color:#E1E4E8">        }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">        private</span><span style="color:#B392F0"> SocketsHandler</span><span style="color:#B392F0"> Handler</span><span style="color:#E1E4E8"> { </span><span style="color:#F97583">get</span><span style="color:#E1E4E8">; }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">        public</span><span style="color:#F97583"> async</span><span style="color:#B392F0"> Task</span><span style="color:#B392F0"> InvokeAsync</span><span style="color:#E1E4E8">(</span><span style="color:#B392F0">HttpContext</span><span style="color:#B392F0"> context</span><span style="color:#E1E4E8">)</span></span>
+<span class="line"><span style="color:#E1E4E8">        {</span></span>
+<span class="line"><span style="color:#F97583">            if</span><span style="color:#E1E4E8"> (context.WebSockets.IsWebSocketRequest)</span></span>
+<span class="line"><span style="color:#E1E4E8">            {</span></span>
+<span class="line"><span style="color:#6A737D">                // 转换当前连接为一个 ws 连接</span></span>
+<span class="line"><span style="color:#F97583">                var</span><span style="color:#B392F0"> socket</span><span style="color:#F97583"> =</span><span style="color:#F97583"> await</span><span style="color:#E1E4E8"> context.WebSockets.</span><span style="color:#B392F0">AcceptWebSocketAsync</span><span style="color:#E1E4E8">();</span></span>
+<span class="line"><span style="color:#F97583">                await</span><span style="color:#E1E4E8"> Handler.</span><span style="color:#B392F0">OnConnected</span><span style="color:#E1E4E8">(socket);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">                // 接收消息的 buffer</span></span>
+<span class="line"><span style="color:#F97583">                var</span><span style="color:#B392F0"> buffer</span><span style="color:#F97583"> =</span><span style="color:#F97583"> new</span><span style="color:#F97583"> byte</span><span style="color:#E1E4E8">[</span><span style="color:#79B8FF">1024</span><span style="color:#F97583"> *</span><span style="color:#79B8FF"> 4</span><span style="color:#E1E4E8">];</span></span>
+<span class="line"><span style="color:#6A737D">                // 判断连接类型，并执行相应操作</span></span>
+<span class="line"><span style="color:#F97583">                while</span><span style="color:#E1E4E8"> (socket.State </span><span style="color:#F97583">==</span><span style="color:#E1E4E8"> WebSocketState.Open)</span></span>
+<span class="line"><span style="color:#E1E4E8">                {</span></span>
+<span class="line"><span style="color:#6A737D">                    // 这句执行之后，buffer 就是接收到的消息体，可以根据需要进行转换。</span></span>
+<span class="line"><span style="color:#F97583">                    var</span><span style="color:#B392F0"> result</span><span style="color:#F97583"> =</span><span style="color:#F97583"> await</span><span style="color:#E1E4E8"> socket.</span><span style="color:#B392F0">ReceiveAsync</span><span style="color:#E1E4E8">(</span><span style="color:#F97583">new</span><span style="color:#B392F0"> ArraySegment</span><span style="color:#E1E4E8">&#x3C;</span><span style="color:#F97583">byte</span><span style="color:#E1E4E8">>(buffer), CancellationToken.None);</span></span>
+<span class="line"><span style="color:#F97583">                    switch</span><span style="color:#E1E4E8"> (result.MessageType)</span></span>
+<span class="line"><span style="color:#E1E4E8">                    {</span></span>
+<span class="line"><span style="color:#F97583">                        case</span><span style="color:#B392F0"> WebSocketMessageType</span><span style="color:#E1E4E8">.</span><span style="color:#B392F0">Text</span><span style="color:#E1E4E8">:</span></span>
+<span class="line"><span style="color:#F97583">                            await</span><span style="color:#E1E4E8"> Handler.</span><span style="color:#B392F0">Receive</span><span style="color:#E1E4E8">(socket, result, buffer);</span></span>
+<span class="line"><span style="color:#F97583">                            break</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">                        case</span><span style="color:#B392F0"> WebSocketMessageType</span><span style="color:#E1E4E8">.</span><span style="color:#B392F0">Close</span><span style="color:#E1E4E8">:</span></span>
+<span class="line"><span style="color:#F97583">                            await</span><span style="color:#E1E4E8"> Handler.</span><span style="color:#B392F0">OnDisconnected</span><span style="color:#E1E4E8">(socket);</span></span>
+<span class="line"><span style="color:#F97583">                            break</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">                        case</span><span style="color:#B392F0"> WebSocketMessageType</span><span style="color:#E1E4E8">.</span><span style="color:#B392F0">Binary</span><span style="color:#E1E4E8">:</span></span>
+<span class="line"><span style="color:#F97583">                            break</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">                        default</span><span style="color:#E1E4E8">:</span></span>
+<span class="line"><span style="color:#F97583">                            throw</span><span style="color:#F97583"> new</span><span style="color:#B392F0"> ArgumentOutOfRangeException</span><span style="color:#E1E4E8">();</span></span>
+<span class="line"><span style="color:#E1E4E8">                    }</span></span>
+<span class="line"><span style="color:#E1E4E8">                }</span></span>
+<span class="line"><span style="color:#E1E4E8">            }</span></span>
+<span class="line"><span style="color:#F97583">            else</span></span>
+<span class="line"><span style="color:#E1E4E8">            {</span></span>
+<span class="line"><span style="color:#F97583">                await</span><span style="color:#B392F0"> _next</span><span style="color:#E1E4E8">(context);</span></span>
+<span class="line"><span style="color:#E1E4E8">            }</span></span>
+<span class="line"><span style="color:#E1E4E8">        }</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<h2 id="4创建-websocket-管理子类">4、创建 WebSocket 管理子类</h2>
+<p>可以创建多个，用于个性化设置，主要是上面设置了接收的抽象方法，所以必须要重写 Receive 方法。如果不需要的话，其实把基类的抽象去掉，直接在基类中写也可以。</p>
+<p>为了展示效果，添加了加入和离开时的消息提示。同时接收到的消息直接转发给所有人。</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="csharp"><code><span class="line"><span style="color:#6A737D">// 文件： Handlers/WebSocketMessageHandler.cs</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">using</span><span style="color:#B392F0"> System</span><span style="color:#E1E4E8">.</span><span style="color:#B392F0">Net</span><span style="color:#E1E4E8">.</span><span style="color:#B392F0">WebSockets</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">using</span><span style="color:#B392F0"> System</span><span style="color:#E1E4E8">.</span><span style="color:#B392F0">Text</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">using</span><span style="color:#B392F0"> System</span><span style="color:#E1E4E8">.</span><span style="color:#B392F0">Threading</span><span style="color:#E1E4E8">.</span><span style="color:#B392F0">Tasks</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">using</span><span style="color:#B392F0"> WebSockets</span><span style="color:#E1E4E8">.</span><span style="color:#B392F0">Test</span><span style="color:#E1E4E8">.</span><span style="color:#B392F0">SocketsManager</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">namespace</span><span style="color:#B392F0"> WebSockets</span><span style="color:#E1E4E8">.</span><span style="color:#B392F0">Test</span><span style="color:#E1E4E8">.</span><span style="color:#B392F0">Handlers</span></span>
+<span class="line"><span style="color:#E1E4E8">{</span></span>
+<span class="line"><span style="color:#F97583">    public</span><span style="color:#F97583"> class</span><span style="color:#B392F0"> WebSocketMessageHandler</span><span style="color:#E1E4E8"> : </span><span style="color:#B392F0">SocketsHandler</span></span>
+<span class="line"><span style="color:#E1E4E8">    {</span></span>
+<span class="line"><span style="color:#F97583">        public</span><span style="color:#B392F0"> WebSocketMessageHandler</span><span style="color:#E1E4E8">(</span><span style="color:#B392F0">SocketsManager</span><span style="color:#E1E4E8">.</span><span style="color:#B392F0">SocketsManager</span><span style="color:#B392F0"> sockets</span><span style="color:#E1E4E8">) : </span><span style="color:#79B8FF">base</span><span style="color:#E1E4E8">(sockets)</span></span>
+<span class="line"><span style="color:#E1E4E8">        {</span></span>
+<span class="line"><span style="color:#E1E4E8">        }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">        public</span><span style="color:#F97583"> override</span><span style="color:#F97583"> async</span><span style="color:#B392F0"> Task</span><span style="color:#B392F0"> OnConnected</span><span style="color:#E1E4E8">(</span><span style="color:#B392F0">WebSocket</span><span style="color:#B392F0"> socket</span><span style="color:#E1E4E8">)</span></span>
+<span class="line"><span style="color:#E1E4E8">        {</span></span>
+<span class="line"><span style="color:#F97583">            await</span><span style="color:#79B8FF"> base</span><span style="color:#E1E4E8">.</span><span style="color:#B392F0">OnConnected</span><span style="color:#E1E4E8">(socket);</span></span>
+<span class="line"><span style="color:#F97583">            var</span><span style="color:#B392F0"> socketId</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> Sockets.</span><span style="color:#B392F0">GetId</span><span style="color:#E1E4E8">(socket);</span></span>
+<span class="line"><span style="color:#F97583">            await</span><span style="color:#B392F0"> SendMessageToAll</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">$"</span><span style="color:#9ECBFF">{</span><span style="color:#E1E4E8">socketId</span><span style="color:#9ECBFF">}</span><span style="color:#9ECBFF">已加入"</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#E1E4E8">        }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">        public</span><span style="color:#F97583"> override</span><span style="color:#F97583"> async</span><span style="color:#B392F0"> Task</span><span style="color:#B392F0"> OnDisconnected</span><span style="color:#E1E4E8">(</span><span style="color:#B392F0">WebSocket</span><span style="color:#B392F0"> socket</span><span style="color:#E1E4E8">)</span></span>
+<span class="line"><span style="color:#E1E4E8">        {</span></span>
+<span class="line"><span style="color:#F97583">            await</span><span style="color:#79B8FF"> base</span><span style="color:#E1E4E8">.</span><span style="color:#B392F0">OnDisconnected</span><span style="color:#E1E4E8">(socket);</span></span>
+<span class="line"><span style="color:#F97583">            var</span><span style="color:#B392F0"> socketId</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> Sockets.</span><span style="color:#B392F0">GetId</span><span style="color:#E1E4E8">(socket);</span></span>
+<span class="line"><span style="color:#F97583">            await</span><span style="color:#B392F0"> SendMessageToAll</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">$"</span><span style="color:#9ECBFF">{</span><span style="color:#E1E4E8">socketId</span><span style="color:#9ECBFF">}</span><span style="color:#9ECBFF">离开了"</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#E1E4E8">        }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">        public</span><span style="color:#F97583"> override</span><span style="color:#F97583"> async</span><span style="color:#B392F0"> Task</span><span style="color:#B392F0"> Receive</span><span style="color:#E1E4E8">(</span><span style="color:#B392F0">WebSocket</span><span style="color:#B392F0"> socket</span><span style="color:#E1E4E8">, </span><span style="color:#B392F0">WebSocketReceiveResult</span><span style="color:#B392F0"> result</span><span style="color:#E1E4E8">, </span><span style="color:#F97583">byte</span><span style="color:#E1E4E8">[] </span><span style="color:#B392F0">buffer</span><span style="color:#E1E4E8">)</span></span>
+<span class="line"><span style="color:#E1E4E8">        {</span></span>
+<span class="line"><span style="color:#F97583">            var</span><span style="color:#B392F0"> socketId</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> Sockets.</span><span style="color:#B392F0">GetId</span><span style="color:#E1E4E8">(socket);</span></span>
+<span class="line"><span style="color:#F97583">            var</span><span style="color:#B392F0"> message</span><span style="color:#F97583"> =</span><span style="color:#9ECBFF"> $"</span><span style="color:#9ECBFF">{</span><span style="color:#E1E4E8">socketId</span><span style="color:#9ECBFF">}</span><span style="color:#9ECBFF"> 发送了消息：</span><span style="color:#9ECBFF">{</span><span style="color:#E1E4E8">Encoding</span><span style="color:#9ECBFF">.</span><span style="color:#E1E4E8">UTF8</span><span style="color:#9ECBFF">.</span><span style="color:#B392F0">GetString</span><span style="color:#9ECBFF">(</span><span style="color:#E1E4E8">buffer</span><span style="color:#9ECBFF">, </span><span style="color:#79B8FF">0</span><span style="color:#9ECBFF">, </span><span style="color:#E1E4E8">result</span><span style="color:#9ECBFF">.</span><span style="color:#E1E4E8">Count</span><span style="color:#9ECBFF">)}</span><span style="color:#9ECBFF">"</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">            await</span><span style="color:#B392F0"> SendMessageToAll</span><span style="color:#E1E4E8">(message);</span></span>
+<span class="line"><span style="color:#E1E4E8">        }</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<h2 id="5创建注入扩展">5、创建注入扩展</h2>
+<p>直接在 Startup.cs 中写也无不可，但这是好习惯，将每个注入内容单独写到文件。</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="csharp"><code><span class="line"><span style="color:#6A737D">// 文件：Extensions/SocketsExtension.cs</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">using</span><span style="color:#B392F0"> System</span><span style="color:#E1E4E8">.</span><span style="color:#B392F0">Reflection</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">using</span><span style="color:#B392F0"> Microsoft</span><span style="color:#E1E4E8">.</span><span style="color:#B392F0">AspNetCore</span><span style="color:#E1E4E8">.</span><span style="color:#B392F0">Builder</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">using</span><span style="color:#B392F0"> Microsoft</span><span style="color:#E1E4E8">.</span><span style="color:#B392F0">AspNetCore</span><span style="color:#E1E4E8">.</span><span style="color:#B392F0">Http</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">using</span><span style="color:#B392F0"> Microsoft</span><span style="color:#E1E4E8">.</span><span style="color:#B392F0">Extensions</span><span style="color:#E1E4E8">.</span><span style="color:#B392F0">DependencyInjection</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">using</span><span style="color:#B392F0"> WebSockets</span><span style="color:#E1E4E8">.</span><span style="color:#B392F0">Test</span><span style="color:#E1E4E8">.</span><span style="color:#B392F0">SocketsManager</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">namespace</span><span style="color:#B392F0"> WebSockets</span><span style="color:#E1E4E8">.</span><span style="color:#B392F0">Test</span><span style="color:#E1E4E8">.</span><span style="color:#B392F0">Extensions</span></span>
+<span class="line"><span style="color:#E1E4E8">{</span></span>
+<span class="line"><span style="color:#F97583">    public</span><span style="color:#F97583"> static</span><span style="color:#F97583"> class</span><span style="color:#B392F0"> SocketsExtension</span></span>
+<span class="line"><span style="color:#E1E4E8">    {</span></span>
+<span class="line"><span style="color:#F97583">        public</span><span style="color:#F97583"> static</span><span style="color:#B392F0"> IServiceCollection</span><span style="color:#B392F0"> AddWebSocketManager</span><span style="color:#E1E4E8">(</span><span style="color:#F97583">this</span><span style="color:#B392F0"> IServiceCollection</span><span style="color:#B392F0"> services</span><span style="color:#E1E4E8">)</span></span>
+<span class="line"><span style="color:#E1E4E8">        {</span></span>
+<span class="line"><span style="color:#E1E4E8">            services.</span><span style="color:#B392F0">AddTransient</span><span style="color:#E1E4E8">&#x3C;</span><span style="color:#B392F0">SocketsManager</span><span style="color:#E1E4E8">.</span><span style="color:#B392F0">SocketsManager</span><span style="color:#E1E4E8">>();</span></span>
+<span class="line"><span style="color:#F97583">            var</span><span style="color:#B392F0"> exportedTypes</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> Assembly.</span><span style="color:#B392F0">GetEntryAssembly</span><span style="color:#E1E4E8">()</span><span style="color:#F97583">?</span><span style="color:#E1E4E8">.ExportedTypes;</span></span>
+<span class="line"><span style="color:#F97583">            if</span><span style="color:#E1E4E8"> (exportedTypes </span><span style="color:#F97583">==</span><span style="color:#79B8FF"> null</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">return</span><span style="color:#E1E4E8"> services;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">            foreach</span><span style="color:#E1E4E8"> (</span><span style="color:#F97583">var</span><span style="color:#B392F0"> type</span><span style="color:#F97583"> in</span><span style="color:#E1E4E8"> exportedTypes)</span></span>
+<span class="line"><span style="color:#F97583">                if</span><span style="color:#E1E4E8"> (type.</span><span style="color:#B392F0">GetTypeInfo</span><span style="color:#E1E4E8">().BaseType </span><span style="color:#F97583">==</span><span style="color:#F97583"> typeof</span><span style="color:#E1E4E8">(</span><span style="color:#B392F0">SocketsHandler</span><span style="color:#E1E4E8">))</span></span>
+<span class="line"><span style="color:#E1E4E8">                    services.</span><span style="color:#B392F0">AddSingleton</span><span style="color:#E1E4E8">(type);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">            return</span><span style="color:#E1E4E8"> services;</span></span>
+<span class="line"><span style="color:#E1E4E8">        }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">        public</span><span style="color:#F97583"> static</span><span style="color:#B392F0"> IApplicationBuilder</span><span style="color:#B392F0"> MapSockets</span><span style="color:#E1E4E8">(</span><span style="color:#F97583">this</span><span style="color:#B392F0"> IApplicationBuilder</span><span style="color:#B392F0"> app</span><span style="color:#E1E4E8">, </span><span style="color:#B392F0">PathString</span><span style="color:#B392F0"> path</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#B392F0">            SocketsHandler</span><span style="color:#B392F0"> socket</span><span style="color:#E1E4E8">)</span></span>
+<span class="line"><span style="color:#E1E4E8">        {</span></span>
+<span class="line"><span style="color:#F97583">            return</span><span style="color:#E1E4E8"> app.</span><span style="color:#B392F0">Map</span><span style="color:#E1E4E8">(path, </span><span style="color:#B392F0">x</span><span style="color:#F97583"> =></span><span style="color:#E1E4E8"> x.</span><span style="color:#B392F0">UseMiddleware</span><span style="color:#E1E4E8">&#x3C;</span><span style="color:#B392F0">SocketsMiddleware</span><span style="color:#E1E4E8">>(socket));</span></span>
+<span class="line"><span style="color:#E1E4E8">        }</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<h2 id="6配置-startupcs">6、配置 Startup.cs</h2>
+<p>将上面的内容注入到启动项中即可。</p>
+<p>在 ConfigureServices 中添加：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="csharp"><code><span class="line"><span style="color:#E1E4E8">services.</span><span style="color:#B392F0">AddWebSocketManager</span><span style="color:#E1E4E8">();</span></span></code></pre>
+<p>然后在 Configure 中添加：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="csharp"><code><span class="line"><span style="color:#E1E4E8">app.</span><span style="color:#B392F0">UseWebSockets</span><span style="color:#E1E4E8">();</span></span>
+<span class="line"><span style="color:#E1E4E8">app.</span><span style="color:#B392F0">MapSockets</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">"/ws"</span><span style="color:#E1E4E8">, serviceProvider.</span><span style="color:#B392F0">GetService</span><span style="color:#E1E4E8">&#x3C;</span><span style="color:#B392F0">WebSocketMessageHandler</span><span style="color:#E1E4E8">>());</span></span></code></pre>
+<p>即可。</p>
+<p>如果提示 <code>serviceProvider</code> 找不到，在 <code>Configure</code> 的参数中添加：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="csharp"><code><span class="line"><span style="color:#E1E4E8">IServiceProvider serviceProvider</span></span></code></pre>
+<p>即可。</p>
+<p>完整的内容如下：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="csharp"><code><span class="line"><span style="color:#F97583">public</span><span style="color:#E1E4E8"> IConfiguration Configuration { get; }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">// This method gets called by the runtime. Use this method to add services to the container.</span></span>
+<span class="line"><span style="color:#F97583">public</span><span style="color:#F97583"> void</span><span style="color:#B392F0"> ConfigureServices</span><span style="color:#E1E4E8">(</span><span style="color:#B392F0">IServiceCollection</span><span style="color:#B392F0"> services</span><span style="color:#E1E4E8">)</span></span>
+<span class="line"><span style="color:#E1E4E8">{</span></span>
+<span class="line"><span style="color:#E1E4E8">    services.</span><span style="color:#B392F0">AddWebSocketManager</span><span style="color:#E1E4E8">();</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.</span></span>
+<span class="line"><span style="color:#F97583">public</span><span style="color:#F97583"> void</span><span style="color:#B392F0"> Configure</span><span style="color:#E1E4E8">(</span><span style="color:#B392F0">IApplicationBuilder</span><span style="color:#B392F0"> app</span><span style="color:#E1E4E8">, </span><span style="color:#B392F0">IWebHostEnvironment</span><span style="color:#B392F0"> env</span><span style="color:#E1E4E8">, </span><span style="color:#B392F0">IServiceProvider</span><span style="color:#B392F0"> serviceProvider</span><span style="color:#E1E4E8">)</span></span>
+<span class="line"><span style="color:#E1E4E8">{</span></span>
+<span class="line"><span style="color:#F97583">    if</span><span style="color:#E1E4E8"> (env.</span><span style="color:#B392F0">IsDevelopment</span><span style="color:#E1E4E8">())</span></span>
+<span class="line"><span style="color:#E1E4E8">    {</span></span>
+<span class="line"><span style="color:#E1E4E8">        app.</span><span style="color:#B392F0">UseDeveloperExceptionPage</span><span style="color:#E1E4E8">();</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"><span style="color:#F97583">    else</span></span>
+<span class="line"><span style="color:#E1E4E8">    {</span></span>
+<span class="line"><span style="color:#E1E4E8">        app.</span><span style="color:#B392F0">UseExceptionHandler</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">"/Error"</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#6A737D">        // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.</span></span>
+<span class="line"><span style="color:#E1E4E8">        app.</span><span style="color:#B392F0">UseHsts</span><span style="color:#E1E4E8">();</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">    app.</span><span style="color:#B392F0">UseWebSockets</span><span style="color:#E1E4E8">();</span></span>
+<span class="line"><span style="color:#6A737D">    // 配置路径</span></span>
+<span class="line"><span style="color:#E1E4E8">    app.</span><span style="color:#B392F0">MapSockets</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">"/ws"</span><span style="color:#E1E4E8">, serviceProvider.</span><span style="color:#B392F0">GetService</span><span style="color:#E1E4E8">&#x3C;</span><span style="color:#B392F0">WebSocketMessageHandler</span><span style="color:#E1E4E8">>());</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">    app.</span><span style="color:#B392F0">UseStaticFiles</span><span style="color:#E1E4E8">();</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<h2 id="7测试">7、测试</h2>
+<p>以上内容已经完成，现在可以跑起来。为了测试，编写一个最简单的页面。</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="html"><code><span class="line"><span style="color:#E1E4E8">&#x3C;!</span><span style="color:#85E89D">DOCTYPE</span><span style="color:#B392F0"> html</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#E1E4E8">&#x3C;</span><span style="color:#85E89D">html</span><span style="color:#B392F0"> lang</span><span style="color:#E1E4E8">=</span><span style="color:#9ECBFF">"zh-cn"</span><span style="color:#E1E4E8">></span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">&#x3C;</span><span style="color:#85E89D">head</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#E1E4E8">    &#x3C;</span><span style="color:#85E89D">meta</span><span style="color:#B392F0"> charset</span><span style="color:#E1E4E8">=</span><span style="color:#9ECBFF">"UTF-8"</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#E1E4E8">    &#x3C;</span><span style="color:#85E89D">meta</span><span style="color:#B392F0"> http-equiv</span><span style="color:#E1E4E8">=</span><span style="color:#9ECBFF">"X-UA-Compatible"</span><span style="color:#B392F0"> content</span><span style="color:#E1E4E8">=</span><span style="color:#9ECBFF">"IE=edge"</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#E1E4E8">    &#x3C;</span><span style="color:#85E89D">meta</span><span style="color:#B392F0"> name</span><span style="color:#E1E4E8">=</span><span style="color:#9ECBFF">"viewport"</span><span style="color:#B392F0"> content</span><span style="color:#E1E4E8">=</span><span style="color:#9ECBFF">"width=device-width, initial-scale=1.0"</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#E1E4E8">    &#x3C;</span><span style="color:#85E89D">title</span><span style="color:#E1E4E8">>WebSocket web client&#x3C;/</span><span style="color:#85E89D">title</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#E1E4E8">&#x3C;/</span><span style="color:#85E89D">head</span><span style="color:#E1E4E8">></span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">&#x3C;</span><span style="color:#85E89D">body</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#E1E4E8">    &#x3C;</span><span style="color:#85E89D">h1</span><span style="color:#E1E4E8">>WebSocket Web Client&#x3C;/</span><span style="color:#85E89D">h1</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#E1E4E8">    &#x3C;</span><span style="color:#85E89D">br</span><span style="color:#E1E4E8"> /></span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">    &#x3C;</span><span style="color:#85E89D">input</span><span style="color:#B392F0"> type</span><span style="color:#E1E4E8">=</span><span style="color:#9ECBFF">"text"</span><span style="color:#B392F0"> placeholder</span><span style="color:#E1E4E8">=</span><span style="color:#9ECBFF">"enter your message"</span><span style="color:#B392F0"> id</span><span style="color:#E1E4E8">=</span><span style="color:#9ECBFF">"message"</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#E1E4E8">    &#x3C;</span><span style="color:#85E89D">button</span><span style="color:#B392F0"> id</span><span style="color:#E1E4E8">=</span><span style="color:#9ECBFF">"sendBtn"</span><span style="color:#E1E4E8">>Send&#x3C;/</span><span style="color:#85E89D">button</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#E1E4E8">    &#x3C;</span><span style="color:#85E89D">ul</span><span style="color:#B392F0"> id</span><span style="color:#E1E4E8">=</span><span style="color:#9ECBFF">"messageList"</span><span style="color:#E1E4E8">>&#x3C;/</span><span style="color:#85E89D">ul</span><span style="color:#E1E4E8">></span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">    &#x3C;</span><span style="color:#85E89D">script</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#6A737D">        // 根据实际地址和端口进行修改，其他内容无需修改</span></span>
+<span class="line"><span style="color:#F97583">        const</span><span style="color:#79B8FF"> uri</span><span style="color:#F97583"> =</span><span style="color:#9ECBFF"> "ws://localhost:5000/ws"</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#E1E4E8">        socket </span><span style="color:#F97583">=</span><span style="color:#F97583"> new</span><span style="color:#B392F0"> WebSocket</span><span style="color:#E1E4E8">(uri);</span></span>
+<span class="line"><span style="color:#E1E4E8">        socket.</span><span style="color:#B392F0">onopen</span><span style="color:#F97583"> =</span><span style="color:#F97583"> function</span><span style="color:#E1E4E8"> (</span><span style="color:#FFAB70">e</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#E1E4E8">            console.</span><span style="color:#B392F0">log</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">"websocket estabished!"</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#E1E4E8">        }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">        socket.</span><span style="color:#B392F0">onclose</span><span style="color:#F97583"> =</span><span style="color:#F97583"> function</span><span style="color:#E1E4E8"> (</span><span style="color:#FFAB70">e</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#E1E4E8">            console.</span><span style="color:#B392F0">log</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">'websocket closed!'</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#E1E4E8">        }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">        socket.</span><span style="color:#B392F0">onmessage</span><span style="color:#F97583"> =</span><span style="color:#F97583"> function</span><span style="color:#E1E4E8"> (</span><span style="color:#FFAB70">e</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#B392F0">            appendItem</span><span style="color:#E1E4E8">(list, e.data);</span></span>
+<span class="line"><span style="color:#E1E4E8">            console.</span><span style="color:#B392F0">log</span><span style="color:#E1E4E8">(e.data);</span></span>
+<span class="line"><span style="color:#E1E4E8">        }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">        const</span><span style="color:#79B8FF"> list</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> document.</span><span style="color:#B392F0">getElementById</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">"messageList"</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#F97583">        const</span><span style="color:#79B8FF"> btn</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> document.</span><span style="color:#B392F0">getElementById</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">"sendBtn"</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#E1E4E8">        btn.</span><span style="color:#B392F0">addEventListener</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">"click"</span><span style="color:#E1E4E8">, </span><span style="color:#F97583">function</span><span style="color:#E1E4E8"> () {</span></span>
+<span class="line"><span style="color:#E1E4E8">            console.</span><span style="color:#B392F0">log</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">"sending message~~~"</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">            var</span><span style="color:#E1E4E8"> messgae </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> document.</span><span style="color:#B392F0">getElementById</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">"message"</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#E1E4E8">            socket.</span><span style="color:#B392F0">send</span><span style="color:#E1E4E8">(message.value)</span></span>
+<span class="line"><span style="color:#E1E4E8">        })</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">        function</span><span style="color:#B392F0"> appendItem</span><span style="color:#E1E4E8">(</span><span style="color:#FFAB70">list</span><span style="color:#E1E4E8">, </span><span style="color:#FFAB70">message</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#F97583">            const</span><span style="color:#79B8FF"> li</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> document.</span><span style="color:#B392F0">createElement</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">"li"</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#E1E4E8">            li.</span><span style="color:#B392F0">appendChild</span><span style="color:#E1E4E8">(document.</span><span style="color:#B392F0">createTextNode</span><span style="color:#E1E4E8">(message));</span></span>
+<span class="line"><span style="color:#E1E4E8">            list.</span><span style="color:#B392F0">appendChild</span><span style="color:#E1E4E8">(li);</span></span>
+<span class="line"><span style="color:#E1E4E8">        }</span></span>
+<span class="line"><span style="color:#E1E4E8">    &#x3C;/</span><span style="color:#85E89D">script</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#E1E4E8">&#x3C;/</span><span style="color:#85E89D">body</span><span style="color:#E1E4E8">></span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">&#x3C;/</span><span style="color:#85E89D">html</span><span style="color:#E1E4E8">></span></span></code></pre>
+<p>测试效果： <img src="/images/2021/websocket-test.gif" alt=""></p>
+<p>有了上面的示例，一个最简单的聊天室模型已经可以实现了。</p> </div> <!-- 悬浮 TOC --> <button class="toc-toggle" id="toc-toggle" aria-label="显示目录" data-astro-cid-iy4s3wf7> <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-list" data-astro-cid-iy4s3wf7> <line x1="8" y1="6" x2="21" y2="6" data-astro-cid-iy4s3wf7></line> <line x1="8" y1="12" x2="21" y2="12" data-astro-cid-iy4s3wf7></line> <line x1="8" y1="18" x2="21" y2="18" data-astro-cid-iy4s3wf7></line> <line x1="3" y1="6" x2="3.01" y2="6" data-astro-cid-iy4s3wf7></line> <line x1="3" y1="12" x2="3.01" y2="12" data-astro-cid-iy4s3wf7></line> <line x1="3" y1="18" x2="3.01" y2="18" data-astro-cid-iy4s3wf7></line> </svg> </button> <aside class="floating-toc" id="floating-toc" data-astro-cid-iy4s3wf7> <div class="toc-header" data-astro-cid-iy4s3wf7> <h3 data-astro-cid-iy4s3wf7>目录</h3> </div> <nav class="toc-nav" id="toc-nav" data-astro-cid-g3fimnfa> <!-- TOC 内容将由客户端脚本填充 --> </nav>  <script type="module">document.addEventListener("DOMContentLoaded",()=>{const n=document.getElementById("toc-nav"),a=document.querySelector(".toc-header h3");if(!n)return;const s=document.querySelector(".article-header h1")?.textContent||"目录";a&&(a.textContent=s);const c=Array.from(document.querySelectorAll(".article-content h2, .article-content h3, .article-content h4, .article-content h5, .article-content h6"));if(c.length===0){n.innerHTML='<p style="color: var(--color-text-secondary); padding: 0.5rem;">暂无目录</p>';return}c.forEach(e=>{e.id||(e.id=e.textContent?.toLowerCase().replace(/\s+/g,"-").replace(/[^\w\-\u4e00-\u9fa5]/g,"")||"")});const l=document.createElement("ul");c.forEach(e=>{const t=document.createElement("li"),o=document.createElement("a");o.href=`#${e.id}`,o.textContent=e.textContent||"",o.classList.add(`toc-${e.tagName.toLowerCase()}`),o.addEventListener("click",i=>{i.preventDefault();const r=document.getElementById(e.id);if(r){const u=r.getBoundingClientRect().top+window.pageYOffset-80;window.scrollTo({top:u,behavior:"smooth"}),history.pushState(null,"",`#${e.id}`)}}),t.appendChild(o),l.appendChild(t)}),n.appendChild(l);const d={root:null,rootMargin:"-60px 0px -80% 0px",threshold:0},h=new IntersectionObserver(e=>{e.forEach(t=>{if(t.isIntersecting){const o=t.target.id;n.querySelectorAll("a").forEach(r=>{r.classList.remove("active")});const i=n.querySelector(`a[href="#${o}"]`);i&&i.classList.add("active")}})},d);c.forEach(e=>h.observe(e)),setTimeout(()=>{if(window.location.hash){const t=n.querySelector(`a[href="${window.location.hash}"]`);if(t){n.querySelectorAll("a").forEach(o=>o.classList.remove("active")),t.classList.add("active");return}}let e="";for(const t of c)if(t.getBoundingClientRect().top<=150)e=t.id;else break;if(!e&&c.length>0&&window.scrollY<100&&(e=c[0].id),e){n.querySelectorAll("a").forEach(o=>o.classList.remove("active"));const t=n.querySelector(`a[href="#${e}"]`);t&&t.classList.add("active")}},100)});</script> </aside> <div class="toc-overlay" id="toc-overlay" data-astro-cid-iy4s3wf7></div> <section class="comments" data-astro-cid-iy4s3wf7> <div class="giscus-wrapper"> <script src="https://giscus.app/client.js" data-repo="jeremyjone/blog-comments" data-repo-id="R_kgDOQlVVGg" data-category="Announcements" data-category-id="DIC_kwDOQlVVGs4Czkir" data-mapping="title" data-term data-strict="0" data-reactions-enabled="1" data-emit-metadata="0" data-input-position="top" data-theme="preferred_color_scheme" data-lang="zh-CN" crossorigin="anonymous" async></script> <noscript>请启用 JavaScript 查看评论。</noscript> </div> </section> </article>  </main> <footer class="site-footer" data-astro-cid-x322jucz> <div class="container footer-content" data-astro-cid-x322jucz> <p data-astro-cid-x322jucz>
+&copy; 2025 <b data-astro-cid-x322jucz>JeremyJone.com</b> All rights reserved.
+</p> <div class="footer-links" data-astro-cid-x322jucz> <a href="https://github.com/jeremyjone" target="_blank" rel="noopener" data-astro-cid-x322jucz> GitHub </a> </div> </div> </footer> <script type="module" src="/_astro/BaseLayout.astro_astro_type_script_index_0_lang.D4h-rqQD.js"></script> <div id="search-modal" class="search-modal" style="display: none;" data-astro-cid-jwf5kjrd> <div class="search-overlay" data-astro-cid-jwf5kjrd></div> <div class="search-container" data-astro-cid-jwf5kjrd> <div class="search-header" data-astro-cid-jwf5kjrd> <input type="text" id="search-input-global" placeholder="搜索全站内容 (Cmd+K)..." autocomplete="off" data-astro-cid-jwf5kjrd> <button id="close-search" aria-label="Close search" data-astro-cid-jwf5kjrd>&times;</button> </div> <div id="search-results-global" class="search-results" data-astro-cid-jwf5kjrd> <div class="search-placeholder" data-astro-cid-jwf5kjrd>输入关键词开始搜索...</div> </div> </div> </div>  <script>
+    window.loadPagefind = async () => {
+        try {
+            return await import("/pagefind/pagefind.js");
+        } catch (e) {
+            console.warn("Failed to load pagefind:", e);
+            return null;
+        }
+    };
+</script> <script type="module" src="/_astro/SearchModal.astro_astro_type_script_index_0_lang.C4oQFeHw.js"></script> </body></html>  <script type="module">document.addEventListener("DOMContentLoaded",()=>{const c=document.getElementById("toc-toggle"),e=document.getElementById("floating-toc"),t=document.getElementById("toc-overlay");c?.addEventListener("click",()=>{e?.classList.add("active"),t?.classList.add("active")});const o=()=>{e?.classList.remove("active"),t?.classList.remove("active")};t?.addEventListener("click",o)});</script>

@@ -1,0 +1,144 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="dark" data-astro-cid-x322jucz> <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>axios的二次封装</title><meta name="description" content="之前项目是用到了axios，它本身是对ajax的二次封装。不过我们在使用的时候经常是对axios再进行二次封装，从而达到我们需要的效果。现在把代码整理了一下，贴上来。 首先，安装axios： ```bash npm install ax..."><link rel="canonical" href="https://www.jeremyjone.com//blog/axios%E7%9A%84%E4%BA%8C%E6%AC%A1%E5%B0%81%E8%A3%85/"><meta property="og:title" content="axios的二次封装"><meta property="og:description" content="之前项目是用到了axios，它本身是对ajax的二次封装。不过我们在使用的时候经常是对axios再进行二次封装，从而达到我们需要的效果。现在把代码整理了一下，贴上来。 首先，安装axios： ```bash npm install ax..."><meta property="og:type" content="article"><meta property="og:url" content="https://www.jeremyjone.com//blog/axios%E7%9A%84%E4%BA%8C%E6%AC%A1%E5%B0%81%E8%A3%85/"><meta property="og:site_name" content="JeremyJone's Blog"><meta property="og:locale" content="zh_CN"><link rel="icon" href="/favicon.ico"><link rel="stylesheet" href="/_astro/_year_.CFHYKZJi.css">
+<link rel="stylesheet" href="/_astro/_slug_.B1ShOm38.css"></head> <body data-astro-cid-x322jucz> <header class="site-header" data-astro-cid-x322jucz> <div class="container header-content" data-astro-cid-x322jucz> <a href="/" class="logo" data-astro-cid-x322jucz> <div class="logo-icon" data-astro-cid-x322jucz> <img src="/resources/avatar.png" alt="Logo" width="32" height="32" data-astro-cid-x322jucz> </div> <span class="logo-text" data-astro-cid-x322jucz>JeremyJone&#39;s Blog</span> </a> <div class="header-right" data-astro-cid-x322jucz> <nav class="nav" data-astro-cid-x322jucz> <a href="/" class="nav-link" data-astro-cid-x322jucz> 首页 </a><a href="/blog" class="nav-link active" data-astro-cid-x322jucz> 博客 </a><a href="/notes" class="nav-link" data-astro-cid-x322jucz> 笔记 </a> </nav> <button class="search-toggle" onclick="window.openSearchModal()" aria-label="搜索" data-astro-cid-x322jucz> <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-astro-cid-x322jucz><circle cx="11" cy="11" r="8" data-astro-cid-x322jucz></circle><line x1="21" y1="21" x2="16.65" y2="16.65" data-astro-cid-x322jucz></line></svg> <span class="search-placeholder" data-astro-cid-x322jucz>Ctrl+K 搜索...</span> </button> <button class="theme-toggle" id="theme-toggle" aria-label="切换主题" data-astro-cid-x322jucz> <svg class="sun-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" data-astro-cid-x322jucz> <circle cx="12" cy="12" r="5" data-astro-cid-x322jucz></circle> <line x1="12" y1="1" x2="12" y2="3" data-astro-cid-x322jucz></line> <line x1="12" y1="21" x2="12" y2="23" data-astro-cid-x322jucz></line> <line x1="4.22" y1="4.22" x2="5.64" y2="5.64" data-astro-cid-x322jucz></line> <line x1="18.36" y1="18.36" x2="19.78" y2="19.78" data-astro-cid-x322jucz></line> <line x1="1" y1="12" x2="3" y2="12" data-astro-cid-x322jucz></line> <line x1="21" y1="12" x2="23" y2="12" data-astro-cid-x322jucz></line> <line x1="4.22" y1="19.78" x2="5.64" y2="18.36" data-astro-cid-x322jucz></line> <line x1="18.36" y1="5.64" x2="19.78" y2="4.22" data-astro-cid-x322jucz></line> </svg> <svg class="moon-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" data-astro-cid-x322jucz> <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" data-astro-cid-x322jucz></path> </svg> </button> </div> </div> </header> <main class="container" data-astro-cid-x322jucz>  <article data-content-type="blog" data-pagefind-body data-pagefind-filter="type:blog" data-astro-cid-iy4s3wf7> <header class="article-header" data-astro-cid-iy4s3wf7> <h1 data-astro-cid-iy4s3wf7>axios的二次封装</h1> <p class="meta" data-astro-cid-iy4s3wf7>
+发布于 2020-03-03 23:53:40 · 3 分钟 · 标签：<a href="/tags/axios" class="tag" data-astro-cid-iy4s3wf7> axios </a><a href="/tags/JavaScript" class="tag" data-astro-cid-iy4s3wf7> JavaScript </a><a href="/tags/vue" class="tag" data-astro-cid-iy4s3wf7> vue </a> </p> </header> <div class="article-content" data-astro-cid-iy4s3wf7> <p>之前项目是用到了axios，它本身是对ajax的二次封装。不过我们在使用的时候经常是对axios再进行二次封装，从而达到我们需要的效果。现在把代码整理了一下，贴上来。</p>
+<p>首先，安装axios：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#B392F0">npm</span><span style="color:#9ECBFF"> install</span><span style="color:#9ECBFF"> axios</span></span></code></pre>
+<p>还有一个<code>qs</code>是格式化参数用的，如果不需要，可以不用，直接拼接也可以。</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="javascript"><code><span class="line"><span style="color:#6A737D">/*</span></span>
+<span class="line"><span style="color:#6A737D"> * @Author: JeremyJone</span></span>
+<span class="line"><span style="color:#6A737D"> * @Date: 2020-03-03 17:58:23</span></span>
+<span class="line"><span style="color:#6A737D"> * @LastEditors  : JeremyJone</span></span>
+<span class="line"><span style="color:#6A737D"> * @LastEditTime : 2020-03-03 19:33:56</span></span>
+<span class="line"><span style="color:#6A737D"> * @Description: axios封装示例，含详细注释，仅用于学习使用。</span></span>
+<span class="line"><span style="color:#6A737D"> */</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">// 引入axios</span></span>
+<span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> axios </span><span style="color:#F97583">from</span><span style="color:#9ECBFF"> "axios"</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#6A737D">// 格式化数据的第三方库</span></span>
+<span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> qs </span><span style="color:#F97583">from</span><span style="color:#9ECBFF"> "qs"</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">/**</span></span>
+<span class="line"><span style="color:#6A737D"> * 环境的配置，区分生产环境和开发环境</span></span>
+<span class="line"><span style="color:#6A737D"> */</span></span>
+<span class="line"><span style="color:#F97583">switch</span><span style="color:#E1E4E8"> (process.env.</span><span style="color:#79B8FF">NODE_ENV</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#F97583">  case</span><span style="color:#9ECBFF"> "production"</span><span style="color:#E1E4E8">:</span></span>
+<span class="line"><span style="color:#6A737D">    // 生产环境，部署到的服务器</span></span>
+<span class="line"><span style="color:#6A737D">    // baseURL配置基地址，配置之后就不需要在每个接口填写完整路径</span></span>
+<span class="line"><span style="color:#E1E4E8">    axios.defaults.baseURL </span><span style="color:#F97583">=</span><span style="color:#9ECBFF"> "http://生产真实地址"</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">    break</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">  case</span><span style="color:#9ECBFF"> "test"</span><span style="color:#E1E4E8">:</span></span>
+<span class="line"><span style="color:#E1E4E8">    axios.defaults.baseURL </span><span style="color:#F97583">=</span><span style="color:#9ECBFF"> "http://测试环境"</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">    break</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">  default</span><span style="color:#E1E4E8">:</span></span>
+<span class="line"><span style="color:#E1E4E8">    axios.defaults.baseURL </span><span style="color:#F97583">=</span><span style="color:#9ECBFF"> "http://开发环境"</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">    break</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">/**</span></span>
+<span class="line"><span style="color:#6A737D"> * 设置超时时间，单位毫秒</span></span>
+<span class="line"><span style="color:#6A737D"> */</span></span>
+<span class="line"><span style="color:#E1E4E8">axios.defaults.timeout </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> 50000</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">/**</span></span>
+<span class="line"><span style="color:#6A737D"> * 设置是否允许跨域和是否允许携带凭证，如果该设置为false，请求时不允许携带凭证</span></span>
+<span class="line"><span style="color:#6A737D"> */</span></span>
+<span class="line"><span style="color:#E1E4E8">axios.defaults.withCredentials </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> true</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">/**</span></span>
+<span class="line"><span style="color:#6A737D"> * 设置请求头</span></span>
+<span class="line"><span style="color:#6A737D"> *   - 设置请求传递数据的格式，通常需要包含 `x-www-form-urlencoded` 格式，该格式的数据通常为 `xxx=xxx&#x26;yyy=yyy`，这是为了post请求与get请求的格式相同</span></span>
+<span class="line"><span style="color:#6A737D"> */</span></span>
+<span class="line"><span style="color:#E1E4E8">axios.defaults.headers[</span><span style="color:#9ECBFF">"Content-Type"</span><span style="color:#E1E4E8">] </span><span style="color:#F97583">=</span><span style="color:#9ECBFF"> "application/x-www-form-urlencoded"</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#6A737D">// 针对post请求设置数据格式，该方法transformRequest仅针对post请求有效</span></span>
+<span class="line"><span style="color:#6A737D">// 使用qs库将传入的data数据转换为 `x-www-form-urlencoded` 格式</span></span>
+<span class="line"><span style="color:#6A737D">// 当然，这需要看服务器使用什么数据格式，如果服务器使用json，那么不需要这样设置</span></span>
+<span class="line"><span style="color:#E1E4E8">axios.defaults.</span><span style="color:#B392F0">transformRequest</span><span style="color:#F97583"> =</span><span style="color:#FFAB70"> data</span><span style="color:#F97583"> =></span><span style="color:#E1E4E8"> qs.</span><span style="color:#B392F0">stringify</span><span style="color:#E1E4E8">(data);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">/**</span></span>
+<span class="line"><span style="color:#6A737D"> * 设置请求拦截器。它的执行逻辑：</span></span>
+<span class="line"><span style="color:#6A737D"> *   客户端的请求 -> 请求拦截器 -> 服务器</span></span>
+<span class="line"><span style="color:#6A737D"> * 这样可以对请求操作进行一系列的处理，再发送给服务器，比如，添加TOKEN</span></span>
+<span class="line"><span style="color:#6A737D"> */</span></span>
+<span class="line"><span style="color:#E1E4E8">axios.interceptors.request.</span><span style="color:#B392F0">use</span><span style="color:#E1E4E8">(</span></span>
+<span class="line"><span style="color:#FFAB70">  config</span><span style="color:#F97583"> =></span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#6A737D">    // 携带token，从本地读取到token，然后添加到请求头</span></span>
+<span class="line"><span style="color:#F97583">    const</span><span style="color:#79B8FF"> token</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> localStorage.</span><span style="color:#B392F0">getItem</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">"token"</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#E1E4E8">    token </span><span style="color:#F97583">&#x26;&#x26;</span><span style="color:#E1E4E8"> (config.headers.Authorization </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> token);</span></span>
+<span class="line"><span style="color:#F97583">    return</span><span style="color:#E1E4E8"> config;</span></span>
+<span class="line"><span style="color:#E1E4E8">  },</span></span>
+<span class="line"><span style="color:#FFAB70">  error</span><span style="color:#F97583"> =></span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#F97583">    return</span><span style="color:#79B8FF"> Promise</span><span style="color:#E1E4E8">.</span><span style="color:#B392F0">reject</span><span style="color:#E1E4E8">(error);</span></span>
+<span class="line"><span style="color:#E1E4E8">  }</span></span>
+<span class="line"><span style="color:#E1E4E8">);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">/**</span></span>
+<span class="line"><span style="color:#6A737D"> * 自定义响应成功的HTTP状态码</span></span>
+<span class="line"><span style="color:#6A737D"> * 通常情况下不需要，因为开发的程序一般不会出现3开头的状态码</span></span>
+<span class="line"><span style="color:#6A737D"> * 如果需要，可以打开注释</span></span>
+<span class="line"><span style="color:#6A737D"> */</span></span>
+<span class="line"><span style="color:#6A737D">// axios.defaults.validateStatus = status => {</span></span>
+<span class="line"><span style="color:#6A737D">//   return /^(2|3)\d{2}$/.test(status);</span></span>
+<span class="line"><span style="color:#6A737D">// };</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">/**</span></span>
+<span class="line"><span style="color:#6A737D"> * 响应拦截器。它的知性逻辑：</span></span>
+<span class="line"><span style="color:#6A737D"> *   服务器返回信息 -> 相应拦截器 -> 客户端获取到信息</span></span>
+<span class="line"><span style="color:#6A737D"> * 这样可以首先对响应的信息做一些预处理，从而使得客户端的代码更加整洁</span></span>
+<span class="line"><span style="color:#6A737D"> */</span></span>
+<span class="line"><span style="color:#E1E4E8">axios.interceptors.response.</span><span style="color:#B392F0">use</span><span style="color:#E1E4E8">(</span></span>
+<span class="line"><span style="color:#FFAB70">  response</span><span style="color:#F97583"> =></span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#6A737D">    // 成功后返回response的主体，其他数据一般并不需要，这样在使用中只需要关注数据主体就可以</span></span>
+<span class="line"><span style="color:#F97583">    return</span><span style="color:#E1E4E8"> response.data;</span></span>
+<span class="line"><span style="color:#E1E4E8">  },</span></span>
+<span class="line"><span style="color:#FFAB70">  error</span><span style="color:#F97583"> =></span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#F97583">    let</span><span style="color:#E1E4E8"> { response } </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> error; </span><span style="color:#6A737D">// 等效于error.response</span></span>
+<span class="line"><span style="color:#F97583">    if</span><span style="color:#E1E4E8"> (response) {</span></span>
+<span class="line"><span style="color:#6A737D">      // 服务器返回了结果</span></span>
+<span class="line"><span style="color:#6A737D">      // 这里能够读出服务器返回的错误HTTP状态码，根据不同状态码进行不同处理</span></span>
+<span class="line"><span style="color:#6A737D">      // 这个根据业务需求操作即可</span></span>
+<span class="line"><span style="color:#F97583">      switch</span><span style="color:#E1E4E8"> (response.status) {</span></span>
+<span class="line"><span style="color:#F97583">        case</span><span style="color:#79B8FF"> 401</span><span style="color:#E1E4E8">:</span></span>
+<span class="line"><span style="color:#6A737D">          // 权限不够，一般是未登录</span></span>
+<span class="line"><span style="color:#6A737D">          // ...</span></span>
+<span class="line"><span style="color:#F97583">          break</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">        case</span><span style="color:#79B8FF"> 403</span><span style="color:#E1E4E8">:</span></span>
+<span class="line"><span style="color:#6A737D">          // 服务器已经接受，但是拒绝访问，通常是登录过期</span></span>
+<span class="line"><span style="color:#6A737D">          // ...</span></span>
+<span class="line"><span style="color:#E1E4E8">          localStorage.</span><span style="color:#B392F0">removeItem</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">"token"</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#F97583">          break</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">        case</span><span style="color:#79B8FF"> 404</span><span style="color:#E1E4E8">:</span></span>
+<span class="line"><span style="color:#6A737D">          // 找不到资源</span></span>
+<span class="line"><span style="color:#6A737D">          // ...</span></span>
+<span class="line"><span style="color:#F97583">          break</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#E1E4E8">      }</span></span>
+<span class="line"><span style="color:#E1E4E8">    } </span><span style="color:#F97583">else</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#6A737D">      // 服务器根本就没有返回任何东西</span></span>
+<span class="line"><span style="color:#6A737D">      // 这里一般只有两种情况，服务器崩溃，客户端没有网。</span></span>
+<span class="line"><span style="color:#6A737D">      // 通常在这里做断网处理</span></span>
+<span class="line"><span style="color:#F97583">      if</span><span style="color:#E1E4E8"> (</span><span style="color:#F97583">!</span><span style="color:#E1E4E8">window.navigator.onLine) {</span></span>
+<span class="line"><span style="color:#6A737D">        // 处理断网</span></span>
+<span class="line"><span style="color:#6A737D">        // ...</span></span>
+<span class="line"><span style="color:#F97583">        return</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#E1E4E8">      }</span></span>
+<span class="line"><span style="color:#6A737D">      // 什么都不是，返回一个错误</span></span>
+<span class="line"><span style="color:#F97583">      return</span><span style="color:#79B8FF"> Promise</span><span style="color:#E1E4E8">.</span><span style="color:#B392F0">reject</span><span style="color:#E1E4E8">(error);</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"><span style="color:#E1E4E8">  }</span></span>
+<span class="line"><span style="color:#E1E4E8">);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">// 都写好，最后将axios导出</span></span>
+<span class="line"><span style="color:#F97583">export</span><span style="color:#F97583"> default</span><span style="color:#E1E4E8"> axios;</span></span></code></pre>
+<p>然后，将axios添加到自己的项目中，比如在<code>Vue</code>中：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="javascript"><code><span class="line"><span style="color:#79B8FF">Vue</span><span style="color:#E1E4E8">.</span><span style="color:#79B8FF">prototype</span><span style="color:#E1E4E8">.$http </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> axios;</span></span></code></pre>
+<p>然后，在任何一个Vue的组件中，都可以直接使用<code>this.$http</code>的<code>get</code>或<code>post</code>等方法来调用这个axios。</p> </div> <!-- 悬浮 TOC --> <button class="toc-toggle" id="toc-toggle" aria-label="显示目录" data-astro-cid-iy4s3wf7> <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-list" data-astro-cid-iy4s3wf7> <line x1="8" y1="6" x2="21" y2="6" data-astro-cid-iy4s3wf7></line> <line x1="8" y1="12" x2="21" y2="12" data-astro-cid-iy4s3wf7></line> <line x1="8" y1="18" x2="21" y2="18" data-astro-cid-iy4s3wf7></line> <line x1="3" y1="6" x2="3.01" y2="6" data-astro-cid-iy4s3wf7></line> <line x1="3" y1="12" x2="3.01" y2="12" data-astro-cid-iy4s3wf7></line> <line x1="3" y1="18" x2="3.01" y2="18" data-astro-cid-iy4s3wf7></line> </svg> </button> <aside class="floating-toc" id="floating-toc" data-astro-cid-iy4s3wf7> <div class="toc-header" data-astro-cid-iy4s3wf7> <h3 data-astro-cid-iy4s3wf7>目录</h3> </div> <nav class="toc-nav" id="toc-nav" data-astro-cid-g3fimnfa> <!-- TOC 内容将由客户端脚本填充 --> </nav>  <script type="module">document.addEventListener("DOMContentLoaded",()=>{const n=document.getElementById("toc-nav"),a=document.querySelector(".toc-header h3");if(!n)return;const s=document.querySelector(".article-header h1")?.textContent||"目录";a&&(a.textContent=s);const c=Array.from(document.querySelectorAll(".article-content h2, .article-content h3, .article-content h4, .article-content h5, .article-content h6"));if(c.length===0){n.innerHTML='<p style="color: var(--color-text-secondary); padding: 0.5rem;">暂无目录</p>';return}c.forEach(e=>{e.id||(e.id=e.textContent?.toLowerCase().replace(/\s+/g,"-").replace(/[^\w\-\u4e00-\u9fa5]/g,"")||"")});const l=document.createElement("ul");c.forEach(e=>{const t=document.createElement("li"),o=document.createElement("a");o.href=`#${e.id}`,o.textContent=e.textContent||"",o.classList.add(`toc-${e.tagName.toLowerCase()}`),o.addEventListener("click",i=>{i.preventDefault();const r=document.getElementById(e.id);if(r){const u=r.getBoundingClientRect().top+window.pageYOffset-80;window.scrollTo({top:u,behavior:"smooth"}),history.pushState(null,"",`#${e.id}`)}}),t.appendChild(o),l.appendChild(t)}),n.appendChild(l);const d={root:null,rootMargin:"-60px 0px -80% 0px",threshold:0},h=new IntersectionObserver(e=>{e.forEach(t=>{if(t.isIntersecting){const o=t.target.id;n.querySelectorAll("a").forEach(r=>{r.classList.remove("active")});const i=n.querySelector(`a[href="#${o}"]`);i&&i.classList.add("active")}})},d);c.forEach(e=>h.observe(e)),setTimeout(()=>{if(window.location.hash){const t=n.querySelector(`a[href="${window.location.hash}"]`);if(t){n.querySelectorAll("a").forEach(o=>o.classList.remove("active")),t.classList.add("active");return}}let e="";for(const t of c)if(t.getBoundingClientRect().top<=150)e=t.id;else break;if(!e&&c.length>0&&window.scrollY<100&&(e=c[0].id),e){n.querySelectorAll("a").forEach(o=>o.classList.remove("active"));const t=n.querySelector(`a[href="#${e}"]`);t&&t.classList.add("active")}},100)});</script> </aside> <div class="toc-overlay" id="toc-overlay" data-astro-cid-iy4s3wf7></div> <section class="comments" data-astro-cid-iy4s3wf7> <div class="giscus-wrapper"> <script src="https://giscus.app/client.js" data-repo="jeremyjone/blog-comments" data-repo-id="R_kgDOQlVVGg" data-category="Announcements" data-category-id="DIC_kwDOQlVVGs4Czkir" data-mapping="title" data-term data-strict="0" data-reactions-enabled="1" data-emit-metadata="0" data-input-position="top" data-theme="preferred_color_scheme" data-lang="zh-CN" crossorigin="anonymous" async></script> <noscript>请启用 JavaScript 查看评论。</noscript> </div> </section> </article>  </main> <footer class="site-footer" data-astro-cid-x322jucz> <div class="container footer-content" data-astro-cid-x322jucz> <p data-astro-cid-x322jucz>
+&copy; 2025 <b data-astro-cid-x322jucz>JeremyJone.com</b> All rights reserved.
+</p> <div class="footer-links" data-astro-cid-x322jucz> <a href="https://github.com/jeremyjone" target="_blank" rel="noopener" data-astro-cid-x322jucz> GitHub </a> </div> </div> </footer> <script type="module" src="/_astro/BaseLayout.astro_astro_type_script_index_0_lang.D4h-rqQD.js"></script> <div id="search-modal" class="search-modal" style="display: none;" data-astro-cid-jwf5kjrd> <div class="search-overlay" data-astro-cid-jwf5kjrd></div> <div class="search-container" data-astro-cid-jwf5kjrd> <div class="search-header" data-astro-cid-jwf5kjrd> <input type="text" id="search-input-global" placeholder="搜索全站内容 (Cmd+K)..." autocomplete="off" data-astro-cid-jwf5kjrd> <button id="close-search" aria-label="Close search" data-astro-cid-jwf5kjrd>&times;</button> </div> <div id="search-results-global" class="search-results" data-astro-cid-jwf5kjrd> <div class="search-placeholder" data-astro-cid-jwf5kjrd>输入关键词开始搜索...</div> </div> </div> </div>  <script>
+    window.loadPagefind = async () => {
+        try {
+            return await import("/pagefind/pagefind.js");
+        } catch (e) {
+            console.warn("Failed to load pagefind:", e);
+            return null;
+        }
+    };
+</script> <script type="module" src="/_astro/SearchModal.astro_astro_type_script_index_0_lang.C4oQFeHw.js"></script> </body></html>  <script type="module">document.addEventListener("DOMContentLoaded",()=>{const c=document.getElementById("toc-toggle"),e=document.getElementById("floating-toc"),t=document.getElementById("toc-overlay");c?.addEventListener("click",()=>{e?.classList.add("active"),t?.classList.add("active")});const o=()=>{e?.classList.remove("active"),t?.classList.remove("active")};t?.addEventListener("click",o)});</script>

@@ -1,0 +1,205 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="dark" data-astro-cid-x322jucz> <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>真丶深入理解 JavaScript 原型和原型链（二）：原型和原型链</title><meta name="description" content="上一篇文章已经总结了关于原型的两个属性，那么接下来所有原型和原型链，乃至后面的继承，都与这两个属性有关系。 ## 原型和原型链 理解继承，首先要搞懂什么是原型和原型链。 ### 理解原型和原型链 上面已经介绍了关于原型的两个属性： ..."><link rel="canonical" href="https://www.jeremyjone.com//blog/%E7%9C%9F%E4%B8%B6%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3-javascript-%E5%8E%9F%E5%9E%8B%E5%92%8C%E5%8E%9F%E5%9E%8B%E9%93%BE-%E4%BA%8C-%E5%8E%9F%E5%9E%8B%E5%92%8C%E5%8E%9F/"><meta property="og:title" content="真丶深入理解 JavaScript 原型和原型链（二）：原型和原型链"><meta property="og:description" content="上一篇文章已经总结了关于原型的两个属性，那么接下来所有原型和原型链，乃至后面的继承，都与这两个属性有关系。 ## 原型和原型链 理解继承，首先要搞懂什么是原型和原型链。 ### 理解原型和原型链 上面已经介绍了关于原型的两个属性： ..."><meta property="og:type" content="article"><meta property="og:url" content="https://www.jeremyjone.com//blog/%E7%9C%9F%E4%B8%B6%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3-javascript-%E5%8E%9F%E5%9E%8B%E5%92%8C%E5%8E%9F%E5%9E%8B%E9%93%BE-%E4%BA%8C-%E5%8E%9F%E5%9E%8B%E5%92%8C%E5%8E%9F/"><meta property="og:site_name" content="JeremyJone's Blog"><meta property="og:locale" content="zh_CN"><link rel="icon" href="/favicon.ico"><link rel="stylesheet" href="/_astro/_year_.CFHYKZJi.css">
+<link rel="stylesheet" href="/_astro/_slug_.B1ShOm38.css"></head> <body data-astro-cid-x322jucz> <header class="site-header" data-astro-cid-x322jucz> <div class="container header-content" data-astro-cid-x322jucz> <a href="/" class="logo" data-astro-cid-x322jucz> <div class="logo-icon" data-astro-cid-x322jucz> <img src="/resources/avatar.png" alt="Logo" width="32" height="32" data-astro-cid-x322jucz> </div> <span class="logo-text" data-astro-cid-x322jucz>JeremyJone&#39;s Blog</span> </a> <div class="header-right" data-astro-cid-x322jucz> <nav class="nav" data-astro-cid-x322jucz> <a href="/" class="nav-link" data-astro-cid-x322jucz> 首页 </a><a href="/blog" class="nav-link active" data-astro-cid-x322jucz> 博客 </a><a href="/notes" class="nav-link" data-astro-cid-x322jucz> 笔记 </a> </nav> <button class="search-toggle" onclick="window.openSearchModal()" aria-label="搜索" data-astro-cid-x322jucz> <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-astro-cid-x322jucz><circle cx="11" cy="11" r="8" data-astro-cid-x322jucz></circle><line x1="21" y1="21" x2="16.65" y2="16.65" data-astro-cid-x322jucz></line></svg> <span class="search-placeholder" data-astro-cid-x322jucz>Ctrl+K 搜索...</span> </button> <button class="theme-toggle" id="theme-toggle" aria-label="切换主题" data-astro-cid-x322jucz> <svg class="sun-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" data-astro-cid-x322jucz> <circle cx="12" cy="12" r="5" data-astro-cid-x322jucz></circle> <line x1="12" y1="1" x2="12" y2="3" data-astro-cid-x322jucz></line> <line x1="12" y1="21" x2="12" y2="23" data-astro-cid-x322jucz></line> <line x1="4.22" y1="4.22" x2="5.64" y2="5.64" data-astro-cid-x322jucz></line> <line x1="18.36" y1="18.36" x2="19.78" y2="19.78" data-astro-cid-x322jucz></line> <line x1="1" y1="12" x2="3" y2="12" data-astro-cid-x322jucz></line> <line x1="21" y1="12" x2="23" y2="12" data-astro-cid-x322jucz></line> <line x1="4.22" y1="19.78" x2="5.64" y2="18.36" data-astro-cid-x322jucz></line> <line x1="18.36" y1="5.64" x2="19.78" y2="4.22" data-astro-cid-x322jucz></line> </svg> <svg class="moon-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" data-astro-cid-x322jucz> <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" data-astro-cid-x322jucz></path> </svg> </button> </div> </div> </header> <main class="container" data-astro-cid-x322jucz>  <article data-content-type="blog" data-pagefind-body data-pagefind-filter="type:blog" data-astro-cid-iy4s3wf7> <header class="article-header" data-astro-cid-iy4s3wf7> <h1 data-astro-cid-iy4s3wf7>真丶深入理解 JavaScript 原型和原型链（二）：原型和原型链</h1> <p class="meta" data-astro-cid-iy4s3wf7>
+发布于 2020-12-10 10:25:00 · 6 分钟 · 标签：<a href="/tags/JavaScript" class="tag" data-astro-cid-iy4s3wf7> JavaScript </a><a href="/tags/原型" class="tag" data-astro-cid-iy4s3wf7> 原型 </a> </p> </header> <div class="article-content" data-astro-cid-iy4s3wf7> <p>上一篇文章已经总结了关于原型的两个属性，那么接下来所有原型和原型链，乃至后面的继承，都与这两个属性有关系。</p>
+<h2 id="原型和原型链">原型和原型链</h2>
+<p>理解继承，首先要搞懂什么是原型和原型链。</p>
+<h3 id="理解原型和原型链">理解原型和原型链</h3>
+<p>上面已经介绍了关于原型的两个属性：</p>
+<ul>
+<li><code>__proto__</code></li>
+<li><code>prototype</code></li>
+</ul>
+<p>那么这里再小小总结一下，</p>
+<p>1、什么是原型</p>
+<blockquote>
+<p>原型即一个对象的构造器(<code>prototype</code>)，可以通过该原型构造器创造无数实例，每一个实例都具有指向该原型的属性(<code>__proto__</code>)。</p>
+</blockquote>
+<p>2、什么是原型链</p>
+<blockquote>
+<p>在对象中通过原型，一层一层向上查找父级引用，直到没有父级(null)。整个这条引用链，即为原型链。原型链定义了对象可以继承的的属性/方法和相互之间的关系。</p>
+</blockquote>
+<h3 id="理解原型继承">理解原型继承</h3>
+<p>有了这两个概念，尝试理解一下原型继承。</p>
+<h4 id="回到最开始的例子">回到最开始的例子</h4>
+<p>让我们重新来看一开始那个数组的例子：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="js"><code><span class="line"><span style="color:#F97583">let</span><span style="color:#E1E4E8"> arr </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> [];</span></span></code></pre>
+<p>我们尝试使用数组的方法：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="js"><code><span class="line"><span style="color:#E1E4E8">arr.</span><span style="color:#B392F0">concat</span><span style="color:#E1E4E8">([</span><span style="color:#9ECBFF">"jeremyjone"</span><span style="color:#E1E4E8">]);</span></span></code></pre>
+<p><img src="/images/2020/arrconcatexample.png" alt="concat 示例"></p>
+<p>它会成功，但是我们并没有给 <code>arr</code> 添加 <code>concat</code> 的方法。它调用的是其父级 —也就是 Array 构造器— 中的方法。</p>
+<p>这其实就是继承。我们创建的 <code>arr</code> 数组实例，调用了其原型链父级的方法。</p>
+<h4 id="一个原型继承的例子">一个原型继承的例子</h4>
+<p>如果是函数呢？再来看一个例子：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="js"><code><span class="line"><span style="color:#F97583">function</span><span style="color:#B392F0"> User</span><span style="color:#E1E4E8">() {}</span></span></code></pre>
+<p>这时候我们都知道这个 User 没有方法任何自己的方法。</p>
+<p><img src="/images/2020/emptyuser.png" alt="空的User"></p>
+<p>万物都是从 Object 继承的。此时，User 也是从 Object 继承的。</p>
+<p>那么现在给 Object 添加一个方法：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="js"><code><span class="line"><span style="color:#79B8FF">Object</span><span style="color:#E1E4E8">.</span><span style="color:#79B8FF">prototype</span><span style="color:#E1E4E8">.</span><span style="color:#B392F0">print</span><span style="color:#F97583"> =</span><span style="color:#F97583"> function</span><span style="color:#E1E4E8"> () {</span></span>
+<span class="line"><span style="color:#E1E4E8">  console.</span><span style="color:#B392F0">log</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">"Hi jeremyjone, this is Object print."</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#E1E4E8">};</span></span></code></pre>
+<h5 id="原型本身也可以继承">原型本身也可以继承</h5>
+<p>我们首先尝试让 User 调用这个 print 方法，要明确 User 是一个原型，但是当我们直接使用 User 的时候，它本身也是一个对象：</p>
+<p><img src="/images/2020/usercallprint.png" alt="User 调用 Object 的 print方法"></p>
+<p>没有错，它可以被调用。这说明在原型链上，是可以找到该方法，这说明了 User 确实是从 Object 继承的。</p>
+<p><img src="/images/2020/userextendobject.png" alt="显示User的继承关系"></p>
+<p>从图中可以看到在继承的原型中有 <code>print</code> 方法，即有如下等式关系：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="js"><code><span class="line"><span style="color:#E1E4E8">User.</span><span style="color:#79B8FF">__proto__</span><span style="color:#E1E4E8">.</span><span style="color:#79B8FF">__proto__</span><span style="color:#F97583"> ===</span><span style="color:#79B8FF"> Object</span><span style="color:#E1E4E8">.</span><span style="color:#79B8FF">prototype</span><span style="color:#E1E4E8">; </span><span style="color:#6A737D">// true</span></span></code></pre>
+<h5 id="原型创建的实例来继承">原型创建的实例来继承</h5>
+<p>同样还是刚才的例子，现在我们实例化一个 user，那么 User 现在作为一个原型，被 user 实例对象继承：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="js"><code><span class="line"><span style="color:#6A737D">// 接上例</span></span>
+<span class="line"><span style="color:#F97583">let</span><span style="color:#E1E4E8"> user </span><span style="color:#F97583">=</span><span style="color:#F97583"> new</span><span style="color:#B392F0"> User</span><span style="color:#E1E4E8">();</span></span></code></pre>
+<p>这样得到一个 user 实例。它也可以使用其原型属性和方法。</p>
+<p><img src="/images/2020/userobjectproto.png" alt="user对象实例原型链"></p>
+<p>该 user 实例中，只有一个 <code>__proto__</code> 属性，它指向了其原型，也就是 <code>User.prototype</code>，而其原型的父级正是 Object，即：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="js"><code><span class="line"><span style="color:#E1E4E8">user.</span><span style="color:#79B8FF">__proto__</span><span style="color:#F97583"> ===</span><span style="color:#79B8FF"> User</span><span style="color:#E1E4E8">.</span><span style="color:#79B8FF">prototype</span><span style="color:#E1E4E8">; </span><span style="color:#6A737D">// true</span></span>
+<span class="line"><span style="color:#E1E4E8">user.</span><span style="color:#79B8FF">__proto__</span><span style="color:#E1E4E8">.</span><span style="color:#79B8FF">__proto__</span><span style="color:#F97583"> ===</span><span style="color:#79B8FF"> Object</span><span style="color:#E1E4E8">.</span><span style="color:#79B8FF">prototype</span><span style="color:#E1E4E8">; </span><span style="color:#6A737D">// true</span></span></code></pre>
+<p>这个例子也印证了我们上面提到的 <code>__proto__</code> 属性是作用于对象的。所以，实例和原型的 <code>__proto__</code> 的值是不一样的：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="js"><code><span class="line"><span style="color:#E1E4E8">user.</span><span style="color:#79B8FF">__proto__</span><span style="color:#F97583"> ===</span><span style="color:#E1E4E8"> User.</span><span style="color:#79B8FF">__proto__</span><span style="color:#E1E4E8">; </span><span style="color:#6A737D">// false</span></span></code></pre>
+<p>同时也可以得出，最顶级的 Object 一定是一致的（Object 里面确实比较混乱，可以不用考虑），即：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="js"><code><span class="line"><span style="color:#E1E4E8">user.</span><span style="color:#79B8FF">__proto__</span><span style="color:#E1E4E8">.</span><span style="color:#79B8FF">__proto__</span><span style="color:#F97583"> ===</span><span style="color:#E1E4E8"> User.</span><span style="color:#79B8FF">__proto__</span><span style="color:#E1E4E8">.</span><span style="color:#79B8FF">__proto__</span><span style="color:#E1E4E8">; </span><span style="color:#6A737D">// true。它们都指向 Object.prototype</span></span></code></pre>
+<p>针对该例子，可以作如下理解：</p>
+<p><img src="/images/2020/userexampleimage.png" alt="User例子关系图"></p>
+<h3 id="原型链中的优先级">原型链中的优先级</h3>
+<p>现在我们知道，对象的属性/方法都是一层一层向上查找，那么如果遇到相同的内容，它的优先级是如何的呢？</p>
+<p>举一个例子：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="js"><code><span class="line"><span style="color:#F97583">function</span><span style="color:#B392F0"> User</span><span style="color:#E1E4E8">(</span><span style="color:#FFAB70">name</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#79B8FF">  this</span><span style="color:#E1E4E8">.name </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> name;</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">let</span><span style="color:#E1E4E8"> user </span><span style="color:#F97583">=</span><span style="color:#F97583"> new</span><span style="color:#B392F0"> User</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">"jeremyjone"</span><span style="color:#E1E4E8">);</span></span></code></pre>
+<p>现在创建了一个对象，并生成一个对象实例，它现在的样子应该是：</p>
+<p><img src="/images/2020/createuser.png" alt="创建一个对象"></p>
+<p>现在往 Object 的原型中添加几个属性：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="js"><code><span class="line"><span style="color:#79B8FF">Object</span><span style="color:#E1E4E8">.</span><span style="color:#79B8FF">prototype</span><span style="color:#E1E4E8">.a </span><span style="color:#F97583">=</span><span style="color:#9ECBFF"> "a"</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#79B8FF">Object</span><span style="color:#E1E4E8">.</span><span style="color:#79B8FF">prototype</span><span style="color:#E1E4E8">.b </span><span style="color:#F97583">=</span><span style="color:#9ECBFF"> "b"</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#79B8FF">Object</span><span style="color:#E1E4E8">.</span><span style="color:#79B8FF">prototype</span><span style="color:#E1E4E8">.c </span><span style="color:#F97583">=</span><span style="color:#9ECBFF"> "c"</span><span style="color:#E1E4E8">;</span></span></code></pre>
+<p>添加之后，这条原型链应该是这样的：</p>
+<p><img src="/images/2020/createuseraddabc.png" alt="添加属性"></p>
+<p>根据上面提过的，现在：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="js"><code><span class="line"><span style="color:#E1E4E8">console.</span><span style="color:#B392F0">log</span><span style="color:#E1E4E8">(user.a); </span><span style="color:#6A737D">// "a"</span></span>
+<span class="line"><span style="color:#E1E4E8">console.</span><span style="color:#B392F0">log</span><span style="color:#E1E4E8">(user.b); </span><span style="color:#6A737D">// "b"</span></span>
+<span class="line"><span style="color:#E1E4E8">console.</span><span style="color:#B392F0">log</span><span style="color:#E1E4E8">(user.c); </span><span style="color:#6A737D">// "c"</span></span></code></pre>
+<p>应该是可用的。</p>
+<p>现在分别修改值：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="js"><code><span class="line"><span style="color:#E1E4E8">user.a </span><span style="color:#F97583">=</span><span style="color:#9ECBFF"> "aa"</span><span style="color:#E1E4E8">; </span><span style="color:#6A737D">// 修改 user 对象的 a 属性</span></span>
+<span class="line"><span style="color:#E1E4E8">User.b </span><span style="color:#F97583">=</span><span style="color:#9ECBFF"> "bb"</span><span style="color:#E1E4E8">; </span><span style="color:#6A737D">// 修改 User 模型的 b 属性</span></span>
+<span class="line"><span style="color:#79B8FF">User</span><span style="color:#E1E4E8">.</span><span style="color:#79B8FF">prototype</span><span style="color:#E1E4E8">.c </span><span style="color:#F97583">=</span><span style="color:#9ECBFF"> "cc"</span><span style="color:#E1E4E8">; </span><span style="color:#6A737D">// 修改 User 原型的 c 属性</span></span></code></pre>
+<p>其结果如下：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="js"><code><span class="line"><span style="color:#E1E4E8">console.</span><span style="color:#B392F0">log</span><span style="color:#E1E4E8">(user.a); </span><span style="color:#6A737D">// "aa"</span></span>
+<span class="line"><span style="color:#E1E4E8">console.</span><span style="color:#B392F0">log</span><span style="color:#E1E4E8">(user.b); </span><span style="color:#6A737D">// "b"</span></span>
+<span class="line"><span style="color:#E1E4E8">console.</span><span style="color:#B392F0">log</span><span style="color:#E1E4E8">(user.c); </span><span style="color:#6A737D">// "cc"</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">console.</span><span style="color:#B392F0">log</span><span style="color:#E1E4E8">(User.a); </span><span style="color:#6A737D">// "a"</span></span>
+<span class="line"><span style="color:#E1E4E8">console.</span><span style="color:#B392F0">log</span><span style="color:#E1E4E8">(User.b); </span><span style="color:#6A737D">// "bb"</span></span>
+<span class="line"><span style="color:#E1E4E8">console.</span><span style="color:#B392F0">log</span><span style="color:#E1E4E8">(User.c); </span><span style="color:#6A737D">// "c"</span></span></code></pre>
+<p>分析一下三条执行语句：</p>
+<p>1、当执行 <code>user.a = "aa"</code> 语句时，<code>user</code> 对象中没有 <code>a</code> 属性，所以添加了一个值为 <code>"aa"</code> 的 <code>a</code> 属性。这样，当读取 <code>a</code> 属性时，就不会从原型中查找。</p>
+<p>2、而 <code>User.b = "bb"</code> 语句是给 <code>User</code> 模型添加一个属性，该属性没有添加在原型中，而是添加在了 <code>constructor</code> 中，根据上面我们讲过的内容，<code>constructor</code> 保存私有属性/方法，而 <code>prototype</code> 保存共享的属性/方法，所以 <code>User.b</code> 属于私有，并不被 <code>user</code> 所继承。</p>
+<p>3、最后 <code>User.prototype.c = "cc"</code> 语句，是在 <code>User</code> 的原型中添加一个值为 <code>cc</code> 的 <code>c</code> 属性，所以它可以被继承到 <code>user</code>，也就有了打印的结果。</p>
+<p>现在对象 user 的原型如下：</p>
+<p><img src="/images/2020/modifyvaluea.png" alt="修改后的 user"></p>
+<p>而 User 的原型如下：</p>
+<p><img src="/images/2020/modifyvalueb.png" alt="修改后的 User"></p>
+<p>图中可以看到和分析的一致。</p>
+<p>这与主流语言的继承相似，即当前对象属性/方法的优先级最高。隐约看到了多态的影子~</p>
+<h3 id="操作对象的原型关系">操作对象的原型关系</h3>
+<p>前面说不建议直接操作 <code>__proto__</code> 属性，那么我们需要通过更规范的方式进行操作，用到两个方法：</p>
+<ul>
+<li><code>Object.setPrototypeOf</code></li>
+<li><code>Object.getPrototypeOf</code></li>
+</ul>
+<p>除了名字长一些，其实还是很规范的。</p>
+<h4 id="objectsetprototypeof">Object.setPrototypeOf</h4>
+<p>该方法修改对象的原型关系，可以变更当前对象的从属关系。</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="js"><code><span class="line"><span style="color:#F97583">let</span><span style="color:#E1E4E8"> a </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> { a: </span><span style="color:#9ECBFF">"-a"</span><span style="color:#E1E4E8"> };</span></span>
+<span class="line"><span style="color:#F97583">let</span><span style="color:#E1E4E8"> b </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> { b: </span><span style="color:#9ECBFF">"-b"</span><span style="color:#E1E4E8"> };</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">Object.</span><span style="color:#B392F0">setPrototypeOf</span><span style="color:#E1E4E8">(a, b); </span><span style="color:#6A737D">// 将 a 从属于 b</span></span>
+<span class="line"><span style="color:#6A737D">// 这等同于 a.__proto__ = b;</span></span></code></pre>
+<p>得到如下关系：</p>
+<p><img src="/images/2020/ainb.png" alt="a从属b关系"></p>
+<p>这样就改变了两个对象之间的从属关系，那么现在 <code>a</code> 已经继承了 <code>b</code> 的属性：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="js"><code><span class="line"><span style="color:#E1E4E8">console.</span><span style="color:#B392F0">log</span><span style="color:#E1E4E8">(a.b); </span><span style="color:#6A737D">// -b</span></span></code></pre>
+<h4 id="objectgetprototypeof">Object.getPrototypeOf</h4>
+<p>使用该方法可以查看一个对象的原型。</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="js"><code><span class="line"><span style="color:#6A737D">// 续上例</span></span>
+<span class="line"><span style="color:#E1E4E8">Object.</span><span style="color:#B392F0">getPrototypeOf</span><span style="color:#E1E4E8">(a) </span><span style="color:#F97583">===</span><span style="color:#E1E4E8"> a.</span><span style="color:#79B8FF">__proto__</span><span style="color:#E1E4E8">; </span><span style="color:#6A737D">// true</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">console.</span><span style="color:#B392F0">log</span><span style="color:#E1E4E8">(Object.</span><span style="color:#B392F0">getPrototypeOf</span><span style="color:#E1E4E8">(a)); </span><span style="color:#6A737D">// {name: "bb", b: "-b"}</span></span></code></pre>
+<p><img src="/images/2020/ainbproto.png" alt="查看a对象的原型"></p>
+<h3 id="原型链的检测">原型链的检测</h3>
+<h4 id="instanceof-运算符">instanceof 运算符</h4>
+<p>使用 <code>instanceof</code> 运算符，可以向上查找原型链中的从属关系。</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="js"><code><span class="line"><span style="color:#F97583">function</span><span style="color:#B392F0"> A</span><span style="color:#E1E4E8">() {}</span></span>
+<span class="line"><span style="color:#F97583">function</span><span style="color:#B392F0"> B</span><span style="color:#E1E4E8">() {}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">let</span><span style="color:#E1E4E8"> a </span><span style="color:#F97583">=</span><span style="color:#F97583"> new</span><span style="color:#B392F0"> A</span><span style="color:#E1E4E8">();</span></span>
+<span class="line"><span style="color:#F97583">let</span><span style="color:#E1E4E8"> b </span><span style="color:#F97583">=</span><span style="color:#F97583"> new</span><span style="color:#B392F0"> B</span><span style="color:#E1E4E8">();</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">console.</span><span style="color:#B392F0">log</span><span style="color:#E1E4E8">(a </span><span style="color:#F97583">instanceof</span><span style="color:#B392F0"> A</span><span style="color:#E1E4E8">); </span><span style="color:#6A737D">// true</span></span>
+<span class="line"><span style="color:#E1E4E8">console.</span><span style="color:#B392F0">log</span><span style="color:#E1E4E8">(a </span><span style="color:#F97583">instanceof</span><span style="color:#B392F0"> B</span><span style="color:#E1E4E8">); </span><span style="color:#6A737D">// false</span></span>
+<span class="line"><span style="color:#E1E4E8">console.</span><span style="color:#B392F0">log</span><span style="color:#E1E4E8">(a </span><span style="color:#F97583">instanceof</span><span style="color:#B392F0"> Object</span><span style="color:#E1E4E8">); </span><span style="color:#6A737D">// true</span></span></code></pre>
+<p>稍微改变一下：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="js"><code><span class="line"><span style="color:#6A737D">// 接上例</span></span>
+<span class="line"><span style="color:#79B8FF">A</span><span style="color:#E1E4E8">.</span><span style="color:#79B8FF">prototype</span><span style="color:#E1E4E8">.</span><span style="color:#79B8FF">__proto__</span><span style="color:#F97583"> =</span><span style="color:#79B8FF"> B</span><span style="color:#E1E4E8">.</span><span style="color:#79B8FF">prototype</span><span style="color:#E1E4E8">; </span><span style="color:#6A737D">// 修改 A 的原型关系，现在 B 是 A 的父级</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">console.</span><span style="color:#B392F0">log</span><span style="color:#E1E4E8">(a </span><span style="color:#F97583">instanceof</span><span style="color:#B392F0"> A</span><span style="color:#E1E4E8">); </span><span style="color:#6A737D">// true</span></span>
+<span class="line"><span style="color:#E1E4E8">console.</span><span style="color:#B392F0">log</span><span style="color:#E1E4E8">(a </span><span style="color:#F97583">instanceof</span><span style="color:#B392F0"> B</span><span style="color:#E1E4E8">); </span><span style="color:#6A737D">// true</span></span>
+<span class="line"><span style="color:#E1E4E8">console.</span><span style="color:#B392F0">log</span><span style="color:#E1E4E8">(a </span><span style="color:#F97583">instanceof</span><span style="color:#B392F0"> Object</span><span style="color:#E1E4E8">); </span><span style="color:#6A737D">// true</span></span>
+<span class="line"><span style="color:#E1E4E8">console.</span><span style="color:#B392F0">log</span><span style="color:#E1E4E8">(b </span><span style="color:#F97583">instanceof</span><span style="color:#B392F0"> B</span><span style="color:#E1E4E8">); </span><span style="color:#6A737D">// true</span></span>
+<span class="line"><span style="color:#E1E4E8">console.</span><span style="color:#B392F0">log</span><span style="color:#E1E4E8">(b </span><span style="color:#F97583">instanceof</span><span style="color:#B392F0"> A</span><span style="color:#E1E4E8">); </span><span style="color:#6A737D">// false</span></span></code></pre>
+<p>可以看到，当 A 的原型链发生改变的时候，下面的判断也会发生改变，a 已经从属于 B 了。</p>
+<p>甚至我们添加方法，也可以使用了：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="js"><code><span class="line"><span style="color:#E1E4E8">a.</span><span style="color:#B392F0">show</span><span style="color:#E1E4E8">(); </span><span style="color:#6A737D">// 报错，因为没有方法</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#79B8FF">B</span><span style="color:#E1E4E8">.</span><span style="color:#79B8FF">prototype</span><span style="color:#E1E4E8">.</span><span style="color:#B392F0">show</span><span style="color:#F97583"> =</span><span style="color:#F97583"> function</span><span style="color:#E1E4E8"> () {</span></span>
+<span class="line"><span style="color:#E1E4E8">  console.</span><span style="color:#B392F0">log</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">"B show"</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#E1E4E8">};</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">// 此时，对象 a 可以调用 show 方法了。它在原型链中</span></span>
+<span class="line"><span style="color:#E1E4E8">a.</span><span style="color:#B392F0">show</span><span style="color:#E1E4E8">(); </span><span style="color:#6A737D">// B show</span></span></code></pre>
+<h4 id="objectisprototypeof-方法">Object.isPrototypeOf 方法</h4>
+<p>作为与上面 <code>instanceof</code> 运算符的区别，使用 <code>Object.isPrototypeOf</code> 方式，可以明确检测一个<strong>对象</strong>是否在另一个对象的原型链上。</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="js"><code><span class="line"><span style="color:#F97583">let</span><span style="color:#E1E4E8"> a </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> {};</span></span>
+<span class="line"><span style="color:#F97583">let</span><span style="color:#E1E4E8"> b </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> {};</span></span>
+<span class="line"><span style="color:#F97583">let</span><span style="color:#E1E4E8"> c </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> {};</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">Object.</span><span style="color:#B392F0">setPrototypeOf</span><span style="color:#E1E4E8">(a, b);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">console.</span><span style="color:#B392F0">log</span><span style="color:#E1E4E8">(a.</span><span style="color:#B392F0">isPrototypeOf</span><span style="color:#E1E4E8">(b)); </span><span style="color:#6A737D">// false</span></span>
+<span class="line"><span style="color:#E1E4E8">console.</span><span style="color:#B392F0">log</span><span style="color:#E1E4E8">(b.</span><span style="color:#B392F0">isPrototypeOf</span><span style="color:#E1E4E8">(a)); </span><span style="color:#6A737D">// true</span></span>
+<span class="line"><span style="color:#E1E4E8">console.</span><span style="color:#B392F0">log</span><span style="color:#E1E4E8">(c.</span><span style="color:#B392F0">isPrototypeOf</span><span style="color:#E1E4E8">(a)); </span><span style="color:#6A737D">// false</span></span>
+<span class="line"><span style="color:#E1E4E8">console.</span><span style="color:#B392F0">log</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">Object</span><span style="color:#E1E4E8">.</span><span style="color:#79B8FF">prototype</span><span style="color:#E1E4E8">.</span><span style="color:#B392F0">isPrototypeOf</span><span style="color:#E1E4E8">(a)); </span><span style="color:#6A737D">// true</span></span>
+<span class="line"><span style="color:#E1E4E8">console.</span><span style="color:#B392F0">log</span><span style="color:#E1E4E8">(Object.</span><span style="color:#B392F0">isPrototypeOf</span><span style="color:#E1E4E8">(a)); </span><span style="color:#6A737D">// false</span></span></code></pre>
+<h4 id="检测是否存在属性方法">检测是否存在属性/方法</h4>
+<h5 id="in-运算符检测原型链">in 运算符检测原型链</h5>
+<p>使用 <code>in</code> 运算符检测原型链中是否存在属性/方法，该方法会在原型链中逐级检测。</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="js"><code><span class="line"><span style="color:#F97583">let</span><span style="color:#E1E4E8"> a </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> { name: </span><span style="color:#9ECBFF">"jeremyjone"</span><span style="color:#E1E4E8"> };</span></span>
+<span class="line"><span style="color:#79B8FF">Object</span><span style="color:#E1E4E8">.</span><span style="color:#79B8FF">prototype</span><span style="color:#E1E4E8">.url </span><span style="color:#F97583">=</span><span style="color:#9ECBFF"> "jeremyjone.com"</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">console.</span><span style="color:#B392F0">log</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">"name"</span><span style="color:#F97583"> in</span><span style="color:#E1E4E8"> a); </span><span style="color:#6A737D">// true</span></span>
+<span class="line"><span style="color:#E1E4E8">console.</span><span style="color:#B392F0">log</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">"a"</span><span style="color:#F97583"> in</span><span style="color:#E1E4E8"> a); </span><span style="color:#6A737D">// false</span></span>
+<span class="line"><span style="color:#E1E4E8">console.</span><span style="color:#B392F0">log</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">"url"</span><span style="color:#F97583"> in</span><span style="color:#E1E4E8"> a); </span><span style="color:#6A737D">// true</span></span></code></pre>
+<h5 id="objecthasownproperty-方法检测">Object.hasOwnProperty 方法检测</h5>
+<p>使用 <code>Object.hasOwnProperty</code> 方法只检测当前对象的属性。</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="js"><code><span class="line"><span style="color:#F97583">let</span><span style="color:#E1E4E8"> a </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> { name: </span><span style="color:#9ECBFF">"jeremyjone"</span><span style="color:#E1E4E8"> };</span></span>
+<span class="line"><span style="color:#79B8FF">Object</span><span style="color:#E1E4E8">.</span><span style="color:#79B8FF">prototype</span><span style="color:#E1E4E8">.url </span><span style="color:#F97583">=</span><span style="color:#9ECBFF"> "jeremyjone.com"</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">for</span><span style="color:#E1E4E8"> (</span><span style="color:#F97583">const</span><span style="color:#79B8FF"> key</span><span style="color:#F97583"> in</span><span style="color:#E1E4E8"> a) {</span></span>
+<span class="line"><span style="color:#F97583">  if</span><span style="color:#E1E4E8"> (a.</span><span style="color:#B392F0">hasOwnProperty</span><span style="color:#E1E4E8">(key)) {</span></span>
+<span class="line"><span style="color:#E1E4E8">    console.</span><span style="color:#B392F0">log</span><span style="color:#E1E4E8">(a[key]);</span></span>
+<span class="line"><span style="color:#E1E4E8">  }</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"><span style="color:#6A737D">// 只有一条 "jeremyjone"</span></span></code></pre> </div> <!-- 悬浮 TOC --> <button class="toc-toggle" id="toc-toggle" aria-label="显示目录" data-astro-cid-iy4s3wf7> <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-list" data-astro-cid-iy4s3wf7> <line x1="8" y1="6" x2="21" y2="6" data-astro-cid-iy4s3wf7></line> <line x1="8" y1="12" x2="21" y2="12" data-astro-cid-iy4s3wf7></line> <line x1="8" y1="18" x2="21" y2="18" data-astro-cid-iy4s3wf7></line> <line x1="3" y1="6" x2="3.01" y2="6" data-astro-cid-iy4s3wf7></line> <line x1="3" y1="12" x2="3.01" y2="12" data-astro-cid-iy4s3wf7></line> <line x1="3" y1="18" x2="3.01" y2="18" data-astro-cid-iy4s3wf7></line> </svg> </button> <aside class="floating-toc" id="floating-toc" data-astro-cid-iy4s3wf7> <div class="toc-header" data-astro-cid-iy4s3wf7> <h3 data-astro-cid-iy4s3wf7>目录</h3> </div> <nav class="toc-nav" id="toc-nav" data-astro-cid-g3fimnfa> <!-- TOC 内容将由客户端脚本填充 --> </nav>  <script type="module">document.addEventListener("DOMContentLoaded",()=>{const n=document.getElementById("toc-nav"),a=document.querySelector(".toc-header h3");if(!n)return;const s=document.querySelector(".article-header h1")?.textContent||"目录";a&&(a.textContent=s);const c=Array.from(document.querySelectorAll(".article-content h2, .article-content h3, .article-content h4, .article-content h5, .article-content h6"));if(c.length===0){n.innerHTML='<p style="color: var(--color-text-secondary); padding: 0.5rem;">暂无目录</p>';return}c.forEach(e=>{e.id||(e.id=e.textContent?.toLowerCase().replace(/\s+/g,"-").replace(/[^\w\-\u4e00-\u9fa5]/g,"")||"")});const l=document.createElement("ul");c.forEach(e=>{const t=document.createElement("li"),o=document.createElement("a");o.href=`#${e.id}`,o.textContent=e.textContent||"",o.classList.add(`toc-${e.tagName.toLowerCase()}`),o.addEventListener("click",i=>{i.preventDefault();const r=document.getElementById(e.id);if(r){const u=r.getBoundingClientRect().top+window.pageYOffset-80;window.scrollTo({top:u,behavior:"smooth"}),history.pushState(null,"",`#${e.id}`)}}),t.appendChild(o),l.appendChild(t)}),n.appendChild(l);const d={root:null,rootMargin:"-60px 0px -80% 0px",threshold:0},h=new IntersectionObserver(e=>{e.forEach(t=>{if(t.isIntersecting){const o=t.target.id;n.querySelectorAll("a").forEach(r=>{r.classList.remove("active")});const i=n.querySelector(`a[href="#${o}"]`);i&&i.classList.add("active")}})},d);c.forEach(e=>h.observe(e)),setTimeout(()=>{if(window.location.hash){const t=n.querySelector(`a[href="${window.location.hash}"]`);if(t){n.querySelectorAll("a").forEach(o=>o.classList.remove("active")),t.classList.add("active");return}}let e="";for(const t of c)if(t.getBoundingClientRect().top<=150)e=t.id;else break;if(!e&&c.length>0&&window.scrollY<100&&(e=c[0].id),e){n.querySelectorAll("a").forEach(o=>o.classList.remove("active"));const t=n.querySelector(`a[href="#${e}"]`);t&&t.classList.add("active")}},100)});</script> </aside> <div class="toc-overlay" id="toc-overlay" data-astro-cid-iy4s3wf7></div> <section class="comments" data-astro-cid-iy4s3wf7> <div class="giscus-wrapper"> <script src="https://giscus.app/client.js" data-repo="jeremyjone/blog-comments" data-repo-id="R_kgDOQlVVGg" data-category="Announcements" data-category-id="DIC_kwDOQlVVGs4Czkir" data-mapping="title" data-term data-strict="0" data-reactions-enabled="1" data-emit-metadata="0" data-input-position="top" data-theme="preferred_color_scheme" data-lang="zh-CN" crossorigin="anonymous" async></script> <noscript>请启用 JavaScript 查看评论。</noscript> </div> </section> </article>  </main> <footer class="site-footer" data-astro-cid-x322jucz> <div class="container footer-content" data-astro-cid-x322jucz> <p data-astro-cid-x322jucz>
+&copy; 2025 <b data-astro-cid-x322jucz>JeremyJone.com</b> All rights reserved.
+</p> <div class="footer-links" data-astro-cid-x322jucz> <a href="https://github.com/jeremyjone" target="_blank" rel="noopener" data-astro-cid-x322jucz> GitHub </a> </div> </div> </footer> <script type="module" src="/_astro/BaseLayout.astro_astro_type_script_index_0_lang.D4h-rqQD.js"></script> <div id="search-modal" class="search-modal" style="display: none;" data-astro-cid-jwf5kjrd> <div class="search-overlay" data-astro-cid-jwf5kjrd></div> <div class="search-container" data-astro-cid-jwf5kjrd> <div class="search-header" data-astro-cid-jwf5kjrd> <input type="text" id="search-input-global" placeholder="搜索全站内容 (Cmd+K)..." autocomplete="off" data-astro-cid-jwf5kjrd> <button id="close-search" aria-label="Close search" data-astro-cid-jwf5kjrd>&times;</button> </div> <div id="search-results-global" class="search-results" data-astro-cid-jwf5kjrd> <div class="search-placeholder" data-astro-cid-jwf5kjrd>输入关键词开始搜索...</div> </div> </div> </div>  <script>
+    window.loadPagefind = async () => {
+        try {
+            return await import("/pagefind/pagefind.js");
+        } catch (e) {
+            console.warn("Failed to load pagefind:", e);
+            return null;
+        }
+    };
+</script> <script type="module" src="/_astro/SearchModal.astro_astro_type_script_index_0_lang.C4oQFeHw.js"></script> </body></html>  <script type="module">document.addEventListener("DOMContentLoaded",()=>{const c=document.getElementById("toc-toggle"),e=document.getElementById("floating-toc"),t=document.getElementById("toc-overlay");c?.addEventListener("click",()=>{e?.classList.add("active"),t?.classList.add("active")});const o=()=>{e?.classList.remove("active"),t?.classList.remove("active")};t?.addEventListener("click",o)});</script>

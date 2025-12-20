@@ -1,0 +1,264 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="dark" data-astro-cid-x322jucz> <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>浅谈if...else与switch的区别和效率问题</title><meta name="description" content="各种语言都有条件语句，基本上所有语言都有`if...else`，大部分语言也都有`switch`，他们长得很像，基本上都可以相互转化使用。那么这两种语句有什么区别呢？ ## if...else 首先说说`if...else`，与其变种`..."><link rel="canonical" href="https://www.jeremyjone.com//blog/%E6%B5%85%E8%B0%88if-else%E4%B8%8Eswitch%E7%9A%84%E5%8C%BA%E5%88%AB%E5%92%8C%E6%95%88%E7%8E%87%E9%97%AE%E9%A2%98/"><meta property="og:title" content="浅谈if...else与switch的区别和效率问题"><meta property="og:description" content="各种语言都有条件语句，基本上所有语言都有`if...else`，大部分语言也都有`switch`，他们长得很像，基本上都可以相互转化使用。那么这两种语句有什么区别呢？ ## if...else 首先说说`if...else`，与其变种`..."><meta property="og:type" content="article"><meta property="og:url" content="https://www.jeremyjone.com//blog/%E6%B5%85%E8%B0%88if-else%E4%B8%8Eswitch%E7%9A%84%E5%8C%BA%E5%88%AB%E5%92%8C%E6%95%88%E7%8E%87%E9%97%AE%E9%A2%98/"><meta property="og:site_name" content="JeremyJone's Blog"><meta property="og:locale" content="zh_CN"><link rel="icon" href="/favicon.ico"><link rel="stylesheet" href="/_astro/_year_.CFHYKZJi.css">
+<link rel="stylesheet" href="/_astro/_slug_.B1ShOm38.css"></head> <body data-astro-cid-x322jucz> <header class="site-header" data-astro-cid-x322jucz> <div class="container header-content" data-astro-cid-x322jucz> <a href="/" class="logo" data-astro-cid-x322jucz> <div class="logo-icon" data-astro-cid-x322jucz> <img src="/resources/avatar.png" alt="Logo" width="32" height="32" data-astro-cid-x322jucz> </div> <span class="logo-text" data-astro-cid-x322jucz>JeremyJone&#39;s Blog</span> </a> <div class="header-right" data-astro-cid-x322jucz> <nav class="nav" data-astro-cid-x322jucz> <a href="/" class="nav-link" data-astro-cid-x322jucz> 首页 </a><a href="/blog" class="nav-link active" data-astro-cid-x322jucz> 博客 </a><a href="/notes" class="nav-link" data-astro-cid-x322jucz> 笔记 </a> </nav> <button class="search-toggle" onclick="window.openSearchModal()" aria-label="搜索" data-astro-cid-x322jucz> <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-astro-cid-x322jucz><circle cx="11" cy="11" r="8" data-astro-cid-x322jucz></circle><line x1="21" y1="21" x2="16.65" y2="16.65" data-astro-cid-x322jucz></line></svg> <span class="search-placeholder" data-astro-cid-x322jucz>Ctrl+K 搜索...</span> </button> <button class="theme-toggle" id="theme-toggle" aria-label="切换主题" data-astro-cid-x322jucz> <svg class="sun-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" data-astro-cid-x322jucz> <circle cx="12" cy="12" r="5" data-astro-cid-x322jucz></circle> <line x1="12" y1="1" x2="12" y2="3" data-astro-cid-x322jucz></line> <line x1="12" y1="21" x2="12" y2="23" data-astro-cid-x322jucz></line> <line x1="4.22" y1="4.22" x2="5.64" y2="5.64" data-astro-cid-x322jucz></line> <line x1="18.36" y1="18.36" x2="19.78" y2="19.78" data-astro-cid-x322jucz></line> <line x1="1" y1="12" x2="3" y2="12" data-astro-cid-x322jucz></line> <line x1="21" y1="12" x2="23" y2="12" data-astro-cid-x322jucz></line> <line x1="4.22" y1="19.78" x2="5.64" y2="18.36" data-astro-cid-x322jucz></line> <line x1="18.36" y1="5.64" x2="19.78" y2="4.22" data-astro-cid-x322jucz></line> </svg> <svg class="moon-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" data-astro-cid-x322jucz> <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" data-astro-cid-x322jucz></path> </svg> </button> </div> </div> </header> <main class="container" data-astro-cid-x322jucz>  <article data-content-type="blog" data-pagefind-body data-pagefind-filter="type:blog" data-astro-cid-iy4s3wf7> <header class="article-header" data-astro-cid-iy4s3wf7> <h1 data-astro-cid-iy4s3wf7>浅谈if...else与switch的区别和效率问题</h1> <p class="meta" data-astro-cid-iy4s3wf7>
+发布于 2019-12-06 18:39:43 · 6 分钟 · 标签：<a href="/tags/cpp" class="tag" data-astro-cid-iy4s3wf7> cpp </a><a href="/tags/switch" class="tag" data-astro-cid-iy4s3wf7> switch </a> </p> </header> <div class="article-content" data-astro-cid-iy4s3wf7> <p>各种语言都有条件语句，基本上所有语言都有<code>if...else</code>，大部分语言也都有<code>switch</code>，他们长得很像，基本上都可以相互转化使用。那么这两种语句有什么区别呢？</p>
+<h2 id="ifelse">if…else</h2>
+<p>首先说说<code>if...else</code>，与其变种<code>if...else if...else</code>，部分语言可能长得不太一样，但是大同小异。</p>
+<p>我们通常是这样使用的：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="cpp"><code><span class="line"><span style="color:#F97583">int</span><span style="color:#E1E4E8"> a </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> 2</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">if</span><span style="color:#E1E4E8"> (a </span><span style="color:#F97583">==</span><span style="color:#79B8FF"> 1</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#E1E4E8">    cout </span><span style="color:#F97583">&#x3C;&#x3C;</span><span style="color:#9ECBFF"> "a = 1"</span><span style="color:#F97583"> &#x3C;&#x3C;</span><span style="color:#E1E4E8"> endl;</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"><span style="color:#F97583">else</span><span style="color:#F97583"> if</span><span style="color:#E1E4E8"> (a </span><span style="color:#F97583">==</span><span style="color:#79B8FF"> 2</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#E1E4E8">    cout </span><span style="color:#F97583">&#x3C;&#x3C;</span><span style="color:#9ECBFF"> "a = 2"</span><span style="color:#F97583"> &#x3C;&#x3C;</span><span style="color:#E1E4E8"> endl;</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"><span style="color:#F97583">else</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#E1E4E8">    cout </span><span style="color:#F97583">&#x3C;&#x3C;</span><span style="color:#9ECBFF"> "other number"</span><span style="color:#F97583"> &#x3C;&#x3C;</span><span style="color:#E1E4E8"> endl;</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<p>这个很好理解，它会从上至下依次进行判断，当有一个条件满足时，进入其中执行代码，执行完成后跳出整个条件语句。</p>
+<p>这样的话，当条件很多时，比如10个，100个，它需要从上至下一条一条进行判断，当恰好最后一个条件命中满足时，这是多么恐怖的事情。</p>
+<p><strong>所以，使用<code>if...else</code>语句时需要注意</strong>，我们需要把命中率高的条件放在最前面。</p>
+<h2 id="switch">switch</h2>
+<p>相比之下，有时候可能我们更喜欢<code>switch</code>语句的格式整齐，当然，也有很多公司对使用<code>switch</code>有很多要求甚至禁用，这都是语法规范层面，我们来看看效率。</p>
+<p>通常，我们是这样使用<code>switch</code>的：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="cpp"><code><span class="line"><span style="color:#F97583">int</span><span style="color:#E1E4E8"> a </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> 2</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">switch</span><span style="color:#E1E4E8"> (a)</span></span>
+<span class="line"><span style="color:#E1E4E8">{</span></span>
+<span class="line"><span style="color:#F97583">case</span><span style="color:#79B8FF"> 1</span><span style="color:#E1E4E8">:</span></span>
+<span class="line"><span style="color:#E1E4E8">    cout </span><span style="color:#F97583">&#x3C;&#x3C;</span><span style="color:#9ECBFF"> "a = 1"</span><span style="color:#F97583"> &#x3C;&#x3C;</span><span style="color:#E1E4E8"> endl;</span></span>
+<span class="line"><span style="color:#F97583">    break</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">case</span><span style="color:#79B8FF"> 2</span><span style="color:#E1E4E8">:</span></span>
+<span class="line"><span style="color:#E1E4E8">    cout </span><span style="color:#F97583">&#x3C;&#x3C;</span><span style="color:#9ECBFF"> "a = 2"</span><span style="color:#F97583"> &#x3C;&#x3C;</span><span style="color:#E1E4E8"> endl;</span></span>
+<span class="line"><span style="color:#F97583">    break</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">default</span><span style="color:#E1E4E8">:</span></span>
+<span class="line"><span style="color:#E1E4E8">    cout </span><span style="color:#F97583">&#x3C;&#x3C;</span><span style="color:#9ECBFF"> "other number"</span><span style="color:#F97583"> &#x3C;&#x3C;</span><span style="color:#E1E4E8"> endl;</span></span>
+<span class="line"><span style="color:#F97583">    break</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<p>看上去确实和<code>if...else</code>差不多，他们确实也可以互相转化。那么如何计算他们的执行逻辑呢？我们看一下<code>switch</code>的汇编：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="plaintext"><code><span class="line"><span>    switch (a)</span></span>
+<span class="line"><span>00AC5E8F 8B 45 F8             mov         eax,dword ptr [a]  </span></span>
+<span class="line"><span>00AC5E92 89 85 30 FF FF FF    mov         dword ptr [ebp-0D0h],eax  </span></span>
+<span class="line"><span>00AC5E98 83 BD 30 FF FF FF 01 cmp         dword ptr [ebp-0D0h],1  </span></span>
+<span class="line"><span>00AC5E9F 74 0B                je          main+4Ch (0AC5EACh)  </span></span>
+<span class="line"><span>00AC5EA1 83 BD 30 FF FF FF 02 cmp         dword ptr [ebp-0D0h],2  </span></span>
+<span class="line"><span>00AC5EA8 74 2D                je          main+77h (0AC5ED7h)  </span></span>
+<span class="line"><span>00AC5EAA EB 56                jmp         main+0A2h (0AC5F02h)</span></span></code></pre>
+<p>很明显，这段和<code>if...else</code>差不多，同样是比较(cmp)了两次，如果相等跳转(je)到指定内存，如果不等，执行最后一条无条件跳转(jmp)跳出当前条件语句。</p>
+<p>我们发现这个和<code>if...else</code>还真是差不多。那么多一些条件：</p>
+<h4 id="switch条件数较多情况">switch条件数较多情况</h4>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="cpp"><code><span class="line"><span style="color:#F97583">int</span><span style="color:#E1E4E8"> a </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> 2</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">switch</span><span style="color:#E1E4E8"> (a)</span></span>
+<span class="line"><span style="color:#E1E4E8">{</span></span>
+<span class="line"><span style="color:#F97583">case</span><span style="color:#79B8FF"> 1</span><span style="color:#E1E4E8">: </span></span>
+<span class="line"><span style="color:#E1E4E8">    cout </span><span style="color:#F97583">&#x3C;&#x3C;</span><span style="color:#9ECBFF"> "a = 1"</span><span style="color:#F97583"> &#x3C;&#x3C;</span><span style="color:#E1E4E8"> endl;</span></span>
+<span class="line"><span style="color:#F97583">    break</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">case</span><span style="color:#79B8FF"> 2</span><span style="color:#E1E4E8">:</span></span>
+<span class="line"><span style="color:#E1E4E8">    cout </span><span style="color:#F97583">&#x3C;&#x3C;</span><span style="color:#9ECBFF"> "a = 2"</span><span style="color:#F97583"> &#x3C;&#x3C;</span><span style="color:#E1E4E8"> endl;</span></span>
+<span class="line"><span style="color:#F97583">    break</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">case</span><span style="color:#79B8FF"> 3</span><span style="color:#E1E4E8">:</span></span>
+<span class="line"><span style="color:#E1E4E8">    cout </span><span style="color:#F97583">&#x3C;&#x3C;</span><span style="color:#9ECBFF"> "a = 3"</span><span style="color:#F97583"> &#x3C;&#x3C;</span><span style="color:#E1E4E8"> endl;</span></span>
+<span class="line"><span style="color:#F97583">    break</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">case</span><span style="color:#79B8FF"> 4</span><span style="color:#E1E4E8">: </span></span>
+<span class="line"><span style="color:#E1E4E8">    cout </span><span style="color:#F97583">&#x3C;&#x3C;</span><span style="color:#9ECBFF"> "a = 4"</span><span style="color:#F97583"> &#x3C;&#x3C;</span><span style="color:#E1E4E8"> endl;</span></span>
+<span class="line"><span style="color:#F97583">    break</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">case</span><span style="color:#79B8FF"> 5</span><span style="color:#E1E4E8">: </span></span>
+<span class="line"><span style="color:#E1E4E8">    cout </span><span style="color:#F97583">&#x3C;&#x3C;</span><span style="color:#9ECBFF"> "a = 5"</span><span style="color:#F97583"> &#x3C;&#x3C;</span><span style="color:#E1E4E8"> endl;</span></span>
+<span class="line"><span style="color:#F97583">    break</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">case</span><span style="color:#79B8FF"> 6</span><span style="color:#E1E4E8">:</span></span>
+<span class="line"><span style="color:#E1E4E8">    cout </span><span style="color:#F97583">&#x3C;&#x3C;</span><span style="color:#9ECBFF"> "a = 6"</span><span style="color:#F97583"> &#x3C;&#x3C;</span><span style="color:#E1E4E8"> endl;</span></span>
+<span class="line"><span style="color:#F97583">    break</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">default</span><span style="color:#E1E4E8">:</span></span>
+<span class="line"><span style="color:#E1E4E8">    cout </span><span style="color:#F97583">&#x3C;&#x3C;</span><span style="color:#9ECBFF"> "other number"</span><span style="color:#F97583"> &#x3C;&#x3C;</span><span style="color:#E1E4E8"> endl;</span></span>
+<span class="line"><span style="color:#F97583">    break</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<p>再来看一下这段代码的汇编：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="plaintext"><code><span class="line"><span>    switch (a)</span></span>
+<span class="line"><span>00C45E8F 8B 45 F8             mov         eax,dword ptr [a]  </span></span>
+<span class="line"><span>00C45E92 89 85 30 FF FF FF    mov         dword ptr [ebp-0D0h],eax  </span></span>
+<span class="line"><span>00C45E98 8B 8D 30 FF FF FF    mov         ecx,dword ptr [ebp-0D0h]  </span></span>
+<span class="line"><span>00C45E9E 83 E9 01             sub         ecx,1  </span></span>
+<span class="line"><span>00C45EA1 89 8D 30 FF FF FF    mov         dword ptr [ebp-0D0h],ecx  </span></span>
+<span class="line"><span>00C45EA7 83 BD 30 FF FF FF 05 cmp         dword ptr [ebp-0D0h],5  </span></span>
+<span class="line"><span>00C45EAE 0F 87 18 01 00 00    ja          $LN9+2Bh (0C45FCCh)  </span></span>
+<span class="line"><span>00C45EB4 8B 95 30 FF FF FF    mov         edx,dword ptr [ebp-0D0h]  </span></span>
+<span class="line"><span>00C45EBA FF 24 95 0C 60 C4 00 jmp         dword ptr [edx*4+0C4600Ch]  </span></span></code></pre>
+<p>啊哈，我们发现变化很大，只有一个比较(cmp)了，也只有一个小于跳转(ja)，同时多了一个减法(sub)操作。</p>
+<p>这是因为我们的编译器很聪明，它能在编译时发现不同情况（下面还有更多情况）。当编译器看到<code>switch</code>语句时，首先进行一大段操作，之后就是不同条件下的操作，可以不用关心。</p>
+<p>在这种条件较多的情况下，编译器首先会将所有条件排序，减去最小条件值（这里是1），然后比较条件最大值与条件最小值的差值（这里是5），如果比这个数大，则直接跳转到<code>default</code>语句，否则执行最后一句的<code>jmp dword ptr [edx*4+0C4600Ch]</code>，我们发现每次它都会乘4，这是因为<code>int</code>在x86架构中占4字节。也就是说，从内存的<code>0C4600Ch</code>位置开始，存放了条件1的操作地址，依次往后为条件2、条件3…的操作地址。</p>
+<p>这样的话，就能完美执行1-6的各种条件。</p>
+<p>这样有几种比较特殊的情况：</p>
+<h3 id="起始条件如果不为1">起始条件如果不为1</h3>
+<p>根据上面思路，减去相应的起始数字即可。比如起始为2，则会每次减去2。</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="plaintext"><code><span class="line"><span>    switch (a)</span></span>
+<span class="line"><span>00615E8F 8B 45 F8             mov         eax,dword ptr [a]  </span></span>
+<span class="line"><span>00615E92 89 85 30 FF FF FF    mov         dword ptr [ebp-0D0h],eax  </span></span>
+<span class="line"><span>00615E98 8B 8D 30 FF FF FF    mov         ecx,dword ptr [ebp-0D0h]  </span></span>
+<span class="line"><span>00615E9E 83 E9 02             sub         ecx,2  </span></span>
+<span class="line"><span>00615EA1 89 8D 30 FF FF FF    mov         dword ptr [ebp-0D0h],ecx  </span></span>
+<span class="line"><span>00615EA7 83 BD 30 FF FF FF 04 cmp         dword ptr [ebp-0D0h],4  </span></span>
+<span class="line"><span>00615EAE 0F 87 EA 00 00 00    ja          $LN8+2Bh (0615F9Eh)  </span></span>
+<span class="line"><span>00615EB4 8B 95 30 FF FF FF    mov         edx,dword ptr [ebp-0D0h]  </span></span>
+<span class="line"><span>00615EBA FF 24 95 E0 5F 61 00 jmp         dword ptr [edx*4+615FE0h]</span></span></code></pre>
+<p>很明显我们看到减法操作(sub)中每次都会减去2，这是因为我们起始值为2的缘故，当然，比较的数字也从5变成了4，因为我们最大的条件为6，6-2为4。</p>
+<h3 id="中间不连续">中间不连续</h3>
+<p>比如我们判断<code>a = 3</code>，并查找<code>a</code>，在条件2和条件4之间没有条件3，汇编为：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="plaintext"><code><span class="line"><span>    switch (a)</span></span>
+<span class="line"><span>00C75E8F 8B 45 F8             mov         eax,dword ptr [a]  </span></span>
+<span class="line"><span>00C75E92 89 85 30 FF FF FF    mov         dword ptr [ebp-0D0h],eax  </span></span>
+<span class="line"><span>00C75E98 8B 8D 30 FF FF FF    mov         ecx,dword ptr [ebp-0D0h]  </span></span>
+<span class="line"><span>00C75E9E 83 E9 01             sub         ecx,1  </span></span>
+<span class="line"><span>00C75EA1 89 8D 30 FF FF FF    mov         dword ptr [ebp-0D0h],ecx  </span></span>
+<span class="line"><span>00C75EA7 83 BD 30 FF FF FF 05 cmp         dword ptr [ebp-0D0h],5  </span></span>
+<span class="line"><span>00C75EAE 0F 87 EA 00 00 00    ja          $LN8+2Bh (0C75F9Eh)  </span></span>
+<span class="line"><span>00C75EB4 8B 95 30 FF FF FF    mov         edx,dword ptr [ebp-0D0h]  </span></span>
+<span class="line"><span>00C75EBA FF 24 95 E0 5F C7 00 jmp         dword ptr [edx*4+0C75FE0h] </span></span></code></pre>
+<p>这时编译器也很聪明，为了保持上面的操作，它会在条件3的地址中保存<code>default</code>语句的操作地址，编译器也可以通过最后一句<code>jmp dword ptr [edx*4+0C75FE0h]</code>直接找到改地址，并继续执行<code>default</code>对应的操作。</p>
+<p>对应的条件3的地址取出来为：<code>0x00C75FE8 9e 5f c7 00</code>，对应的地址就是：<code>00c75f9e</code>，操作的汇编为：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="plaintext"><code><span class="line"><span>    default:</span></span>
+<span class="line"><span>        cout &#x3C;&#x3C; "other number" &#x3C;&#x3C; endl;</span></span>
+<span class="line"><span>00C75F9E 8B F4                mov         esi,esp  </span></span>
+<span class="line"><span>00C75FA0 68 A3 12 C7 00       push        offset std::endl&#x3C;char,std::char_traits&#x3C;char> > (0C712A3h)  </span></span>
+<span class="line"><span>00C75FA5 68 04 9C C7 00       push        offset string "a = 10" (0C79C04h)  </span></span>
+<span class="line"><span>00C75FAA A1 D4 D0 C7 00       mov         eax,dword ptr [_imp_?cout@std@@3V?$basic_ostream@DU?$char_traits@D@std@@@1@A (0C7D0D4h)]  </span></span>
+<span class="line"><span>00C75FAF 50                   push        eax  </span></span>
+<span class="line"><span>00C75FB0 E8 53 B2 FF FF       call        std::operator&#x3C;&#x3C;&#x3C;std::char_traits&#x3C;char> > (0C71208h)  </span></span>
+<span class="line"><span>00C75FB5 83 C4 08             add         esp,8  </span></span>
+<span class="line"><span>00C75FB8 8B C8                mov         ecx,eax  </span></span>
+<span class="line"><span>00C75FBA FF 15 A0 D0 C7 00    call        dword ptr [__imp_std::basic_ostream&#x3C;char,std::char_traits&#x3C;char> >::operator&#x3C;&#x3C; (0C7D0A0h)]  </span></span>
+<span class="line"><span>00C75FC0 3B F4                cmp         esi,esp  </span></span>
+<span class="line"><span>00C75FC2 E8 B9 B2 FF FF       call        __RTC_CheckEsp (0C71280h) </span></span></code></pre>
+<p>我们看到从计算出来的地址可以直接跳转到<code>default</code>操作。</p>
+<p>上述是特殊情况中比较普通的，还有几种更为特殊的，编译器也会更加聪明：</p>
+<h3 id="条件的差值较大">条件的差值较大</h3>
+<p>比如，我们有这样的代码：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="cpp"><code><span class="line"><span style="color:#F97583">int</span><span style="color:#E1E4E8"> a </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> 2</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">switch</span><span style="color:#E1E4E8"> (a)</span></span>
+<span class="line"><span style="color:#E1E4E8">{</span></span>
+<span class="line"><span style="color:#F97583">case</span><span style="color:#79B8FF"> 1</span><span style="color:#E1E4E8">: </span></span>
+<span class="line"><span style="color:#E1E4E8">    cout </span><span style="color:#F97583">&#x3C;&#x3C;</span><span style="color:#9ECBFF"> "a = 1"</span><span style="color:#F97583"> &#x3C;&#x3C;</span><span style="color:#E1E4E8"> endl;</span></span>
+<span class="line"><span style="color:#F97583">    break</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">case</span><span style="color:#79B8FF"> 2</span><span style="color:#E1E4E8">:</span></span>
+<span class="line"><span style="color:#E1E4E8">    cout </span><span style="color:#F97583">&#x3C;&#x3C;</span><span style="color:#9ECBFF"> "a = 2"</span><span style="color:#F97583"> &#x3C;&#x3C;</span><span style="color:#E1E4E8"> endl;</span></span>
+<span class="line"><span style="color:#F97583">    break</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">case</span><span style="color:#79B8FF"> 3</span><span style="color:#E1E4E8">:</span></span>
+<span class="line"><span style="color:#E1E4E8">    cout </span><span style="color:#F97583">&#x3C;&#x3C;</span><span style="color:#9ECBFF"> "a = 3"</span><span style="color:#F97583"> &#x3C;&#x3C;</span><span style="color:#E1E4E8"> endl;</span></span>
+<span class="line"><span style="color:#F97583">    break</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">case</span><span style="color:#79B8FF"> 4</span><span style="color:#E1E4E8">: </span></span>
+<span class="line"><span style="color:#E1E4E8">    cout </span><span style="color:#F97583">&#x3C;&#x3C;</span><span style="color:#9ECBFF"> "a = 4"</span><span style="color:#F97583"> &#x3C;&#x3C;</span><span style="color:#E1E4E8"> endl;</span></span>
+<span class="line"><span style="color:#F97583">    break</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">case</span><span style="color:#79B8FF"> 5</span><span style="color:#E1E4E8">: </span></span>
+<span class="line"><span style="color:#E1E4E8">    cout </span><span style="color:#F97583">&#x3C;&#x3C;</span><span style="color:#9ECBFF"> "a = 5"</span><span style="color:#F97583"> &#x3C;&#x3C;</span><span style="color:#E1E4E8"> endl;</span></span>
+<span class="line"><span style="color:#F97583">    break</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">case</span><span style="color:#79B8FF"> 6</span><span style="color:#E1E4E8">:</span></span>
+<span class="line"><span style="color:#E1E4E8">    cout </span><span style="color:#F97583">&#x3C;&#x3C;</span><span style="color:#9ECBFF"> "a = 6"</span><span style="color:#F97583"> &#x3C;&#x3C;</span><span style="color:#E1E4E8"> endl;</span></span>
+<span class="line"><span style="color:#F97583">    break</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">case</span><span style="color:#79B8FF"> 100</span><span style="color:#E1E4E8">:</span></span>
+<span class="line"><span style="color:#E1E4E8">    cout </span><span style="color:#F97583">&#x3C;&#x3C;</span><span style="color:#9ECBFF"> "a = 100"</span><span style="color:#F97583"> &#x3C;&#x3C;</span><span style="color:#E1E4E8"> endl;</span></span>
+<span class="line"><span style="color:#F97583">    break</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">default</span><span style="color:#E1E4E8">:</span></span>
+<span class="line"><span style="color:#E1E4E8">    cout </span><span style="color:#F97583">&#x3C;&#x3C;</span><span style="color:#9ECBFF"> "other number"</span><span style="color:#F97583"> &#x3C;&#x3C;</span><span style="color:#E1E4E8"> endl;</span></span>
+<span class="line"><span style="color:#F97583">    break</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<p>我们再来看一下汇编：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="plaintext"><code><span class="line"><span>    switch (a)</span></span>
+<span class="line"><span>00335E8F 8B 45 F8             mov         eax,dword ptr [a]  </span></span>
+<span class="line"><span>00335E92 89 85 30 FF FF FF    mov         dword ptr [ebp-0D0h],eax  </span></span>
+<span class="line"><span>00335E98 8B 8D 30 FF FF FF    mov         ecx,dword ptr [ebp-0D0h]  </span></span>
+<span class="line"><span>00335E9E 83 E9 01             sub         ecx,1  </span></span>
+<span class="line"><span>00335EA1 89 8D 30 FF FF FF    mov         dword ptr [ebp-0D0h],ecx  </span></span>
+<span class="line"><span>00335EA7 83 BD 30 FF FF FF 63 cmp         dword ptr [ebp-0D0h],63h  </span></span>
+<span class="line"><span>00335EAE 0F 87 4D 01 00 00    ja          $LN10+2Bh (0336001h)  </span></span>
+<span class="line"><span>00335EB4 8B 95 30 FF FF FF    mov         edx,dword ptr [ebp-0D0h]  </span></span>
+<span class="line"><span>00335EBA 0F B6 82 60 60 33 00 movzx       eax,byte ptr [edx+336060h]  </span></span>
+<span class="line"><span>00335EC1 FF 24 85 40 60 33 00 jmp         dword ptr [eax*4+336040h] </span></span></code></pre>
+<p>发现好像跟之前差不多，依旧是计算地址，但是不同的是在跳转之前多了一条<code>movzx eax,byte ptr [edx+336060h]</code>，那我们就查看一下<code>336060</code>长什么样子：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="plaintext"><code><span class="line"><span>0x00336060  00 01 02 03  ....</span></span>
+<span class="line"><span>0x00336064  04 05 07 07  ....</span></span>
+<span class="line"><span>0x00336068  07 07 07 07  ....</span></span>
+<span class="line"><span>0x0033606C  07 07 07 07  ....</span></span>
+<span class="line"><span>0x00336070  07 07 07 07  ....</span></span>
+<span class="line"><span>0x00336074  07 07 07 07  ....</span></span>
+<span class="line"><span>0x00336078  07 07 07 07  ....</span></span>
+<span class="line"><span>0x0033607C  07 07 07 07  ....</span></span>
+<span class="line"><span>0x00336080  07 07 07 07  ....</span></span>
+<span class="line"><span>0x00336084  07 07 07 07  ....</span></span>
+<span class="line"><span>0x00336088  07 07 07 07  ....</span></span>
+<span class="line"><span>0x0033608C  07 07 07 07  ....</span></span>
+<span class="line"><span>0x00336090  07 07 07 07  ....</span></span>
+<span class="line"><span>0x00336094  07 07 07 07  ....</span></span>
+<span class="line"><span>0x00336098  07 07 07 07  ....</span></span>
+<span class="line"><span>0x0033609C  07 07 07 07  ....</span></span>
+<span class="line"><span>0x003360A0  07 07 07 07  ....</span></span>
+<span class="line"><span>0x003360A4  07 07 07 07  ....</span></span>
+<span class="line"><span>0x003360A8  07 07 07 07  ....</span></span>
+<span class="line"><span>0x003360AC  07 07 07 07  ....</span></span>
+<span class="line"><span>0x003360B0  07 07 07 07  ....</span></span>
+<span class="line"><span>0x003360B4  07 07 07 07  ....</span></span>
+<span class="line"><span>0x003360B8  07 07 07 07  ....</span></span>
+<span class="line"><span>0x003360BC  07 07 07 07  ....</span></span>
+<span class="line"><span>0x003360C0  07 07 07 06  ....</span></span></code></pre>
+<p>有没有很眼熟，这不就是单字节的数组么？那么这些数字也可以很好理解，这就是对应的不同操作，猜也能猜到，07表示<code>default</code>操作，之前从00-06对应相应的操作，取出这些数字后在进行<code>dword ptr [eax*4+336040h]</code>操作，则得到操作地址。</p>
+<h3 id="数字差值很大很大">数字差值很大很大</h3>
+<p>刚才差值是100左右，编译器感觉不够大，我们来个更大的：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="cpp"><code><span class="line"><span style="color:#F97583">int</span><span style="color:#E1E4E8"> a </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> 2</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">switch</span><span style="color:#E1E4E8"> (a)</span></span>
+<span class="line"><span style="color:#E1E4E8">{</span></span>
+<span class="line"><span style="color:#F97583">case</span><span style="color:#79B8FF"> 1</span><span style="color:#E1E4E8">: </span></span>
+<span class="line"><span style="color:#E1E4E8">    cout </span><span style="color:#F97583">&#x3C;&#x3C;</span><span style="color:#9ECBFF"> "a = 1"</span><span style="color:#F97583"> &#x3C;&#x3C;</span><span style="color:#E1E4E8"> endl;</span></span>
+<span class="line"><span style="color:#F97583">    break</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">case</span><span style="color:#79B8FF"> 2</span><span style="color:#E1E4E8">:</span></span>
+<span class="line"><span style="color:#E1E4E8">    cout </span><span style="color:#F97583">&#x3C;&#x3C;</span><span style="color:#9ECBFF"> "a = 2"</span><span style="color:#F97583"> &#x3C;&#x3C;</span><span style="color:#E1E4E8"> endl;</span></span>
+<span class="line"><span style="color:#F97583">    break</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">case</span><span style="color:#79B8FF"> 3</span><span style="color:#E1E4E8">:</span></span>
+<span class="line"><span style="color:#E1E4E8">    cout </span><span style="color:#F97583">&#x3C;&#x3C;</span><span style="color:#9ECBFF"> "a = 3"</span><span style="color:#F97583"> &#x3C;&#x3C;</span><span style="color:#E1E4E8"> endl;</span></span>
+<span class="line"><span style="color:#F97583">    break</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">case</span><span style="color:#79B8FF"> 4</span><span style="color:#E1E4E8">: </span></span>
+<span class="line"><span style="color:#E1E4E8">    cout </span><span style="color:#F97583">&#x3C;&#x3C;</span><span style="color:#9ECBFF"> "a = 4"</span><span style="color:#F97583"> &#x3C;&#x3C;</span><span style="color:#E1E4E8"> endl;</span></span>
+<span class="line"><span style="color:#F97583">    break</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">case</span><span style="color:#79B8FF"> 5</span><span style="color:#E1E4E8">: </span></span>
+<span class="line"><span style="color:#E1E4E8">    cout </span><span style="color:#F97583">&#x3C;&#x3C;</span><span style="color:#9ECBFF"> "a = 5"</span><span style="color:#F97583"> &#x3C;&#x3C;</span><span style="color:#E1E4E8"> endl;</span></span>
+<span class="line"><span style="color:#F97583">    break</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">case</span><span style="color:#79B8FF"> 6</span><span style="color:#E1E4E8">:</span></span>
+<span class="line"><span style="color:#E1E4E8">    cout </span><span style="color:#F97583">&#x3C;&#x3C;</span><span style="color:#9ECBFF"> "a = 6"</span><span style="color:#F97583"> &#x3C;&#x3C;</span><span style="color:#E1E4E8"> endl;</span></span>
+<span class="line"><span style="color:#F97583">    break</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">case</span><span style="color:#79B8FF"> 10000</span><span style="color:#E1E4E8">:</span></span>
+<span class="line"><span style="color:#E1E4E8">    cout </span><span style="color:#F97583">&#x3C;&#x3C;</span><span style="color:#9ECBFF"> "a = 10000"</span><span style="color:#F97583"> &#x3C;&#x3C;</span><span style="color:#E1E4E8"> endl;</span></span>
+<span class="line"><span style="color:#F97583">    break</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">default</span><span style="color:#E1E4E8">:</span></span>
+<span class="line"><span style="color:#E1E4E8">    cout </span><span style="color:#F97583">&#x3C;&#x3C;</span><span style="color:#9ECBFF"> "other number"</span><span style="color:#F97583"> &#x3C;&#x3C;</span><span style="color:#E1E4E8"> endl;</span></span>
+<span class="line"><span style="color:#F97583">    break</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<p>这次比较10000，再来看一下汇编的变化：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="plaintext"><code><span class="line"><span>    switch (a)</span></span>
+<span class="line"><span>006D5E8F 8B 45 F8             mov         eax,dword ptr [a]  </span></span>
+<span class="line"><span>006D5E92 89 85 30 FF FF FF    mov         dword ptr [ebp-0D0h],eax  </span></span>
+<span class="line"><span>006D5E98 81 BD 30 FF FF FF 10 27 00 00 cmp         dword ptr [ebp-0D0h],2710h  </span></span>
+<span class="line"><span>006D5EA2 7F 39                jg          main+7Dh (06D5EDDh)  </span></span>
+<span class="line"><span>006D5EA4 81 BD 30 FF FF FF 10 27 00 00 cmp         dword ptr [ebp-0D0h],2710h  </span></span>
+<span class="line"><span>006D5EAE 0F 84 3C 01 00 00    je          $LN9+2Bh (06D5FF0h)  </span></span>
+<span class="line"><span>006D5EB4 8B 8D 30 FF FF FF    mov         ecx,dword ptr [ebp-0D0h]  </span></span>
+<span class="line"><span>006D5EBA 83 E9 01             sub         ecx,1  </span></span>
+<span class="line"><span>006D5EBD 89 8D 30 FF FF FF    mov         dword ptr [ebp-0D0h],ecx  </span></span>
+<span class="line"><span>006D5EC3 83 BD 30 FF FF FF 05 cmp         dword ptr [ebp-0D0h],5  </span></span>
+<span class="line"><span>006D5ECA 0F 87 4B 01 00 00    ja          $LN9+56h (06D601Bh)  </span></span>
+<span class="line"><span>006D5ED0 8B 95 30 FF FF FF    mov         edx,dword ptr [ebp-0D0h]  </span></span>
+<span class="line"><span>006D5ED6 FF 24 95 5C 60 6D 00 jmp         dword ptr [edx*4+6D605Ch]  </span></span>
+<span class="line"><span>006D5EDD E9 39 01 00 00       jmp         $LN9+56h (06D601Bh)  </span></span></code></pre>
+<p>这次变化就很大了，编译器不会允许创建一个10000字节的连续内存，它会首先跟最大值进行比较，然后有条件跳转到较小的分段空间中，最后根据条件找到对应的操作地址。</p>
+<h2 id="总结">总结</h2>
+<p>相比<code>if...else</code>，<code>switch</code>其根本原理还是通过数字直接跳转，不会依次比较，这在条件规模比较大且比较连续的情况下，<code>switch</code>效率会明显高于<code>if...else</code>，这也是为什么<code>switch</code>只允许传入整数和字符的原因。</p> </div> <!-- 悬浮 TOC --> <button class="toc-toggle" id="toc-toggle" aria-label="显示目录" data-astro-cid-iy4s3wf7> <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-list" data-astro-cid-iy4s3wf7> <line x1="8" y1="6" x2="21" y2="6" data-astro-cid-iy4s3wf7></line> <line x1="8" y1="12" x2="21" y2="12" data-astro-cid-iy4s3wf7></line> <line x1="8" y1="18" x2="21" y2="18" data-astro-cid-iy4s3wf7></line> <line x1="3" y1="6" x2="3.01" y2="6" data-astro-cid-iy4s3wf7></line> <line x1="3" y1="12" x2="3.01" y2="12" data-astro-cid-iy4s3wf7></line> <line x1="3" y1="18" x2="3.01" y2="18" data-astro-cid-iy4s3wf7></line> </svg> </button> <aside class="floating-toc" id="floating-toc" data-astro-cid-iy4s3wf7> <div class="toc-header" data-astro-cid-iy4s3wf7> <h3 data-astro-cid-iy4s3wf7>目录</h3> </div> <nav class="toc-nav" id="toc-nav" data-astro-cid-g3fimnfa> <!-- TOC 内容将由客户端脚本填充 --> </nav>  <script type="module">document.addEventListener("DOMContentLoaded",()=>{const n=document.getElementById("toc-nav"),a=document.querySelector(".toc-header h3");if(!n)return;const s=document.querySelector(".article-header h1")?.textContent||"目录";a&&(a.textContent=s);const c=Array.from(document.querySelectorAll(".article-content h2, .article-content h3, .article-content h4, .article-content h5, .article-content h6"));if(c.length===0){n.innerHTML='<p style="color: var(--color-text-secondary); padding: 0.5rem;">暂无目录</p>';return}c.forEach(e=>{e.id||(e.id=e.textContent?.toLowerCase().replace(/\s+/g,"-").replace(/[^\w\-\u4e00-\u9fa5]/g,"")||"")});const l=document.createElement("ul");c.forEach(e=>{const t=document.createElement("li"),o=document.createElement("a");o.href=`#${e.id}`,o.textContent=e.textContent||"",o.classList.add(`toc-${e.tagName.toLowerCase()}`),o.addEventListener("click",i=>{i.preventDefault();const r=document.getElementById(e.id);if(r){const u=r.getBoundingClientRect().top+window.pageYOffset-80;window.scrollTo({top:u,behavior:"smooth"}),history.pushState(null,"",`#${e.id}`)}}),t.appendChild(o),l.appendChild(t)}),n.appendChild(l);const d={root:null,rootMargin:"-60px 0px -80% 0px",threshold:0},h=new IntersectionObserver(e=>{e.forEach(t=>{if(t.isIntersecting){const o=t.target.id;n.querySelectorAll("a").forEach(r=>{r.classList.remove("active")});const i=n.querySelector(`a[href="#${o}"]`);i&&i.classList.add("active")}})},d);c.forEach(e=>h.observe(e)),setTimeout(()=>{if(window.location.hash){const t=n.querySelector(`a[href="${window.location.hash}"]`);if(t){n.querySelectorAll("a").forEach(o=>o.classList.remove("active")),t.classList.add("active");return}}let e="";for(const t of c)if(t.getBoundingClientRect().top<=150)e=t.id;else break;if(!e&&c.length>0&&window.scrollY<100&&(e=c[0].id),e){n.querySelectorAll("a").forEach(o=>o.classList.remove("active"));const t=n.querySelector(`a[href="#${e}"]`);t&&t.classList.add("active")}},100)});</script> </aside> <div class="toc-overlay" id="toc-overlay" data-astro-cid-iy4s3wf7></div> <section class="comments" data-astro-cid-iy4s3wf7> <div class="giscus-wrapper"> <script src="https://giscus.app/client.js" data-repo="jeremyjone/blog-comments" data-repo-id="R_kgDOQlVVGg" data-category="Announcements" data-category-id="DIC_kwDOQlVVGs4Czkir" data-mapping="title" data-term data-strict="0" data-reactions-enabled="1" data-emit-metadata="0" data-input-position="top" data-theme="preferred_color_scheme" data-lang="zh-CN" crossorigin="anonymous" async></script> <noscript>请启用 JavaScript 查看评论。</noscript> </div> </section> </article>  </main> <footer class="site-footer" data-astro-cid-x322jucz> <div class="container footer-content" data-astro-cid-x322jucz> <p data-astro-cid-x322jucz>
+&copy; 2025 <b data-astro-cid-x322jucz>JeremyJone.com</b> All rights reserved.
+</p> <div class="footer-links" data-astro-cid-x322jucz> <a href="https://github.com/jeremyjone" target="_blank" rel="noopener" data-astro-cid-x322jucz> GitHub </a> </div> </div> </footer> <script type="module" src="/_astro/BaseLayout.astro_astro_type_script_index_0_lang.D4h-rqQD.js"></script> <div id="search-modal" class="search-modal" style="display: none;" data-astro-cid-jwf5kjrd> <div class="search-overlay" data-astro-cid-jwf5kjrd></div> <div class="search-container" data-astro-cid-jwf5kjrd> <div class="search-header" data-astro-cid-jwf5kjrd> <input type="text" id="search-input-global" placeholder="搜索全站内容 (Cmd+K)..." autocomplete="off" data-astro-cid-jwf5kjrd> <button id="close-search" aria-label="Close search" data-astro-cid-jwf5kjrd>&times;</button> </div> <div id="search-results-global" class="search-results" data-astro-cid-jwf5kjrd> <div class="search-placeholder" data-astro-cid-jwf5kjrd>输入关键词开始搜索...</div> </div> </div> </div>  <script>
+    window.loadPagefind = async () => {
+        try {
+            return await import("/pagefind/pagefind.js");
+        } catch (e) {
+            console.warn("Failed to load pagefind:", e);
+            return null;
+        }
+    };
+</script> <script type="module" src="/_astro/SearchModal.astro_astro_type_script_index_0_lang.C4oQFeHw.js"></script> </body></html>  <script type="module">document.addEventListener("DOMContentLoaded",()=>{const c=document.getElementById("toc-toggle"),e=document.getElementById("floating-toc"),t=document.getElementById("toc-overlay");c?.addEventListener("click",()=>{e?.classList.add("active"),t?.classList.add("active")});const o=()=>{e?.classList.remove("active"),t?.classList.remove("active")};t?.addEventListener("click",o)});</script>

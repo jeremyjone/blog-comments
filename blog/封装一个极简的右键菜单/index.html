@@ -1,0 +1,237 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="dark" data-astro-cid-x322jucz> <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>封装一个极简的右键菜单</title><meta name="description" content="使用 element-ui 的时候，没有右键菜单，是个很头疼的事情。使用插件，很多功能又不能很好的兼容，于是快速封装一个，和项目贴合度 100%。 ## 希望的方式 我希望在使需要的区域实现可以出现右键菜单，那么在这个区域的组件中添加一..."><link rel="canonical" href="https://www.jeremyjone.com//blog/%E5%B0%81%E8%A3%85%E4%B8%80%E4%B8%AA%E6%9E%81%E7%AE%80%E7%9A%84%E5%8F%B3%E9%94%AE%E8%8F%9C%E5%8D%95/"><meta property="og:title" content="封装一个极简的右键菜单"><meta property="og:description" content="使用 element-ui 的时候，没有右键菜单，是个很头疼的事情。使用插件，很多功能又不能很好的兼容，于是快速封装一个，和项目贴合度 100%。 ## 希望的方式 我希望在使需要的区域实现可以出现右键菜单，那么在这个区域的组件中添加一..."><meta property="og:type" content="article"><meta property="og:url" content="https://www.jeremyjone.com//blog/%E5%B0%81%E8%A3%85%E4%B8%80%E4%B8%AA%E6%9E%81%E7%AE%80%E7%9A%84%E5%8F%B3%E9%94%AE%E8%8F%9C%E5%8D%95/"><meta property="og:site_name" content="JeremyJone's Blog"><meta property="og:locale" content="zh_CN"><link rel="icon" href="/favicon.ico"><link rel="stylesheet" href="/_astro/_year_.CFHYKZJi.css">
+<link rel="stylesheet" href="/_astro/_slug_.B1ShOm38.css"></head> <body data-astro-cid-x322jucz> <header class="site-header" data-astro-cid-x322jucz> <div class="container header-content" data-astro-cid-x322jucz> <a href="/" class="logo" data-astro-cid-x322jucz> <div class="logo-icon" data-astro-cid-x322jucz> <img src="/resources/avatar.png" alt="Logo" width="32" height="32" data-astro-cid-x322jucz> </div> <span class="logo-text" data-astro-cid-x322jucz>JeremyJone&#39;s Blog</span> </a> <div class="header-right" data-astro-cid-x322jucz> <nav class="nav" data-astro-cid-x322jucz> <a href="/" class="nav-link" data-astro-cid-x322jucz> 首页 </a><a href="/blog" class="nav-link active" data-astro-cid-x322jucz> 博客 </a><a href="/notes" class="nav-link" data-astro-cid-x322jucz> 笔记 </a> </nav> <button class="search-toggle" onclick="window.openSearchModal()" aria-label="搜索" data-astro-cid-x322jucz> <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-astro-cid-x322jucz><circle cx="11" cy="11" r="8" data-astro-cid-x322jucz></circle><line x1="21" y1="21" x2="16.65" y2="16.65" data-astro-cid-x322jucz></line></svg> <span class="search-placeholder" data-astro-cid-x322jucz>Ctrl+K 搜索...</span> </button> <button class="theme-toggle" id="theme-toggle" aria-label="切换主题" data-astro-cid-x322jucz> <svg class="sun-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" data-astro-cid-x322jucz> <circle cx="12" cy="12" r="5" data-astro-cid-x322jucz></circle> <line x1="12" y1="1" x2="12" y2="3" data-astro-cid-x322jucz></line> <line x1="12" y1="21" x2="12" y2="23" data-astro-cid-x322jucz></line> <line x1="4.22" y1="4.22" x2="5.64" y2="5.64" data-astro-cid-x322jucz></line> <line x1="18.36" y1="18.36" x2="19.78" y2="19.78" data-astro-cid-x322jucz></line> <line x1="1" y1="12" x2="3" y2="12" data-astro-cid-x322jucz></line> <line x1="21" y1="12" x2="23" y2="12" data-astro-cid-x322jucz></line> <line x1="4.22" y1="19.78" x2="5.64" y2="18.36" data-astro-cid-x322jucz></line> <line x1="18.36" y1="5.64" x2="19.78" y2="4.22" data-astro-cid-x322jucz></line> </svg> <svg class="moon-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" data-astro-cid-x322jucz> <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" data-astro-cid-x322jucz></path> </svg> </button> </div> </div> </header> <main class="container" data-astro-cid-x322jucz>  <article data-content-type="blog" data-pagefind-body data-pagefind-filter="type:blog" data-astro-cid-iy4s3wf7> <header class="article-header" data-astro-cid-iy4s3wf7> <h1 data-astro-cid-iy4s3wf7>封装一个极简的右键菜单</h1> <p class="meta" data-astro-cid-iy4s3wf7>
+发布于 2022-12-28 15:57:11 · 3 分钟 · 标签：<a href="/tags/JavaScript" class="tag" data-astro-cid-iy4s3wf7> JavaScript </a><a href="/tags/vue" class="tag" data-astro-cid-iy4s3wf7> vue </a> </p> </header> <div class="article-content" data-astro-cid-iy4s3wf7> <p>使用 element-ui 的时候，没有右键菜单，是个很头疼的事情。使用插件，很多功能又不能很好的兼容，于是快速封装一个，和项目贴合度 100%。</p>
+<h2 id="希望的方式">希望的方式</h2>
+<p>我希望在使需要的区域实现可以出现右键菜单，那么在这个区域的组件中添加一个右键菜单组件即可，通过属性配置菜单内容。</p>
+<h2 id="效果图">效果图</h2>
+<p><a href="/images/2022/GIF.gif"><img src="/images/2022/GIF.gif" alt=""></a></p>
+<h2 id="思路">思路</h2>
+<p>右键菜单组件获取父组件，给父组件添加右键事件，然后渲染菜单选项。</p>
+<p>嗯，就是这么简单。</p>
+<h2 id="实现">实现</h2>
+<h3 id="1获取父组件">1、获取父组件</h3>
+<p>首先，要封装一个组件 <code>ContextMenu</code>，在挂载后，给父组件添加右键事件。</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="js"><code><span class="line"><span style="color:#B392F0">mounted</span><span style="color:#E1E4E8">() {</span></span>
+<span class="line"><span style="color:#79B8FF">    this</span><span style="color:#E1E4E8">.$el.parentElement?.</span><span style="color:#B392F0">addEventListener</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">'contextmenu'</span><span style="color:#E1E4E8">, () </span><span style="color:#F97583">=></span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#6A737D">        // 这里将要实现菜单的出现</span></span>
+<span class="line"><span style="color:#6A737D">        // 首先，要阻止默认事件</span></span>
+<span class="line"><span style="color:#E1E4E8">        e.</span><span style="color:#B392F0">preventDefault</span><span style="color:#E1E4E8">();</span></span>
+<span class="line"><span style="color:#E1E4E8">    })</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<p>然后我们在目标组件中添加该组件。</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="html"><code><span class="line"><span style="color:#E1E4E8">&#x3C;</span><span style="color:#85E89D">div</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#E1E4E8">    &#x3C;</span><span style="color:#FDAEB7;font-style:italic">ContextMenu</span><span style="color:#E1E4E8"> /></span></span>
+<span class="line"><span style="color:#E1E4E8">&#x3C;/</span><span style="color:#85E89D">div</span><span style="color:#E1E4E8">></span></span></code></pre>
+<p>此时，目标右键已经不会有默认浏览器菜单出现了。我们实现了第一步。</p>
+<h3 id="展示我们的菜单">展示我们的菜单</h3>
+<p>菜单需要出现在我们点击的位置，所以很自然，需要一个绝对定位。通过右键点击事件，获取具体的 x/y 的位置。</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="js"><code><span class="line"><span style="color:#B392F0">onContextMenu</span><span style="color:#E1E4E8">(e) {</span></span>
+<span class="line"><span style="color:#E1E4E8">    e.</span><span style="color:#B392F0">preventDefault</span><span style="color:#E1E4E8">();</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#79B8FF">    this</span><span style="color:#E1E4E8">.x </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> e.offsetX;</span></span>
+<span class="line"><span style="color:#79B8FF">    this</span><span style="color:#E1E4E8">.y </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> e.offsetY;</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="html"><code><span class="line"><span style="color:#E1E4E8">&#x3C;</span><span style="color:#85E89D">div</span><span style="color:#B392F0"> class</span><span style="color:#E1E4E8">=</span><span style="color:#9ECBFF">"relative"</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#E1E4E8">    &#x3C;</span><span style="color:#85E89D">div</span><span style="color:#B392F0"> class</span><span style="color:#E1E4E8">=</span><span style="color:#9ECBFF">"absolute"</span><span style="color:#B392F0"> :style</span><span style="color:#E1E4E8">=</span><span style="color:#9ECBFF">"{top: `${y}px`, left: `${x}px`}"</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#E1E4E8">        菜单内容</span></span>
+<span class="line"><span style="color:#E1E4E8">    &#x3C;/</span><span style="color:#85E89D">div</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#E1E4E8">&#x3C;/</span><span style="color:#85E89D">div</span><span style="color:#E1E4E8">></span></span></code></pre>
+<p>现在已经可以看到菜单了。</p>
+<p><img src="/images/2022/image-1672212436171.png" alt="file"></p>
+<p>但我们需要的是在点击时出现，所以还要添加一个控制变量：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="js"><code><span class="line"><span style="color:#B392F0">onContextMenu</span><span style="color:#E1E4E8">(e) {</span></span>
+<span class="line"><span style="color:#E1E4E8">    e.</span><span style="color:#B392F0">preventDefault</span><span style="color:#E1E4E8">();</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#79B8FF">    this</span><span style="color:#E1E4E8">.x </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> e.offsetX;</span></span>
+<span class="line"><span style="color:#79B8FF">    this</span><span style="color:#E1E4E8">.y </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> e.offsetY;</span></span>
+<span class="line"><span style="color:#79B8FF">    this</span><span style="color:#E1E4E8">.show </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> true</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<p>同时在菜单组件中，使用 <code>v-show="show"</code> 来控制它即可。</p>
+<p><img src="/images/2022/image-1672212742243.png" alt="file"></p>
+<h3 id="响应问题">响应问题</h3>
+<p>现在可以正常显示了，但是出现后，无法消失。</p>
+<p>思考消失条件：</p>
+<ul>
+<li>左键点击其他地方</li>
+<li>右键点击其他地方</li>
+</ul>
+<p>所以，我们要在 <code>window</code> 上直接挂载点击事件，将 <code>show</code> 置为 <code>false</code>。</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="js"><code><span class="line"><span style="color:#B392F0">mounted</span><span style="color:#E1E4E8">() {</span></span>
+<span class="line"><span style="color:#E1E4E8">  window.</span><span style="color:#B392F0">addEventListener</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">'click'</span><span style="color:#E1E4E8">, () </span><span style="color:#F97583">=></span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#79B8FF">    this</span><span style="color:#E1E4E8">.show </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> false</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#E1E4E8">  });</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">  window.</span><span style="color:#B392F0">addEventListener</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">'contextmenu'</span><span style="color:#E1E4E8">, () </span><span style="color:#F97583">=></span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#79B8FF">    this</span><span style="color:#E1E4E8">.show </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> false</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#E1E4E8">  });</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<p>同时不要忘记在注销组件时注销事件：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="js"><code><span class="line"><span style="color:#B392F0">beforeDestroy</span><span style="color:#E1E4E8">() {</span></span>
+<span class="line"><span style="color:#E1E4E8">  window.</span><span style="color:#B392F0">removeEventListener</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">'click'</span><span style="color:#E1E4E8">, () </span><span style="color:#F97583">=></span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#79B8FF">    this</span><span style="color:#E1E4E8">.show </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> false</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#E1E4E8">  });</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">  window.</span><span style="color:#B392F0">removeEventListener</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">'contextmenu'</span><span style="color:#E1E4E8">, () </span><span style="color:#F97583">=></span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#79B8FF">    this</span><span style="color:#E1E4E8">.show </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> false</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#E1E4E8">  });</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<p>此时还有两个问题：</p>
+<ul>
+<li>点击菜单时会有穿透问题</li>
+<li>右键菜单不响应了</li>
+</ul>
+<p>第一个问题，通过在组件上添加 `<code>@click.stop.prevent</code> 解决。</p>
+<p>第二个问题，是因为 <code>window</code> 上与父组件的 <code>contextmenu</code> 事件冲突，可以通过 <code>setTimeout</code> 来解决，再加一个加载动画效果，实现更符合菜单的效果。</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="js"><code><span class="line"><span style="color:#B392F0">onContextMenu</span><span style="color:#E1E4E8">(e) {</span></span>
+<span class="line"><span style="color:#E1E4E8">    e.</span><span style="color:#B392F0">preventDefault</span><span style="color:#E1E4E8">();</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#79B8FF">    this</span><span style="color:#E1E4E8">.x </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> e.offsetX;</span></span>
+<span class="line"><span style="color:#79B8FF">    this</span><span style="color:#E1E4E8">.y </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> e.offsetY;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#B392F0">    setTimeout</span><span style="color:#E1E4E8">(() </span><span style="color:#F97583">=></span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#79B8FF">        this</span><span style="color:#E1E4E8">.show </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> true</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#E1E4E8">    }, </span><span style="color:#79B8FF">100</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<h3 id="配置菜单选项">配置菜单选项</h3>
+<p>这里常用的有两种方式：</p>
+<ul>
+<li>属性配置</li>
+<li>插槽直接编写</li>
+</ul>
+<p>我这里采用属性配置，定义菜单的通用类型：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="ts"><code><span class="line"><span style="color:#B392F0">Array</span><span style="color:#E1E4E8">&#x3C;{</span></span>
+<span class="line"><span style="color:#FFAB70">    label</span><span style="color:#F97583">:</span><span style="color:#79B8FF"> string</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#B392F0">    action</span><span style="color:#F97583">?:</span><span style="color:#E1E4E8"> () </span><span style="color:#F97583">=></span><span style="color:#79B8FF"> void</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#E1E4E8">}></span></span></code></pre>
+<p>再定义一个 <code>prop</code> 来接收菜单配置：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="js"><code><span class="line"><span style="color:#B392F0">props</span><span style="color:#E1E4E8">: {</span></span>
+<span class="line"><span style="color:#B392F0">    menu</span><span style="color:#E1E4E8">: Array</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<p>然后，使用时添加内容即可：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="html"><code><span class="line"><span style="color:#E1E4E8">&#x3C;</span><span style="color:#FDAEB7;font-style:italic">ContextMenu</span><span style="color:#B392F0"> :menu</span><span style="color:#E1E4E8">=</span><span style="color:#9ECBFF">"menu"</span><span style="color:#E1E4E8"> /></span></span></code></pre>
+<h3 id="杂项">杂项</h3>
+<p>剩下就是调整菜单的样式了，这里不赘述。</p>
+<h2 id="完整代码">完整代码</h2>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="js"><code><span class="line"><span style="color:#E1E4E8">&#x3C;</span><span style="color:#85E89D">template</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#E1E4E8">  &#x3C;</span><span style="color:#85E89D">div</span><span style="color:#B392F0"> class</span><span style="color:#F97583">=</span><span style="color:#9ECBFF">"ContextMenu relative"</span><span style="color:#B392F0"> v-show</span><span style="color:#F97583">=</span><span style="color:#9ECBFF">"menu.length > 0"</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#E1E4E8">    &#x3C;</span><span style="color:#85E89D">transition</span><span style="color:#B392F0"> name</span><span style="color:#F97583">=</span><span style="color:#9ECBFF">"el-fade-in"</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#E1E4E8">      &#x3C;</span><span style="color:#85E89D">div</span></span>
+<span class="line"><span style="color:#B392F0">        class</span><span style="color:#F97583">=</span><span style="color:#9ECBFF">"absolute gap-y-xs menu-wrapper"</span></span>
+<span class="line"><span style="color:#FDAEB7;font-style:italic">        :style="{</span></span>
+<span class="line"><span style="color:#FDAEB7;font-style:italic">          top:</span><span style="color:#FDAEB7;font-style:italic"> `${y}px`,</span></span>
+<span class="line"><span style="color:#FDAEB7;font-style:italic">          left:</span><span style="color:#FDAEB7;font-style:italic"> `${x}px`,</span></span>
+<span class="line"><span style="color:#FDAEB7;font-style:italic">          backgroundColor:</span><span style="color:#9ECBFF"> 'white'</span><span style="color:#FDAEB7;font-style:italic">,</span></span>
+<span class="line"><span style="color:#FDAEB7;font-style:italic">          borderRadius:</span><span style="color:#9ECBFF"> '4px'</span><span style="color:#FDAEB7;font-style:italic">,</span></span>
+<span class="line"><span style="color:#FDAEB7;font-style:italic">          padding:</span><span style="color:#9ECBFF"> '6px 16px'</span></span>
+<span class="line"><span style="color:#FDAEB7;font-style:italic">        }"</span></span>
+<span class="line"><span style="color:#B392F0">        v-show</span><span style="color:#F97583">=</span><span style="color:#9ECBFF">"show"</span></span>
+<span class="line"><span style="color:#FDAEB7;font-style:italic">        @contextmenu.stop.prevent</span></span>
+<span class="line"><span style="color:#FDAEB7;font-style:italic">        @click.stop.prevent</span></span>
+<span class="line"><span style="color:#E1E4E8">      ></span></span>
+<span class="line"><span style="color:#E1E4E8">        &#x3C;</span><span style="color:#79B8FF">el-link</span></span>
+<span class="line"><span style="color:#B392F0">          v-for</span><span style="color:#F97583">=</span><span style="color:#9ECBFF">"(item, index) in menu"</span></span>
+<span class="line"><span style="color:#B392F0">          class</span><span style="color:#F97583">=</span><span style="color:#9ECBFF">"nowrap"</span></span>
+<span class="line"><span style="color:#FDAEB7;font-style:italic">          :key="index"</span></span>
+<span class="line"><span style="color:#FDAEB7;font-style:italic">          :underline="false"</span></span>
+<span class="line"><span style="color:#FDAEB7;font-style:italic">          @click.stop="</span></span>
+<span class="line"><span style="color:#FDAEB7;font-style:italic">            ()</span><span style="color:#FDAEB7;font-style:italic"> =></span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#E1E4E8">              show </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> false</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#E1E4E8">              item?.</span><span style="color:#B392F0">action</span><span style="color:#E1E4E8">();</span></span>
+<span class="line"><span style="color:#E1E4E8">            }</span></span>
+<span class="line"><span style="color:#9ECBFF">          "</span></span>
+<span class="line"><span style="color:#9ECBFF">        ></span></span>
+<span class="line"><span style="color:#9ECBFF">          {{ item.label }}</span></span>
+<span class="line"><span style="color:#9ECBFF">        &#x3C;/el-link></span></span>
+<span class="line"><span style="color:#9ECBFF">      &#x3C;/div></span></span>
+<span class="line"><span style="color:#9ECBFF">    &#x3C;/transition></span></span>
+<span class="line"><span style="color:#9ECBFF">  &#x3C;/div></span></span>
+<span class="line"><span style="color:#9ECBFF">&#x3C;/template></span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#9ECBFF">&#x3C;script lang="</span><span style="color:#FDAEB7;font-style:italic">ts"></span></span>
+<span class="line"><span style="color:#B392F0">import</span><span style="color:#FDAEB7;font-style:italic"> Vue,</span><span style="color:#E1E4E8"> { PropType } </span><span style="color:#B392F0">from</span><span style="color:#9ECBFF"> 'vue'</span><span style="color:#FDAEB7;font-style:italic">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#B392F0">interface</span><span style="color:#B392F0"> IMenu</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#E1E4E8">  label: string;</span></span>
+<span class="line"><span style="color:#E1E4E8">  action</span><span style="color:#F97583">?:</span><span style="color:#E1E4E8"> () </span><span style="color:#F97583">=></span><span style="color:#F97583"> void</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#E1E4E8">  icon</span><span style="color:#F97583">?:</span><span style="color:#E1E4E8"> string;</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#B392F0">export</span><span style="color:#B392F0"> default</span><span style="color:#FDAEB7;font-style:italic"> Vue.extend({</span></span>
+<span class="line"><span style="color:#FDAEB7;font-style:italic">  name:</span><span style="color:#9ECBFF"> 'ContextMenu'</span><span style="color:#FDAEB7;font-style:italic">,</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#FDAEB7;font-style:italic">  props:</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#E1E4E8">    menu: Array </span><span style="color:#F97583">as</span><span style="color:#B392F0"> PropType</span><span style="color:#E1E4E8">&#x3C;</span><span style="color:#B392F0">Array</span><span style="color:#E1E4E8">&#x3C;</span><span style="color:#B392F0">IMenu</span><span style="color:#E1E4E8">>></span></span>
+<span class="line"><span style="color:#E1E4E8">  }</span><span style="color:#FDAEB7;font-style:italic">,</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#FDAEB7;font-style:italic">  data()</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#E1E4E8">    return {</span></span>
+<span class="line"><span style="color:#E1E4E8">      x: </span><span style="color:#79B8FF">0</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">      y: </span><span style="color:#79B8FF">0</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">      show: </span><span style="color:#79B8FF">false</span></span>
+<span class="line"><span style="color:#E1E4E8">    };</span></span>
+<span class="line"><span style="color:#E1E4E8">  }</span><span style="color:#FDAEB7;font-style:italic">,</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#FDAEB7;font-style:italic">  mounted()</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#E1E4E8">    window.</span><span style="color:#B392F0">addEventListener</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">'click'</span><span style="color:#E1E4E8">, () </span><span style="color:#F97583">=></span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#79B8FF">      this</span><span style="color:#E1E4E8">.show </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> false</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#E1E4E8">    });</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">    window.</span><span style="color:#B392F0">addEventListener</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">'contextmenu'</span><span style="color:#E1E4E8">, () </span><span style="color:#F97583">=></span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#79B8FF">      this</span><span style="color:#E1E4E8">.show </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> false</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#E1E4E8">    });</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#79B8FF">    this</span><span style="color:#E1E4E8">.$el.parentElement?.</span><span style="color:#B392F0">addEventListener</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">'contextmenu'</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">this</span><span style="color:#E1E4E8">.onContextMenu);</span></span>
+<span class="line"><span style="color:#E1E4E8">  }</span><span style="color:#FDAEB7;font-style:italic">,</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#FDAEB7;font-style:italic">  beforeDestroy()</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#E1E4E8">    window.</span><span style="color:#B392F0">removeEventListener</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">'click'</span><span style="color:#E1E4E8">, () </span><span style="color:#F97583">=></span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#79B8FF">      this</span><span style="color:#E1E4E8">.show </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> false</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#E1E4E8">    });</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">    window.</span><span style="color:#B392F0">removeEventListener</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">'contextmenu'</span><span style="color:#E1E4E8">, () </span><span style="color:#F97583">=></span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#79B8FF">      this</span><span style="color:#E1E4E8">.show </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> false</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#E1E4E8">    });</span></span>
+<span class="line"><span style="color:#E1E4E8">  }</span><span style="color:#FDAEB7;font-style:italic">,</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#FDAEB7;font-style:italic">  methods:</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#B392F0">    onContextMenu</span><span style="color:#E1E4E8">(e: MouseEvent) {</span></span>
+<span class="line"><span style="color:#E1E4E8">      e.preventDefault();</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">      this.x </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> e.offsetX;</span></span>
+<span class="line"><span style="color:#E1E4E8">      this.y </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> e.offsetY;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#B392F0">      setTimeout</span><span style="color:#E1E4E8">(() </span><span style="color:#F97583">=></span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#B392F0">        this</span><span style="color:#E1E4E8">.</span><span style="color:#FFAB70">show</span><span style="color:#F97583"> =</span><span style="color:#79B8FF"> true</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#E1E4E8">      }, </span><span style="color:#79B8FF">100</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"><span style="color:#E1E4E8">  }</span></span>
+<span class="line"><span style="color:#FDAEB7;font-style:italic">});</span></span>
+<span class="line"><span style="color:#FDAEB7;font-style:italic">&#x3C;/script></span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#FDAEB7;font-style:italic">&#x3C;style</span><span style="color:#B392F0"> lang</span><span style="color:#F97583">=</span><span style="color:#9ECBFF">"scss"</span><span style="color:#B392F0"> scoped</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#E1E4E8">.ContextMenu {</span></span>
+<span class="line"><span style="color:#E1E4E8">  .menu</span><span style="color:#F97583">-</span><span style="color:#E1E4E8">wrapper {</span></span>
+<span class="line"><span style="color:#E1E4E8">    &#x26; > * {</span></span>
+<span class="line"><span style="color:#B392F0">      display</span><span style="color:#E1E4E8">: block;</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"><span style="color:#E1E4E8">  }</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"><span style="color:#E1E4E8">&#x3C;/</span><span style="color:#85E89D">style</span><span style="color:#E1E4E8">></span></span></code></pre>
+<h2 id="说明">说明</h2>
+<p>这只是提供一个最小化实现方式的思路，它的问题本身还有很多，比如：</p>
+<ul>
+<li>父组件存在位置样式，会影响菜单的位置</li>
+<li>父组件设置了 <code>overflow: hidden</code>，会影响菜单的展示</li>
+</ul>
+<p>这里只是列举两项，还有很多情况，甚至还有一些边界情况等等 ，所以真正封装一个菜单，要考虑的内容远比这些多很多。</p> </div> <!-- 悬浮 TOC --> <button class="toc-toggle" id="toc-toggle" aria-label="显示目录" data-astro-cid-iy4s3wf7> <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-list" data-astro-cid-iy4s3wf7> <line x1="8" y1="6" x2="21" y2="6" data-astro-cid-iy4s3wf7></line> <line x1="8" y1="12" x2="21" y2="12" data-astro-cid-iy4s3wf7></line> <line x1="8" y1="18" x2="21" y2="18" data-astro-cid-iy4s3wf7></line> <line x1="3" y1="6" x2="3.01" y2="6" data-astro-cid-iy4s3wf7></line> <line x1="3" y1="12" x2="3.01" y2="12" data-astro-cid-iy4s3wf7></line> <line x1="3" y1="18" x2="3.01" y2="18" data-astro-cid-iy4s3wf7></line> </svg> </button> <aside class="floating-toc" id="floating-toc" data-astro-cid-iy4s3wf7> <div class="toc-header" data-astro-cid-iy4s3wf7> <h3 data-astro-cid-iy4s3wf7>目录</h3> </div> <nav class="toc-nav" id="toc-nav" data-astro-cid-g3fimnfa> <!-- TOC 内容将由客户端脚本填充 --> </nav>  <script type="module">document.addEventListener("DOMContentLoaded",()=>{const n=document.getElementById("toc-nav"),a=document.querySelector(".toc-header h3");if(!n)return;const s=document.querySelector(".article-header h1")?.textContent||"目录";a&&(a.textContent=s);const c=Array.from(document.querySelectorAll(".article-content h2, .article-content h3, .article-content h4, .article-content h5, .article-content h6"));if(c.length===0){n.innerHTML='<p style="color: var(--color-text-secondary); padding: 0.5rem;">暂无目录</p>';return}c.forEach(e=>{e.id||(e.id=e.textContent?.toLowerCase().replace(/\s+/g,"-").replace(/[^\w\-\u4e00-\u9fa5]/g,"")||"")});const l=document.createElement("ul");c.forEach(e=>{const t=document.createElement("li"),o=document.createElement("a");o.href=`#${e.id}`,o.textContent=e.textContent||"",o.classList.add(`toc-${e.tagName.toLowerCase()}`),o.addEventListener("click",i=>{i.preventDefault();const r=document.getElementById(e.id);if(r){const u=r.getBoundingClientRect().top+window.pageYOffset-80;window.scrollTo({top:u,behavior:"smooth"}),history.pushState(null,"",`#${e.id}`)}}),t.appendChild(o),l.appendChild(t)}),n.appendChild(l);const d={root:null,rootMargin:"-60px 0px -80% 0px",threshold:0},h=new IntersectionObserver(e=>{e.forEach(t=>{if(t.isIntersecting){const o=t.target.id;n.querySelectorAll("a").forEach(r=>{r.classList.remove("active")});const i=n.querySelector(`a[href="#${o}"]`);i&&i.classList.add("active")}})},d);c.forEach(e=>h.observe(e)),setTimeout(()=>{if(window.location.hash){const t=n.querySelector(`a[href="${window.location.hash}"]`);if(t){n.querySelectorAll("a").forEach(o=>o.classList.remove("active")),t.classList.add("active");return}}let e="";for(const t of c)if(t.getBoundingClientRect().top<=150)e=t.id;else break;if(!e&&c.length>0&&window.scrollY<100&&(e=c[0].id),e){n.querySelectorAll("a").forEach(o=>o.classList.remove("active"));const t=n.querySelector(`a[href="#${e}"]`);t&&t.classList.add("active")}},100)});</script> </aside> <div class="toc-overlay" id="toc-overlay" data-astro-cid-iy4s3wf7></div> <section class="comments" data-astro-cid-iy4s3wf7> <div class="giscus-wrapper"> <script src="https://giscus.app/client.js" data-repo="jeremyjone/blog-comments" data-repo-id="R_kgDOQlVVGg" data-category="Announcements" data-category-id="DIC_kwDOQlVVGs4Czkir" data-mapping="title" data-term data-strict="0" data-reactions-enabled="1" data-emit-metadata="0" data-input-position="top" data-theme="preferred_color_scheme" data-lang="zh-CN" crossorigin="anonymous" async></script> <noscript>请启用 JavaScript 查看评论。</noscript> </div> </section> </article>  </main> <footer class="site-footer" data-astro-cid-x322jucz> <div class="container footer-content" data-astro-cid-x322jucz> <p data-astro-cid-x322jucz>
+&copy; 2025 <b data-astro-cid-x322jucz>JeremyJone.com</b> All rights reserved.
+</p> <div class="footer-links" data-astro-cid-x322jucz> <a href="https://github.com/jeremyjone" target="_blank" rel="noopener" data-astro-cid-x322jucz> GitHub </a> </div> </div> </footer> <script type="module" src="/_astro/BaseLayout.astro_astro_type_script_index_0_lang.D4h-rqQD.js"></script> <div id="search-modal" class="search-modal" style="display: none;" data-astro-cid-jwf5kjrd> <div class="search-overlay" data-astro-cid-jwf5kjrd></div> <div class="search-container" data-astro-cid-jwf5kjrd> <div class="search-header" data-astro-cid-jwf5kjrd> <input type="text" id="search-input-global" placeholder="搜索全站内容 (Cmd+K)..." autocomplete="off" data-astro-cid-jwf5kjrd> <button id="close-search" aria-label="Close search" data-astro-cid-jwf5kjrd>&times;</button> </div> <div id="search-results-global" class="search-results" data-astro-cid-jwf5kjrd> <div class="search-placeholder" data-astro-cid-jwf5kjrd>输入关键词开始搜索...</div> </div> </div> </div>  <script>
+    window.loadPagefind = async () => {
+        try {
+            return await import("/pagefind/pagefind.js");
+        } catch (e) {
+            console.warn("Failed to load pagefind:", e);
+            return null;
+        }
+    };
+</script> <script type="module" src="/_astro/SearchModal.astro_astro_type_script_index_0_lang.C4oQFeHw.js"></script> </body></html>  <script type="module">document.addEventListener("DOMContentLoaded",()=>{const c=document.getElementById("toc-toggle"),e=document.getElementById("floating-toc"),t=document.getElementById("toc-overlay");c?.addEventListener("click",()=>{e?.classList.add("active"),t?.classList.add("active")});const o=()=>{e?.classList.remove("active"),t?.classList.remove("active")};t?.addEventListener("click",o)});</script>

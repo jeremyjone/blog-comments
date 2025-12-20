@@ -1,0 +1,608 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="dark" data-astro-cid-x322jucz> <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>IdentityServer4深入使用（五）-- 数据持久化</title><meta name="description" content="# 开始之前 更多内容，可以看我的文档：[.NET 学习之路-数据的持久化](https://jeremyjone.github.io/docs/document/roadmap/dotnetcore/auth/is4/useef.htm..."><link rel="canonical" href="https://www.jeremyjone.com//blog/identityserver4%E6%B7%B1%E5%85%A5%E4%BD%BF%E7%94%A8-%E4%BA%94-%E6%95%B0%E6%8D%AE%E6%8C%81%E4%B9%85%E5%8C%96/"><meta property="og:title" content="IdentityServer4深入使用（五）-- 数据持久化"><meta property="og:description" content="# 开始之前 更多内容，可以看我的文档：[.NET 学习之路-数据的持久化](https://jeremyjone.github.io/docs/document/roadmap/dotnetcore/auth/is4/useef.htm..."><meta property="og:type" content="article"><meta property="og:url" content="https://www.jeremyjone.com//blog/identityserver4%E6%B7%B1%E5%85%A5%E4%BD%BF%E7%94%A8-%E4%BA%94-%E6%95%B0%E6%8D%AE%E6%8C%81%E4%B9%85%E5%8C%96/"><meta property="og:site_name" content="JeremyJone's Blog"><meta property="og:locale" content="zh_CN"><link rel="icon" href="/favicon.ico"><link rel="stylesheet" href="/_astro/_year_.CFHYKZJi.css">
+<link rel="stylesheet" href="/_astro/_slug_.B1ShOm38.css"></head> <body data-astro-cid-x322jucz> <header class="site-header" data-astro-cid-x322jucz> <div class="container header-content" data-astro-cid-x322jucz> <a href="/" class="logo" data-astro-cid-x322jucz> <div class="logo-icon" data-astro-cid-x322jucz> <img src="/resources/avatar.png" alt="Logo" width="32" height="32" data-astro-cid-x322jucz> </div> <span class="logo-text" data-astro-cid-x322jucz>JeremyJone&#39;s Blog</span> </a> <div class="header-right" data-astro-cid-x322jucz> <nav class="nav" data-astro-cid-x322jucz> <a href="/" class="nav-link" data-astro-cid-x322jucz> 首页 </a><a href="/blog" class="nav-link active" data-astro-cid-x322jucz> 博客 </a><a href="/notes" class="nav-link" data-astro-cid-x322jucz> 笔记 </a> </nav> <button class="search-toggle" onclick="window.openSearchModal()" aria-label="搜索" data-astro-cid-x322jucz> <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-astro-cid-x322jucz><circle cx="11" cy="11" r="8" data-astro-cid-x322jucz></circle><line x1="21" y1="21" x2="16.65" y2="16.65" data-astro-cid-x322jucz></line></svg> <span class="search-placeholder" data-astro-cid-x322jucz>Ctrl+K 搜索...</span> </button> <button class="theme-toggle" id="theme-toggle" aria-label="切换主题" data-astro-cid-x322jucz> <svg class="sun-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" data-astro-cid-x322jucz> <circle cx="12" cy="12" r="5" data-astro-cid-x322jucz></circle> <line x1="12" y1="1" x2="12" y2="3" data-astro-cid-x322jucz></line> <line x1="12" y1="21" x2="12" y2="23" data-astro-cid-x322jucz></line> <line x1="4.22" y1="4.22" x2="5.64" y2="5.64" data-astro-cid-x322jucz></line> <line x1="18.36" y1="18.36" x2="19.78" y2="19.78" data-astro-cid-x322jucz></line> <line x1="1" y1="12" x2="3" y2="12" data-astro-cid-x322jucz></line> <line x1="21" y1="12" x2="23" y2="12" data-astro-cid-x322jucz></line> <line x1="4.22" y1="19.78" x2="5.64" y2="18.36" data-astro-cid-x322jucz></line> <line x1="18.36" y1="5.64" x2="19.78" y2="4.22" data-astro-cid-x322jucz></line> </svg> <svg class="moon-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" data-astro-cid-x322jucz> <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" data-astro-cid-x322jucz></path> </svg> </button> </div> </div> </header> <main class="container" data-astro-cid-x322jucz>  <article data-content-type="blog" data-pagefind-body data-pagefind-filter="type:blog" data-astro-cid-iy4s3wf7> <header class="article-header" data-astro-cid-iy4s3wf7> <h1 data-astro-cid-iy4s3wf7>IdentityServer4深入使用（五）-- 数据持久化</h1> <p class="meta" data-astro-cid-iy4s3wf7>
+发布于 2021-03-26 11:46:53 · 11 分钟 · 标签：<a href="/tags/IdentityServer" class="tag" data-astro-cid-iy4s3wf7> IdentityServer </a> </p> </header> <div class="article-content" data-astro-cid-iy4s3wf7> <h1 id="开始之前">开始之前</h1>
+<p>更多内容，可以看我的文档：<a href="https://jeremyjone.github.io/docs/document/roadmap/dotnetcore/auth/is4/useef.html">.NET 学习之路-数据的持久化</a></p>
+<h1 id="正文开始">正文开始</h1>
+<p>前面只是一个最简单的基础使用方案，虽然已经实现了认证与授权，但是明显并不能满足生产需求，下面就按不同需求进行配置。</p>
+<p>上面的例子中，所有数据都在内存中，并不能持久化。如果要数据持久化，上数据库是必然的。</p>
+<h2 id="创建使用数据库的项目">创建使用数据库的项目</h2>
+<ul>
+<li>
+<p>通过命令可以快速创建一个带有模板的项目：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#B392F0">dotnet</span><span style="color:#9ECBFF"> new</span><span style="color:#9ECBFF"> is4ef</span></span></code></pre>
+</li>
+<li>
+<p>下载 <a href="https://github.com/jeremyjone/dotnet-study-road/tree/master/AuthenticationAndAuthorization/AuthenticationAndAuthorization.EF">示例代码</a> 可以获取完整的配置内容。</p>
+</li>
+<li>
+<p>也可以创建空项目后按照下面内容自行配置。</p>
+</li>
+</ul>
+<h2 id="配置数据库服务">配置数据库服务</h2>
+<p>使用上面命令创建的项目会包含比较完整的内容，下面对项目稍作修改。</p>
+<h3 id="添加数据库相关依赖">添加数据库相关依赖</h3>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="text"><code><span class="line"><span>IdentityServer4.AspNetIdentity（4.1.2）</span></span>
+<span class="line"><span>IdentityServer4.EntityFramework（4.0.0）</span></span>
+<span class="line"><span>Microsoft.EntityFrameworkCore.Tools（3.1.5）</span></span>
+<span class="line"><span>Microsoft.AspNetCore.Identity.EntityFrameworkCore（3.1.5）</span></span>
+<span class="line"><span>Pomelo.EntityFrameworkCore.MySql（3.1.1）</span></span></code></pre>
+<blockquote>
+<p><strong>注意</strong>：截至 2021.3.20，Pomelo.EntityFrameworkCore.MySql 不支持 Net5（想尝鲜可以使用 alpha-5 版本），项目是 net core 3.1 的，对应的 Pomelo.EntityFrameworkCore.MySql 使用的是 3.1.1 版本，对应的 Microsoft.EntityFrameworkCore.Tools 也应该是 3.x 版本。</p>
+<p>本配置为 MySQL，如果使用其他数据库，请自行下载。</p>
+</blockquote>
+<h3 id="添加数据库连接字符串">添加数据库连接字符串</h3>
+<p>在 <code>appsettings.json</code> 中添加如下内容：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="json"><code><span class="line"><span style="color:#E1E4E8">{</span></span>
+<span class="line"><span style="color:#79B8FF">  "ConnectionStrings"</span><span style="color:#E1E4E8">: {</span></span>
+<span class="line"><span style="color:#6A737D">    // 使用命令创建的项目自带默认字符串，连接 SQLite 的</span></span>
+<span class="line"><span style="color:#79B8FF">    "DefaultConnection"</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">"Data Source=IdentityServer.db;"</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#6A737D">    // 添加 MySQL 的连接字符串</span></span>
+<span class="line"><span style="color:#79B8FF">    "MySQL"</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">"server=192.168.1.126;userid=jeremyjone;pwd=123456;port=3306;database=ids-test"</span></span>
+<span class="line"><span style="color:#E1E4E8">  }</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<h3 id="注册数据库的相关服务">注册数据库的相关服务</h3>
+<p>在 <code>Startup.cs</code> 的配置服务中添加如下内容：</p>
+<h4 id="添加数据库上下文">添加数据库上下文</h4>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="csharp"><code><span class="line"><span style="color:#F97583">var</span><span style="color:#B392F0"> connectionMySql</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> Configuration[</span><span style="color:#9ECBFF">"ConnectionStrings:MySQL"</span><span style="color:#E1E4E8">];</span></span>
+<span class="line"><span style="color:#F97583">if</span><span style="color:#E1E4E8"> (</span><span style="color:#F97583">string</span><span style="color:#E1E4E8">.</span><span style="color:#B392F0">IsNullOrWhiteSpace</span><span style="color:#E1E4E8">(connectionMySql))</span></span>
+<span class="line"><span style="color:#E1E4E8">{</span></span>
+<span class="line"><span style="color:#F97583">    throw</span><span style="color:#F97583"> new</span><span style="color:#B392F0"> Exception</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">"数据库配置异常，请检查 appsettings.json"</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">services.</span><span style="color:#B392F0">AddDbContext</span><span style="color:#E1E4E8">&#x3C;</span><span style="color:#B392F0">ApplicationDbContext</span><span style="color:#E1E4E8">>(</span><span style="color:#B392F0">options</span><span style="color:#F97583"> =></span><span style="color:#E1E4E8"> options.</span><span style="color:#B392F0">UseMySql</span><span style="color:#E1E4E8">(connectionMySql));</span></span></code></pre>
+<h4 id="配置身份参数">配置身份参数</h4>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="csharp"><code><span class="line"><span style="color:#E1E4E8">services.</span><span style="color:#B392F0">AddIdentity</span><span style="color:#E1E4E8">&#x3C;</span><span style="color:#B392F0">ApplicationUser</span><span style="color:#E1E4E8">, </span><span style="color:#B392F0">ApplicationRole</span><span style="color:#E1E4E8">>()</span></span>
+<span class="line"><span style="color:#6A737D">    // 添加实体库</span></span>
+<span class="line"><span style="color:#E1E4E8">    .</span><span style="color:#B392F0">AddEntityFrameworkStores</span><span style="color:#E1E4E8">&#x3C;</span><span style="color:#B392F0">ApplicationDbContext</span><span style="color:#E1E4E8">>()</span></span>
+<span class="line"><span style="color:#E1E4E8">    .</span><span style="color:#B392F0">AddDefaultTokenProviders</span><span style="color:#E1E4E8">();</span></span></code></pre>
+<h4 id="配置-is4-为数据库模式">配置 IS4 为数据库模式</h4>
+<p>空项目不需要添加被注释掉的内容。如果使用命令创建的项目，会默认使用 SQLite 进行配置，按中文注释稍作修改即可。</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="csharp"><code><span class="line"><span style="color:#F97583">var</span><span style="color:#B392F0"> migrationsAssembly</span><span style="color:#F97583"> =</span><span style="color:#F97583"> typeof</span><span style="color:#E1E4E8">(</span><span style="color:#B392F0">Startup</span><span style="color:#E1E4E8">).</span><span style="color:#B392F0">GetTypeInfo</span><span style="color:#E1E4E8">().Assembly.</span><span style="color:#B392F0">GetName</span><span style="color:#E1E4E8">().Name;</span></span>
+<span class="line"><span style="color:#F97583">var</span><span style="color:#B392F0"> builder</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> services.</span><span style="color:#B392F0">AddIdentityServer</span><span style="color:#E1E4E8">(</span><span style="color:#B392F0">options</span><span style="color:#F97583"> =></span></span>
+<span class="line"><span style="color:#E1E4E8">    {</span></span>
+<span class="line"><span style="color:#E1E4E8">        options.Events.RaiseErrorEvents </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> true</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#E1E4E8">        options.Events.RaiseInformationEvents </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> true</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#E1E4E8">        options.Events.RaiseFailureEvents </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> true</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#E1E4E8">        options.Events.RaiseSuccessEvents </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> true</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">        // see https://identityserver4.readthedocs.io/en/latest/topics/resources.html</span></span>
+<span class="line"><span style="color:#E1E4E8">        options.EmitStaticAudienceClaim </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> true</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#E1E4E8">    })</span></span>
+<span class="line"><span style="color:#6A737D">    // 注释掉测试用户，使用数据库的内容</span></span>
+<span class="line"><span style="color:#6A737D">    //.AddTestUsers(TestUsers.Users)</span></span>
+<span class="line"><span style="color:#6A737D">    // 配置 IS4 使用哪种用户模型</span></span>
+<span class="line"><span style="color:#E1E4E8">    .</span><span style="color:#B392F0">AddAspNetIdentity</span><span style="color:#E1E4E8">&#x3C;</span><span style="color:#B392F0">ApplicationUser</span><span style="color:#E1E4E8">>()</span></span>
+<span class="line"><span style="color:#6A737D">    // this adds the config data from DB (clients, resources, CORS)</span></span>
+<span class="line"><span style="color:#E1E4E8">    .</span><span style="color:#B392F0">AddConfigurationStore</span><span style="color:#E1E4E8">(</span><span style="color:#B392F0">options</span><span style="color:#F97583"> =></span></span>
+<span class="line"><span style="color:#E1E4E8">    {</span></span>
+<span class="line"><span style="color:#6A737D">        //options.ConfigureDbContext = builder => builder.UseSqlite(connectionString);</span></span>
+<span class="line"><span style="color:#6A737D">        // 使用 MySQL</span></span>
+<span class="line"><span style="color:#E1E4E8">        options.ConfigureDbContext </span><span style="color:#F97583">=</span><span style="color:#B392F0"> b</span><span style="color:#F97583"> =></span></span>
+<span class="line"><span style="color:#E1E4E8">            b.</span><span style="color:#B392F0">UseMySql</span><span style="color:#E1E4E8">(connectionMySQL, </span><span style="color:#B392F0">sql</span><span style="color:#F97583"> =></span><span style="color:#E1E4E8"> sql.</span><span style="color:#B392F0">MigrationsAssembly</span><span style="color:#E1E4E8">(migrationsAssembly));</span></span>
+<span class="line"><span style="color:#E1E4E8">    })</span></span>
+<span class="line"><span style="color:#6A737D">    // this adds the operational data from DB (codes, tokens, consents)</span></span>
+<span class="line"><span style="color:#E1E4E8">    .</span><span style="color:#B392F0">AddOperationalStore</span><span style="color:#E1E4E8">(</span><span style="color:#B392F0">options</span><span style="color:#F97583"> =></span></span>
+<span class="line"><span style="color:#E1E4E8">    {</span></span>
+<span class="line"><span style="color:#6A737D">        //options.ConfigureDbContext = builder => builder.UseSqlite(connectionString);</span></span>
+<span class="line"><span style="color:#6A737D">        // 使用 MySQL</span></span>
+<span class="line"><span style="color:#E1E4E8">        options.ConfigureDbContext </span><span style="color:#F97583">=</span><span style="color:#B392F0"> b</span><span style="color:#F97583"> =></span></span>
+<span class="line"><span style="color:#E1E4E8">            b.</span><span style="color:#B392F0">UseMySql</span><span style="color:#E1E4E8">(connectionMySQL, </span><span style="color:#B392F0">sql</span><span style="color:#F97583"> =></span><span style="color:#E1E4E8"> sql.</span><span style="color:#B392F0">MigrationsAssembly</span><span style="color:#E1E4E8">(migrationsAssembly));</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">        // this enables automatic token cleanup. this is optional.</span></span>
+<span class="line"><span style="color:#E1E4E8">        options.EnableTokenCleanup </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> true</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#E1E4E8">    });</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">// not recommended for production - you need to store your key material somewhere secure</span></span>
+<span class="line"><span style="color:#E1E4E8">builder.</span><span style="color:#B392F0">AddDeveloperSigningCredential</span><span style="color:#E1E4E8">();</span></span></code></pre>
+<h4 id="不要忘记在中间件注册使用-is4">不要忘记在中间件注册使用 IS4</h4>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="csharp"><code><span class="line"><span style="color:#E1E4E8">app.</span><span style="color:#B392F0">UseRouting</span><span style="color:#E1E4E8">();</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">// 注册使用 IS4 服务。它需要在 *路由* 之后，*授权* 之前。</span></span>
+<span class="line"><span style="color:#E1E4E8">app.</span><span style="color:#B392F0">UseIdentityServer</span><span style="color:#E1E4E8">();</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">app.</span><span style="color:#B392F0">UseAuthorization</span><span style="color:#E1E4E8">();</span></span></code></pre>
+<h2 id="创建数据模型">创建数据模型</h2>
+<p>上面配置了自定义的 <code>ApplicationDbContext</code> 和 <code>ApplicationUser</code>，因为通常用户的内容我们需要自定义，如果完全不用自定义的话，那么直接使用原型（IdentityUser）即可。</p>
+<p>在项目根目录下新建一个 <code>Models</code> 文件夹并创建下面几个模型类：</p>
+<h3 id="创建自定义用户模型">创建自定义用户模型</h3>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="csharp"><code><span class="line"><span style="color:#6A737D">// ApplicationUser.cs</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">public</span><span style="color:#F97583"> class</span><span style="color:#B392F0"> ApplicationUser</span><span style="color:#E1E4E8"> : </span><span style="color:#B392F0">IdentityUser</span><span style="color:#E1E4E8">&#x3C;</span><span style="color:#F97583">int</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#E1E4E8">{</span></span>
+<span class="line"><span style="color:#6A737D">    /// &#x3C;</span><span style="color:#85E89D">summary</span><span style="color:#6A737D">></span></span>
+<span class="line"><span style="color:#6A737D">    /// 有效</span></span>
+<span class="line"><span style="color:#6A737D">    /// &#x3C;/</span><span style="color:#85E89D">summary</span><span style="color:#6A737D">></span></span>
+<span class="line"><span style="color:#F97583">    public</span><span style="color:#F97583"> bool</span><span style="color:#B392F0"> Validity</span><span style="color:#E1E4E8"> { </span><span style="color:#F97583">get</span><span style="color:#E1E4E8">; </span><span style="color:#F97583">set</span><span style="color:#E1E4E8">; } </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> true</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">    /// &#x3C;</span><span style="color:#85E89D">summary</span><span style="color:#6A737D">></span></span>
+<span class="line"><span style="color:#6A737D">    /// 昵称</span></span>
+<span class="line"><span style="color:#6A737D">    /// &#x3C;/</span><span style="color:#85E89D">summary</span><span style="color:#6A737D">></span></span>
+<span class="line"><span style="color:#F97583">    public</span><span style="color:#F97583"> string</span><span style="color:#B392F0"> NickName</span><span style="color:#E1E4E8"> { </span><span style="color:#F97583">get</span><span style="color:#E1E4E8">; </span><span style="color:#F97583">set</span><span style="color:#E1E4E8">; }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">    /// &#x3C;</span><span style="color:#85E89D">summary</span><span style="color:#6A737D">></span></span>
+<span class="line"><span style="color:#6A737D">    /// 出生日期</span></span>
+<span class="line"><span style="color:#6A737D">    /// &#x3C;/</span><span style="color:#85E89D">summary</span><span style="color:#6A737D">></span></span>
+<span class="line"><span style="color:#F97583">    public</span><span style="color:#B392F0"> DateTime</span><span style="color:#B392F0"> BirthDate</span><span style="color:#E1E4E8"> { </span><span style="color:#F97583">get</span><span style="color:#E1E4E8">; </span><span style="color:#F97583">set</span><span style="color:#E1E4E8">; }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">    public</span><span style="color:#B392F0"> ICollection</span><span style="color:#E1E4E8">&#x3C;</span><span style="color:#B392F0">ApplicationUserRole</span><span style="color:#E1E4E8">> </span><span style="color:#B392F0">UserRoles</span><span style="color:#E1E4E8"> { </span><span style="color:#F97583">get</span><span style="color:#E1E4E8">; </span><span style="color:#F97583">set</span><span style="color:#E1E4E8">; }</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<h3 id="创建自定义角色模型">创建自定义角色模型</h3>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="csharp"><code><span class="line"><span style="color:#6A737D">// ApplicationRole.cs</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">public</span><span style="color:#F97583"> class</span><span style="color:#B392F0"> ApplicationRole</span><span style="color:#E1E4E8">: </span><span style="color:#B392F0">IdentityRole</span><span style="color:#E1E4E8">&#x3C;</span><span style="color:#F97583">int</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#E1E4E8">{</span></span>
+<span class="line"><span style="color:#6A737D">    /// &#x3C;</span><span style="color:#85E89D">summary</span><span style="color:#6A737D">></span></span>
+<span class="line"><span style="color:#6A737D">    /// 有效</span></span>
+<span class="line"><span style="color:#6A737D">    /// &#x3C;/</span><span style="color:#85E89D">summary</span><span style="color:#6A737D">></span></span>
+<span class="line"><span style="color:#F97583">    public</span><span style="color:#F97583"> bool</span><span style="color:#B392F0"> Validity</span><span style="color:#E1E4E8"> { </span><span style="color:#F97583">get</span><span style="color:#E1E4E8">; </span><span style="color:#F97583">set</span><span style="color:#E1E4E8">; } </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> true</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">    /// &#x3C;</span><span style="color:#85E89D">summary</span><span style="color:#6A737D">></span></span>
+<span class="line"><span style="color:#6A737D">    /// 启用</span></span>
+<span class="line"><span style="color:#6A737D">    /// &#x3C;/</span><span style="color:#85E89D">summary</span><span style="color:#6A737D">></span></span>
+<span class="line"><span style="color:#F97583">    public</span><span style="color:#F97583"> bool</span><span style="color:#B392F0"> Enabled</span><span style="color:#E1E4E8"> { </span><span style="color:#F97583">get</span><span style="color:#E1E4E8">; </span><span style="color:#F97583">set</span><span style="color:#E1E4E8">; } </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> true</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">    /// &#x3C;</span><span style="color:#85E89D">summary</span><span style="color:#6A737D">></span></span>
+<span class="line"><span style="color:#6A737D">    /// 描述</span></span>
+<span class="line"><span style="color:#6A737D">    /// &#x3C;/</span><span style="color:#85E89D">summary</span><span style="color:#6A737D">></span></span>
+<span class="line"><span style="color:#F97583">    public</span><span style="color:#F97583"> string</span><span style="color:#B392F0"> Description</span><span style="color:#E1E4E8"> { </span><span style="color:#F97583">get</span><span style="color:#E1E4E8">; </span><span style="color:#F97583">set</span><span style="color:#E1E4E8">; }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">    public</span><span style="color:#B392F0"> ICollection</span><span style="color:#E1E4E8">&#x3C;</span><span style="color:#B392F0">ApplicationUserRole</span><span style="color:#E1E4E8">> </span><span style="color:#B392F0">UserRoles</span><span style="color:#E1E4E8"> { </span><span style="color:#F97583">get</span><span style="color:#E1E4E8">; </span><span style="color:#F97583">set</span><span style="color:#E1E4E8">; }</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<h3 id="创建用户角色模型">创建用户角色模型</h3>
+<p>将用户和角色进行关联</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="csharp"><code><span class="line"><span style="color:#6A737D">// ApplicationUserRole.cs</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">public</span><span style="color:#F97583"> class</span><span style="color:#B392F0"> ApplicationUserRole</span><span style="color:#E1E4E8">: </span><span style="color:#B392F0">IdentityUserRole</span><span style="color:#E1E4E8">&#x3C;</span><span style="color:#F97583">int</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#E1E4E8">{</span></span>
+<span class="line"><span style="color:#F97583">    public</span><span style="color:#F97583"> virtual</span><span style="color:#B392F0"> ApplicationUser</span><span style="color:#B392F0"> User</span><span style="color:#E1E4E8"> { </span><span style="color:#F97583">get</span><span style="color:#E1E4E8">; </span><span style="color:#F97583">set</span><span style="color:#E1E4E8">; }</span></span>
+<span class="line"><span style="color:#F97583">    public</span><span style="color:#F97583"> virtual</span><span style="color:#B392F0"> ApplicationRole</span><span style="color:#B392F0"> Role</span><span style="color:#E1E4E8"> { </span><span style="color:#F97583">get</span><span style="color:#E1E4E8">; </span><span style="color:#F97583">set</span><span style="color:#E1E4E8">; }</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<h3 id="创建自定义数据库上下文">创建自定义数据库上下文</h3>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="csharp"><code><span class="line"><span style="color:#6A737D">// ApplicationDbContext.cs</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">public</span><span style="color:#F97583"> class</span><span style="color:#B392F0"> ApplicationDbContext</span><span style="color:#E1E4E8"> : </span><span style="color:#B392F0">IdentityDbContext</span><span style="color:#E1E4E8">&#x3C;</span><span style="color:#B392F0">ApplicationUser</span><span style="color:#E1E4E8">, </span><span style="color:#B392F0">ApplicationRole</span><span style="color:#E1E4E8">, </span><span style="color:#F97583">int</span><span style="color:#E1E4E8">, </span><span style="color:#B392F0">IdentityUserClaim</span><span style="color:#E1E4E8">&#x3C;</span><span style="color:#F97583">int</span><span style="color:#E1E4E8">>, </span><span style="color:#B392F0">ApplicationUserRole</span><span style="color:#E1E4E8">, </span><span style="color:#B392F0">IdentityUserLogin</span><span style="color:#E1E4E8">&#x3C;</span><span style="color:#F97583">int</span><span style="color:#E1E4E8">>, </span><span style="color:#B392F0">IdentityRoleClaim</span><span style="color:#E1E4E8">&#x3C;</span><span style="color:#F97583">int</span><span style="color:#E1E4E8">>, </span><span style="color:#B392F0">IdentityUserToken</span><span style="color:#E1E4E8">&#x3C;</span><span style="color:#F97583">int</span><span style="color:#E1E4E8">>></span></span>
+<span class="line"><span style="color:#E1E4E8">{</span></span>
+<span class="line"><span style="color:#F97583">    public</span><span style="color:#B392F0"> ApplicationDbContext</span><span style="color:#E1E4E8">(</span><span style="color:#B392F0">DbContextOptions</span><span style="color:#E1E4E8">&#x3C;</span><span style="color:#B392F0">ApplicationDbContext</span><span style="color:#E1E4E8">> </span><span style="color:#B392F0">options</span><span style="color:#E1E4E8">) : </span><span style="color:#79B8FF">base</span><span style="color:#E1E4E8">(options)</span></span>
+<span class="line"><span style="color:#E1E4E8">    {</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">    protected</span><span style="color:#F97583"> override</span><span style="color:#F97583"> void</span><span style="color:#B392F0"> OnModelCreating</span><span style="color:#E1E4E8">(</span><span style="color:#B392F0">ModelBuilder</span><span style="color:#B392F0"> builder</span><span style="color:#E1E4E8">)</span></span>
+<span class="line"><span style="color:#E1E4E8">    {</span></span>
+<span class="line"><span style="color:#79B8FF">        base</span><span style="color:#E1E4E8">.</span><span style="color:#B392F0">OnModelCreating</span><span style="color:#E1E4E8">(builder);</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<p>这样就做好了数据模型，下面可以根据模型创建数据库</p>
+<h2 id="创建种子数据">创建种子数据</h2>
+<h3 id="创建配置资源与客户端">创建配置资源与客户端</h3>
+<p>使用命令创建的项目，在根目录下已经存在一个 <code>Config.cs</code> 的文件。如果没有，则创建该文件并添加如下内容即可：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="csharp"><code><span class="line"><span style="color:#F97583">public</span><span style="color:#F97583"> static</span><span style="color:#F97583"> class</span><span style="color:#B392F0"> Config</span></span>
+<span class="line"><span style="color:#E1E4E8">{</span></span>
+<span class="line"><span style="color:#F97583">    public</span><span style="color:#F97583"> static</span><span style="color:#B392F0"> IEnumerable</span><span style="color:#E1E4E8">&#x3C;</span><span style="color:#B392F0">IdentityResource</span><span style="color:#E1E4E8">> </span><span style="color:#B392F0">IdentityResources</span><span style="color:#F97583"> =></span></span>
+<span class="line"><span style="color:#F97583">                new</span><span style="color:#B392F0"> IdentityResource</span><span style="color:#E1E4E8">[]</span></span>
+<span class="line"><span style="color:#E1E4E8">                {</span></span>
+<span class="line"><span style="color:#F97583">            new</span><span style="color:#B392F0"> IdentityResources</span><span style="color:#E1E4E8">.</span><span style="color:#B392F0">OpenId</span><span style="color:#E1E4E8">(),</span></span>
+<span class="line"><span style="color:#F97583">            new</span><span style="color:#B392F0"> IdentityResources</span><span style="color:#E1E4E8">.</span><span style="color:#B392F0">Profile</span><span style="color:#E1E4E8">(),</span></span>
+<span class="line"><span style="color:#E1E4E8">                };</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">    public</span><span style="color:#F97583"> static</span><span style="color:#B392F0"> IEnumerable</span><span style="color:#E1E4E8">&#x3C;</span><span style="color:#B392F0">ApiScope</span><span style="color:#E1E4E8">> </span><span style="color:#B392F0">ApiScopes</span><span style="color:#F97583"> =></span></span>
+<span class="line"><span style="color:#F97583">        new</span><span style="color:#B392F0"> ApiScope</span><span style="color:#E1E4E8">[]</span></span>
+<span class="line"><span style="color:#E1E4E8">        {</span></span>
+<span class="line"><span style="color:#F97583">            new</span><span style="color:#B392F0"> ApiScope</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">"scope1"</span><span style="color:#E1E4E8">),</span></span>
+<span class="line"><span style="color:#F97583">            new</span><span style="color:#B392F0"> ApiScope</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">"scope2"</span><span style="color:#E1E4E8">),</span></span>
+<span class="line"><span style="color:#E1E4E8">        };</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">    public</span><span style="color:#F97583"> static</span><span style="color:#B392F0"> IEnumerable</span><span style="color:#E1E4E8">&#x3C;</span><span style="color:#B392F0">Client</span><span style="color:#E1E4E8">> </span><span style="color:#B392F0">Clients</span><span style="color:#F97583"> =></span></span>
+<span class="line"><span style="color:#F97583">        new</span><span style="color:#B392F0"> Client</span><span style="color:#E1E4E8">[]</span></span>
+<span class="line"><span style="color:#E1E4E8">        {</span></span>
+<span class="line"><span style="color:#6A737D">            // m2m client credentials flow client</span></span>
+<span class="line"><span style="color:#F97583">            new</span><span style="color:#B392F0"> Client</span></span>
+<span class="line"><span style="color:#E1E4E8">            {</span></span>
+<span class="line"><span style="color:#E1E4E8">                ClientId </span><span style="color:#F97583">=</span><span style="color:#9ECBFF"> "m2m.client"</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">                ClientName </span><span style="color:#F97583">=</span><span style="color:#9ECBFF"> "Client Credentials Client"</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">                AllowedGrantTypes </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> GrantTypes.ClientCredentials,</span></span>
+<span class="line"><span style="color:#E1E4E8">                ClientSecrets </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> { </span><span style="color:#F97583">new</span><span style="color:#B392F0"> Secret</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">"511536EF-F270-4058-80CA-1C89C192F69A"</span><span style="color:#E1E4E8">.</span><span style="color:#B392F0">Sha256</span><span style="color:#E1E4E8">()) },</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">                AllowedScopes </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> { </span><span style="color:#9ECBFF">"scope1"</span><span style="color:#E1E4E8"> }</span></span>
+<span class="line"><span style="color:#E1E4E8">            },</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">            // interactive client using code flow + pkce</span></span>
+<span class="line"><span style="color:#F97583">            new</span><span style="color:#B392F0"> Client</span></span>
+<span class="line"><span style="color:#E1E4E8">            {</span></span>
+<span class="line"><span style="color:#E1E4E8">                ClientId </span><span style="color:#F97583">=</span><span style="color:#9ECBFF"> "interactive"</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">                ClientSecrets </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> { </span><span style="color:#F97583">new</span><span style="color:#B392F0"> Secret</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">"49C1A7E1-0C79-4A89-A3D6-A37998FB86B0"</span><span style="color:#E1E4E8">.</span><span style="color:#B392F0">Sha256</span><span style="color:#E1E4E8">()) },</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">                AllowedGrantTypes </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> GrantTypes.Code,</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">                RedirectUris </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> { </span><span style="color:#9ECBFF">"https://localhost:44300/signin-oidc"</span><span style="color:#E1E4E8"> },</span></span>
+<span class="line"><span style="color:#E1E4E8">                FrontChannelLogoutUri </span><span style="color:#F97583">=</span><span style="color:#9ECBFF"> "https://localhost:44300/signout-oidc"</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">                PostLogoutRedirectUris </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> { </span><span style="color:#9ECBFF">"https://localhost:44300/signout-callback-oidc"</span><span style="color:#E1E4E8"> },</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">                AllowOfflineAccess </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> true</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">                AllowedScopes </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> { </span><span style="color:#9ECBFF">"openid"</span><span style="color:#E1E4E8">, </span><span style="color:#9ECBFF">"profile"</span><span style="color:#E1E4E8">, </span><span style="color:#9ECBFF">"scope2"</span><span style="color:#E1E4E8"> }</span></span>
+<span class="line"><span style="color:#E1E4E8">            },</span></span>
+<span class="line"><span style="color:#E1E4E8">        };</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<p>其中内容都是基础配置，不再赘述。</p>
+<h3 id="创建种子用户与角色">创建种子用户与角色</h3>
+<p>还是在 <code>Config.cs</code> 文件中即可：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="csharp"><code><span class="line"><span style="color:#F97583">public</span><span style="color:#F97583"> static</span><span style="color:#E1E4E8"> IEnumerable</span><span style="color:#F97583">&#x3C;</span><span style="color:#E1E4E8">ApplicationUser</span><span style="color:#F97583">></span><span style="color:#B392F0"> Users</span><span style="color:#F97583"> =></span></span>
+<span class="line"><span style="color:#F97583">    new</span><span style="color:#E1E4E8">[]</span></span>
+<span class="line"><span style="color:#E1E4E8">    {</span></span>
+<span class="line"><span style="color:#F97583">        new</span><span style="color:#B392F0"> ApplicationUser</span></span>
+<span class="line"><span style="color:#E1E4E8">        {</span></span>
+<span class="line"><span style="color:#E1E4E8">            BirthDate </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> DateTime.Now,</span></span>
+<span class="line"><span style="color:#E1E4E8">            Email </span><span style="color:#F97583">=</span><span style="color:#9ECBFF"> "user1@qq.com"</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">            UserName </span><span style="color:#F97583">=</span><span style="color:#9ECBFF"> "user1"</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">            NickName </span><span style="color:#F97583">=</span><span style="color:#9ECBFF"> "用户1"</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">            EmailConfirmed </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> true</span></span>
+<span class="line"><span style="color:#E1E4E8">        },</span></span>
+<span class="line"><span style="color:#F97583">        new</span><span style="color:#B392F0"> ApplicationUser</span></span>
+<span class="line"><span style="color:#E1E4E8">        {</span></span>
+<span class="line"><span style="color:#E1E4E8">            BirthDate </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> DateTime.Now,</span></span>
+<span class="line"><span style="color:#E1E4E8">            Email </span><span style="color:#F97583">=</span><span style="color:#9ECBFF"> "user2@qq.com"</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">            UserName </span><span style="color:#F97583">=</span><span style="color:#9ECBFF"> "user2"</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">            NickName </span><span style="color:#F97583">=</span><span style="color:#9ECBFF"> "用户2"</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">            EmailConfirmed </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> true</span></span>
+<span class="line"><span style="color:#E1E4E8">        },</span></span>
+<span class="line"><span style="color:#E1E4E8">    };</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">public</span><span style="color:#F97583"> static</span><span style="color:#E1E4E8"> IEnumerable</span><span style="color:#F97583">&#x3C;</span><span style="color:#E1E4E8">ApplicationRole</span><span style="color:#F97583">></span><span style="color:#B392F0"> Roles</span><span style="color:#F97583"> =></span></span>
+<span class="line"><span style="color:#F97583">    new</span><span style="color:#E1E4E8">[]</span></span>
+<span class="line"><span style="color:#E1E4E8">    {</span></span>
+<span class="line"><span style="color:#F97583">        new</span><span style="color:#B392F0"> ApplicationRole</span></span>
+<span class="line"><span style="color:#E1E4E8">        {</span></span>
+<span class="line"><span style="color:#E1E4E8">            Name </span><span style="color:#F97583">=</span><span style="color:#9ECBFF"> "admin"</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">            Description </span><span style="color:#F97583">=</span><span style="color:#9ECBFF"> "管理员"</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">        },</span></span>
+<span class="line"><span style="color:#F97583">        new</span><span style="color:#B392F0"> ApplicationRole</span></span>
+<span class="line"><span style="color:#E1E4E8">        {</span></span>
+<span class="line"><span style="color:#E1E4E8">            Name </span><span style="color:#F97583">=</span><span style="color:#9ECBFF"> "user"</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">            Description </span><span style="color:#F97583">=</span><span style="color:#9ECBFF"> "用户"</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">        },</span></span>
+<span class="line"><span style="color:#F97583">        new</span><span style="color:#B392F0"> ApplicationRole</span></span>
+<span class="line"><span style="color:#E1E4E8">        {</span></span>
+<span class="line"><span style="color:#E1E4E8">            Name </span><span style="color:#F97583">=</span><span style="color:#9ECBFF"> "guest"</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">            Description </span><span style="color:#F97583">=</span><span style="color:#9ECBFF"> "访客"</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">        },</span></span>
+<span class="line"><span style="color:#E1E4E8">    };</span></span></code></pre>
+<h3 id="创建种子数据的生成操作">创建种子数据的生成操作</h3>
+<p>使用命令创建的项目，在根目录下有一个 <code>SeedData.cs</code> 的文件，修改为如下内容。如果没有，则创建并将下面内容粘贴到文件中：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="csharp"><code><span class="line"><span style="color:#F97583">public</span><span style="color:#F97583"> class</span><span style="color:#B392F0"> SeedData</span></span>
+<span class="line"><span style="color:#E1E4E8">{</span></span>
+<span class="line"><span style="color:#F97583">    public</span><span style="color:#F97583"> static</span><span style="color:#F97583"> void</span><span style="color:#B392F0"> EnsureSeedData</span><span style="color:#E1E4E8">(</span><span style="color:#B392F0">IServiceProvider</span><span style="color:#B392F0"> serviceProvider</span><span style="color:#E1E4E8">)</span></span>
+<span class="line"><span style="color:#E1E4E8">    {</span></span>
+<span class="line"><span style="color:#6A737D">        // var services = new ServiceCollection();</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">        // 不需要 SQLite</span></span>
+<span class="line"><span style="color:#6A737D">        //services.AddOperationalDbContext(options =></span></span>
+<span class="line"><span style="color:#6A737D">        //{</span></span>
+<span class="line"><span style="color:#6A737D">        //    options.ConfigureDbContext = db => db.UseSqlite(connectionString, sql => sql.MigrationsAssembly(typeof(SeedData).Assembly.FullName));</span></span>
+<span class="line"><span style="color:#6A737D">        //});</span></span>
+<span class="line"><span style="color:#6A737D">        //services.AddConfigurationDbContext(options =></span></span>
+<span class="line"><span style="color:#6A737D">        //{</span></span>
+<span class="line"><span style="color:#6A737D">        //    //options.ConfigureDbContext = db => db.UseMySql(connectionString, sql => sql.MigrationsAssembly(typeof(SeedData).Assembly.FullName));</span></span>
+<span class="line"><span style="color:#6A737D">        //});</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">        // 不使用模板提供的 serviceProvider，通过 host 直接传递 ServiceProvider</span></span>
+<span class="line"><span style="color:#6A737D">        // var serviceProvider = services.BuildServiceProvider();</span></span>
+<span class="line"><span style="color:#F97583">        using</span><span style="color:#E1E4E8"> (</span><span style="color:#F97583">var</span><span style="color:#B392F0"> scope</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> serviceProvider.</span><span style="color:#B392F0">GetRequiredService</span><span style="color:#E1E4E8">&#x3C;</span><span style="color:#B392F0">IServiceScopeFactory</span><span style="color:#E1E4E8">>().</span><span style="color:#B392F0">CreateScope</span><span style="color:#E1E4E8">())</span></span>
+<span class="line"><span style="color:#E1E4E8">        {</span></span>
+<span class="line"><span style="color:#E1E4E8">            scope.ServiceProvider.</span><span style="color:#B392F0">GetService</span><span style="color:#E1E4E8">&#x3C;</span><span style="color:#B392F0">PersistedGrantDbContext</span><span style="color:#E1E4E8">>().Database.</span><span style="color:#B392F0">Migrate</span><span style="color:#E1E4E8">();</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">            var</span><span style="color:#B392F0"> context</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> scope.ServiceProvider.</span><span style="color:#B392F0">GetService</span><span style="color:#E1E4E8">&#x3C;</span><span style="color:#B392F0">ConfigurationDbContext</span><span style="color:#E1E4E8">>();</span></span>
+<span class="line"><span style="color:#E1E4E8">            context.Database.</span><span style="color:#B392F0">Migrate</span><span style="color:#E1E4E8">();</span></span>
+<span class="line"><span style="color:#B392F0">            EnsureSeedData</span><span style="color:#E1E4E8">(context);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">            #</span><span style="color:#F97583">region</span><span style="color:#9ECBFF"> 添加用户数据</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">            var</span><span style="color:#B392F0"> ctx</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> scope.ServiceProvider.</span><span style="color:#B392F0">GetService</span><span style="color:#E1E4E8">&#x3C;</span><span style="color:#B392F0">ApplicationDbContext</span><span style="color:#E1E4E8">>();</span></span>
+<span class="line"><span style="color:#E1E4E8">            ctx.Database.</span><span style="color:#B392F0">Migrate</span><span style="color:#E1E4E8">();</span></span>
+<span class="line"><span style="color:#B392F0">            EnsureSeedData</span><span style="color:#E1E4E8">(scope);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">            #</span><span style="color:#F97583">endregion</span></span>
+<span class="line"><span style="color:#E1E4E8">        }</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">    #</span><span style="color:#F97583">region</span><span style="color:#9ECBFF"> 命令创建的函数，无修改</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">    private</span><span style="color:#F97583"> static</span><span style="color:#F97583"> void</span><span style="color:#B392F0"> EnsureSeedData</span><span style="color:#E1E4E8">(</span><span style="color:#B392F0">ConfigurationDbContext</span><span style="color:#B392F0"> context</span><span style="color:#E1E4E8">)</span></span>
+<span class="line"><span style="color:#E1E4E8">    {</span></span>
+<span class="line"><span style="color:#F97583">        if</span><span style="color:#E1E4E8"> (</span><span style="color:#F97583">!</span><span style="color:#E1E4E8">context.Clients.</span><span style="color:#B392F0">Any</span><span style="color:#E1E4E8">())</span></span>
+<span class="line"><span style="color:#E1E4E8">        {</span></span>
+<span class="line"><span style="color:#E1E4E8">            Log.</span><span style="color:#B392F0">Debug</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">"Clients being populated"</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#F97583">            foreach</span><span style="color:#E1E4E8"> (</span><span style="color:#F97583">var</span><span style="color:#B392F0"> client</span><span style="color:#F97583"> in</span><span style="color:#E1E4E8"> Config.Clients.</span><span style="color:#B392F0">ToList</span><span style="color:#E1E4E8">())</span></span>
+<span class="line"><span style="color:#E1E4E8">            {</span></span>
+<span class="line"><span style="color:#E1E4E8">                context.Clients.</span><span style="color:#B392F0">Add</span><span style="color:#E1E4E8">(client.</span><span style="color:#B392F0">ToEntity</span><span style="color:#E1E4E8">());</span></span>
+<span class="line"><span style="color:#E1E4E8">            }</span></span>
+<span class="line"><span style="color:#E1E4E8">            context.</span><span style="color:#B392F0">SaveChanges</span><span style="color:#E1E4E8">();</span></span>
+<span class="line"><span style="color:#E1E4E8">        }</span></span>
+<span class="line"><span style="color:#F97583">        else</span></span>
+<span class="line"><span style="color:#E1E4E8">        {</span></span>
+<span class="line"><span style="color:#E1E4E8">            Log.</span><span style="color:#B392F0">Debug</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">"Clients already populated"</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#E1E4E8">        }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">        if</span><span style="color:#E1E4E8"> (</span><span style="color:#F97583">!</span><span style="color:#E1E4E8">context.IdentityResources.</span><span style="color:#B392F0">Any</span><span style="color:#E1E4E8">())</span></span>
+<span class="line"><span style="color:#E1E4E8">        {</span></span>
+<span class="line"><span style="color:#E1E4E8">            Log.</span><span style="color:#B392F0">Debug</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">"IdentityResources being populated"</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#F97583">            foreach</span><span style="color:#E1E4E8"> (</span><span style="color:#F97583">var</span><span style="color:#B392F0"> resource</span><span style="color:#F97583"> in</span><span style="color:#E1E4E8"> Config.IdentityResources.</span><span style="color:#B392F0">ToList</span><span style="color:#E1E4E8">())</span></span>
+<span class="line"><span style="color:#E1E4E8">            {</span></span>
+<span class="line"><span style="color:#E1E4E8">                context.IdentityResources.</span><span style="color:#B392F0">Add</span><span style="color:#E1E4E8">(resource.</span><span style="color:#B392F0">ToEntity</span><span style="color:#E1E4E8">());</span></span>
+<span class="line"><span style="color:#E1E4E8">            }</span></span>
+<span class="line"><span style="color:#E1E4E8">            context.</span><span style="color:#B392F0">SaveChanges</span><span style="color:#E1E4E8">();</span></span>
+<span class="line"><span style="color:#E1E4E8">        }</span></span>
+<span class="line"><span style="color:#F97583">        else</span></span>
+<span class="line"><span style="color:#E1E4E8">        {</span></span>
+<span class="line"><span style="color:#E1E4E8">            Log.</span><span style="color:#B392F0">Debug</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">"IdentityResources already populated"</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#E1E4E8">        }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">        if</span><span style="color:#E1E4E8"> (</span><span style="color:#F97583">!</span><span style="color:#E1E4E8">context.ApiResources.</span><span style="color:#B392F0">Any</span><span style="color:#E1E4E8">())</span></span>
+<span class="line"><span style="color:#E1E4E8">        {</span></span>
+<span class="line"><span style="color:#E1E4E8">            Log.</span><span style="color:#B392F0">Debug</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">"ApiScopes being populated"</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#F97583">            foreach</span><span style="color:#E1E4E8"> (</span><span style="color:#F97583">var</span><span style="color:#B392F0"> resource</span><span style="color:#F97583"> in</span><span style="color:#E1E4E8"> Config.ApiScopes.</span><span style="color:#B392F0">ToList</span><span style="color:#E1E4E8">())</span></span>
+<span class="line"><span style="color:#E1E4E8">            {</span></span>
+<span class="line"><span style="color:#E1E4E8">                context.ApiScopes.</span><span style="color:#B392F0">Add</span><span style="color:#E1E4E8">(resource.</span><span style="color:#B392F0">ToEntity</span><span style="color:#E1E4E8">());</span></span>
+<span class="line"><span style="color:#E1E4E8">            }</span></span>
+<span class="line"><span style="color:#E1E4E8">            context.</span><span style="color:#B392F0">SaveChanges</span><span style="color:#E1E4E8">();</span></span>
+<span class="line"><span style="color:#E1E4E8">        }</span></span>
+<span class="line"><span style="color:#F97583">        else</span></span>
+<span class="line"><span style="color:#E1E4E8">        {</span></span>
+<span class="line"><span style="color:#E1E4E8">            Log.</span><span style="color:#B392F0">Debug</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">"ApiScopes already populated"</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#E1E4E8">        }</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">    #</span><span style="color:#F97583">endregion</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">    #</span><span style="color:#F97583">region</span><span style="color:#9ECBFF"> 创建用户和角色</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">    private</span><span style="color:#F97583"> static</span><span style="color:#F97583"> void</span><span style="color:#B392F0"> EnsureSeedData</span><span style="color:#E1E4E8">(</span><span style="color:#B392F0">IServiceScope</span><span style="color:#B392F0"> scope</span><span style="color:#E1E4E8">)</span></span>
+<span class="line"><span style="color:#E1E4E8">    {</span></span>
+<span class="line"><span style="color:#F97583">        var</span><span style="color:#B392F0"> userManager</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> scope.ServiceProvider.</span><span style="color:#B392F0">GetRequiredService</span><span style="color:#E1E4E8">&#x3C;</span><span style="color:#B392F0">UserManager</span><span style="color:#E1E4E8">&#x3C;</span><span style="color:#B392F0">ApplicationUser</span><span style="color:#E1E4E8">>>();</span></span>
+<span class="line"><span style="color:#F97583">        var</span><span style="color:#B392F0"> roleManager</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> scope.ServiceProvider.</span><span style="color:#B392F0">GetRequiredService</span><span style="color:#E1E4E8">&#x3C;</span><span style="color:#B392F0">RoleManager</span><span style="color:#E1E4E8">&#x3C;</span><span style="color:#B392F0">ApplicationRole</span><span style="color:#E1E4E8">>>();</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">        // 创建角色</span></span>
+<span class="line"><span style="color:#F97583">        foreach</span><span style="color:#E1E4E8"> (</span><span style="color:#F97583">var</span><span style="color:#B392F0"> role</span><span style="color:#F97583"> in</span><span style="color:#E1E4E8"> Config.Roles)</span></span>
+<span class="line"><span style="color:#E1E4E8">        {</span></span>
+<span class="line"><span style="color:#F97583">            var</span><span style="color:#B392F0"> res</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> roleManager.</span><span style="color:#B392F0">CreateAsync</span><span style="color:#E1E4E8">(role).Result;</span></span>
+<span class="line"><span style="color:#F97583">            if</span><span style="color:#E1E4E8"> (</span><span style="color:#F97583">!</span><span style="color:#E1E4E8">res.Succeeded)</span></span>
+<span class="line"><span style="color:#E1E4E8">            {</span></span>
+<span class="line"><span style="color:#F97583">                throw</span><span style="color:#F97583"> new</span><span style="color:#B392F0"> Exception</span><span style="color:#E1E4E8">(res.Errors.</span><span style="color:#B392F0">First</span><span style="color:#E1E4E8">().Description);</span></span>
+<span class="line"><span style="color:#E1E4E8">            }</span></span>
+<span class="line"><span style="color:#E1E4E8">            Console.</span><span style="color:#B392F0">WriteLine</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">$"</span><span style="color:#9ECBFF">{</span><span style="color:#E1E4E8">role</span><span style="color:#9ECBFF">.</span><span style="color:#E1E4E8">Name</span><span style="color:#9ECBFF">}</span><span style="color:#9ECBFF"> created!"</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#E1E4E8">        }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">        // 创建用户</span></span>
+<span class="line"><span style="color:#F97583">        foreach</span><span style="color:#E1E4E8"> (</span><span style="color:#F97583">var</span><span style="color:#B392F0"> user</span><span style="color:#F97583"> in</span><span style="color:#E1E4E8"> Config.Users)</span></span>
+<span class="line"><span style="color:#E1E4E8">        {</span></span>
+<span class="line"><span style="color:#6A737D">            // 默认密码为 Test23</span></span>
+<span class="line"><span style="color:#F97583">            var</span><span style="color:#B392F0"> res</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> userManager.</span><span style="color:#B392F0">CreateAsync</span><span style="color:#E1E4E8">(user, </span><span style="color:#9ECBFF">"Test_123"</span><span style="color:#E1E4E8">).Result;</span></span>
+<span class="line"><span style="color:#F97583">            if</span><span style="color:#E1E4E8"> (</span><span style="color:#F97583">!</span><span style="color:#E1E4E8">res.Succeeded)</span></span>
+<span class="line"><span style="color:#E1E4E8">            {</span></span>
+<span class="line"><span style="color:#F97583">                throw</span><span style="color:#F97583"> new</span><span style="color:#B392F0"> Exception</span><span style="color:#E1E4E8">(res.Errors.</span><span style="color:#B392F0">First</span><span style="color:#E1E4E8">().Description);</span></span>
+<span class="line"><span style="color:#E1E4E8">            }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">            // 创建用户的声明</span></span>
+<span class="line"><span style="color:#F97583">            var</span><span style="color:#B392F0"> claims</span><span style="color:#F97583"> =</span><span style="color:#F97583"> new</span><span style="color:#B392F0"> List</span><span style="color:#E1E4E8">&#x3C;</span><span style="color:#B392F0">Claim</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#E1E4E8">            {</span></span>
+<span class="line"><span style="color:#F97583">                new</span><span style="color:#B392F0"> Claim</span><span style="color:#E1E4E8">(JwtClaimTypes.Name, user.NickName),</span></span>
+<span class="line"><span style="color:#F97583">                new</span><span style="color:#B392F0"> Claim</span><span style="color:#E1E4E8">(JwtClaimTypes.Email, user.Email)</span></span>
+<span class="line"><span style="color:#E1E4E8">            };</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">            res </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> userManager.</span><span style="color:#B392F0">AddClaimsAsync</span><span style="color:#E1E4E8">(user, claims).Result;</span></span>
+<span class="line"><span style="color:#F97583">            if</span><span style="color:#E1E4E8"> (</span><span style="color:#F97583">!</span><span style="color:#E1E4E8">res.Succeeded)</span></span>
+<span class="line"><span style="color:#E1E4E8">            {</span></span>
+<span class="line"><span style="color:#F97583">                throw</span><span style="color:#F97583"> new</span><span style="color:#B392F0"> Exception</span><span style="color:#E1E4E8">(res.Errors.</span><span style="color:#B392F0">First</span><span style="color:#E1E4E8">().Description);</span></span>
+<span class="line"><span style="color:#E1E4E8">            }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">            // 创建用户的角色</span></span>
+<span class="line"><span style="color:#F97583">            var</span><span style="color:#B392F0"> role</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> user.UserName </span><span style="color:#F97583">==</span><span style="color:#9ECBFF"> "user1"</span><span style="color:#F97583"> ?</span><span style="color:#9ECBFF"> "admin"</span><span style="color:#F97583"> :</span><span style="color:#9ECBFF"> "user"</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#E1E4E8">            res </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> userManager.</span><span style="color:#B392F0">AddToRoleAsync</span><span style="color:#E1E4E8">(user, role).Result;</span></span>
+<span class="line"><span style="color:#F97583">            if</span><span style="color:#E1E4E8"> (</span><span style="color:#F97583">!</span><span style="color:#E1E4E8">res.Succeeded)</span></span>
+<span class="line"><span style="color:#E1E4E8">            {</span></span>
+<span class="line"><span style="color:#F97583">                throw</span><span style="color:#F97583"> new</span><span style="color:#B392F0"> Exception</span><span style="color:#E1E4E8">(res.Errors.</span><span style="color:#B392F0">First</span><span style="color:#E1E4E8">().Description);</span></span>
+<span class="line"><span style="color:#E1E4E8">            }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">            Console.</span><span style="color:#B392F0">WriteLine</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">$"</span><span style="color:#9ECBFF">{</span><span style="color:#E1E4E8">user</span><span style="color:#9ECBFF">.</span><span style="color:#E1E4E8">NickName</span><span style="color:#9ECBFF">}</span><span style="color:#9ECBFF"> created!"</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#E1E4E8">        }</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">    #</span><span style="color:#F97583">endregion</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<h2 id="将数据写入数据库">将数据写入数据库</h2>
+<p>下面就可以将前面费了好大劲写的种子数据写入到数据库了。</p>
+<h3 id="在添加数据之前需要创建数据库">在添加数据之前需要创建数据库</h3>
+<p>但是我们不要急于写入数据，现在还没有数据库。一切已经准备就绪，我们只需要通过几行命令就可以轻松创建数据库。</p>
+<p>在 <code>vs</code> 的控制台直接执行命令是最简单的方式，依次执行：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="text"><code><span class="line"><span>PM> add-migration InitialIdentityServerPersistedGrantDbMigrationMysql -c PersistedGrantDbContext -o MigrationsMySql/PersistedGrantDb</span></span>
+<span class="line"><span>Build started...</span></span>
+<span class="line"><span>Build succeeded.</span></span>
+<span class="line"><span>To undo this action, use Remove-Migration.</span></span>
+<span class="line"><span>PM> update-database -context PersistedGrantDbContext</span></span>
+<span class="line"><span>Build started...</span></span>
+<span class="line"><span>Build succeeded.</span></span>
+<span class="line"><span>Done.</span></span>
+<span class="line"><span>PM> add-migration InitialIdentityServerConfigurationDbMigrationMysql -c ConfigurationDbContext -o MigrationsMySql/ConfigurationDb</span></span>
+<span class="line"><span>Build started...</span></span>
+<span class="line"><span>Build succeeded.</span></span>
+<span class="line"><span>To undo this action, use Remove-Migration.</span></span>
+<span class="line"><span>PM> update-database -context ConfigurationDbContext</span></span>
+<span class="line"><span>Build started...</span></span>
+<span class="line"><span>Build succeeded.</span></span>
+<span class="line"><span>Done.</span></span>
+<span class="line"><span>PM> add-migration AppDbMigration -c ApplicationDbContext -o MigrationsMySql</span></span>
+<span class="line"><span>Build started...</span></span>
+<span class="line"><span>Build succeeded.</span></span>
+<span class="line"><span>To undo this action, use Remove-Migration.</span></span>
+<span class="line"><span>PM> update-database -context ApplicationDbContext</span></span>
+<span class="line"><span>Build started...</span></span>
+<span class="line"><span>Build succeeded.</span></span>
+<span class="line"><span>Done.</span></span></code></pre>
+<blockquote>
+<p>因为可能版本不一致，旧版的 <code>update-database</code> 的 <code>-c</code> 是没有问题的，但新版由于新增了参数，会报冲突，使用全称即可。 下同，但全称是 <code>--context</code>。</p>
+</blockquote>
+<p>也可以通过 <code>dotnet</code> 命令执行，需要先安装 Entity Framework Core CLI，并在项目中安装 <code>Microsoft.EntityFrameworkCore.Design</code>：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="sh"><code><span class="line"><span style="color:#B392F0">dotnet</span><span style="color:#9ECBFF"> tool</span><span style="color:#9ECBFF"> install</span><span style="color:#79B8FF"> --global</span><span style="color:#9ECBFF"> dotnet-ef</span></span>
+<span class="line"><span style="color:#B392F0">dotnet</span><span style="color:#9ECBFF"> add</span><span style="color:#9ECBFF"> package</span><span style="color:#9ECBFF"> Microsoft.EntityFrameworkCore.Design</span></span></code></pre>
+<p>然后依次执行下面命令：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="sh"><code><span class="line"><span style="color:#B392F0">dotnet</span><span style="color:#9ECBFF"> ef</span><span style="color:#9ECBFF"> migrations</span><span style="color:#9ECBFF"> add</span><span style="color:#9ECBFF"> InitialIdentityServerPersistedGrantDbMigrationMysql</span><span style="color:#79B8FF"> -c</span><span style="color:#9ECBFF"> PersistedGrantDbContext</span><span style="color:#79B8FF"> -o</span><span style="color:#9ECBFF"> MigrationsMySql/PersistedGrantDb</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#B392F0">dotnet</span><span style="color:#9ECBFF"> ef</span><span style="color:#9ECBFF"> database</span><span style="color:#9ECBFF"> update</span><span style="color:#79B8FF"> -c</span><span style="color:#9ECBFF"> PersistedGrantDbContext</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#B392F0">dotnet</span><span style="color:#9ECBFF"> ef</span><span style="color:#9ECBFF"> migrations</span><span style="color:#9ECBFF"> add</span><span style="color:#9ECBFF"> InitialIdentityServerConfigurationDbMigrationMysql</span><span style="color:#79B8FF"> -c</span><span style="color:#9ECBFF"> ConfigurationDbContext</span><span style="color:#79B8FF"> -o</span><span style="color:#9ECBFF"> MigrationsMySql/ConfigurationDb</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#B392F0">dotnet</span><span style="color:#9ECBFF"> ef</span><span style="color:#9ECBFF"> database</span><span style="color:#9ECBFF"> update</span><span style="color:#79B8FF"> -c</span><span style="color:#9ECBFF"> ConfigurationDbContext</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#B392F0">dotnet</span><span style="color:#9ECBFF"> ef</span><span style="color:#9ECBFF"> migrations</span><span style="color:#9ECBFF"> add</span><span style="color:#9ECBFF"> AppDbMigration</span><span style="color:#79B8FF"> -c</span><span style="color:#9ECBFF"> ApplicationDbContext</span><span style="color:#79B8FF"> -o</span><span style="color:#9ECBFF"> MigrationsMySql</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#B392F0">dotnet</span><span style="color:#9ECBFF"> ef</span><span style="color:#9ECBFF"> database</span><span style="color:#9ECBFF"> update</span><span style="color:#79B8FF"> -c</span><span style="color:#9ECBFF"> ApplicationDbContext</span></span></code></pre>
+<p>运行之后，可以看到在项目中多了一个 <code>MigrationsMySql</code> 的文件夹，里面有很多自动生成的文件：</p>
+<p><img src="/images/2021/image-1616730192048.png" alt="file"></p>
+<p>同时，在数据库中可以看到已经生成了对应的表：</p>
+<p><img src="/images/2021/image-1616730203176.png" alt="file"></p>
+<blockquote>
+<p>生成的文件为模型文件，如果没有修改我们的自定义实体模型，可以一直使用，只需要执行 update 命令即可创建数据库。如果修改了模型结构，将整个文件夹删掉重新生成，并执行全部命令即可。</p>
+</blockquote>
+<h3 id="将写好的数据通过命令添加到数据库">将写好的数据通过命令添加到数据库</h3>
+<p>通过命令创建的项目中，已经贴心的为我们添加好了添加数据的命令，甚至在我们刚刚创建好的时候就会询问我们是否需要执行它。如果我们一开始就运行了，那么在项目根目录下回生成一个 <code>IdentityServer.db</code> 数据库文件，它是 SQLite 格式的。因为我们现在使用 MySQL，所以需要重新跑一遍。</p>
+<p>空项目自行配置的也没关系，可以将下面代码粘贴到 <code>Program.cs</code> 文件中：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="csharp"><code><span class="line"><span style="color:#F97583">public</span><span style="color:#F97583"> static</span><span style="color:#F97583"> int</span><span style="color:#B392F0"> Main</span><span style="color:#E1E4E8">(</span><span style="color:#F97583">string</span><span style="color:#E1E4E8">[] </span><span style="color:#B392F0">args</span><span style="color:#E1E4E8">)</span></span>
+<span class="line"><span style="color:#E1E4E8">{</span></span>
+<span class="line"><span style="color:#F97583">    var</span><span style="color:#B392F0"> seed</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> args.</span><span style="color:#B392F0">Contains</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">"/seed"</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#F97583">    if</span><span style="color:#E1E4E8"> (seed)</span></span>
+<span class="line"><span style="color:#E1E4E8">    {</span></span>
+<span class="line"><span style="color:#E1E4E8">        args </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> args.</span><span style="color:#B392F0">Except</span><span style="color:#E1E4E8">(</span><span style="color:#F97583">new</span><span style="color:#E1E4E8">[] { </span><span style="color:#9ECBFF">"/seed"</span><span style="color:#E1E4E8"> }).</span><span style="color:#B392F0">ToArray</span><span style="color:#E1E4E8">();</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">    var</span><span style="color:#B392F0"> host</span><span style="color:#F97583"> =</span><span style="color:#B392F0"> CreateHostBuilder</span><span style="color:#E1E4E8">(args).</span><span style="color:#B392F0">Build</span><span style="color:#E1E4E8">();</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">    if</span><span style="color:#E1E4E8"> (seed)</span></span>
+<span class="line"><span style="color:#E1E4E8">    {</span></span>
+<span class="line"><span style="color:#E1E4E8">        Log.</span><span style="color:#B392F0">Information</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">"Seeding database..."</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#E1E4E8">        SeedData.</span><span style="color:#B392F0">EnsureSeedData</span><span style="color:#E1E4E8">(host.Services);</span></span>
+<span class="line"><span style="color:#E1E4E8">        Log.</span><span style="color:#B392F0">Information</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">"Done seeding database."</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#F97583">        return</span><span style="color:#79B8FF"> 0</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">    Log.</span><span style="color:#B392F0">Information</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">"Starting host..."</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#E1E4E8">    host.</span><span style="color:#B392F0">Run</span><span style="color:#E1E4E8">();</span></span>
+<span class="line"><span style="color:#F97583">    return</span><span style="color:#79B8FF"> 0</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<p>这样，我们通过命令行启动项目，并且输入 <code>/seed</code> 参数的时候，它就会执行前面写的内容将种子数据添加到数据库中。</p>
+<p>可以通过命令行运行项目：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="sh"><code><span class="line"><span style="color:#B392F0">dotnet</span><span style="color:#9ECBFF"> run</span><span style="color:#9ECBFF"> /seed</span></span></code></pre>
+<p>同时，也可以在 vs 中添加参数执行，不要忘记执行之后删除就行，项目属性添加即可：</p>
+<p><img src="/images/2021/image-1616730242624.png" alt="file"></p>
+<p>运行项目，在控台看到如下信息则表示已经成功：</p>
+<p><img src="/images/2021/image-1616730253648.png" alt="file"></p>
+<p>同时在数据库可以看到数据已经写入：</p>
+<p><img src="/images/2021/image-1616730262579.png" alt="file"></p>
+<h2 id="使用数据库的数据">使用数据库的数据</h2>
+<p>删掉项目属性中的 <code>/seed</code> 参数，或者直接命令行启动项目，使用我们创建的用户登录：</p>
+<p><img src="/images/2021/image-1616730270342.png" alt="file"></p>
+<p>发现并不能成功登录。不要灰心，因为我们还没有修改控制器的内容。</p>
+<h3 id="让控制器可以调用数据库">让控制器可以调用数据库</h3>
+<p>找到 <code>Quickstart/Account/AccountController.cs</code> 文件，在构造器中可以发现它目前使用的用户仍然是测试账户信息，修改构造器的内容：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="csharp"><code><span class="line"><span style="color:#F97583">public</span><span style="color:#B392F0"> AccountController</span><span style="color:#E1E4E8">(IIdentityServerInteractionService interaction,</span></span>
+<span class="line"><span style="color:#E1E4E8">    IClientStore clientStore,</span></span>
+<span class="line"><span style="color:#E1E4E8">    IAuthenticationSchemeProvider schemeProvider,</span></span>
+<span class="line"><span style="color:#E1E4E8">    IEventService events,</span></span>
+<span class="line"><span style="color:#E1E4E8">    UserManager</span><span style="color:#F97583">&#x3C;</span><span style="color:#E1E4E8">ApplicationUser</span><span style="color:#F97583">></span><span style="color:#E1E4E8"> userManager,</span></span>
+<span class="line"><span style="color:#E1E4E8">    SignInManager</span><span style="color:#F97583">&#x3C;</span><span style="color:#E1E4E8">ApplicationUser</span><span style="color:#F97583">></span><span style="color:#E1E4E8"> signInManager)</span></span>
+<span class="line"><span style="color:#E1E4E8">{</span></span>
+<span class="line"><span style="color:#6A737D">    //_users = users ?? new TestUserStore(TestUsers.Users);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">    _interaction </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> interaction;</span></span>
+<span class="line"><span style="color:#E1E4E8">    _clientStore </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> clientStore;</span></span>
+<span class="line"><span style="color:#E1E4E8">    _schemeProvider </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> schemeProvider;</span></span>
+<span class="line"><span style="color:#E1E4E8">    _events </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> events;</span></span>
+<span class="line"><span style="color:#6A737D">    // 添加用户管理器</span></span>
+<span class="line"><span style="color:#E1E4E8">    _userManager </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> userManager;</span></span>
+<span class="line"><span style="color:#6A737D">    // 添加登录管理器</span></span>
+<span class="line"><span style="color:#E1E4E8">    _signInManager </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> signInManager;</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<p>并生成只读的 <code>_userManager</code> 和 <code>_signInManager</code>：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="csharp"><code><span class="line"><span style="color:#F97583">private</span><span style="color:#F97583"> readonly</span><span style="color:#B392F0"> UserManager</span><span style="color:#E1E4E8">&#x3C;</span><span style="color:#B392F0">ApplicationUser</span><span style="color:#E1E4E8">> </span><span style="color:#B392F0">_userManager</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">private</span><span style="color:#F97583"> readonly</span><span style="color:#B392F0"> SignInManager</span><span style="color:#E1E4E8">&#x3C;</span><span style="color:#B392F0">ApplicationUser</span><span style="color:#E1E4E8">> </span><span style="color:#B392F0">_signInManager</span><span style="color:#E1E4E8">;</span></span></code></pre>
+<h4 id="修改登录方式">修改登录方式</h4>
+<p>找到登录函数：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="csharp"><code><span class="line"><span style="color:#E1E4E8">[</span><span style="color:#B392F0">HttpPost</span><span style="color:#E1E4E8">]</span></span>
+<span class="line"><span style="color:#E1E4E8">[</span><span style="color:#B392F0">ValidateAntiForgeryToken</span><span style="color:#E1E4E8">]</span></span>
+<span class="line"><span style="color:#F97583">public</span><span style="color:#F97583"> async</span><span style="color:#B392F0"> Task</span><span style="color:#E1E4E8">&#x3C;</span><span style="color:#B392F0">IActionResult</span><span style="color:#E1E4E8">> </span><span style="color:#B392F0">Login</span><span style="color:#E1E4E8">(</span><span style="color:#B392F0">LoginInputModel</span><span style="color:#B392F0"> model</span><span style="color:#E1E4E8">, </span><span style="color:#F97583">string</span><span style="color:#B392F0"> button</span><span style="color:#E1E4E8">)</span></span>
+<span class="line"><span style="color:#E1E4E8">{</span></span>
+<span class="line"><span style="color:#6A737D">    // ...</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">    if</span><span style="color:#E1E4E8"> (ModelState.IsValid)</span></span>
+<span class="line"><span style="color:#E1E4E8">    {</span></span>
+<span class="line"><span style="color:#6A737D">        // ... 登录验证部分</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">    // ...</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<p>找到其中的登录验证部分，并完全将其替换为如下内容：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="csharp"><code><span class="line"><span style="color:#F97583">if</span><span style="color:#E1E4E8"> (ModelState.IsValid)</span></span>
+<span class="line"><span style="color:#E1E4E8">{</span></span>
+<span class="line"><span style="color:#6A737D">    // 允许用户使用用户名</span></span>
+<span class="line"><span style="color:#F97583">    var</span><span style="color:#B392F0"> user</span><span style="color:#F97583"> =</span><span style="color:#F97583"> await</span><span style="color:#E1E4E8"> _userManager.</span><span style="color:#B392F0">FindByNameAsync</span><span style="color:#E1E4E8">(model.Username);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">    if</span><span style="color:#E1E4E8"> (user </span><span style="color:#F97583">!=</span><span style="color:#79B8FF"> null</span><span style="color:#F97583"> &#x26;&#x26;</span><span style="color:#E1E4E8"> user.Validity)</span></span>
+<span class="line"><span style="color:#E1E4E8">    {</span></span>
+<span class="line"><span style="color:#6A737D">        // 使用密码验证</span></span>
+<span class="line"><span style="color:#F97583">        var</span><span style="color:#B392F0"> result</span><span style="color:#F97583"> =</span><span style="color:#F97583"> await</span><span style="color:#E1E4E8"> _signInManager.</span><span style="color:#B392F0">PasswordSignInAsync</span><span style="color:#E1E4E8">(user.UserName, model.Password, model.RememberLogin, </span><span style="color:#B392F0">lockoutOnFailure</span><span style="color:#E1E4E8">: </span><span style="color:#79B8FF">true</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#F97583">        if</span><span style="color:#E1E4E8"> (result.Succeeded)</span></span>
+<span class="line"><span style="color:#E1E4E8">        {</span></span>
+<span class="line"><span style="color:#6A737D">            // TODO 更新登录信息</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">            await</span><span style="color:#E1E4E8"> _events.</span><span style="color:#B392F0">RaiseAsync</span><span style="color:#E1E4E8">(</span><span style="color:#F97583">new</span><span style="color:#B392F0"> UserLoginSuccessEvent</span><span style="color:#E1E4E8">(user.UserName, user.Id.</span><span style="color:#B392F0">ToString</span><span style="color:#E1E4E8">(), user.UserName));</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">            // make sure the returnUrl is still valid, and if so redirect back to authorize endpoint or a local page</span></span>
+<span class="line"><span style="color:#6A737D">            // the IsLocalUrl check is only necessary if you want to support additional local pages, otherwise IsValidReturnUrl is more strict</span></span>
+<span class="line"><span style="color:#F97583">            if</span><span style="color:#E1E4E8"> (_interaction.</span><span style="color:#B392F0">IsValidReturnUrl</span><span style="color:#E1E4E8">(model.ReturnUrl) </span><span style="color:#F97583">||</span><span style="color:#E1E4E8"> Url.</span><span style="color:#B392F0">IsLocalUrl</span><span style="color:#E1E4E8">(model.ReturnUrl))</span></span>
+<span class="line"><span style="color:#E1E4E8">            {</span></span>
+<span class="line"><span style="color:#F97583">                return</span><span style="color:#B392F0"> Redirect</span><span style="color:#E1E4E8">(model.ReturnUrl);</span></span>
+<span class="line"><span style="color:#E1E4E8">            }</span></span>
+<span class="line"><span style="color:#F97583">            return</span><span style="color:#B392F0"> Redirect</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">"~/"</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#E1E4E8">        }</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"><span style="color:#F97583">    await</span><span style="color:#E1E4E8"> _events.</span><span style="color:#B392F0">RaiseAsync</span><span style="color:#E1E4E8">(</span><span style="color:#F97583">new</span><span style="color:#B392F0"> UserLoginFailureEvent</span><span style="color:#E1E4E8">(model.Username, </span><span style="color:#9ECBFF">"invalid credentials"</span><span style="color:#E1E4E8">));</span></span>
+<span class="line"><span style="color:#E1E4E8">    ModelState.</span><span style="color:#B392F0">AddModelError</span><span style="color:#E1E4E8">(</span><span style="color:#F97583">string</span><span style="color:#E1E4E8">.Empty, AccountOptions.InvalidCredentialsErrorMessage);</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<h4 id="修改登出方式">修改登出方式</h4>
+<p>找到登出函数，并进行修改：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="csharp"><code><span class="line"><span style="color:#E1E4E8">[</span><span style="color:#B392F0">HttpPost</span><span style="color:#E1E4E8">]</span></span>
+<span class="line"><span style="color:#E1E4E8">[</span><span style="color:#B392F0">ValidateAntiForgeryToken</span><span style="color:#E1E4E8">]</span></span>
+<span class="line"><span style="color:#F97583">public</span><span style="color:#F97583"> async</span><span style="color:#B392F0"> Task</span><span style="color:#E1E4E8">&#x3C;</span><span style="color:#B392F0">IActionResult</span><span style="color:#E1E4E8">> </span><span style="color:#B392F0">Logout</span><span style="color:#E1E4E8">(</span><span style="color:#B392F0">LogoutInputModel</span><span style="color:#B392F0"> model</span><span style="color:#E1E4E8">)</span></span>
+<span class="line"><span style="color:#E1E4E8">{</span></span>
+<span class="line"><span style="color:#6A737D">    // ...</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">    if</span><span style="color:#E1E4E8"> (User</span><span style="color:#F97583">?</span><span style="color:#E1E4E8">.Identity.IsAuthenticated </span><span style="color:#F97583">==</span><span style="color:#79B8FF"> true</span><span style="color:#E1E4E8">)</span></span>
+<span class="line"><span style="color:#E1E4E8">    {</span></span>
+<span class="line"><span style="color:#6A737D">        // delete local authentication cookie</span></span>
+<span class="line"><span style="color:#6A737D">        //await HttpContext.SignOutAsync();</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">        // 注释掉上面的模板登出，改为下面的通过管理器登出的方式</span></span>
+<span class="line"><span style="color:#F97583">        await</span><span style="color:#E1E4E8"> _signInManager.</span><span style="color:#B392F0">SignOutAsync</span><span style="color:#E1E4E8">();</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">        // raise the logout event</span></span>
+<span class="line"><span style="color:#F97583">        await</span><span style="color:#E1E4E8"> _events.</span><span style="color:#B392F0">RaiseAsync</span><span style="color:#E1E4E8">(</span><span style="color:#F97583">new</span><span style="color:#B392F0"> UserLogoutSuccessEvent</span><span style="color:#E1E4E8">(User.</span><span style="color:#B392F0">GetSubjectId</span><span style="color:#E1E4E8">(), User.</span><span style="color:#B392F0">GetDisplayName</span><span style="color:#E1E4E8">()));</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">    // ...</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<h2 id="完成">完成</h2>
+<p>现在重新运行项目，通过创建的用户登录，发现已经可以正常登录。</p>
+<p><img src="/images/2021/image-1616730306216.png" alt="file"></p>
+<p>至此，整个项目已经完整的使用了数据库，后面可以围绕数据库的数据进行任何操作。</p>
+<h2 id="说明">说明</h2>
+<p>上文中出现 <code>Log</code> 对象，可以参考 <a href="https://jeremyjone.github.io/docs/document/roadmap/dotnetcore/log/Serilog.html">SeriLog 的使用</a></p> </div> <!-- 悬浮 TOC --> <button class="toc-toggle" id="toc-toggle" aria-label="显示目录" data-astro-cid-iy4s3wf7> <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-list" data-astro-cid-iy4s3wf7> <line x1="8" y1="6" x2="21" y2="6" data-astro-cid-iy4s3wf7></line> <line x1="8" y1="12" x2="21" y2="12" data-astro-cid-iy4s3wf7></line> <line x1="8" y1="18" x2="21" y2="18" data-astro-cid-iy4s3wf7></line> <line x1="3" y1="6" x2="3.01" y2="6" data-astro-cid-iy4s3wf7></line> <line x1="3" y1="12" x2="3.01" y2="12" data-astro-cid-iy4s3wf7></line> <line x1="3" y1="18" x2="3.01" y2="18" data-astro-cid-iy4s3wf7></line> </svg> </button> <aside class="floating-toc" id="floating-toc" data-astro-cid-iy4s3wf7> <div class="toc-header" data-astro-cid-iy4s3wf7> <h3 data-astro-cid-iy4s3wf7>目录</h3> </div> <nav class="toc-nav" id="toc-nav" data-astro-cid-g3fimnfa> <!-- TOC 内容将由客户端脚本填充 --> </nav>  <script type="module">document.addEventListener("DOMContentLoaded",()=>{const n=document.getElementById("toc-nav"),a=document.querySelector(".toc-header h3");if(!n)return;const s=document.querySelector(".article-header h1")?.textContent||"目录";a&&(a.textContent=s);const c=Array.from(document.querySelectorAll(".article-content h2, .article-content h3, .article-content h4, .article-content h5, .article-content h6"));if(c.length===0){n.innerHTML='<p style="color: var(--color-text-secondary); padding: 0.5rem;">暂无目录</p>';return}c.forEach(e=>{e.id||(e.id=e.textContent?.toLowerCase().replace(/\s+/g,"-").replace(/[^\w\-\u4e00-\u9fa5]/g,"")||"")});const l=document.createElement("ul");c.forEach(e=>{const t=document.createElement("li"),o=document.createElement("a");o.href=`#${e.id}`,o.textContent=e.textContent||"",o.classList.add(`toc-${e.tagName.toLowerCase()}`),o.addEventListener("click",i=>{i.preventDefault();const r=document.getElementById(e.id);if(r){const u=r.getBoundingClientRect().top+window.pageYOffset-80;window.scrollTo({top:u,behavior:"smooth"}),history.pushState(null,"",`#${e.id}`)}}),t.appendChild(o),l.appendChild(t)}),n.appendChild(l);const d={root:null,rootMargin:"-60px 0px -80% 0px",threshold:0},h=new IntersectionObserver(e=>{e.forEach(t=>{if(t.isIntersecting){const o=t.target.id;n.querySelectorAll("a").forEach(r=>{r.classList.remove("active")});const i=n.querySelector(`a[href="#${o}"]`);i&&i.classList.add("active")}})},d);c.forEach(e=>h.observe(e)),setTimeout(()=>{if(window.location.hash){const t=n.querySelector(`a[href="${window.location.hash}"]`);if(t){n.querySelectorAll("a").forEach(o=>o.classList.remove("active")),t.classList.add("active");return}}let e="";for(const t of c)if(t.getBoundingClientRect().top<=150)e=t.id;else break;if(!e&&c.length>0&&window.scrollY<100&&(e=c[0].id),e){n.querySelectorAll("a").forEach(o=>o.classList.remove("active"));const t=n.querySelector(`a[href="#${e}"]`);t&&t.classList.add("active")}},100)});</script> </aside> <div class="toc-overlay" id="toc-overlay" data-astro-cid-iy4s3wf7></div> <section class="comments" data-astro-cid-iy4s3wf7> <div class="giscus-wrapper"> <script src="https://giscus.app/client.js" data-repo="jeremyjone/blog-comments" data-repo-id="R_kgDOQlVVGg" data-category="Announcements" data-category-id="DIC_kwDOQlVVGs4Czkir" data-mapping="title" data-term data-strict="0" data-reactions-enabled="1" data-emit-metadata="0" data-input-position="top" data-theme="preferred_color_scheme" data-lang="zh-CN" crossorigin="anonymous" async></script> <noscript>请启用 JavaScript 查看评论。</noscript> </div> </section> </article>  </main> <footer class="site-footer" data-astro-cid-x322jucz> <div class="container footer-content" data-astro-cid-x322jucz> <p data-astro-cid-x322jucz>
+&copy; 2025 <b data-astro-cid-x322jucz>JeremyJone.com</b> All rights reserved.
+</p> <div class="footer-links" data-astro-cid-x322jucz> <a href="https://github.com/jeremyjone" target="_blank" rel="noopener" data-astro-cid-x322jucz> GitHub </a> </div> </div> </footer> <script type="module" src="/_astro/BaseLayout.astro_astro_type_script_index_0_lang.D4h-rqQD.js"></script> <div id="search-modal" class="search-modal" style="display: none;" data-astro-cid-jwf5kjrd> <div class="search-overlay" data-astro-cid-jwf5kjrd></div> <div class="search-container" data-astro-cid-jwf5kjrd> <div class="search-header" data-astro-cid-jwf5kjrd> <input type="text" id="search-input-global" placeholder="搜索全站内容 (Cmd+K)..." autocomplete="off" data-astro-cid-jwf5kjrd> <button id="close-search" aria-label="Close search" data-astro-cid-jwf5kjrd>&times;</button> </div> <div id="search-results-global" class="search-results" data-astro-cid-jwf5kjrd> <div class="search-placeholder" data-astro-cid-jwf5kjrd>输入关键词开始搜索...</div> </div> </div> </div>  <script>
+    window.loadPagefind = async () => {
+        try {
+            return await import("/pagefind/pagefind.js");
+        } catch (e) {
+            console.warn("Failed to load pagefind:", e);
+            return null;
+        }
+    };
+</script> <script type="module" src="/_astro/SearchModal.astro_astro_type_script_index_0_lang.C4oQFeHw.js"></script> </body></html>  <script type="module">document.addEventListener("DOMContentLoaded",()=>{const c=document.getElementById("toc-toggle"),e=document.getElementById("floating-toc"),t=document.getElementById("toc-overlay");c?.addEventListener("click",()=>{e?.classList.add("active"),t?.classList.add("active")});const o=()=>{e?.classList.remove("active"),t?.classList.remove("active")};t?.addEventListener("click",o)});</script>

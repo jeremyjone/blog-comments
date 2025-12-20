@@ -1,0 +1,144 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="dark" data-astro-cid-x322jucz> <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>真丶深入理解JavaScript异步编程（一）：异步</title><meta name="description" content="## 异步的由来与实现 JS 在设计之初就是单线程的，所以本质上并不存在异步编程。在经过不断的进化和改良之后，现在所谓的异步编程也只是利用任务队列来改变事件的触发顺序，从而在效果上达到异步。 ### 一个生活中的例子 好比我们要吃饭，..."><link rel="canonical" href="https://www.jeremyjone.com//blog/%E7%9C%9F%E4%B8%B6%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3javascript%E5%BC%82%E6%AD%A5%E7%BC%96%E7%A8%8B-%E4%B8%80-%E5%BC%82%E6%AD%A5/"><meta property="og:title" content="真丶深入理解JavaScript异步编程（一）：异步"><meta property="og:description" content="## 异步的由来与实现 JS 在设计之初就是单线程的，所以本质上并不存在异步编程。在经过不断的进化和改良之后，现在所谓的异步编程也只是利用任务队列来改变事件的触发顺序，从而在效果上达到异步。 ### 一个生活中的例子 好比我们要吃饭，..."><meta property="og:type" content="article"><meta property="og:url" content="https://www.jeremyjone.com//blog/%E7%9C%9F%E4%B8%B6%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3javascript%E5%BC%82%E6%AD%A5%E7%BC%96%E7%A8%8B-%E4%B8%80-%E5%BC%82%E6%AD%A5/"><meta property="og:site_name" content="JeremyJone's Blog"><meta property="og:locale" content="zh_CN"><link rel="icon" href="/favicon.ico"><link rel="stylesheet" href="/_astro/_year_.CFHYKZJi.css">
+<link rel="stylesheet" href="/_astro/_slug_.B1ShOm38.css"></head> <body data-astro-cid-x322jucz> <header class="site-header" data-astro-cid-x322jucz> <div class="container header-content" data-astro-cid-x322jucz> <a href="/" class="logo" data-astro-cid-x322jucz> <div class="logo-icon" data-astro-cid-x322jucz> <img src="/resources/avatar.png" alt="Logo" width="32" height="32" data-astro-cid-x322jucz> </div> <span class="logo-text" data-astro-cid-x322jucz>JeremyJone&#39;s Blog</span> </a> <div class="header-right" data-astro-cid-x322jucz> <nav class="nav" data-astro-cid-x322jucz> <a href="/" class="nav-link" data-astro-cid-x322jucz> 首页 </a><a href="/blog" class="nav-link active" data-astro-cid-x322jucz> 博客 </a><a href="/notes" class="nav-link" data-astro-cid-x322jucz> 笔记 </a> </nav> <button class="search-toggle" onclick="window.openSearchModal()" aria-label="搜索" data-astro-cid-x322jucz> <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-astro-cid-x322jucz><circle cx="11" cy="11" r="8" data-astro-cid-x322jucz></circle><line x1="21" y1="21" x2="16.65" y2="16.65" data-astro-cid-x322jucz></line></svg> <span class="search-placeholder" data-astro-cid-x322jucz>Ctrl+K 搜索...</span> </button> <button class="theme-toggle" id="theme-toggle" aria-label="切换主题" data-astro-cid-x322jucz> <svg class="sun-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" data-astro-cid-x322jucz> <circle cx="12" cy="12" r="5" data-astro-cid-x322jucz></circle> <line x1="12" y1="1" x2="12" y2="3" data-astro-cid-x322jucz></line> <line x1="12" y1="21" x2="12" y2="23" data-astro-cid-x322jucz></line> <line x1="4.22" y1="4.22" x2="5.64" y2="5.64" data-astro-cid-x322jucz></line> <line x1="18.36" y1="18.36" x2="19.78" y2="19.78" data-astro-cid-x322jucz></line> <line x1="1" y1="12" x2="3" y2="12" data-astro-cid-x322jucz></line> <line x1="21" y1="12" x2="23" y2="12" data-astro-cid-x322jucz></line> <line x1="4.22" y1="19.78" x2="5.64" y2="18.36" data-astro-cid-x322jucz></line> <line x1="18.36" y1="5.64" x2="19.78" y2="4.22" data-astro-cid-x322jucz></line> </svg> <svg class="moon-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" data-astro-cid-x322jucz> <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" data-astro-cid-x322jucz></path> </svg> </button> </div> </div> </header> <main class="container" data-astro-cid-x322jucz>  <article data-content-type="blog" data-pagefind-body data-pagefind-filter="type:blog" data-astro-cid-iy4s3wf7> <header class="article-header" data-astro-cid-iy4s3wf7> <h1 data-astro-cid-iy4s3wf7>真丶深入理解JavaScript异步编程（一）：异步</h1> <p class="meta" data-astro-cid-iy4s3wf7>
+发布于 2020-12-15 09:35:09 · 3 分钟 · 标签：<a href="/tags/JavaScript" class="tag" data-astro-cid-iy4s3wf7> JavaScript </a><a href="/tags/异步" class="tag" data-astro-cid-iy4s3wf7> 异步 </a> </p> </header> <div class="article-content" data-astro-cid-iy4s3wf7> <h2 id="异步的由来与实现">异步的由来与实现</h2>
+<p>JS 在设计之初就是单线程的，所以本质上并不存在异步编程。在经过不断的进化和改良之后，现在所谓的异步编程也只是利用任务队列来改变事件的触发顺序，从而在效果上达到异步。</p>
+<h3 id="一个生活中的例子">一个生活中的例子</h3>
+<p>好比我们要吃饭，那就要先做饭，假设焖米饭需要 20 分钟，炒个菜需要 10 分钟。</p>
+<p>如果我们一步一步来（全部我们自己动手）：</p>
+<ul>
+<li>1、焖米饭（20 分钟）</li>
+<li>2、炒菜（10 分钟）</li>
+<li>3、吃饭</li>
+</ul>
+<p>很显然，我们需要 30 分钟才可以吃到饭。</p>
+<p>如何加快速度呢？我们可以使用电饭锅来焖米饭。那现在就是：</p>
+<ul>
+<li>1、焖米饭（电饭锅用时 20 分钟）</li>
+<li>2、炒菜（自身用时 10 分钟）</li>
+<li>3、吃饭</li>
+</ul>
+<p>我们一开始将焖米饭的事情丢给电饭锅去做，我们只需要关心炒菜这个事情了。等电饭锅做好了饭，它会告诉我们。这样一来，我们要吃上饭，只需要等待 20 分钟，缩短了 10 分钟。</p>
+<h3 id="由生活到代码的转换">由生活到代码的转换</h3>
+<p>上面这个例子体现了异步带来的好处。我们自身就是主线程，而电饭锅就是一个任务队列的任务，它会自己处理自己的事情，我们并不需要关心，只需要等待结果即可。就像我们请求后台任务，等待返回结果即可，此时我们的主线程不需要等待结果，还可以做其他事情，有了结果再调用一下就可以了。</p>
+<p>上张图说明关系：</p>
+<p><img src="/images/2020/taskqueueexample.png" alt="任务队列示意"></p>
+<p>上例转换代码：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="js"><code><span class="line"><span style="color:#E1E4E8">console.</span><span style="color:#B392F0">log</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">"我要开始做饭了。"</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">// 焖米饭，饭好了就可以开饭了</span></span>
+<span class="line"><span style="color:#B392F0">setTimeout</span><span style="color:#E1E4E8">(() </span><span style="color:#F97583">=></span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#E1E4E8">  console.</span><span style="color:#B392F0">log</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">"米饭焖好了，可以开饭了。"</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#E1E4E8">}, </span><span style="color:#79B8FF">2000</span><span style="color:#E1E4E8">); </span><span style="color:#6A737D">// 以2秒替代20分钟</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">// 炒菜，主线程一直在炒菜</span></span>
+<span class="line"><span style="color:#E1E4E8">console.</span><span style="color:#B392F0">log</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">"开始炒菜。"</span><span style="color:#E1E4E8">);</span></span></code></pre>
+<p>上例的结果：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="js"><code><span class="line"><span style="color:#E1E4E8">我要开始做饭了。</span></span>
+<span class="line"><span style="color:#E1E4E8">开始炒菜。</span></span>
+<span class="line"><span style="color:#E1E4E8">米饭焖好了，可以开饭了。</span></span></code></pre>
+<h3 id="异步操作的执行顺序">异步操作的执行顺序</h3>
+<p>上例确实是我们想要的结果，但是没有体现出来炒菜的时间。假设现在炒菜用 30 分钟呢？会不会在 20 分钟的时候就告诉我们可以开饭了呢？</p>
+<p>这就要说到异步操作的执行顺序了。</p>
+<p>在 JS 中，有如下执行顺序规则：</p>
+<ul>
+<li>主线程优先级最高</li>
+<li>主线程执行完毕之后，轮询微任务队列并执行</li>
+<li>最后轮询宏任务队列并执行</li>
+</ul>
+<p>这里引入了两个概念：<code>微任务</code> 和 <code>宏任务</code>，我们稍后介绍。</p>
+<p>我们对上例中的代码稍加修改：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="js"><code><span class="line"><span style="color:#E1E4E8">console.</span><span style="color:#B392F0">log</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">"我要开始做饭了。"</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">// 焖米饭，饭好了就可以开饭了</span></span>
+<span class="line"><span style="color:#B392F0">setTimeout</span><span style="color:#E1E4E8">(() </span><span style="color:#F97583">=></span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#E1E4E8">  console.</span><span style="color:#B392F0">log</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">"米饭焖好了，可以开饭了。"</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#E1E4E8">}, </span><span style="color:#79B8FF">2000</span><span style="color:#E1E4E8">); </span><span style="color:#6A737D">// 以2秒替代20分钟</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">// 炒菜，让它在主线程中运行一段时间，使用循环模拟</span></span>
+<span class="line"><span style="color:#E1E4E8">console.</span><span style="color:#B392F0">log</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">"开始炒菜。"</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#F97583">for</span><span style="color:#E1E4E8"> (</span><span style="color:#F97583">let</span><span style="color:#E1E4E8"> i </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> 0</span><span style="color:#E1E4E8">; i </span><span style="color:#F97583">&#x3C;</span><span style="color:#79B8FF"> 10000000</span><span style="color:#E1E4E8">; i</span><span style="color:#F97583">++</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#E1E4E8">  console.</span><span style="color:#B392F0">log</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">" "</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"><span style="color:#E1E4E8">console.</span><span style="color:#B392F0">log</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">"菜炒好了。"</span><span style="color:#E1E4E8">);</span></span></code></pre>
+<p>运行的结果显示，它并不会影响“米饭焖好了”在最后调用。这也证明了执行顺序是正确的。</p>
+<h4 id="宏任务">宏任务</h4>
+<p>JS 中的宏任务有以下几种方式：</p>
+<ul>
+<li>setTimeout</li>
+<li>setInterval</li>
+<li>I/O</li>
+<li>script</li>
+</ul>
+<p>当主线程遇到它们时，会创建一个宏任务，并按时间丢到宏任务队列中去。</p>
+<h4 id="微任务">微任务</h4>
+<p>JS 中的微任务有以下几种方式：</p>
+<ul>
+<li>Promise</li>
+<li>process.nextTick</li>
+</ul>
+<p>同样的，主线程遇到它们也会创建一个微任务，并丢到微任务队列中。</p>
+<h4 id="事件循环">事件循环</h4>
+<p>在同一次事件循环（event loop）中，永远基于上面提到的执行顺序：主线程 > 微任务 > 宏任务。</p>
+<p><img src="/images/2020/eventloop.png" alt="事件循环"></p>
+<h5 id="举个简单的例子">举个简单的例子</h5>
+<p>看如下代码深入理解：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="js"><code><span class="line"><span style="color:#E1E4E8">console.</span><span style="color:#B392F0">log</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">"main start"</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">// 宏任务</span></span>
+<span class="line"><span style="color:#B392F0">setTimeout</span><span style="color:#E1E4E8">(() </span><span style="color:#F97583">=></span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#E1E4E8">  console.</span><span style="color:#B392F0">log</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">"setTimeout 1"</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#E1E4E8">});</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">// 微任务</span></span>
+<span class="line"><span style="color:#F97583">new</span><span style="color:#79B8FF"> Promise</span><span style="color:#E1E4E8">((</span><span style="color:#FFAB70">resolve</span><span style="color:#E1E4E8">, </span><span style="color:#FFAB70">reject</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">=></span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#E1E4E8">  console.</span><span style="color:#B392F0">log</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">"promise 1"</span><span style="color:#E1E4E8">); </span><span style="color:#6A737D">// Promise 中的代码是同步代码</span></span>
+<span class="line"><span style="color:#B392F0">  resolve</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">"resolve"</span><span style="color:#E1E4E8">); </span><span style="color:#6A737D">// 回调</span></span>
+<span class="line"><span style="color:#E1E4E8">  console.</span><span style="color:#B392F0">log</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">"promise 2"</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#E1E4E8">}).</span><span style="color:#B392F0">then</span><span style="color:#E1E4E8">( </span><span style="color:#6A737D">// 接收回调，这里属于</span></span>
+<span class="line"><span style="color:#FFAB70">  val</span><span style="color:#F97583"> =></span><span style="color:#E1E4E8"> console.</span><span style="color:#B392F0">log</span><span style="color:#E1E4E8">(val),微任务</span></span>
+<span class="line"><span style="color:#FFAB70">  err</span><span style="color:#F97583"> =></span><span style="color:#E1E4E8"> {}</span></span>
+<span class="line"><span style="color:#E1E4E8">);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">console.</span><span style="color:#B392F0">log</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">"main end"</span><span style="color:#E1E4E8">);</span></span></code></pre>
+<p>代码经过运行，它的执行结果如下：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="js"><code><span class="line"><span style="color:#E1E4E8">main start</span></span>
+<span class="line"><span style="color:#E1E4E8">promise </span><span style="color:#79B8FF">1</span></span>
+<span class="line"><span style="color:#E1E4E8">promise </span><span style="color:#79B8FF">2</span></span>
+<span class="line"><span style="color:#E1E4E8">main end</span></span>
+<span class="line"><span style="color:#E1E4E8">resolve</span></span>
+<span class="line"><span style="color:#E1E4E8">setTimeout </span><span style="color:#79B8FF">1</span></span></code></pre>
+<p>这是比较基本的循环。如果在微任务或者宏任务中再添加微任务/宏任务的话，就会按照事件循环的执行顺序，依次调用执行。</p>
+<h5 id="复杂一些的例子">复杂一些的例子</h5>
+<p>网上看到一个比较复杂的题，图解很详细，我就直接贴过来了：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="js"><code><span class="line"><span style="color:#B392F0">setTimeout</span><span style="color:#E1E4E8">(() </span><span style="color:#F97583">=></span><span style="color:#E1E4E8"> console.</span><span style="color:#B392F0">log</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">"setTimeout1"</span><span style="color:#E1E4E8">), </span><span style="color:#79B8FF">0</span><span style="color:#E1E4E8">); </span><span style="color:#6A737D">//1宏任务</span></span>
+<span class="line"><span style="color:#B392F0">setTimeout</span><span style="color:#E1E4E8">(() </span><span style="color:#F97583">=></span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#6A737D">  //2宏任务</span></span>
+<span class="line"><span style="color:#E1E4E8">  console.</span><span style="color:#B392F0">log</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">"setTimeout2"</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#79B8FF">  Promise</span><span style="color:#E1E4E8">.</span><span style="color:#B392F0">resolve</span><span style="color:#E1E4E8">().</span><span style="color:#B392F0">then</span><span style="color:#E1E4E8">(() </span><span style="color:#F97583">=></span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#E1E4E8">    console.</span><span style="color:#B392F0">log</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">"promise3"</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#79B8FF">    Promise</span><span style="color:#E1E4E8">.</span><span style="color:#B392F0">resolve</span><span style="color:#E1E4E8">().</span><span style="color:#B392F0">then</span><span style="color:#E1E4E8">(() </span><span style="color:#F97583">=></span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#E1E4E8">      console.</span><span style="color:#B392F0">log</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">"promise4"</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#E1E4E8">    });</span></span>
+<span class="line"><span style="color:#E1E4E8">    console.</span><span style="color:#B392F0">log</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">5</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#E1E4E8">  });</span></span>
+<span class="line"><span style="color:#B392F0">  setTimeout</span><span style="color:#E1E4E8">(() </span><span style="color:#F97583">=></span><span style="color:#E1E4E8"> console.</span><span style="color:#B392F0">log</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">"setTimeout4"</span><span style="color:#E1E4E8">), </span><span style="color:#79B8FF">0</span><span style="color:#E1E4E8">); </span><span style="color:#6A737D">//4宏任务</span></span>
+<span class="line"><span style="color:#E1E4E8">}, </span><span style="color:#79B8FF">0</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#B392F0">setTimeout</span><span style="color:#E1E4E8">(() </span><span style="color:#F97583">=></span><span style="color:#E1E4E8"> console.</span><span style="color:#B392F0">log</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">"setTimeout3"</span><span style="color:#E1E4E8">), </span><span style="color:#79B8FF">0</span><span style="color:#E1E4E8">); </span><span style="color:#6A737D">//3宏任务</span></span>
+<span class="line"><span style="color:#79B8FF">Promise</span><span style="color:#E1E4E8">.</span><span style="color:#B392F0">resolve</span><span style="color:#E1E4E8">().</span><span style="color:#B392F0">then</span><span style="color:#E1E4E8">(() </span><span style="color:#F97583">=></span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#6A737D">  //1微任务</span></span>
+<span class="line"><span style="color:#E1E4E8">  console.</span><span style="color:#B392F0">log</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">"promise1"</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#E1E4E8">});</span></span></code></pre>
+<p><img src="/images/2020/eventloop1.png" alt="执行顺序1"></p>
+<p><img src="/images/2020/eventloop2.png" alt="执行顺序2"></p>
+<p>这个例子还是很有特点的，要搞明白了它，就对事件循环没什么难理解的了。</p> </div> <!-- 悬浮 TOC --> <button class="toc-toggle" id="toc-toggle" aria-label="显示目录" data-astro-cid-iy4s3wf7> <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-list" data-astro-cid-iy4s3wf7> <line x1="8" y1="6" x2="21" y2="6" data-astro-cid-iy4s3wf7></line> <line x1="8" y1="12" x2="21" y2="12" data-astro-cid-iy4s3wf7></line> <line x1="8" y1="18" x2="21" y2="18" data-astro-cid-iy4s3wf7></line> <line x1="3" y1="6" x2="3.01" y2="6" data-astro-cid-iy4s3wf7></line> <line x1="3" y1="12" x2="3.01" y2="12" data-astro-cid-iy4s3wf7></line> <line x1="3" y1="18" x2="3.01" y2="18" data-astro-cid-iy4s3wf7></line> </svg> </button> <aside class="floating-toc" id="floating-toc" data-astro-cid-iy4s3wf7> <div class="toc-header" data-astro-cid-iy4s3wf7> <h3 data-astro-cid-iy4s3wf7>目录</h3> </div> <nav class="toc-nav" id="toc-nav" data-astro-cid-g3fimnfa> <!-- TOC 内容将由客户端脚本填充 --> </nav>  <script type="module">document.addEventListener("DOMContentLoaded",()=>{const n=document.getElementById("toc-nav"),a=document.querySelector(".toc-header h3");if(!n)return;const s=document.querySelector(".article-header h1")?.textContent||"目录";a&&(a.textContent=s);const c=Array.from(document.querySelectorAll(".article-content h2, .article-content h3, .article-content h4, .article-content h5, .article-content h6"));if(c.length===0){n.innerHTML='<p style="color: var(--color-text-secondary); padding: 0.5rem;">暂无目录</p>';return}c.forEach(e=>{e.id||(e.id=e.textContent?.toLowerCase().replace(/\s+/g,"-").replace(/[^\w\-\u4e00-\u9fa5]/g,"")||"")});const l=document.createElement("ul");c.forEach(e=>{const t=document.createElement("li"),o=document.createElement("a");o.href=`#${e.id}`,o.textContent=e.textContent||"",o.classList.add(`toc-${e.tagName.toLowerCase()}`),o.addEventListener("click",i=>{i.preventDefault();const r=document.getElementById(e.id);if(r){const u=r.getBoundingClientRect().top+window.pageYOffset-80;window.scrollTo({top:u,behavior:"smooth"}),history.pushState(null,"",`#${e.id}`)}}),t.appendChild(o),l.appendChild(t)}),n.appendChild(l);const d={root:null,rootMargin:"-60px 0px -80% 0px",threshold:0},h=new IntersectionObserver(e=>{e.forEach(t=>{if(t.isIntersecting){const o=t.target.id;n.querySelectorAll("a").forEach(r=>{r.classList.remove("active")});const i=n.querySelector(`a[href="#${o}"]`);i&&i.classList.add("active")}})},d);c.forEach(e=>h.observe(e)),setTimeout(()=>{if(window.location.hash){const t=n.querySelector(`a[href="${window.location.hash}"]`);if(t){n.querySelectorAll("a").forEach(o=>o.classList.remove("active")),t.classList.add("active");return}}let e="";for(const t of c)if(t.getBoundingClientRect().top<=150)e=t.id;else break;if(!e&&c.length>0&&window.scrollY<100&&(e=c[0].id),e){n.querySelectorAll("a").forEach(o=>o.classList.remove("active"));const t=n.querySelector(`a[href="#${e}"]`);t&&t.classList.add("active")}},100)});</script> </aside> <div class="toc-overlay" id="toc-overlay" data-astro-cid-iy4s3wf7></div> <section class="comments" data-astro-cid-iy4s3wf7> <div class="giscus-wrapper"> <script src="https://giscus.app/client.js" data-repo="jeremyjone/blog-comments" data-repo-id="R_kgDOQlVVGg" data-category="Announcements" data-category-id="DIC_kwDOQlVVGs4Czkir" data-mapping="title" data-term data-strict="0" data-reactions-enabled="1" data-emit-metadata="0" data-input-position="top" data-theme="preferred_color_scheme" data-lang="zh-CN" crossorigin="anonymous" async></script> <noscript>请启用 JavaScript 查看评论。</noscript> </div> </section> </article>  </main> <footer class="site-footer" data-astro-cid-x322jucz> <div class="container footer-content" data-astro-cid-x322jucz> <p data-astro-cid-x322jucz>
+&copy; 2025 <b data-astro-cid-x322jucz>JeremyJone.com</b> All rights reserved.
+</p> <div class="footer-links" data-astro-cid-x322jucz> <a href="https://github.com/jeremyjone" target="_blank" rel="noopener" data-astro-cid-x322jucz> GitHub </a> </div> </div> </footer> <script type="module" src="/_astro/BaseLayout.astro_astro_type_script_index_0_lang.D4h-rqQD.js"></script> <div id="search-modal" class="search-modal" style="display: none;" data-astro-cid-jwf5kjrd> <div class="search-overlay" data-astro-cid-jwf5kjrd></div> <div class="search-container" data-astro-cid-jwf5kjrd> <div class="search-header" data-astro-cid-jwf5kjrd> <input type="text" id="search-input-global" placeholder="搜索全站内容 (Cmd+K)..." autocomplete="off" data-astro-cid-jwf5kjrd> <button id="close-search" aria-label="Close search" data-astro-cid-jwf5kjrd>&times;</button> </div> <div id="search-results-global" class="search-results" data-astro-cid-jwf5kjrd> <div class="search-placeholder" data-astro-cid-jwf5kjrd>输入关键词开始搜索...</div> </div> </div> </div>  <script>
+    window.loadPagefind = async () => {
+        try {
+            return await import("/pagefind/pagefind.js");
+        } catch (e) {
+            console.warn("Failed to load pagefind:", e);
+            return null;
+        }
+    };
+</script> <script type="module" src="/_astro/SearchModal.astro_astro_type_script_index_0_lang.C4oQFeHw.js"></script> </body></html>  <script type="module">document.addEventListener("DOMContentLoaded",()=>{const c=document.getElementById("toc-toggle"),e=document.getElementById("floating-toc"),t=document.getElementById("toc-overlay");c?.addEventListener("click",()=>{e?.classList.add("active"),t?.classList.add("active")});const o=()=>{e?.classList.remove("active"),t?.classList.remove("active")};t?.addEventListener("click",o)});</script>

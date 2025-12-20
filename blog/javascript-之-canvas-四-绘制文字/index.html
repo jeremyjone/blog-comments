@@ -1,0 +1,252 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="dark" data-astro-cid-x322jucz> <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>JavaScript 之 canvas（四）-- 绘制文字</title><meta name="description" content="## 基本概念 在`canvas`中，为我们提供了一个非常方便的添加文字的方法，直接上 [w3school](https://www.w3school.com.cn/html5/canvas_filltext.asp) 的文档说明： `..."><link rel="canonical" href="https://www.jeremyjone.com//blog/javascript-%E4%B9%8B-canvas-%E5%9B%9B-%E7%BB%98%E5%88%B6%E6%96%87%E5%AD%97/"><meta property="og:title" content="JavaScript 之 canvas（四）-- 绘制文字"><meta property="og:description" content="## 基本概念 在`canvas`中，为我们提供了一个非常方便的添加文字的方法，直接上 [w3school](https://www.w3school.com.cn/html5/canvas_filltext.asp) 的文档说明： `..."><meta property="og:type" content="article"><meta property="og:url" content="https://www.jeremyjone.com//blog/javascript-%E4%B9%8B-canvas-%E5%9B%9B-%E7%BB%98%E5%88%B6%E6%96%87%E5%AD%97/"><meta property="og:site_name" content="JeremyJone's Blog"><meta property="og:locale" content="zh_CN"><link rel="icon" href="/favicon.ico"><link rel="stylesheet" href="/_astro/_year_.CFHYKZJi.css">
+<link rel="stylesheet" href="/_astro/_slug_.B1ShOm38.css"></head> <body data-astro-cid-x322jucz> <header class="site-header" data-astro-cid-x322jucz> <div class="container header-content" data-astro-cid-x322jucz> <a href="/" class="logo" data-astro-cid-x322jucz> <div class="logo-icon" data-astro-cid-x322jucz> <img src="/resources/avatar.png" alt="Logo" width="32" height="32" data-astro-cid-x322jucz> </div> <span class="logo-text" data-astro-cid-x322jucz>JeremyJone&#39;s Blog</span> </a> <div class="header-right" data-astro-cid-x322jucz> <nav class="nav" data-astro-cid-x322jucz> <a href="/" class="nav-link" data-astro-cid-x322jucz> 首页 </a><a href="/blog" class="nav-link active" data-astro-cid-x322jucz> 博客 </a><a href="/notes" class="nav-link" data-astro-cid-x322jucz> 笔记 </a> </nav> <button class="search-toggle" onclick="window.openSearchModal()" aria-label="搜索" data-astro-cid-x322jucz> <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-astro-cid-x322jucz><circle cx="11" cy="11" r="8" data-astro-cid-x322jucz></circle><line x1="21" y1="21" x2="16.65" y2="16.65" data-astro-cid-x322jucz></line></svg> <span class="search-placeholder" data-astro-cid-x322jucz>Ctrl+K 搜索...</span> </button> <button class="theme-toggle" id="theme-toggle" aria-label="切换主题" data-astro-cid-x322jucz> <svg class="sun-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" data-astro-cid-x322jucz> <circle cx="12" cy="12" r="5" data-astro-cid-x322jucz></circle> <line x1="12" y1="1" x2="12" y2="3" data-astro-cid-x322jucz></line> <line x1="12" y1="21" x2="12" y2="23" data-astro-cid-x322jucz></line> <line x1="4.22" y1="4.22" x2="5.64" y2="5.64" data-astro-cid-x322jucz></line> <line x1="18.36" y1="18.36" x2="19.78" y2="19.78" data-astro-cid-x322jucz></line> <line x1="1" y1="12" x2="3" y2="12" data-astro-cid-x322jucz></line> <line x1="21" y1="12" x2="23" y2="12" data-astro-cid-x322jucz></line> <line x1="4.22" y1="19.78" x2="5.64" y2="18.36" data-astro-cid-x322jucz></line> <line x1="18.36" y1="5.64" x2="19.78" y2="4.22" data-astro-cid-x322jucz></line> </svg> <svg class="moon-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" data-astro-cid-x322jucz> <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" data-astro-cid-x322jucz></path> </svg> </button> </div> </div> </header> <main class="container" data-astro-cid-x322jucz>  <article data-content-type="blog" data-pagefind-body data-pagefind-filter="type:blog" data-astro-cid-iy4s3wf7> <header class="article-header" data-astro-cid-iy4s3wf7> <h1 data-astro-cid-iy4s3wf7>JavaScript 之 canvas（四）-- 绘制文字</h1> <p class="meta" data-astro-cid-iy4s3wf7>
+发布于 2019-10-03 00:05:31 · 7 分钟 · 标签：<a href="/tags/canvas" class="tag" data-astro-cid-iy4s3wf7> canvas </a><a href="/tags/JavaScript" class="tag" data-astro-cid-iy4s3wf7> JavaScript </a><a href="/tags/绘图" class="tag" data-astro-cid-iy4s3wf7> 绘图 </a> </p> </header> <div class="article-content" data-astro-cid-iy4s3wf7> <h2 id="基本概念">基本概念</h2>
+<p>在<code>canvas</code>中，为我们提供了一个非常方便的添加文字的方法，直接上 <a href="https://www.w3school.com.cn/html5/canvas_filltext.asp">w3school</a> 的文档说明：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="javascript"><code><span class="line"><span style="color:#E1E4E8">context.</span><span style="color:#B392F0">fillText</span><span style="color:#E1E4E8">(text,x,y,maxWidth);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">// text: 规定在画布上输出的文本。</span></span>
+<span class="line"><span style="color:#6A737D">// x: 开始绘制文本的 x 坐标位置（相对于画布）。</span></span>
+<span class="line"><span style="color:#6A737D">// y: 开始绘制文本的 y 坐标位置（相对于画布）。</span></span>
+<span class="line"><span style="color:#6A737D">// maxWidth: 可选。允许的最大文本宽度，以像素计。</span></span></code></pre>
+<p>官方也给我们提供了一个简单的说明：</p>
+<p>使用 fillText()，在画布上写文本 “Hello world!” 和 “w3school.com.cn”：</p>
+<p><img src="/images/2019/image-1569950158104.png" alt="file"></p>
+<h5 id="具体代码">具体代码：</h5>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="plaintext"><code><span class="line"><span>var c=document.getElementById("myCanvas");</span></span>
+<span class="line"><span>var ctx=c.getContext("2d");</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>ctx.font="20px Georgia";</span></span>
+<span class="line"><span>ctx.fillText("Hello World!",10,50);</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>ctx.font="30px Verdana";</span></span>
+<span class="line"><span>// 创建渐变</span></span>
+<span class="line"><span>var gradient=ctx.createLinearGradient(0,0,c.width,0);</span></span>
+<span class="line"><span>gradient.addColorStop("0","magenta");</span></span>
+<span class="line"><span>gradient.addColorStop("0.5","blue");</span></span>
+<span class="line"><span>gradient.addColorStop("1.0","red");</span></span>
+<span class="line"><span>// 用渐变填色</span></span>
+<span class="line"><span>ctx.fillStyle=gradient;</span></span>
+<span class="line"><span>ctx.fillText("w3school.com.cn",10,90);</span></span></code></pre>
+<p>根据文档说明，可以很清楚<code>fillText()</code>的具体用法，那么接下来就来绘制我们自定义的文本。</p>
+<h2 id="绘制自定义文本">绘制自定义文本</h2>
+<p>在绘制之前，我们需要清楚，网页中的文字都是由输入框来交互的，<code>canvas</code>并不具备这样的功能，所以，我们先简单写一个具有<code>canvas</code>、<code>input</code>框和一个按钮页面，来模拟我们的效果。</p>
+<p>其实，从这里就可以看出绘制文字的思路，这和我们平时的截图功能大致一样。</p>
+<p>实际测试地址：<a href="https://jeremyjone.github.io/CanvasPaint/example/input-text.html">点击这里开始测试</a></p>
+<h5 id="我们的示例效果如图">我们的示例效果如图：</h5>
+<p><img src="/images/2019/drawText-base.gif" alt=""></p>
+<h5 id="代码如下">代码如下：</h5>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="html"><code><span class="line"><span style="color:#E1E4E8">&#x3C;!</span><span style="color:#85E89D">DOCTYPE</span><span style="color:#B392F0"> html</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#E1E4E8">&#x3C;</span><span style="color:#85E89D">html</span><span style="color:#B392F0"> lang</span><span style="color:#E1E4E8">=</span><span style="color:#9ECBFF">"zh-cn"</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#E1E4E8">&#x3C;</span><span style="color:#85E89D">head</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#E1E4E8">    &#x3C;</span><span style="color:#85E89D">meta</span><span style="color:#B392F0"> charset</span><span style="color:#E1E4E8">=</span><span style="color:#9ECBFF">"UTF-8"</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#E1E4E8">    &#x3C;</span><span style="color:#85E89D">meta</span><span style="color:#B392F0"> name</span><span style="color:#E1E4E8">=</span><span style="color:#9ECBFF">"viewport"</span><span style="color:#B392F0"> content</span><span style="color:#E1E4E8">=</span><span style="color:#9ECBFF">"width=device-width, initial-scale=1.0"</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#E1E4E8">    &#x3C;</span><span style="color:#85E89D">meta</span><span style="color:#B392F0"> http-equiv</span><span style="color:#E1E4E8">=</span><span style="color:#9ECBFF">"X-UA-Compatible"</span><span style="color:#B392F0"> content</span><span style="color:#E1E4E8">=</span><span style="color:#9ECBFF">"ie=edge"</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#E1E4E8">    &#x3C;</span><span style="color:#85E89D">title</span><span style="color:#E1E4E8">>JS - Canvas - text&#x3C;/</span><span style="color:#85E89D">title</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#E1E4E8">&#x3C;/</span><span style="color:#85E89D">head</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#E1E4E8">&#x3C;</span><span style="color:#85E89D">body</span><span style="color:#B392F0"> style</span><span style="color:#E1E4E8">=</span><span style="color:#9ECBFF">"background-color: #999"</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#E1E4E8">    &#x3C;</span><span style="color:#85E89D">div</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#E1E4E8">            &#x3C;</span><span style="color:#85E89D">canvas</span><span style="color:#B392F0"> id</span><span style="color:#E1E4E8">=</span><span style="color:#9ECBFF">"canvas"</span><span style="color:#B392F0"> width</span><span style="color:#E1E4E8">=</span><span style="color:#9ECBFF">"800"</span><span style="color:#B392F0"> height</span><span style="color:#E1E4E8">=</span><span style="color:#9ECBFF">"200"</span><span style="color:#B392F0"> style</span><span style="color:#E1E4E8">=</span><span style="color:#9ECBFF">"background-color: #fff"</span><span style="color:#E1E4E8">>抱歉，您的浏览器不支持canvas元素&#x3C;/</span><span style="color:#85E89D">canvas</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#E1E4E8">    &#x3C;/</span><span style="color:#85E89D">div</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#E1E4E8">    &#x3C;</span><span style="color:#85E89D">textarea</span><span style="color:#B392F0"> name</span><span style="color:#E1E4E8">=</span><span style="color:#9ECBFF">"textBox"</span><span style="color:#B392F0"> id</span><span style="color:#E1E4E8">=</span><span style="color:#9ECBFF">"textBox"</span><span style="color:#B392F0"> cols</span><span style="color:#E1E4E8">=</span><span style="color:#9ECBFF">"30"</span><span style="color:#B392F0"> rows</span><span style="color:#E1E4E8">=</span><span style="color:#9ECBFF">"10"</span><span style="color:#B392F0"> class</span><span style="color:#E1E4E8">=</span><span style="color:#9ECBFF">"text-style"</span><span style="color:#B392F0"> onkeyup</span><span style="color:#E1E4E8">=</span><span style="color:#9ECBFF">"</span><span style="color:#B392F0">setText</span><span style="color:#9ECBFF">()"</span><span style="color:#E1E4E8">>&#x3C;/</span><span style="color:#85E89D">textarea</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#E1E4E8">    &#x3C;</span><span style="color:#85E89D">input</span><span style="color:#B392F0"> type</span><span style="color:#E1E4E8">=</span><span style="color:#9ECBFF">"button"</span><span style="color:#B392F0"> value</span><span style="color:#E1E4E8">=</span><span style="color:#9ECBFF">"添加文字"</span><span style="color:#B392F0"> onclick</span><span style="color:#E1E4E8">=</span><span style="color:#9ECBFF">"</span><span style="color:#B392F0">drawing</span><span style="color:#9ECBFF">()"</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#E1E4E8">&#x3C;/</span><span style="color:#85E89D">body</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#E1E4E8">&#x3C;</span><span style="color:#85E89D">script</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#E1E4E8">    window.</span><span style="color:#B392F0">onload</span><span style="color:#F97583"> =</span><span style="color:#F97583"> function</span><span style="color:#E1E4E8"> () {</span></span>
+<span class="line"><span style="color:#F97583">        var</span><span style="color:#E1E4E8"> canvas </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> document.</span><span style="color:#B392F0">getElementById</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">"canvas"</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#F97583">        var</span><span style="color:#E1E4E8"> textBox </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> document.</span><span style="color:#B392F0">getElementById</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">"textBox"</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#F97583">        var</span><span style="color:#E1E4E8"> textContent </span><span style="color:#F97583">=</span><span style="color:#9ECBFF"> ""</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">        if</span><span style="color:#E1E4E8"> (canvas.getContext) {</span></span>
+<span class="line"><span style="color:#F97583">            var</span><span style="color:#E1E4E8"> context </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> canvas.</span><span style="color:#B392F0">getContext</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">"2d"</span><span style="color:#E1E4E8">);  </span><span style="color:#6A737D">//2d用引用括起来</span></span>
+<span class="line"><span style="color:#E1E4E8">        }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#B392F0">        drawing</span><span style="color:#F97583"> =</span><span style="color:#F97583"> function</span><span style="color:#E1E4E8"> () {</span></span>
+<span class="line"><span style="color:#F97583">            if</span><span style="color:#E1E4E8"> (</span><span style="color:#F97583">!</span><span style="color:#E1E4E8">context) {</span></span>
+<span class="line"><span style="color:#F97583">                return</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#E1E4E8">            } </span><span style="color:#F97583">else</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#6A737D">                // 设置画笔的颜色和大小</span></span>
+<span class="line"><span style="color:#E1E4E8">                context.fillStyle </span><span style="color:#F97583">=</span><span style="color:#9ECBFF"> "red"</span><span style="color:#E1E4E8">;  </span><span style="color:#6A737D">// 填充颜色为红色</span></span>
+<span class="line"><span style="color:#E1E4E8">                context.strokeStyle </span><span style="color:#F97583">=</span><span style="color:#9ECBFF"> "blue"</span><span style="color:#E1E4E8">;  </span><span style="color:#6A737D">// 画笔的颜色</span></span>
+<span class="line"><span style="color:#E1E4E8">                context.lineWidth </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> 5</span><span style="color:#E1E4E8">;  </span><span style="color:#6A737D">// 指定描边线的宽度</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">                context.</span><span style="color:#B392F0">save</span><span style="color:#E1E4E8">();</span></span>
+<span class="line"><span style="color:#E1E4E8">                context.</span><span style="color:#B392F0">beginPath</span><span style="color:#E1E4E8">();</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">                // 写字</span></span>
+<span class="line"><span style="color:#E1E4E8">                context.font </span><span style="color:#F97583">=</span><span style="color:#9ECBFF"> "28px orbitron"</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#E1E4E8">                context.</span><span style="color:#B392F0">fillText</span><span style="color:#E1E4E8">(textContent, </span><span style="color:#79B8FF">10</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">50</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">                context.</span><span style="color:#B392F0">restore</span><span style="color:#E1E4E8">();</span></span>
+<span class="line"><span style="color:#E1E4E8">                context.</span><span style="color:#B392F0">closePath</span><span style="color:#E1E4E8">();</span></span>
+<span class="line"><span style="color:#E1E4E8">            }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">            // 清空内容</span></span>
+<span class="line"><span style="color:#E1E4E8">            textContent </span><span style="color:#F97583">=</span><span style="color:#9ECBFF"> ""</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#E1E4E8">            textBox.value </span><span style="color:#F97583">=</span><span style="color:#9ECBFF"> ""</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#E1E4E8">        }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#B392F0">        setText</span><span style="color:#F97583"> =</span><span style="color:#F97583"> function</span><span style="color:#E1E4E8"> () {</span></span>
+<span class="line"><span style="color:#E1E4E8">            textContent </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> textBox.value;</span></span>
+<span class="line"><span style="color:#E1E4E8">        }</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"><span style="color:#E1E4E8">&#x3C;/</span><span style="color:#85E89D">script</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#E1E4E8">&#x3C;/</span><span style="color:#85E89D">html</span><span style="color:#E1E4E8">></span></span></code></pre>
+<p>这是一个完整的页面内容，可以直接得到上面的动图效果。这个效果也是大部分网上其他高手的基础demo。我一开始也想着是这么使用。但是很快，我就发现了一个问题，这样做根本不足以完成在指定位置绘制文本的功能。于是我在网上搜寻答案。</p>
+<p>在一个技术贴中，我看到一种思路，完全绘制一个会话框，连光标的闪烁状态也需要使用定时器来不停模拟。它的核心思路是，<strong>把一个文本框隐藏在<code>canvas</code>之下，监听键盘事件，然后将键盘的文字输入到隐藏的文本框中，而文本框的值与一个变量直接绑定，当该变量发生变化，直接使用<code>fillText()</code>填到<code>canvas</code>中</strong>，虽然是一个可行方案，但我觉得太麻烦了。于是乎，我将之前的思路与这个技术贴的思路结合了一下，就有了我的具体思路：</p>
+<ul>
+<li><strong>在<code>canvas</code>之下创建一个文本框，当需要输入文本时，将文本框显示在<code>canvas</code>之上，这时候可以直接输入文字，当完成输入时，隐藏这个文本框，并且将文字画到<code>canvas</code>画布中，这样就完成了绘制文本。</strong></li>
+</ul>
+<h2 id="在canvas之中显示文本框">在canvas之中显示文本框</h2>
+<p>可能这个隐藏、显示的，看着有点晕，我一说您肯定明白，使用<code>z-index</code>，来回切换层级即可。这样省去了绘制模拟的文本框，同时输入文字时也不会出现任何错误，毕竟这是原生组件，不会有什么问题。</p>
+<ul>
+<li>
+<p>1、所以第一步，我们需要制作初始状态，一般来说，初始状态只能看到画布，我们需要隐藏文本框。 我们可以将这个文本框和<code>canvas</code>设置为绝对定位，默认文本框的<code>z-index</code>为1，而<code>canvas</code>的默认层级为5，这样就可以完全隐藏掉我们的文本框，用户在使用上不会有察觉。</p>
+</li>
+<li>
+<p>2、第二步，设置<code>canvas</code>中的鼠标，当点击某个位置时，显示文本框，这时就可以输入文本。</p>
+</li>
+<li>
+<p>3、第三步，当点击文本框以外时，相当于确认，这时需要将文本填到<code>canvas</code>中，然后隐藏文本框，同时清空文本框。</p>
+</li>
+</ul>
+<p>有了这三步，我们可以很轻松的写出代码。</p>
+<h3 id="第一步初始化">第一步，初始化</h3>
+<p>首先：创建<code>canvas</code>和<code>inputarea</code>元素：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="html"><code><span class="line"><span style="color:#E1E4E8">&#x3C;</span><span style="color:#85E89D">body</span><span style="color:#B392F0"> style</span><span style="color:#E1E4E8">=</span><span style="color:#9ECBFF">"background-color: #999"</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#E1E4E8">    &#x3C;</span><span style="color:#85E89D">canvas</span><span style="color:#B392F0"> id</span><span style="color:#E1E4E8">=</span><span style="color:#9ECBFF">"canvas"</span><span style="color:#B392F0"> width</span><span style="color:#E1E4E8">=</span><span style="color:#9ECBFF">"800"</span><span style="color:#B392F0"> height</span><span style="color:#E1E4E8">=</span><span style="color:#9ECBFF">"600"</span><span style="color:#B392F0"> class</span><span style="color:#E1E4E8">=</span><span style="color:#9ECBFF">"canvas-style"</span><span style="color:#E1E4E8">>抱歉，您的浏览器不支持canvas元素&#x3C;/</span><span style="color:#85E89D">canvas</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#E1E4E8">    &#x3C;</span><span style="color:#85E89D">textarea</span><span style="color:#B392F0"> name</span><span style="color:#E1E4E8">=</span><span style="color:#9ECBFF">"textBox"</span><span style="color:#B392F0"> id</span><span style="color:#E1E4E8">=</span><span style="color:#9ECBFF">"textBox"</span><span style="color:#B392F0"> cols</span><span style="color:#E1E4E8">=</span><span style="color:#9ECBFF">"30"</span><span style="color:#B392F0"> rows</span><span style="color:#E1E4E8">=</span><span style="color:#9ECBFF">"10"</span><span style="color:#B392F0"> class</span><span style="color:#E1E4E8">=</span><span style="color:#9ECBFF">"text-style"</span><span style="color:#E1E4E8">>&#x3C;/</span><span style="color:#85E89D">textarea</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#E1E4E8">&#x3C;/</span><span style="color:#85E89D">body</span><span style="color:#E1E4E8">></span></span></code></pre>
+<p>然后：设置样式</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="css"><code><span class="line"><span style="color:#B392F0">.canvas-style</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#79B8FF">    background-color</span><span style="color:#E1E4E8">: </span><span style="color:#79B8FF">#fff</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#79B8FF">    float</span><span style="color:#E1E4E8">: </span><span style="color:#79B8FF">left</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#79B8FF">    position</span><span style="color:#E1E4E8">: </span><span style="color:#79B8FF">absolute</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#79B8FF">    z-index</span><span style="color:#E1E4E8">: </span><span style="color:#79B8FF">5</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#B392F0">.text-style</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#79B8FF">    float</span><span style="color:#E1E4E8">: </span><span style="color:#79B8FF">left</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#79B8FF">    position</span><span style="color:#E1E4E8">: </span><span style="color:#79B8FF">absolute</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#79B8FF">    font</span><span style="color:#E1E4E8">: </span><span style="color:#79B8FF">28</span><span style="color:#F97583">px</span><span style="color:#E1E4E8"> orbitron;</span></span>
+<span class="line"><span style="color:#79B8FF">    word-break</span><span style="color:#E1E4E8">: </span><span style="color:#79B8FF">break-all</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#79B8FF">    background-color</span><span style="color:#E1E4E8">: </span><span style="color:#79B8FF">transparent</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#79B8FF">    resize</span><span style="color:#E1E4E8">: </span><span style="color:#79B8FF">none</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#79B8FF">    z-index</span><span style="color:#E1E4E8">: </span><span style="color:#79B8FF">1</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<p>这样，元素就搭建完毕，并且完成了初始化隐藏输入框的效果。</p>
+<h3 id="第二步使用鼠标调出输入框">第二步，使用鼠标调出输入框</h3>
+<p>这里需要分别写出鼠标的<strong>按下</strong>（这里不牵扯 <strong>抬起</strong> 和 <strong>移动</strong>）的事件。</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="javascript"><code><span class="line"><span style="color:#E1E4E8">canvas.</span><span style="color:#B392F0">onmousedown</span><span style="color:#F97583"> =</span><span style="color:#F97583"> function</span><span style="color:#B392F0"> mouseDownAction</span><span style="color:#E1E4E8">(</span><span style="color:#FFAB70">e</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#6A737D">    // 鼠标按下时需要一个标志位，因为我们的逻辑是按下时分别可调出和完成文字的填写。</span></span>
+<span class="line"><span style="color:#F97583">    if</span><span style="color:#E1E4E8"> (textFlag) {</span></span>
+<span class="line"><span style="color:#6A737D">        // 当前为输入状态，点击canvas等于完成填写，这时需要隐藏输入栏，并且获取文本框的内容，将其绘入canvas中。</span></span>
+<span class="line"><span style="color:#E1E4E8">        textContent </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> textBox.value;</span></span>
+<span class="line"><span style="color:#E1E4E8">        textFlag </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> false</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#E1E4E8">        textBox.style[</span><span style="color:#9ECBFF">'z-index'</span><span style="color:#E1E4E8">] </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> 1</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#E1E4E8">        textBox.value </span><span style="color:#F97583">=</span><span style="color:#9ECBFF"> ""</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#79B8FF">        this</span><span style="color:#E1E4E8">.</span><span style="color:#B392F0">drawing</span><span style="color:#E1E4E8">()  </span><span style="color:#6A737D">// 绘制文字</span></span>
+<span class="line"><span style="color:#E1E4E8">    } </span><span style="color:#F97583">else</span><span style="color:#F97583"> if</span><span style="color:#E1E4E8"> (</span><span style="color:#F97583">!</span><span style="color:#E1E4E8">textFlag) {</span></span>
+<span class="line"><span style="color:#6A737D">        // 当前非绘制状态，需要将输入框调至最前，开始输入。</span></span>
+<span class="line"><span style="color:#E1E4E8">        textFlag </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> true</span></span>
+<span class="line"><span style="color:#E1E4E8">        textBox.style[</span><span style="color:#9ECBFF">'z-index'</span><span style="color:#E1E4E8">] </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> 6</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"><span style="color:#E1E4E8">};</span></span></code></pre>
+<p>第二步其实也很简单，找对位置即可。</p>
+<h3 id="第三步将文字绘制到canvas中">第三步，将文字绘制到canvas中</h3>
+<p>上面的代码我们已经看到了<code>this.drawing()</code>函数，其实就在这里绘制即可。</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="javascript"><code><span class="line"><span style="color:#E1E4E8">canvas.</span><span style="color:#B392F0">drawing</span><span style="color:#F97583"> =</span><span style="color:#F97583"> function</span><span style="color:#E1E4E8"> (</span><span style="color:#FFAB70">x1</span><span style="color:#E1E4E8">, </span><span style="color:#FFAB70">y1</span><span style="color:#E1E4E8">, </span><span style="color:#FFAB70">x2</span><span style="color:#E1E4E8">, </span><span style="color:#FFAB70">y2</span><span style="color:#E1E4E8">, </span><span style="color:#FFAB70">e</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#F97583">    let</span><span style="color:#E1E4E8"> self </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> this</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">    if</span><span style="color:#E1E4E8"> (</span><span style="color:#F97583">!</span><span style="color:#E1E4E8">context) {</span></span>
+<span class="line"><span style="color:#F97583">        return</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#E1E4E8">    } </span><span style="color:#F97583">else</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#6A737D">        // 设置画笔的颜色和大小</span></span>
+<span class="line"><span style="color:#E1E4E8">        context.fillStyle </span><span style="color:#F97583">=</span><span style="color:#9ECBFF"> "red"</span><span style="color:#E1E4E8">;  </span><span style="color:#6A737D">// 填充颜色为红色</span></span>
+<span class="line"><span style="color:#E1E4E8">        context.strokeStyle </span><span style="color:#F97583">=</span><span style="color:#9ECBFF"> "blue"</span><span style="color:#E1E4E8">;  </span><span style="color:#6A737D">// 画笔的颜色</span></span>
+<span class="line"><span style="color:#E1E4E8">        context.lineWidth </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> 5</span><span style="color:#E1E4E8">;  </span><span style="color:#6A737D">// 指定描边线的宽度</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">        context.</span><span style="color:#B392F0">save</span><span style="color:#E1E4E8">();</span></span>
+<span class="line"><span style="color:#E1E4E8">        context.</span><span style="color:#B392F0">beginPath</span><span style="color:#E1E4E8">();</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">        // 写字</span></span>
+<span class="line"><span style="color:#E1E4E8">        context.font </span><span style="color:#F97583">=</span><span style="color:#9ECBFF"> "28px orbitron"</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#E1E4E8">        context.</span><span style="color:#B392F0">fillText</span><span style="color:#E1E4E8">(textContent, </span><span style="color:#79B8FF">10</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">50</span><span style="color:#E1E4E8">);  </span><span style="color:#6A737D">// 文字会展示在（10, 50）展示</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">        context.</span><span style="color:#B392F0">restore</span><span style="color:#E1E4E8">();</span></span>
+<span class="line"><span style="color:#E1E4E8">        context.</span><span style="color:#B392F0">closePath</span><span style="color:#E1E4E8">();</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"><span style="color:#E1E4E8">};</span></span></code></pre>
+<p>这样就完成了一个最基本的动态添加文字的demo，但是这个只是比之前的demo好一点点，将文本框放入了<code>canvas</code>中，还不能够随鼠标的位置而移动，起始这个也简单，参照之前的绘制基本图形，很简单就可以实现。</p>
+<h3 id="加入鼠标的位置">加入鼠标的位置</h3>
+<p>鼠标的位置是这样获取的:</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="javascript"><code><span class="line"><span style="color:#E1E4E8">canvas.</span><span style="color:#B392F0">onmousedown</span><span style="color:#F97583"> =</span><span style="color:#F97583"> function</span><span style="color:#B392F0"> mouseDownAction</span><span style="color:#E1E4E8">(</span><span style="color:#FFAB70">e</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#79B8FF">    this</span><span style="color:#E1E4E8">.</span><span style="color:#79B8FF">X1</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> e.offsetX;</span></span>
+<span class="line"><span style="color:#79B8FF">    this</span><span style="color:#E1E4E8">.</span><span style="color:#79B8FF">Y1</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> e.offsetY;</span></span>
+<span class="line"><span style="color:#E1E4E8">};</span></span></code></pre>
+<p>这样就有了输入框应该显示的位置，在调整<code>z-index</code>的位置添加两行代码：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="javascript"><code><span class="line"><span style="color:#E1E4E8">textBox.style.left </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> this</span><span style="color:#E1E4E8">.</span><span style="color:#79B8FF">X1</span><span style="color:#F97583"> +</span><span style="color:#9ECBFF"> 'px'</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#E1E4E8">textBox.style.top </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> this</span><span style="color:#E1E4E8">.</span><span style="color:#79B8FF">Y1</span><span style="color:#F97583"> +</span><span style="color:#9ECBFF"> 'px'</span><span style="color:#E1E4E8">;</span></span></code></pre>
+<p>这样，文本框就可以随鼠标点击的位置而展示。</p>
+<p><img src="/images/2019/drawText-pos.gif" alt=""></p>
+<p>完整的代码如下：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="javascript"><code><span class="line"><span style="color:#F97583">var</span><span style="color:#E1E4E8"> canvas </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> document.</span><span style="color:#B392F0">getElementById</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">"canvas"</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#F97583">var</span><span style="color:#E1E4E8"> textBox </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> document.</span><span style="color:#B392F0">getElementById</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">"textBox"</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#F97583">var</span><span style="color:#E1E4E8"> textFlag </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> false</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">var</span><span style="color:#E1E4E8"> textContent </span><span style="color:#F97583">=</span><span style="color:#9ECBFF"> ""</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">if</span><span style="color:#E1E4E8"> (canvas.getContext) {</span></span>
+<span class="line"><span style="color:#F97583">    var</span><span style="color:#E1E4E8"> context </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> canvas.</span><span style="color:#B392F0">getContext</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">"2d"</span><span style="color:#E1E4E8">);  </span><span style="color:#6A737D">//2d用引用括起来</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">canvas.</span><span style="color:#B392F0">drawing</span><span style="color:#F97583"> =</span><span style="color:#F97583"> function</span><span style="color:#E1E4E8"> (</span><span style="color:#FFAB70">x1</span><span style="color:#E1E4E8">, </span><span style="color:#FFAB70">y1</span><span style="color:#E1E4E8">, </span><span style="color:#FFAB70">x2</span><span style="color:#E1E4E8">, </span><span style="color:#FFAB70">y2</span><span style="color:#E1E4E8">, </span><span style="color:#FFAB70">e</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#F97583">    if</span><span style="color:#E1E4E8"> (</span><span style="color:#F97583">!</span><span style="color:#E1E4E8">context) {</span></span>
+<span class="line"><span style="color:#F97583">        return</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#E1E4E8">    } </span><span style="color:#F97583">else</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#6A737D">        // 设置画笔的颜色和大小</span></span>
+<span class="line"><span style="color:#E1E4E8">        context.fillStyle </span><span style="color:#F97583">=</span><span style="color:#9ECBFF"> "red"</span><span style="color:#E1E4E8">;  </span><span style="color:#6A737D">// 填充颜色为红色</span></span>
+<span class="line"><span style="color:#E1E4E8">        context.strokeStyle </span><span style="color:#F97583">=</span><span style="color:#9ECBFF"> "blue"</span><span style="color:#E1E4E8">;  </span><span style="color:#6A737D">// 画笔的颜色</span></span>
+<span class="line"><span style="color:#E1E4E8">        context.lineWidth </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> 5</span><span style="color:#E1E4E8">;  </span><span style="color:#6A737D">// 指定描边线的宽度</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">        context.</span><span style="color:#B392F0">save</span><span style="color:#E1E4E8">();</span></span>
+<span class="line"><span style="color:#E1E4E8">        context.</span><span style="color:#B392F0">beginPath</span><span style="color:#E1E4E8">();</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">        // 写字</span></span>
+<span class="line"><span style="color:#E1E4E8">        context.font </span><span style="color:#F97583">=</span><span style="color:#9ECBFF"> "28px orbitron"</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#E1E4E8">        context.</span><span style="color:#B392F0">fillText</span><span style="color:#E1E4E8">(textContent, </span><span style="color:#B392F0">parseInt</span><span style="color:#E1E4E8">(textBox.style.left), </span><span style="color:#B392F0">parseInt</span><span style="color:#E1E4E8">(textBox.style.top));</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">        context.</span><span style="color:#B392F0">restore</span><span style="color:#E1E4E8">();</span></span>
+<span class="line"><span style="color:#E1E4E8">        context.</span><span style="color:#B392F0">closePath</span><span style="color:#E1E4E8">();</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"><span style="color:#E1E4E8">};</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">canvas.</span><span style="color:#B392F0">onmousedown</span><span style="color:#F97583"> =</span><span style="color:#F97583"> function</span><span style="color:#B392F0"> mouseDownAction</span><span style="color:#E1E4E8">(</span><span style="color:#FFAB70">e</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#79B8FF">    this</span><span style="color:#E1E4E8">.</span><span style="color:#79B8FF">X1</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> e.offsetX;  </span><span style="color:#6A737D">// 鼠标按下时保存当前位置，为起始位置</span></span>
+<span class="line"><span style="color:#79B8FF">    this</span><span style="color:#E1E4E8">.</span><span style="color:#79B8FF">Y1</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> e.offsetY;</span></span>
+<span class="line"><span style="color:#F97583">    if</span><span style="color:#E1E4E8"> (textFlag) {</span></span>
+<span class="line"><span style="color:#E1E4E8">        textContent </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> textBox.value;</span></span>
+<span class="line"><span style="color:#E1E4E8">        textFlag </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> false</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#E1E4E8">        textBox.style[</span><span style="color:#9ECBFF">'z-index'</span><span style="color:#E1E4E8">] </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> 1</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#E1E4E8">        textBox.value </span><span style="color:#F97583">=</span><span style="color:#9ECBFF"> ""</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#79B8FF">        this</span><span style="color:#E1E4E8">.</span><span style="color:#B392F0">drawing</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">this</span><span style="color:#E1E4E8">.</span><span style="color:#79B8FF">X1</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">this</span><span style="color:#E1E4E8">.</span><span style="color:#79B8FF">Y1</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#E1E4E8">    } </span><span style="color:#F97583">else</span><span style="color:#F97583"> if</span><span style="color:#E1E4E8"> (</span><span style="color:#F97583">!</span><span style="color:#E1E4E8">textFlag) {</span></span>
+<span class="line"><span style="color:#E1E4E8">        textFlag </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> true</span></span>
+<span class="line"><span style="color:#E1E4E8">        textBox.style.left </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> this</span><span style="color:#E1E4E8">.</span><span style="color:#79B8FF">X1</span><span style="color:#F97583"> +</span><span style="color:#9ECBFF"> 'px'</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#E1E4E8">        textBox.style.top </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> this</span><span style="color:#E1E4E8">.</span><span style="color:#79B8FF">Y1</span><span style="color:#F97583"> +</span><span style="color:#9ECBFF"> 'px'</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#E1E4E8">        textBox.style[</span><span style="color:#9ECBFF">'z-index'</span><span style="color:#E1E4E8">] </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> 6</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"><span style="color:#E1E4E8">};</span></span></code></pre>
+<p>今天的文章有点长，但是这有助于理解文本的填写。只要练习一两次，还是很简单的。</p>
+<p>结合之前的文章，我们已经可以制作一个非常简单的绘图板了，有兴趣的朋友可以 <a href="https://jeremyjone.github.io/CanvasPaint/example/index.html">->点击这里&#x3C;-</a> 进行测试。</p>
+<hr>
+<h4 id="前期目录">前期目录：</h4>
+<p><a href="https://www.jeremyjone.com/462/">JavaScript 之 canvas（一）— 认识canvas</a> <a href="https://www.jeremyjone.com/465/">JavaScript 之 canvas（二）— 绘制基本图形</a> <a href="https://www.jeremyjone.com/472/">JavaScript 之 canvas（三）— 使用鼠标实时绘制图形</a></p> </div> <!-- 悬浮 TOC --> <button class="toc-toggle" id="toc-toggle" aria-label="显示目录" data-astro-cid-iy4s3wf7> <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-list" data-astro-cid-iy4s3wf7> <line x1="8" y1="6" x2="21" y2="6" data-astro-cid-iy4s3wf7></line> <line x1="8" y1="12" x2="21" y2="12" data-astro-cid-iy4s3wf7></line> <line x1="8" y1="18" x2="21" y2="18" data-astro-cid-iy4s3wf7></line> <line x1="3" y1="6" x2="3.01" y2="6" data-astro-cid-iy4s3wf7></line> <line x1="3" y1="12" x2="3.01" y2="12" data-astro-cid-iy4s3wf7></line> <line x1="3" y1="18" x2="3.01" y2="18" data-astro-cid-iy4s3wf7></line> </svg> </button> <aside class="floating-toc" id="floating-toc" data-astro-cid-iy4s3wf7> <div class="toc-header" data-astro-cid-iy4s3wf7> <h3 data-astro-cid-iy4s3wf7>目录</h3> </div> <nav class="toc-nav" id="toc-nav" data-astro-cid-g3fimnfa> <!-- TOC 内容将由客户端脚本填充 --> </nav>  <script type="module">document.addEventListener("DOMContentLoaded",()=>{const n=document.getElementById("toc-nav"),a=document.querySelector(".toc-header h3");if(!n)return;const s=document.querySelector(".article-header h1")?.textContent||"目录";a&&(a.textContent=s);const c=Array.from(document.querySelectorAll(".article-content h2, .article-content h3, .article-content h4, .article-content h5, .article-content h6"));if(c.length===0){n.innerHTML='<p style="color: var(--color-text-secondary); padding: 0.5rem;">暂无目录</p>';return}c.forEach(e=>{e.id||(e.id=e.textContent?.toLowerCase().replace(/\s+/g,"-").replace(/[^\w\-\u4e00-\u9fa5]/g,"")||"")});const l=document.createElement("ul");c.forEach(e=>{const t=document.createElement("li"),o=document.createElement("a");o.href=`#${e.id}`,o.textContent=e.textContent||"",o.classList.add(`toc-${e.tagName.toLowerCase()}`),o.addEventListener("click",i=>{i.preventDefault();const r=document.getElementById(e.id);if(r){const u=r.getBoundingClientRect().top+window.pageYOffset-80;window.scrollTo({top:u,behavior:"smooth"}),history.pushState(null,"",`#${e.id}`)}}),t.appendChild(o),l.appendChild(t)}),n.appendChild(l);const d={root:null,rootMargin:"-60px 0px -80% 0px",threshold:0},h=new IntersectionObserver(e=>{e.forEach(t=>{if(t.isIntersecting){const o=t.target.id;n.querySelectorAll("a").forEach(r=>{r.classList.remove("active")});const i=n.querySelector(`a[href="#${o}"]`);i&&i.classList.add("active")}})},d);c.forEach(e=>h.observe(e)),setTimeout(()=>{if(window.location.hash){const t=n.querySelector(`a[href="${window.location.hash}"]`);if(t){n.querySelectorAll("a").forEach(o=>o.classList.remove("active")),t.classList.add("active");return}}let e="";for(const t of c)if(t.getBoundingClientRect().top<=150)e=t.id;else break;if(!e&&c.length>0&&window.scrollY<100&&(e=c[0].id),e){n.querySelectorAll("a").forEach(o=>o.classList.remove("active"));const t=n.querySelector(`a[href="#${e}"]`);t&&t.classList.add("active")}},100)});</script> </aside> <div class="toc-overlay" id="toc-overlay" data-astro-cid-iy4s3wf7></div> <section class="comments" data-astro-cid-iy4s3wf7> <div class="giscus-wrapper"> <script src="https://giscus.app/client.js" data-repo="jeremyjone/blog-comments" data-repo-id="R_kgDOQlVVGg" data-category="Announcements" data-category-id="DIC_kwDOQlVVGs4Czkir" data-mapping="title" data-term data-strict="0" data-reactions-enabled="1" data-emit-metadata="0" data-input-position="top" data-theme="preferred_color_scheme" data-lang="zh-CN" crossorigin="anonymous" async></script> <noscript>请启用 JavaScript 查看评论。</noscript> </div> </section> </article>  </main> <footer class="site-footer" data-astro-cid-x322jucz> <div class="container footer-content" data-astro-cid-x322jucz> <p data-astro-cid-x322jucz>
+&copy; 2025 <b data-astro-cid-x322jucz>JeremyJone.com</b> All rights reserved.
+</p> <div class="footer-links" data-astro-cid-x322jucz> <a href="https://github.com/jeremyjone" target="_blank" rel="noopener" data-astro-cid-x322jucz> GitHub </a> </div> </div> </footer> <script type="module" src="/_astro/BaseLayout.astro_astro_type_script_index_0_lang.D4h-rqQD.js"></script> <div id="search-modal" class="search-modal" style="display: none;" data-astro-cid-jwf5kjrd> <div class="search-overlay" data-astro-cid-jwf5kjrd></div> <div class="search-container" data-astro-cid-jwf5kjrd> <div class="search-header" data-astro-cid-jwf5kjrd> <input type="text" id="search-input-global" placeholder="搜索全站内容 (Cmd+K)..." autocomplete="off" data-astro-cid-jwf5kjrd> <button id="close-search" aria-label="Close search" data-astro-cid-jwf5kjrd>&times;</button> </div> <div id="search-results-global" class="search-results" data-astro-cid-jwf5kjrd> <div class="search-placeholder" data-astro-cid-jwf5kjrd>输入关键词开始搜索...</div> </div> </div> </div>  <script>
+    window.loadPagefind = async () => {
+        try {
+            return await import("/pagefind/pagefind.js");
+        } catch (e) {
+            console.warn("Failed to load pagefind:", e);
+            return null;
+        }
+    };
+</script> <script type="module" src="/_astro/SearchModal.astro_astro_type_script_index_0_lang.C4oQFeHw.js"></script> </body></html>  <script type="module">document.addEventListener("DOMContentLoaded",()=>{const c=document.getElementById("toc-toggle"),e=document.getElementById("floating-toc"),t=document.getElementById("toc-overlay");c?.addEventListener("click",()=>{e?.classList.add("active"),t?.classList.add("active")});const o=()=>{e?.classList.remove("active"),t?.classList.remove("active")};t?.addEventListener("click",o)});</script>

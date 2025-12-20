@@ -1,0 +1,188 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="dark" data-astro-cid-x322jucz> <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Vuex之Getters详解</title><meta name="description" content="![file](/images/2019/image-1574936672161.png) 作为Vue的状态管理工具，Vuex的使用率相当之高。Vuex具有4个属性，state，getters，actions，和mutations。 今..."><link rel="canonical" href="https://www.jeremyjone.com//blog/vuex%E4%B9%8Bgetters%E8%AF%A6%E8%A7%A3/"><meta property="og:title" content="Vuex之Getters详解"><meta property="og:description" content="![file](/images/2019/image-1574936672161.png) 作为Vue的状态管理工具，Vuex的使用率相当之高。Vuex具有4个属性，state，getters，actions，和mutations。 今..."><meta property="og:type" content="article"><meta property="og:url" content="https://www.jeremyjone.com//blog/vuex%E4%B9%8Bgetters%E8%AF%A6%E8%A7%A3/"><meta property="og:site_name" content="JeremyJone's Blog"><meta property="og:locale" content="zh_CN"><link rel="icon" href="/favicon.ico"><link rel="stylesheet" href="/_astro/_year_.CFHYKZJi.css">
+<link rel="stylesheet" href="/_astro/_slug_.B1ShOm38.css"></head> <body data-astro-cid-x322jucz> <header class="site-header" data-astro-cid-x322jucz> <div class="container header-content" data-astro-cid-x322jucz> <a href="/" class="logo" data-astro-cid-x322jucz> <div class="logo-icon" data-astro-cid-x322jucz> <img src="/resources/avatar.png" alt="Logo" width="32" height="32" data-astro-cid-x322jucz> </div> <span class="logo-text" data-astro-cid-x322jucz>JeremyJone&#39;s Blog</span> </a> <div class="header-right" data-astro-cid-x322jucz> <nav class="nav" data-astro-cid-x322jucz> <a href="/" class="nav-link" data-astro-cid-x322jucz> 首页 </a><a href="/blog" class="nav-link active" data-astro-cid-x322jucz> 博客 </a><a href="/notes" class="nav-link" data-astro-cid-x322jucz> 笔记 </a> </nav> <button class="search-toggle" onclick="window.openSearchModal()" aria-label="搜索" data-astro-cid-x322jucz> <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-astro-cid-x322jucz><circle cx="11" cy="11" r="8" data-astro-cid-x322jucz></circle><line x1="21" y1="21" x2="16.65" y2="16.65" data-astro-cid-x322jucz></line></svg> <span class="search-placeholder" data-astro-cid-x322jucz>Ctrl+K 搜索...</span> </button> <button class="theme-toggle" id="theme-toggle" aria-label="切换主题" data-astro-cid-x322jucz> <svg class="sun-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" data-astro-cid-x322jucz> <circle cx="12" cy="12" r="5" data-astro-cid-x322jucz></circle> <line x1="12" y1="1" x2="12" y2="3" data-astro-cid-x322jucz></line> <line x1="12" y1="21" x2="12" y2="23" data-astro-cid-x322jucz></line> <line x1="4.22" y1="4.22" x2="5.64" y2="5.64" data-astro-cid-x322jucz></line> <line x1="18.36" y1="18.36" x2="19.78" y2="19.78" data-astro-cid-x322jucz></line> <line x1="1" y1="12" x2="3" y2="12" data-astro-cid-x322jucz></line> <line x1="21" y1="12" x2="23" y2="12" data-astro-cid-x322jucz></line> <line x1="4.22" y1="19.78" x2="5.64" y2="18.36" data-astro-cid-x322jucz></line> <line x1="18.36" y1="5.64" x2="19.78" y2="4.22" data-astro-cid-x322jucz></line> </svg> <svg class="moon-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" data-astro-cid-x322jucz> <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" data-astro-cid-x322jucz></path> </svg> </button> </div> </div> </header> <main class="container" data-astro-cid-x322jucz>  <article data-content-type="blog" data-pagefind-body data-pagefind-filter="type:blog" data-astro-cid-iy4s3wf7> <header class="article-header" data-astro-cid-iy4s3wf7> <h1 data-astro-cid-iy4s3wf7>Vuex之Getters详解</h1> <p class="meta" data-astro-cid-iy4s3wf7>
+发布于 2019-11-28 18:24:57 · 4 分钟 · 标签：<a href="/tags/JavaScript" class="tag" data-astro-cid-iy4s3wf7> JavaScript </a><a href="/tags/vue" class="tag" data-astro-cid-iy4s3wf7> vue </a><a href="/tags/vuex" class="tag" data-astro-cid-iy4s3wf7> vuex </a> </p> </header> <div class="article-content" data-astro-cid-iy4s3wf7> <p><img src="/images/2019/image-1574936672161.png" alt="file"></p>
+<p>作为Vue的状态管理工具，Vuex的使用率相当之高。Vuex具有4个属性，state，getters，actions，和mutations。</p>
+<p>今天来讨论一下<code>getters</code>。它相当于vue的<code>computed</code>计算属性。每当<code>state</code>中的值变化时，它也会自动更新。这个在我们需要那些<code>稍微对state中的属性进行改造</code>的属性时很有帮助。在实际生产中，我们会大量使用<code>getters</code>，而<code>state</code>会相对较少。</p>
+<h2 id="getters的基本用法直接调用">getters的基本用法，直接调用</h2>
+<p>首先在根目录下创建一个<code>store.js</code>：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="javascript"><code><span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> Vue </span><span style="color:#F97583">from</span><span style="color:#9ECBFF"> "vue"</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> Vuex </span><span style="color:#F97583">from</span><span style="color:#9ECBFF"> "vuex"</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">Vue.</span><span style="color:#B392F0">use</span><span style="color:#E1E4E8">(Vuex);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">// 状态对象</span></span>
+<span class="line"><span style="color:#F97583">const</span><span style="color:#79B8FF"> state</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#E1E4E8">  myList: [</span><span style="color:#9ECBFF">"a"</span><span style="color:#E1E4E8">, </span><span style="color:#9ECBFF">"b"</span><span style="color:#E1E4E8">, </span><span style="color:#9ECBFF">"c"</span><span style="color:#E1E4E8">, </span><span style="color:#9ECBFF">"d"</span><span style="color:#E1E4E8">, </span><span style="color:#9ECBFF">"e"</span><span style="color:#E1E4E8">]</span></span>
+<span class="line"><span style="color:#E1E4E8">};</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">// getters计算属性对象</span></span>
+<span class="line"><span style="color:#F97583">const</span><span style="color:#79B8FF"> getters</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#B392F0">  getObjByIndex</span><span style="color:#E1E4E8">(</span><span style="color:#FFAB70">state</span><span style="color:#E1E4E8">)</span><span style="color:#F97583">:</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#B392F0">    return</span><span style="color:#B392F0"> function</span><span style="color:#E1E4E8">(</span><span style="color:#FFAB70">index</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#F97583">      return</span><span style="color:#E1E4E8"> state.myList[index];</span></span>
+<span class="line"><span style="color:#E1E4E8">    };</span></span>
+<span class="line"><span style="color:#E1E4E8">  }</span></span>
+<span class="line"><span style="color:#E1E4E8">};</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">// 包含多个用于更新state属性的函数的对象</span></span>
+<span class="line"><span style="color:#F97583">const</span><span style="color:#79B8FF"> mutations</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> {};</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">// 包含多个事件回调函数的对象</span></span>
+<span class="line"><span style="color:#F97583">const</span><span style="color:#79B8FF"> actions</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> {};</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">export</span><span style="color:#F97583"> default</span><span style="color:#F97583"> new</span><span style="color:#E1E4E8"> Vuex.</span><span style="color:#B392F0">Store</span><span style="color:#E1E4E8">({</span></span>
+<span class="line"><span style="color:#E1E4E8">  state,</span></span>
+<span class="line"><span style="color:#E1E4E8">  getters,</span></span>
+<span class="line"><span style="color:#E1E4E8">  mutations,</span></span>
+<span class="line"><span style="color:#E1E4E8">  actions</span></span>
+<span class="line"><span style="color:#E1E4E8">})</span></span></code></pre>
+<p>然后我们在<code>main.js</code>中引用<code>store</code>，并添加到Vue实例中:</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="javascript"><code><span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> store </span><span style="color:#F97583">from</span><span style="color:#9ECBFF"> "@/store"</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">new</span><span style="color:#B392F0"> Vue</span><span style="color:#E1E4E8">({</span></span>
+<span class="line"><span style="color:#E1E4E8">  store,  </span><span style="color:#6A737D">// 将store对象添加到Vue实例</span></span>
+<span class="line"><span style="color:#B392F0">  render</span><span style="color:#E1E4E8">: </span><span style="color:#FFAB70">h</span><span style="color:#F97583"> =></span><span style="color:#B392F0"> h</span><span style="color:#E1E4E8">(App)</span></span>
+<span class="line"><span style="color:#E1E4E8">}).</span><span style="color:#B392F0">$mount</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">"#app"</span><span style="color:#E1E4E8">);</span></span></code></pre>
+<p>这样就完成了最简单的Vuex加载。</p>
+<h3 id="调用方案">调用方案</h3>
+<p>加载之后，我们就可以在任何Vue组件中使用<code>store</code>，具体方法：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="javascript"><code><span class="line"><span style="color:#79B8FF">this</span><span style="color:#E1E4E8">.$store.getters[</span><span style="color:#9ECBFF">"getObjByIndex"</span><span style="color:#E1E4E8">](</span><span style="color:#79B8FF">0</span><span style="color:#E1E4E8">)  </span><span style="color:#6A737D">// 或 this.$store.getters.getObjByIndex(0)</span></span></code></pre>
+<p>因为JavaScript的对象允许我们使用点的方式或者中括号的方式调用对象内容，所以这两种方式都可以调出getters中的属性信息。</p>
+<ul>
+<li>**注意：**我这里使用了闭包的形态，因为在<code>getters</code>中是属性，不是函数，所以我们不能直接传参调用，但是在实际使用中我们经常需要一些类似<code>id</code>，<code>index</code>这样的参数来调用某一个序列中的某一个值。为了解决这个问题，可以使用闭包的方案，具体闭包的功能这里不赘述。</li>
+</ul>
+<hr>
+<p>因为<code>Vuex</code>的<code>store</code>本身就是一个对象管理，我们都可以通过直接调用的方式来操作。但是每一次都要写<code>this.$store.getters.xxx</code>这种形式真的很麻烦，有没有简单的方式呢？<code>Vuex</code>给了我们很好的解决方案：<code>mapGetters</code>。</p>
+<h2 id="getters的进阶用法使用mapgetters简化代码">getters的进阶用法，使用mapGetters简化代码</h2>
+<p>对于<code>Vue</code>的组件来说，我们可以使用<code>mapGetters</code>函数，具体方法如下：</p>
+<h3 id="先看用法">先看用法</h3>
+<p><code>mapGetters</code>是官方提供的map系列函数中的一个，它会直接返回一个对象，将我们需要的 对象 / 函数 直接加载到组件中。</p>
+<h4 id="单store">单store</h4>
+<p>假设我们还是使用上述创建的store，那么它在Vue组件中可以这样使用：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="javascript"><code><span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> { mapGetters } </span><span style="color:#F97583">from</span><span style="color:#9ECBFF"> "vuex"</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">export</span><span style="color:#F97583"> default</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#E1E4E8">    computed: {</span></span>
+<span class="line"><span style="color:#F97583">        ...</span><span style="color:#B392F0">mapGetters</span><span style="color:#E1E4E8">([</span><span style="color:#9ECBFF">"getObjByIndex"</span><span style="color:#E1E4E8">]);  </span><span style="color:#6A737D">// 导入getters的属性</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<p>这样就可以在这个Vue组件中使用这个属性了。</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="javascript"><code><span class="line"><span style="color:#B392F0">getObjByIndex</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">0</span><span style="color:#E1E4E8">); </span><span style="color:#6A737D">// 会直接取值</span></span></code></pre>
+<h4 id="分模块store">分模块store</h4>
+<p>如果我们的项目很大，单模块的<code>store</code>完全不能满足我们的需求，这个时候就需要分模块。</p>
+<p>再比如我们现在有一个叫<code>myStore</code>模块的<code>store</code>：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="javascript"><code><span class="line"><span style="color:#F97583">const</span><span style="color:#79B8FF"> state</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#E1E4E8">  myList: []</span></span>
+<span class="line"><span style="color:#E1E4E8">};</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">const</span><span style="color:#79B8FF"> getters</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#B392F0">  getObjByIndex</span><span style="color:#E1E4E8">(</span><span style="color:#FFAB70">state</span><span style="color:#E1E4E8">)</span><span style="color:#F97583">:</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#B392F0">    return</span><span style="color:#B392F0"> function</span><span style="color:#E1E4E8">(</span><span style="color:#FFAB70">index</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#F97583">      return</span><span style="color:#E1E4E8"> state.myList[index];</span></span>
+<span class="line"><span style="color:#E1E4E8">    };</span></span>
+<span class="line"><span style="color:#E1E4E8">  }</span></span>
+<span class="line"><span style="color:#E1E4E8">};</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">const</span><span style="color:#79B8FF"> mutations</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> {};</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">const</span><span style="color:#79B8FF"> actions</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> {};</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">export</span><span style="color:#F97583"> const</span><span style="color:#79B8FF"> myStore</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#E1E4E8">  namespaced: </span><span style="color:#79B8FF">true</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">  state,</span></span>
+<span class="line"><span style="color:#E1E4E8">  getters,</span></span>
+<span class="line"><span style="color:#E1E4E8">  actions,</span></span>
+<span class="line"><span style="color:#E1E4E8">  mutations</span></span>
+<span class="line"><span style="color:#E1E4E8">};</span></span></code></pre>
+<p>该仓库的模块名为<code>myStore</code>，继续导入到Vue组件中：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="javascript"><code><span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> { mapGetters } </span><span style="color:#F97583">from</span><span style="color:#9ECBFF"> "vuex"</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">export</span><span style="color:#F97583"> default</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#E1E4E8">    computed: {</span></span>
+<span class="line"><span style="color:#6A737D">        // 这个时候就需要在导入时添加上模块名</span></span>
+<span class="line"><span style="color:#F97583">        ...</span><span style="color:#B392F0">mapGetters</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">"myStore"</span><span style="color:#E1E4E8">, [</span><span style="color:#9ECBFF">"getObjByIndex"</span><span style="color:#E1E4E8">]);</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<h4 id="重命名">重命名</h4>
+<p>如果想重命名该属性，可以使用如下语句，这个对于所有模块都是一样的：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="javascript"><code><span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> { mapGetters } </span><span style="color:#F97583">from</span><span style="color:#9ECBFF"> "vuex"</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">export</span><span style="color:#F97583"> default</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#E1E4E8">    computed: {</span></span>
+<span class="line"><span style="color:#6A737D">        // 对属性重命名，这样我们就可以在该组件中使用 getMyObj 了。</span></span>
+<span class="line"><span style="color:#F97583">        ...</span><span style="color:#B392F0">mapGetters</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">"myStore"</span><span style="color:#E1E4E8">, {getMyObj: </span><span style="color:#9ECBFF">"getObjByIndex"</span><span style="color:#E1E4E8">});</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<hr>
+<h2 id="深入理解">深入理解</h2>
+<p>为何我们可以这样方便的使用mapGetters，我们可以通过源码来找寻答案：</p>
+<p>源码很短：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="javascript"><code><span class="line"><span style="color:#6A737D">/**</span></span>
+<span class="line"><span style="color:#6A737D"> * Reduce the code which written in Vue.js for getting the getters</span></span>
+<span class="line"><span style="color:#6A737D"> * </span><span style="color:#F97583">@param</span><span style="color:#B392F0"> {String}</span><span style="color:#E1E4E8"> [namespace]</span><span style="color:#6A737D"> - Module's namespace</span></span>
+<span class="line"><span style="color:#6A737D"> * </span><span style="color:#F97583">@param</span><span style="color:#B392F0"> {Object|Array}</span><span style="color:#E1E4E8"> getters</span></span>
+<span class="line"><span style="color:#6A737D"> * </span><span style="color:#F97583">@return</span><span style="color:#B392F0"> {Object}</span></span>
+<span class="line"><span style="color:#6A737D"> */</span></span>
+<span class="line"><span style="color:#F97583">var</span><span style="color:#E1E4E8"> mapGetters </span><span style="color:#F97583">=</span><span style="color:#B392F0"> normalizeNamespace</span><span style="color:#E1E4E8">(</span><span style="color:#F97583">function</span><span style="color:#E1E4E8"> (</span><span style="color:#FFAB70">namespace</span><span style="color:#E1E4E8">, </span><span style="color:#FFAB70">getters</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#F97583">  var</span><span style="color:#E1E4E8"> res </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> {};</span></span>
+<span class="line"><span style="color:#B392F0">  normalizeMap</span><span style="color:#E1E4E8">(getters).</span><span style="color:#B392F0">forEach</span><span style="color:#E1E4E8">(</span><span style="color:#F97583">function</span><span style="color:#E1E4E8"> (</span><span style="color:#FFAB70">ref</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#F97583">    var</span><span style="color:#E1E4E8"> key </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> ref.key;</span></span>
+<span class="line"><span style="color:#F97583">    var</span><span style="color:#E1E4E8"> val </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> ref.val;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">    // The namespace has been mutated by normalizeNamespace</span></span>
+<span class="line"><span style="color:#E1E4E8">    val </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> namespace </span><span style="color:#F97583">+</span><span style="color:#E1E4E8"> val;</span></span>
+<span class="line"><span style="color:#E1E4E8">    res[key] </span><span style="color:#F97583">=</span><span style="color:#F97583"> function</span><span style="color:#B392F0"> mappedGetter</span><span style="color:#E1E4E8"> () {</span></span>
+<span class="line"><span style="color:#F97583">      if</span><span style="color:#E1E4E8"> (namespace </span><span style="color:#F97583">&#x26;&#x26;</span><span style="color:#F97583"> !</span><span style="color:#B392F0">getModuleByNamespace</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">this</span><span style="color:#E1E4E8">.$store, </span><span style="color:#9ECBFF">'mapGetters'</span><span style="color:#E1E4E8">, namespace)) {</span></span>
+<span class="line"><span style="color:#F97583">        return</span></span>
+<span class="line"><span style="color:#E1E4E8">      }</span></span>
+<span class="line"><span style="color:#F97583">      if</span><span style="color:#E1E4E8"> (</span><span style="color:#F97583">!</span><span style="color:#E1E4E8">(val </span><span style="color:#F97583">in</span><span style="color:#79B8FF"> this</span><span style="color:#E1E4E8">.$store.getters)) {</span></span>
+<span class="line"><span style="color:#E1E4E8">        console.</span><span style="color:#B392F0">error</span><span style="color:#E1E4E8">((</span><span style="color:#9ECBFF">"[vuex] unknown getter: "</span><span style="color:#F97583"> +</span><span style="color:#E1E4E8"> val));</span></span>
+<span class="line"><span style="color:#F97583">        return</span></span>
+<span class="line"><span style="color:#E1E4E8">      }</span></span>
+<span class="line"><span style="color:#F97583">      return</span><span style="color:#79B8FF"> this</span><span style="color:#E1E4E8">.$store.getters[val]</span></span>
+<span class="line"><span style="color:#E1E4E8">    };</span></span>
+<span class="line"><span style="color:#6A737D">    // mark vuex getter for devtools</span></span>
+<span class="line"><span style="color:#E1E4E8">    res[key].vuex </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> true</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#E1E4E8">  });</span></span>
+<span class="line"><span style="color:#F97583">  return</span><span style="color:#E1E4E8"> res</span></span>
+<span class="line"><span style="color:#E1E4E8">});</span></span></code></pre>
+<h5 id="具体来看">具体来看</h5>
+<p>1、首先调用了通用的函数<code>normalizeNamespace</code>，而这个函数就是将传入的改成<code>namespace/getters</code>的分割样式，如果没有namespace，那么直接返回<code>getters</code>，具体函数如下：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="javascript"><code><span class="line"><span style="color:#F97583">function</span><span style="color:#B392F0"> normalizeNamespace</span><span style="color:#E1E4E8"> (</span><span style="color:#FFAB70">fn</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#F97583">  return</span><span style="color:#F97583"> function</span><span style="color:#E1E4E8"> (</span><span style="color:#FFAB70">namespace</span><span style="color:#E1E4E8">, </span><span style="color:#FFAB70">map</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#F97583">    if</span><span style="color:#E1E4E8"> (</span><span style="color:#F97583">typeof</span><span style="color:#E1E4E8"> namespace </span><span style="color:#F97583">!==</span><span style="color:#9ECBFF"> 'string'</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#E1E4E8">      map </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> namespace;</span></span>
+<span class="line"><span style="color:#E1E4E8">      namespace </span><span style="color:#F97583">=</span><span style="color:#9ECBFF"> ''</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#E1E4E8">    } </span><span style="color:#F97583">else</span><span style="color:#F97583"> if</span><span style="color:#E1E4E8"> (namespace.</span><span style="color:#B392F0">charAt</span><span style="color:#E1E4E8">(namespace.</span><span style="color:#79B8FF">length</span><span style="color:#F97583"> -</span><span style="color:#79B8FF"> 1</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">!==</span><span style="color:#9ECBFF"> '/'</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#E1E4E8">      namespace </span><span style="color:#F97583">+=</span><span style="color:#9ECBFF"> '/'</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"><span style="color:#F97583">    return</span><span style="color:#B392F0"> fn</span><span style="color:#E1E4E8">(namespace, map)</span></span>
+<span class="line"><span style="color:#E1E4E8">  }</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<p>2、迭代函数<code>normalizeMap</code>只是将输入的<code>getters</code>对应成store的内部属性，具体函数如下：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="javascript"><code><span class="line"><span style="color:#F97583">function</span><span style="color:#B392F0"> normalizeMap</span><span style="color:#E1E4E8"> (</span><span style="color:#FFAB70">map</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#F97583">  return</span><span style="color:#E1E4E8"> Array.</span><span style="color:#B392F0">isArray</span><span style="color:#E1E4E8">(map)</span></span>
+<span class="line"><span style="color:#F97583">    ?</span><span style="color:#E1E4E8"> map.</span><span style="color:#B392F0">map</span><span style="color:#E1E4E8">(</span><span style="color:#F97583">function</span><span style="color:#E1E4E8"> (</span><span style="color:#FFAB70">key</span><span style="color:#E1E4E8">) { </span><span style="color:#F97583">return</span><span style="color:#E1E4E8"> ({ key: key, val: key }); })</span></span>
+<span class="line"><span style="color:#F97583">    :</span><span style="color:#E1E4E8"> Object.</span><span style="color:#B392F0">keys</span><span style="color:#E1E4E8">(map).</span><span style="color:#B392F0">map</span><span style="color:#E1E4E8">(</span><span style="color:#F97583">function</span><span style="color:#E1E4E8"> (</span><span style="color:#FFAB70">key</span><span style="color:#E1E4E8">) { </span><span style="color:#F97583">return</span><span style="color:#E1E4E8"> ({ key: key, val: map[key] });</span></span>
+<span class="line"><span style="color:#E1E4E8">  })</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<p>这段函数也说明了为什么我们可以使用对象来更改名称，它依旧会映射我们传入的<code>value</code>。</p>
+<p>3、查找属性。之后的代码就很简单了，就是简单的判断+查找，如果找到对应的属性，最后返回 <code>this.$store.getters[val]</code>。</p>
+<p>这就是mapGetters的大体工作流程。</p>
+<h3 id="学以致用">学以致用</h3>
+<p>看过源码，那么我们试着不用<code>mapGetters</code>来调用。听起来没什么用，但是实际应用中，也会经常使用该方法，比如在js模型中，我们就需要手动调用。</p>
+<p>首先引用<code>store</code>，</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="javascript"><code><span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> store </span><span style="color:#F97583">from</span><span style="color:#9ECBFF"> "@/store"</span><span style="color:#E1E4E8">;</span></span></code></pre>
+<p>然后直接使用<code>store</code>调用一开始我们定义的属性：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="javascript"><code><span class="line"><span style="color:#F97583">var</span><span style="color:#E1E4E8"> myObj </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> store.getters[</span><span style="color:#9ECBFF">"myStore/getObjByIndex"</span><span style="color:#E1E4E8">]</span></span></code></pre>
+<p>已经成功调取，是不是很方便。</p> </div> <!-- 悬浮 TOC --> <button class="toc-toggle" id="toc-toggle" aria-label="显示目录" data-astro-cid-iy4s3wf7> <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-list" data-astro-cid-iy4s3wf7> <line x1="8" y1="6" x2="21" y2="6" data-astro-cid-iy4s3wf7></line> <line x1="8" y1="12" x2="21" y2="12" data-astro-cid-iy4s3wf7></line> <line x1="8" y1="18" x2="21" y2="18" data-astro-cid-iy4s3wf7></line> <line x1="3" y1="6" x2="3.01" y2="6" data-astro-cid-iy4s3wf7></line> <line x1="3" y1="12" x2="3.01" y2="12" data-astro-cid-iy4s3wf7></line> <line x1="3" y1="18" x2="3.01" y2="18" data-astro-cid-iy4s3wf7></line> </svg> </button> <aside class="floating-toc" id="floating-toc" data-astro-cid-iy4s3wf7> <div class="toc-header" data-astro-cid-iy4s3wf7> <h3 data-astro-cid-iy4s3wf7>目录</h3> </div> <nav class="toc-nav" id="toc-nav" data-astro-cid-g3fimnfa> <!-- TOC 内容将由客户端脚本填充 --> </nav>  <script type="module">document.addEventListener("DOMContentLoaded",()=>{const n=document.getElementById("toc-nav"),a=document.querySelector(".toc-header h3");if(!n)return;const s=document.querySelector(".article-header h1")?.textContent||"目录";a&&(a.textContent=s);const c=Array.from(document.querySelectorAll(".article-content h2, .article-content h3, .article-content h4, .article-content h5, .article-content h6"));if(c.length===0){n.innerHTML='<p style="color: var(--color-text-secondary); padding: 0.5rem;">暂无目录</p>';return}c.forEach(e=>{e.id||(e.id=e.textContent?.toLowerCase().replace(/\s+/g,"-").replace(/[^\w\-\u4e00-\u9fa5]/g,"")||"")});const l=document.createElement("ul");c.forEach(e=>{const t=document.createElement("li"),o=document.createElement("a");o.href=`#${e.id}`,o.textContent=e.textContent||"",o.classList.add(`toc-${e.tagName.toLowerCase()}`),o.addEventListener("click",i=>{i.preventDefault();const r=document.getElementById(e.id);if(r){const u=r.getBoundingClientRect().top+window.pageYOffset-80;window.scrollTo({top:u,behavior:"smooth"}),history.pushState(null,"",`#${e.id}`)}}),t.appendChild(o),l.appendChild(t)}),n.appendChild(l);const d={root:null,rootMargin:"-60px 0px -80% 0px",threshold:0},h=new IntersectionObserver(e=>{e.forEach(t=>{if(t.isIntersecting){const o=t.target.id;n.querySelectorAll("a").forEach(r=>{r.classList.remove("active")});const i=n.querySelector(`a[href="#${o}"]`);i&&i.classList.add("active")}})},d);c.forEach(e=>h.observe(e)),setTimeout(()=>{if(window.location.hash){const t=n.querySelector(`a[href="${window.location.hash}"]`);if(t){n.querySelectorAll("a").forEach(o=>o.classList.remove("active")),t.classList.add("active");return}}let e="";for(const t of c)if(t.getBoundingClientRect().top<=150)e=t.id;else break;if(!e&&c.length>0&&window.scrollY<100&&(e=c[0].id),e){n.querySelectorAll("a").forEach(o=>o.classList.remove("active"));const t=n.querySelector(`a[href="#${e}"]`);t&&t.classList.add("active")}},100)});</script> </aside> <div class="toc-overlay" id="toc-overlay" data-astro-cid-iy4s3wf7></div> <section class="comments" data-astro-cid-iy4s3wf7> <div class="giscus-wrapper"> <script src="https://giscus.app/client.js" data-repo="jeremyjone/blog-comments" data-repo-id="R_kgDOQlVVGg" data-category="Announcements" data-category-id="DIC_kwDOQlVVGs4Czkir" data-mapping="title" data-term data-strict="0" data-reactions-enabled="1" data-emit-metadata="0" data-input-position="top" data-theme="preferred_color_scheme" data-lang="zh-CN" crossorigin="anonymous" async></script> <noscript>请启用 JavaScript 查看评论。</noscript> </div> </section> </article>  </main> <footer class="site-footer" data-astro-cid-x322jucz> <div class="container footer-content" data-astro-cid-x322jucz> <p data-astro-cid-x322jucz>
+&copy; 2025 <b data-astro-cid-x322jucz>JeremyJone.com</b> All rights reserved.
+</p> <div class="footer-links" data-astro-cid-x322jucz> <a href="https://github.com/jeremyjone" target="_blank" rel="noopener" data-astro-cid-x322jucz> GitHub </a> </div> </div> </footer> <script type="module" src="/_astro/BaseLayout.astro_astro_type_script_index_0_lang.D4h-rqQD.js"></script> <div id="search-modal" class="search-modal" style="display: none;" data-astro-cid-jwf5kjrd> <div class="search-overlay" data-astro-cid-jwf5kjrd></div> <div class="search-container" data-astro-cid-jwf5kjrd> <div class="search-header" data-astro-cid-jwf5kjrd> <input type="text" id="search-input-global" placeholder="搜索全站内容 (Cmd+K)..." autocomplete="off" data-astro-cid-jwf5kjrd> <button id="close-search" aria-label="Close search" data-astro-cid-jwf5kjrd>&times;</button> </div> <div id="search-results-global" class="search-results" data-astro-cid-jwf5kjrd> <div class="search-placeholder" data-astro-cid-jwf5kjrd>输入关键词开始搜索...</div> </div> </div> </div>  <script>
+    window.loadPagefind = async () => {
+        try {
+            return await import("/pagefind/pagefind.js");
+        } catch (e) {
+            console.warn("Failed to load pagefind:", e);
+            return null;
+        }
+    };
+</script> <script type="module" src="/_astro/SearchModal.astro_astro_type_script_index_0_lang.C4oQFeHw.js"></script> </body></html>  <script type="module">document.addEventListener("DOMContentLoaded",()=>{const c=document.getElementById("toc-toggle"),e=document.getElementById("floating-toc"),t=document.getElementById("toc-overlay");c?.addEventListener("click",()=>{e?.classList.add("active"),t?.classList.add("active")});const o=()=>{e?.classList.remove("active"),t?.classList.remove("active")};t?.addEventListener("click",o)});</script>

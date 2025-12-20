@@ -1,0 +1,152 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="dark" data-astro-cid-x322jucz> <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>node-sass 的安装</title><meta name="description" content="现在新创建的项目基本上都安装的是 Dart Sass，直接 `npm install sass` 即可。比较早的项目中，有安装了 `node-sass` 的，但是在当前的 node 环境中，会出现各种问题。 ## 安装版本报错 ```t..."><link rel="canonical" href="https://www.jeremyjone.com//blog/node-sass-%E7%9A%84%E5%AE%89%E8%A3%85/"><meta property="og:title" content="node-sass 的安装"><meta property="og:description" content="现在新创建的项目基本上都安装的是 Dart Sass，直接 `npm install sass` 即可。比较早的项目中，有安装了 `node-sass` 的，但是在当前的 node 环境中，会出现各种问题。 ## 安装版本报错 ```t..."><meta property="og:type" content="article"><meta property="og:url" content="https://www.jeremyjone.com//blog/node-sass-%E7%9A%84%E5%AE%89%E8%A3%85/"><meta property="og:site_name" content="JeremyJone's Blog"><meta property="og:locale" content="zh_CN"><link rel="icon" href="/favicon.ico"><link rel="stylesheet" href="/_astro/_year_.CFHYKZJi.css">
+<link rel="stylesheet" href="/_astro/_slug_.B1ShOm38.css"></head> <body data-astro-cid-x322jucz> <header class="site-header" data-astro-cid-x322jucz> <div class="container header-content" data-astro-cid-x322jucz> <a href="/" class="logo" data-astro-cid-x322jucz> <div class="logo-icon" data-astro-cid-x322jucz> <img src="/resources/avatar.png" alt="Logo" width="32" height="32" data-astro-cid-x322jucz> </div> <span class="logo-text" data-astro-cid-x322jucz>JeremyJone&#39;s Blog</span> </a> <div class="header-right" data-astro-cid-x322jucz> <nav class="nav" data-astro-cid-x322jucz> <a href="/" class="nav-link" data-astro-cid-x322jucz> 首页 </a><a href="/blog" class="nav-link active" data-astro-cid-x322jucz> 博客 </a><a href="/notes" class="nav-link" data-astro-cid-x322jucz> 笔记 </a> </nav> <button class="search-toggle" onclick="window.openSearchModal()" aria-label="搜索" data-astro-cid-x322jucz> <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-astro-cid-x322jucz><circle cx="11" cy="11" r="8" data-astro-cid-x322jucz></circle><line x1="21" y1="21" x2="16.65" y2="16.65" data-astro-cid-x322jucz></line></svg> <span class="search-placeholder" data-astro-cid-x322jucz>Ctrl+K 搜索...</span> </button> <button class="theme-toggle" id="theme-toggle" aria-label="切换主题" data-astro-cid-x322jucz> <svg class="sun-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" data-astro-cid-x322jucz> <circle cx="12" cy="12" r="5" data-astro-cid-x322jucz></circle> <line x1="12" y1="1" x2="12" y2="3" data-astro-cid-x322jucz></line> <line x1="12" y1="21" x2="12" y2="23" data-astro-cid-x322jucz></line> <line x1="4.22" y1="4.22" x2="5.64" y2="5.64" data-astro-cid-x322jucz></line> <line x1="18.36" y1="18.36" x2="19.78" y2="19.78" data-astro-cid-x322jucz></line> <line x1="1" y1="12" x2="3" y2="12" data-astro-cid-x322jucz></line> <line x1="21" y1="12" x2="23" y2="12" data-astro-cid-x322jucz></line> <line x1="4.22" y1="19.78" x2="5.64" y2="18.36" data-astro-cid-x322jucz></line> <line x1="18.36" y1="5.64" x2="19.78" y2="4.22" data-astro-cid-x322jucz></line> </svg> <svg class="moon-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" data-astro-cid-x322jucz> <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" data-astro-cid-x322jucz></path> </svg> </button> </div> </div> </header> <main class="container" data-astro-cid-x322jucz>  <article data-content-type="blog" data-pagefind-body data-pagefind-filter="type:blog" data-astro-cid-iy4s3wf7> <header class="article-header" data-astro-cid-iy4s3wf7> <h1 data-astro-cid-iy4s3wf7>node-sass 的安装</h1> <p class="meta" data-astro-cid-iy4s3wf7>
+发布于 2025-05-14 14:09:36 · 7 分钟 · 标签：<a href="/tags/node" class="tag" data-astro-cid-iy4s3wf7> node </a> </p> </header> <div class="article-content" data-astro-cid-iy4s3wf7> <p>现在新创建的项目基本上都安装的是 Dart Sass，直接 <code>npm install sass</code> 即可。比较早的项目中，有安装了 <code>node-sass</code> 的，但是在当前的 node 环境中，会出现各种问题。</p>
+<h2 id="安装版本报错">安装版本报错</h2>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="text"><code><span class="line"><span>gyp verb find VS msvs_version not set from command line or npm config </span></span>
+<span class="line"><span>gyp verb find VS VCINSTALLDIR not set, not running in VS Command Prompt </span></span>
+<span class="line"><span>gyp verb find VS unknown version "undefined" found at "C:\Program Files\Microsoft Visual Studio\2022\Professional" </span></span>
+<span class="line"><span>gyp verb find VS checking VS2019 (16.11.33801.447) found at: gyp verb find VS "C:\Program Files (x86)\Microsoft Visual Studio\2019\BuildTools" </span></span>
+<span class="line"><span>gyp verb find VS - found "Visual Studio C++ core features" gyp verb find VS - found VC++ toolset: v142 </span></span>
+<span class="line"><span>gyp verb find VS - missing any Windows SDK gyp verb find VS could not find a version of Visual Studio 2017 or newer to use </span></span>
+<span class="line"><span>gyp verb find VS looking for Visual Studio 2015 gyp verb find VS - not found </span></span>
+<span class="line"><span>gyp verb find VS not looking for VS2013 as it is only supported up to Node.js 8 </span></span>
+<span class="line"><span>gyp ERR! find VS </span></span>
+<span class="line"><span>gyp ERR! find VS msvs_version not set from command line or npm config </span></span>
+<span class="line"><span>gyp ERR! find VS VCINSTALLDIR not set, not running in VS Command Prompt </span></span>
+<span class="line"><span>gyp ERR! find VS unknown version "undefined" found at "C:\Program Files\Microsoft Visual Studio\2022\Professional" </span></span>
+<span class="line"><span>gyp ERR! find VS checking VS2019 (16.11.33801.447) found at: </span></span>
+<span class="line"><span>gyp ERR! find VS "C:\Program Files (x86)\Microsoft Visual Studio\2019\BuildTools" </span></span>
+<span class="line"><span>gyp ERR! find VS - found "Visual Studio C++ core features" </span></span>
+<span class="line"><span>gyp ERR! find VS - found VC++ toolset: v142 </span></span>
+<span class="line"><span>gyp ERR! find VS - missing any Windows SDK </span></span>
+<span class="line"><span>gyp ERR! find VS could not find a version of Visual Studio 2017 or newer to use </span></span>
+<span class="line"><span>gyp ERR! find VS looking for Visual Studio 2015 </span></span>
+<span class="line"><span>gyp ERR! find VS - not found </span></span>
+<span class="line"><span>gyp ERR! find VS not looking for VS2013 as it is only supported up to Node.js 8 </span></span>
+<span class="line"><span>gyp ERR! find VS </span></span>
+<span class="line"><span>gyp ERR! find VS ************************************************************** </span></span>
+<span class="line"><span>gyp ERR! find VS You need to install the latest version of Visual Studio </span></span>
+<span class="line"><span>gyp ERR! find VS including the "Desktop development with C++" workload. </span></span>
+<span class="line"><span>gyp ERR! find VS For more information consult the documentation at: </span></span>
+<span class="line"><span>gyp ERR! find VS https://github.com/nodejs/node-gyp#on-windows </span></span>
+<span class="line"><span>gyp ERR! find VS ************************************************************** </span></span>
+<span class="line"><span>gyp ERR! find VS </span></span>
+<span class="line"><span>gyp ERR! configure error </span></span>
+<span class="line"><span>gyp ERR! stack Error: Could not find any Visual Studio installation to use </span></span>
+<span class="line"><span>gyp ERR! stack at VisualStudioFinder.fail (C:\Users\jeremyjone\code\test\node_modules\node-gyp\lib\find-visualstudio.js:121:47) </span></span>
+<span class="line"><span>gyp ERR! stack at C:\Users\jeremyjone\code\test\node_modules\node-gyp\lib\find-visualstudio.js:74:16 </span></span>
+<span class="line"><span>gyp ERR! stack at VisualStudioFinder.findVisualStudio2013 (C:\Users\jeremyjone\code\test\node_modules\node-gyp\lib\find-visualstudio.js:351:14) </span></span>
+<span class="line"><span>gyp ERR! stack at C:\Users\jeremyjone\code\test\node_modules\node-gyp\lib\find-visualstudio.js:70:14 </span></span>
+<span class="line"><span>gyp ERR! stack at C:\Users\jeremyjone\code\test\node_modules\node-gyp\lib\find-visualstudio.js:372:16 </span></span>
+<span class="line"><span>gyp ERR! stack at C:\Users\jeremyjone\code\test\node_modules\node-gyp\lib\util.js:54:7 </span></span>
+<span class="line"><span>gyp ERR! stack at C:\Users\jeremyjone\code\test\node_modules\node-gyp\lib\util.js:33:16 </span></span>
+<span class="line"><span>gyp ERR! stack at ChildProcess.exithandler (node:child_process:410:5) </span></span>
+<span class="line"><span>gyp ERR! stack at ChildProcess.emit (node:events:513:28) </span></span>
+<span class="line"><span>gyp ERR! stack at maybeClose (node:internal/child_process:1100:16) </span></span>
+<span class="line"><span>gyp ERR! System Windows_NT 10.0.22635 </span></span>
+<span class="line"><span>gyp ERR! command "C:\Program Files\nodejs\node.exe" "C:\Users\jeremyjone\code\test\node_modules\node-gyp\bin\node-gyp.js" "rebuild" "--verbose" "--libsass_ext=" "--libsass_cflags=" "--libsass_ldflags=" "--libsass_library=" </span></span>
+<span class="line"><span>gyp ERR! cwd C:\Users\jeremyjone\code\test\node_modules\node-sass </span></span>
+<span class="line"><span>gyp ERR! node -v v16.20.0</span></span></code></pre>
+<p>这个问题，初看一头雾水，细看，问题关键在 17 行 <code>missing any Windows SDK</code>。查阅了一下， gyp 需要 windows 10 SDK，直接去安装。</p>
+<p>因为我有 Visual Studio 2022，直接打开 VS Installer，搜索 windows 10 SDK，全选安装即可（其实选其中一个就可以）。</p>
+<p>其实安装了上面，没有网上说的那么麻烦，不需要安装 <code>npm install --global windows-build-tools</code>，我忘了从哪看的也不推荐安装这玩意了，我就没有试过。</p>
+<h2 id="python-报错">python 报错</h2>
+<p>安装成功后，距离成功近在咫尺，但是在编译时却再次报错：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="text"><code><span class="line"><span>gyp info find VS using VS2017 (15.9.36101.55) found at:</span></span>
+<span class="line"><span>gyp info find VS "C:\Program Files (x86)\Microsoft Visual Studio\2017\BuildTools"</span></span>
+<span class="line"><span>gyp info find VS run with --verbose for detailed information</span></span>
+<span class="line"><span>gyp verb build/config.gypi creating config file</span></span>
+<span class="line"><span>gyp verb build/config.gypi writing out config file: C:\Users\jeremyjone\code\test\node_modules\node-sass\build\config.gypi</span></span>
+<span class="line"><span>(node:29720) [DEP0150] DeprecationWarning: Setting process.config is deprecated. In the future the property will be read-only.</span></span>
+<span class="line"><span>(Use `node --trace-deprecation ...` to show where the warning was created)</span></span>
+<span class="line"><span>gyp verb config.gypi checking for gypi file: C:\Users\jeremyjone\code\test\node_modules\node-sass\config.gypi      </span></span>
+<span class="line"><span>gyp verb common.gypi checking for gypi file: C:\Users\jeremyjone\code\test\node_modules\node-sass\common.gypi      </span></span>
+<span class="line"><span>gyp verb gyp gyp format was not specified; forcing "msvs"</span></span>
+<span class="line"><span>gyp info spawn C:\environments\anaconda3\python.exe</span></span>
+<span class="line"><span>gyp info spawn args [</span></span>
+<span class="line"><span>gyp info spawn args   'C:\\Users\\jeremyjone\\code\\test\\node_modules\\node-gyp\\gyp\\gyp_main.py',</span></span>
+<span class="line"><span>gyp info spawn args   'binding.gyp',</span></span>
+<span class="line"><span>gyp info spawn args   '-f',</span></span>
+<span class="line"><span>gyp info spawn args   'msvs',</span></span>
+<span class="line"><span>gyp info spawn args   '-I',</span></span>
+<span class="line"><span>gyp info spawn args   'C:\\Users\\jeremyjone\\code\\test\\node_modules\\node-sass\\build\\config.gypi',</span></span>
+<span class="line"><span>gyp info spawn args   '-I',</span></span>
+<span class="line"><span>gyp info spawn args   'C:\\Users\\jeremyjone\\code\\test\\node_modules\\node-gyp\\addon.gypi',</span></span>
+<span class="line"><span>gyp info spawn args   '-I',</span></span>
+<span class="line"><span>gyp info spawn args   'C:\\Users\\jeremyjone\\AppData\\Local\\node-gyp\\Cache\\16.20.0\\include\\node\\common.gypi',</span></span>
+<span class="line"><span>gyp info spawn args   '-Dlibrary=shared_library',</span></span>
+<span class="line"><span>gyp info spawn args   '-Dvisibility=default',</span></span>
+<span class="line"><span>gyp info spawn args   '-Dnode_root_dir=C:\\Users\\jeremyjone\\AppData\\Local\\node-gyp\\Cache\\16.20.0',</span></span>
+<span class="line"><span>gyp info spawn args   '-Dnode_gyp_dir=C:\\Users\\jeremyjone\\code\\test\\node_modules\\node-gyp',</span></span>
+<span class="line"><span>gyp info spawn args   '-Dnode_lib_file=C:\\\\Users\\\\jeremyjone\\\\AppData\\\\Local\\\\node-gyp\\\\Cache\\\\16.20.0\\\\&#x3C;(target_arch)\\\\node.lib',</span></span>
+<span class="line"><span>gyp info spawn args   '-Dmodule_root_dir=C:\\Users\\jeremyjone\\code\\test\\node_modules\\node-sass',</span></span>
+<span class="line"><span>gyp info spawn args   '-Dnode_engine=v8',</span></span>
+<span class="line"><span>gyp info spawn args   '--depth=.',</span></span>
+<span class="line"><span>gyp info spawn args   '--no-parallel',</span></span>
+<span class="line"><span>gyp info spawn args   '--generator-output',</span></span>
+<span class="line"><span>gyp info spawn args   'C:\\Users\\jeremyjone\\code\\test\\node_modules\\node-sass\\build',</span></span>
+<span class="line"><span>gyp info spawn args   '-Goutput_dir=.'</span></span>
+<span class="line"><span>gyp info spawn args ]</span></span>
+<span class="line"><span>Traceback (most recent call last):</span></span>
+<span class="line"><span>  File "C:\Users\jeremyjone\code\test\node_modules\node-gyp\gyp\gyp_main.py", line 51, in &#x3C;module></span></span>
+<span class="line"><span>    sys.exit(gyp.script_main())</span></span>
+<span class="line"><span>             ^^^^^^^^^^^^^^^^^</span></span>
+<span class="line"><span>  File "C:\Users\jeremyjone\code\test\node_modules\node-gyp\gyp\pylib\gyp\__init__.py", line 670, in script_main   </span></span>
+<span class="line"><span>    return main(sys.argv[1:])</span></span>
+<span class="line"><span>           ^^^^^^^^^^^^^^^^^^</span></span>
+<span class="line"><span>  File "C:\Users\jeremyjone\code\test\node_modules\node-gyp\gyp\pylib\gyp\__init__.py", line 662, in main</span></span>
+<span class="line"><span>    return gyp_main(args)</span></span>
+<span class="line"><span>           ^^^^^^^^^^^^^^</span></span>
+<span class="line"><span>  File "C:\Users\jeremyjone\code\test\node_modules\node-gyp\gyp\pylib\gyp\__init__.py", line 629, in gyp_main      </span></span>
+<span class="line"><span>    [generator, flat_list, targets, data] = Load(</span></span>
+<span class="line"><span>                                            ^^^^^</span></span>
+<span class="line"><span>  File "C:\Users\jeremyjone\code\test\node_modules\node-gyp\gyp\pylib\gyp\__init__.py", line 150, in Load</span></span>
+<span class="line"><span>    result = gyp.input.Load(</span></span>
+<span class="line"><span>             ^^^^^^^^^^^^^^^</span></span>
+<span class="line"><span>  File "C:\Users\jeremyjone\code\test\node_modules\node-gyp\gyp\pylib\gyp\input.py", line 3021, in Load</span></span>
+<span class="line"><span>    LoadTargetBuildFile(</span></span>
+<span class="line"><span>  File "C:\Users\jeremyjone\code\test\node_modules\node-gyp\gyp\pylib\gyp\input.py", line 411, in LoadTargetBuildFile</span></span>
+<span class="line"><span>    build_file_data = LoadOneBuildFile(</span></span>
+<span class="line"><span>                      ^^^^^^^^^^^^^^^^^</span></span>
+<span class="line"><span>  File "C:\Users\jeremyjone\code\test\node_modules\node-gyp\gyp\pylib\gyp\input.py", line 239, in LoadOneBuildFile   </span></span>
+<span class="line"><span>    build_file_contents = open(build_file_path, "rU").read()</span></span>
+<span class="line"><span>                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^</span></span>
+<span class="line"><span>ValueError: invalid mode: 'rU' while trying to load binding.gyp</span></span>
+<span class="line"><span>gyp ERR! configure error</span></span>
+<span class="line"><span>gyp ERR! stack Error: `gyp` failed with exit code: 1</span></span>
+<span class="line"><span>gyp ERR! stack     at ChildProcess.onCpExit (C:\Users\jeremyjone\code\test\node_modules\node-gyp\lib\configure.js:351:16)</span></span>
+<span class="line"><span>gyp ERR! stack     at ChildProcess.emit (node:events:513:28)</span></span>
+<span class="line"><span>gyp ERR! stack     at Process.ChildProcess._handle.onexit (node:internal/child_process:293:12)</span></span>
+<span class="line"><span>gyp ERR! System Windows_NT 10.0.22635</span></span>
+<span class="line"><span>gyp ERR! command "C:\\Program Files\\nodejs\\node.exe" "C:\\Users\\jeremyjone\\code\\test\\node_modules\\node-gyp\\bin\\node-gyp.js" "rebuild" "--verbose" "--libsass_ext=" "--libsass_cflags=" "--libsass_ldflags=" "--libsass_library="</span></span>
+<span class="line"><span>gyp ERR! cwd C:\Users\jeremyjone\code\test\node_modules\node-sass</span></span>
+<span class="line"><span>gyp ERR! node -v v16.20.0</span></span></code></pre>
+<p>对于熟悉 python 的同学，一眼就可以看出来这就是 python 报错了，说明我们之前的 SDK 已经安装成功，并且继续向下执行了。为什么会出现此问题呢？</p>
+<p>我之前在电脑中安装了 python 3.11 版本，使用起来没什么问题。但是看报错，错在了 open 的 <code>rU</code> 模式。这个模式呢：</p>
+<ul>
+<li>Python2.3 添加</li>
+<li>Python 3.4 弃用</li>
+<li>Python 3.11 移除</li>
+</ul>
+<p>看出来了吧，正好我使用的版本处在了没有这个模式的情况之下，导致编译过程报错。那么我们直接切换版本即可。</p>
+<p>由于我使用的是 anaconda，它给我们提供了一个比较方便的环境配置。</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#6A737D"># 创建 Python3.8 环境</span></span>
+<span class="line"><span style="color:#B392F0">conda</span><span style="color:#9ECBFF"> create</span><span style="color:#79B8FF"> -n</span><span style="color:#9ECBFF"> py38</span><span style="color:#9ECBFF"> python=</span><span style="color:#79B8FF">38</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D"># 激活环境</span></span>
+<span class="line"><span style="color:#B392F0">conda</span><span style="color:#9ECBFF"> activate</span><span style="color:#9ECBFF"> py38</span></span></code></pre>
+<p>此时，我们并没有切换电脑中的主版本，它仍然是 3.11 的。不要着急，我们可以配置 npm。</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#6A737D"># 配置 NPM 中使用的 python 版本以及对应路径</span></span>
+<span class="line"><span style="color:#B392F0">npm</span><span style="color:#9ECBFF"> config</span><span style="color:#9ECBFF"> set</span><span style="color:#9ECBFF"> python</span><span style="color:#9ECBFF"> 'C:\env\anaconda3\envs\py38\python.exe'</span></span></code></pre>
+<p>此时，我们再执行安装命令，就可以正确安装了。</p> </div> <!-- 悬浮 TOC --> <button class="toc-toggle" id="toc-toggle" aria-label="显示目录" data-astro-cid-iy4s3wf7> <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-list" data-astro-cid-iy4s3wf7> <line x1="8" y1="6" x2="21" y2="6" data-astro-cid-iy4s3wf7></line> <line x1="8" y1="12" x2="21" y2="12" data-astro-cid-iy4s3wf7></line> <line x1="8" y1="18" x2="21" y2="18" data-astro-cid-iy4s3wf7></line> <line x1="3" y1="6" x2="3.01" y2="6" data-astro-cid-iy4s3wf7></line> <line x1="3" y1="12" x2="3.01" y2="12" data-astro-cid-iy4s3wf7></line> <line x1="3" y1="18" x2="3.01" y2="18" data-astro-cid-iy4s3wf7></line> </svg> </button> <aside class="floating-toc" id="floating-toc" data-astro-cid-iy4s3wf7> <div class="toc-header" data-astro-cid-iy4s3wf7> <h3 data-astro-cid-iy4s3wf7>目录</h3> </div> <nav class="toc-nav" id="toc-nav" data-astro-cid-g3fimnfa> <!-- TOC 内容将由客户端脚本填充 --> </nav>  <script type="module">document.addEventListener("DOMContentLoaded",()=>{const n=document.getElementById("toc-nav"),a=document.querySelector(".toc-header h3");if(!n)return;const s=document.querySelector(".article-header h1")?.textContent||"目录";a&&(a.textContent=s);const c=Array.from(document.querySelectorAll(".article-content h2, .article-content h3, .article-content h4, .article-content h5, .article-content h6"));if(c.length===0){n.innerHTML='<p style="color: var(--color-text-secondary); padding: 0.5rem;">暂无目录</p>';return}c.forEach(e=>{e.id||(e.id=e.textContent?.toLowerCase().replace(/\s+/g,"-").replace(/[^\w\-\u4e00-\u9fa5]/g,"")||"")});const l=document.createElement("ul");c.forEach(e=>{const t=document.createElement("li"),o=document.createElement("a");o.href=`#${e.id}`,o.textContent=e.textContent||"",o.classList.add(`toc-${e.tagName.toLowerCase()}`),o.addEventListener("click",i=>{i.preventDefault();const r=document.getElementById(e.id);if(r){const u=r.getBoundingClientRect().top+window.pageYOffset-80;window.scrollTo({top:u,behavior:"smooth"}),history.pushState(null,"",`#${e.id}`)}}),t.appendChild(o),l.appendChild(t)}),n.appendChild(l);const d={root:null,rootMargin:"-60px 0px -80% 0px",threshold:0},h=new IntersectionObserver(e=>{e.forEach(t=>{if(t.isIntersecting){const o=t.target.id;n.querySelectorAll("a").forEach(r=>{r.classList.remove("active")});const i=n.querySelector(`a[href="#${o}"]`);i&&i.classList.add("active")}})},d);c.forEach(e=>h.observe(e)),setTimeout(()=>{if(window.location.hash){const t=n.querySelector(`a[href="${window.location.hash}"]`);if(t){n.querySelectorAll("a").forEach(o=>o.classList.remove("active")),t.classList.add("active");return}}let e="";for(const t of c)if(t.getBoundingClientRect().top<=150)e=t.id;else break;if(!e&&c.length>0&&window.scrollY<100&&(e=c[0].id),e){n.querySelectorAll("a").forEach(o=>o.classList.remove("active"));const t=n.querySelector(`a[href="#${e}"]`);t&&t.classList.add("active")}},100)});</script> </aside> <div class="toc-overlay" id="toc-overlay" data-astro-cid-iy4s3wf7></div> <section class="comments" data-astro-cid-iy4s3wf7> <div class="giscus-wrapper"> <script src="https://giscus.app/client.js" data-repo="jeremyjone/blog-comments" data-repo-id="R_kgDOQlVVGg" data-category="Announcements" data-category-id="DIC_kwDOQlVVGs4Czkir" data-mapping="title" data-term data-strict="0" data-reactions-enabled="1" data-emit-metadata="0" data-input-position="top" data-theme="preferred_color_scheme" data-lang="zh-CN" crossorigin="anonymous" async></script> <noscript>请启用 JavaScript 查看评论。</noscript> </div> </section> </article>  </main> <footer class="site-footer" data-astro-cid-x322jucz> <div class="container footer-content" data-astro-cid-x322jucz> <p data-astro-cid-x322jucz>
+&copy; 2025 <b data-astro-cid-x322jucz>JeremyJone.com</b> All rights reserved.
+</p> <div class="footer-links" data-astro-cid-x322jucz> <a href="https://github.com/jeremyjone" target="_blank" rel="noopener" data-astro-cid-x322jucz> GitHub </a> </div> </div> </footer> <script type="module" src="/_astro/BaseLayout.astro_astro_type_script_index_0_lang.D4h-rqQD.js"></script> <div id="search-modal" class="search-modal" style="display: none;" data-astro-cid-jwf5kjrd> <div class="search-overlay" data-astro-cid-jwf5kjrd></div> <div class="search-container" data-astro-cid-jwf5kjrd> <div class="search-header" data-astro-cid-jwf5kjrd> <input type="text" id="search-input-global" placeholder="搜索全站内容 (Cmd+K)..." autocomplete="off" data-astro-cid-jwf5kjrd> <button id="close-search" aria-label="Close search" data-astro-cid-jwf5kjrd>&times;</button> </div> <div id="search-results-global" class="search-results" data-astro-cid-jwf5kjrd> <div class="search-placeholder" data-astro-cid-jwf5kjrd>输入关键词开始搜索...</div> </div> </div> </div>  <script>
+    window.loadPagefind = async () => {
+        try {
+            return await import("/pagefind/pagefind.js");
+        } catch (e) {
+            console.warn("Failed to load pagefind:", e);
+            return null;
+        }
+    };
+</script> <script type="module" src="/_astro/SearchModal.astro_astro_type_script_index_0_lang.C4oQFeHw.js"></script> </body></html>  <script type="module">document.addEventListener("DOMContentLoaded",()=>{const c=document.getElementById("toc-toggle"),e=document.getElementById("floating-toc"),t=document.getElementById("toc-overlay");c?.addEventListener("click",()=>{e?.classList.add("active"),t?.classList.add("active")});const o=()=>{e?.classList.remove("active"),t?.classList.remove("active")};t?.addEventListener("click",o)});</script>

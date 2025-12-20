@@ -1,0 +1,1165 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="dark" data-astro-cid-x322jucz> <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Vue.js3 + Vite + TypeScript 从0搭建工程化项目模板</title><meta name="description" content="# 开始之前 万字长文，爆肝三天，一点一点把项目又搭了一遍，还找了很多文档，链接已经贴在相关内容中了，方便大家查看，同时也写了一些常见坑的填坑方式。创作不易，如果喜欢，请点个赞吧~ 同时，原文已经存放在我的文档中，地址 -> [这里](..."><link rel="canonical" href="https://www.jeremyjone.com//blog/vue-js3-vite-typescript-%E4%BB%8E0%E6%90%AD%E5%BB%BA%E5%B7%A5%E7%A8%8B%E5%8C%96%E9%A1%B9%E7%9B%AE%E6%A8%A1%E6%9D%BF/"><meta property="og:title" content="Vue.js3 + Vite + TypeScript 从0搭建工程化项目模板"><meta property="og:description" content="# 开始之前 万字长文，爆肝三天，一点一点把项目又搭了一遍，还找了很多文档，链接已经贴在相关内容中了，方便大家查看，同时也写了一些常见坑的填坑方式。创作不易，如果喜欢，请点个赞吧~ 同时，原文已经存放在我的文档中，地址 -> [这里](..."><meta property="og:type" content="article"><meta property="og:url" content="https://www.jeremyjone.com//blog/vue-js3-vite-typescript-%E4%BB%8E0%E6%90%AD%E5%BB%BA%E5%B7%A5%E7%A8%8B%E5%8C%96%E9%A1%B9%E7%9B%AE%E6%A8%A1%E6%9D%BF/"><meta property="og:site_name" content="JeremyJone's Blog"><meta property="og:locale" content="zh_CN"><link rel="icon" href="/favicon.ico"><link rel="stylesheet" href="/_astro/_year_.CFHYKZJi.css">
+<link rel="stylesheet" href="/_astro/_slug_.B1ShOm38.css"></head> <body data-astro-cid-x322jucz> <header class="site-header" data-astro-cid-x322jucz> <div class="container header-content" data-astro-cid-x322jucz> <a href="/" class="logo" data-astro-cid-x322jucz> <div class="logo-icon" data-astro-cid-x322jucz> <img src="/resources/avatar.png" alt="Logo" width="32" height="32" data-astro-cid-x322jucz> </div> <span class="logo-text" data-astro-cid-x322jucz>JeremyJone&#39;s Blog</span> </a> <div class="header-right" data-astro-cid-x322jucz> <nav class="nav" data-astro-cid-x322jucz> <a href="/" class="nav-link" data-astro-cid-x322jucz> 首页 </a><a href="/blog" class="nav-link active" data-astro-cid-x322jucz> 博客 </a><a href="/notes" class="nav-link" data-astro-cid-x322jucz> 笔记 </a> </nav> <button class="search-toggle" onclick="window.openSearchModal()" aria-label="搜索" data-astro-cid-x322jucz> <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-astro-cid-x322jucz><circle cx="11" cy="11" r="8" data-astro-cid-x322jucz></circle><line x1="21" y1="21" x2="16.65" y2="16.65" data-astro-cid-x322jucz></line></svg> <span class="search-placeholder" data-astro-cid-x322jucz>Ctrl+K 搜索...</span> </button> <button class="theme-toggle" id="theme-toggle" aria-label="切换主题" data-astro-cid-x322jucz> <svg class="sun-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" data-astro-cid-x322jucz> <circle cx="12" cy="12" r="5" data-astro-cid-x322jucz></circle> <line x1="12" y1="1" x2="12" y2="3" data-astro-cid-x322jucz></line> <line x1="12" y1="21" x2="12" y2="23" data-astro-cid-x322jucz></line> <line x1="4.22" y1="4.22" x2="5.64" y2="5.64" data-astro-cid-x322jucz></line> <line x1="18.36" y1="18.36" x2="19.78" y2="19.78" data-astro-cid-x322jucz></line> <line x1="1" y1="12" x2="3" y2="12" data-astro-cid-x322jucz></line> <line x1="21" y1="12" x2="23" y2="12" data-astro-cid-x322jucz></line> <line x1="4.22" y1="19.78" x2="5.64" y2="18.36" data-astro-cid-x322jucz></line> <line x1="18.36" y1="5.64" x2="19.78" y2="4.22" data-astro-cid-x322jucz></line> </svg> <svg class="moon-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" data-astro-cid-x322jucz> <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" data-astro-cid-x322jucz></path> </svg> </button> </div> </div> </header> <main class="container" data-astro-cid-x322jucz>  <article data-content-type="blog" data-pagefind-body data-pagefind-filter="type:blog" data-astro-cid-iy4s3wf7> <header class="article-header" data-astro-cid-iy4s3wf7> <h1 data-astro-cid-iy4s3wf7>Vue.js3 + Vite + TypeScript 从0搭建工程化项目模板</h1> <p class="meta" data-astro-cid-iy4s3wf7>
+发布于 2021-11-09 11:55:11 · 26 分钟 · 标签：<a href="/tags/TypeScript" class="tag" data-astro-cid-iy4s3wf7> TypeScript </a><a href="/tags/vite" class="tag" data-astro-cid-iy4s3wf7> vite </a><a href="/tags/vue" class="tag" data-astro-cid-iy4s3wf7> vue </a> </p> </header> <div class="article-content" data-astro-cid-iy4s3wf7> <h1 id="开始之前">开始之前</h1>
+<p>万字长文，爆肝三天，一点一点把项目又搭了一遍，还找了很多文档，链接已经贴在相关内容中了，方便大家查看，同时也写了一些常见坑的填坑方式。创作不易，如果喜欢，请点个赞吧~</p>
+<p>同时，原文已经存放在我的文档中，地址 -> <a href="https://jeremyjone.github.io/docs/roadmap/vue/template/setup-from-0.html">这里</a>。</p>
+<p><a href="/images/2021/image-1636429916591.png"><img src="/images/2021/image-1636429916591.png" alt=""></a></p>
+<h1 id="vuejs3--vite--typescript-从0搭建工程化项目模板">Vue.js3 + Vite + TypeScript 从0搭建工程化项目模板</h1>
+<p>为简化每次初始化项目，最好的方法就是搭建一个项目模板，这样每次初始化的时候直接拉取就好，不用再一个一个进行配置，省去了大量时间。</p>
+<p>该内容模板已经在 <a href="https://github.com/jeremyjone/vue3-ts-template">Github</a>，如果需要，可以直接下载使用。具体使用方法可以查看 <a href="https://github.com/jeremyjone/vue3-ts-template">Github</a> 或者 <a href="https://jeremyjone.github.io/docs/roadmap/vue/template/">模板文档</a></p>
+<h2 id="项目技术方案">项目技术方案</h2>
+<p>这套模板采用如下方案：</p>
+<ul>
+<li>搭建工具 <a href="https://cn.vitejs.dev/">vite 2.x</a></li>
+<li>项目框架 <a href="https://v3.cn.vuejs.org/">vue 3.x</a></li>
+<li>网络连接 <a href="https://axios-http.com/">axios 4.x</a></li>
+<li>路由工具 <a href="https://next.router.vuejs.org/zh/index.html">vue-router 4.x</a></li>
+<li>状态管理 <a href="https://next.vuex.vuejs.org/zh/guide">vuex 4.x</a></li>
+<li>编程语言 <a href="https://www.typescriptlang.org/">TypeScript</a></li>
+</ul>
+<p>同时预装了如下内容：</p>
+<ul>
+<li>CSS 编译[^1] <a href="https://www.sass.hk/docs/">sass</a> / <a href="https://less.bootcss.com/">less</a> / <a href="https://www.stylus-lang.cn/">stylus</a> [^1]: 使用时注意使用一个即可。请添加后自行删除 <code>package.json</code> 中 <code>devDependencies</code> 字段中的多余内容即可。</li>
+<li>单元测试 <a href="https://next.vue-test-utils.vuejs.org/guide/">vue-test-utils</a> + <a href="https://jestjs.io/">jest</a></li>
+<li>代码规范 <a href="https://eslint.org/">eslint</a> + <a href="https://prettier.io/">prettier</a></li>
+<li>提交规范 <a href="https://github.com/commitizen/cz-cli">commitizen</a> + <a href="https://commitlint.js.org/#/">commitlint</a> + <a href="https://github.com/conventional-changelog/standard-version">standard-version</a></li>
+<li>Git hooks <a href="https://typicode.github.io/husky">husky</a></li>
+</ul>
+<h2 id="项目结构">项目结构</h2>
+<p>最终的目录文件结构如下图：</p>
+<p><a href="/images/2021/template_dir.png"><img src="/images/2021/template_dir.png" alt=""></a></p>
+<blockquote>
+<p>注：目录结构仅供参考，可以根据自行需求进行修改。</p>
+</blockquote>
+<h2 id="环境检测">环境检测</h2>
+<p>因为采用了 <code>vite</code> 进行搭建，所以需要 <a href="https://nodejs.org/en/">Node.js</a> 版本 >= 12.0.0。</p>
+<p>查看版本的方法：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="sh"><code><span class="line"><span style="color:#B392F0">node</span><span style="color:#79B8FF"> -v</span></span></code></pre>
+<p><a href="/images/2021/check_node_version.png"><img src="/images/2021/check_node_version.png" alt=""></a></p>
+<h2 id="搭建项目结构">搭建项目结构</h2>
+<h3 id="初始化项目">初始化项目</h3>
+<p>首先使用 <code>vite</code> 创建项目。根据 <a href="https://cn.vitejs.dev/guide/#scaffolding-your-first-vite-project">vite 官方文档</a>，可以快速开始：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="sh"><code><span class="line"><span style="color:#B392F0">npm</span><span style="color:#9ECBFF"> init</span><span style="color:#9ECBFF"> vite@lastest</span></span>
+<span class="line"><span style="color:#B392F0">//</span><span style="color:#9ECBFF"> or</span></span>
+<span class="line"><span style="color:#B392F0">yarn</span><span style="color:#9ECBFF"> create</span><span style="color:#9ECBFF"> vite</span></span></code></pre>
+<p><a href="/images/2021/create_app.png"><img src="/images/2021/create_app.png" alt=""></a></p>
+<p>然后按照提示一步一步操作即可。</p>
+<p>1、填写名称</p>
+<p>这里填写 <code>vite-vue3-ts-template</code>，方便我们大致知道模板的架构。</p>
+<p>2、选择框架</p>
+<p>这里我们选择 <code>vue</code>，</p>
+<p><a href="/images/2021/create_app_select_framework.png"><img src="/images/2021/create_app_select_framework.png" alt=""></a></p>
+<p>然后选择 <code>vue-ts</code>。</p>
+<p><a href="/images/2021/create_app_select_ts.png"><img src="/images/2021/create_app_select_ts.png" alt=""></a></p>
+<p>这样，我们就成功初始化了一个项目。</p>
+<p><a href="/images/2021/create_app_finish.png"><img src="/images/2021/create_app_finish.png" alt=""></a></p>
+<p>此时根据提示，进入项目根目录，并执行 <code>yarn</code> 命令，会自动安装相应的内容。</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="sh"><code><span class="line"><span style="color:#79B8FF">cd</span><span style="color:#9ECBFF"> vite-vue3-ts-template</span></span>
+<span class="line"><span style="color:#B392F0">yarn</span></span></code></pre>
+<p>在执行之后，启动项目，会看到已经成功运行了。</p>
+<p><a href="/images/2021/app_first_run.png"><img src="/images/2021/app_first_run.png" alt=""></a></p>
+<h3 id="整理项目结构">整理项目结构</h3>
+<p>在 <code>src</code> 文件夹下，新建如下文件/文件夹：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="sh"><code><span class="line"><span style="color:#B392F0">└──</span><span style="color:#9ECBFF"> src/</span></span>
+<span class="line"><span style="color:#B392F0">    ├──</span><span style="color:#9ECBFF"> assets/</span><span style="color:#6A737D">             # 静态资源目录</span></span>
+<span class="line"><span style="color:#B392F0">    ├──</span><span style="color:#9ECBFF"> components/</span><span style="color:#6A737D">         # 公共组件目录</span></span>
+<span class="line"><span style="color:#B392F0">    ├──</span><span style="color:#9ECBFF"> pages/</span><span style="color:#6A737D">              # 页面组件目录</span></span>
+<span class="line"><span style="color:#B392F0">    ├──</span><span style="color:#9ECBFF"> router/</span><span style="color:#6A737D">             # 路由配置目录</span></span>
+<span class="line"><span style="color:#B392F0">    ├──</span><span style="color:#9ECBFF"> store/</span><span style="color:#6A737D">              # 状态管理配置目录</span></span>
+<span class="line"><span style="color:#B392F0">    ├──</span><span style="color:#9ECBFF"> typings/</span><span style="color:#6A737D">            # 类型文件目录</span></span>
+<span class="line"><span style="color:#B392F0">    ├──</span><span style="color:#9ECBFF"> styles/</span><span style="color:#6A737D">             # 通用 CSS 目录</span></span>
+<span class="line"><span style="color:#B392F0">    ├──</span><span style="color:#9ECBFF"> utils/</span><span style="color:#6A737D">              # 工具方法目录</span></span>
+<span class="line"><span style="color:#B392F0">    ├──</span><span style="color:#9ECBFF"> App.vue</span><span style="color:#6A737D">             # 根组件</span></span>
+<span class="line"><span style="color:#B392F0">    ├──</span><span style="color:#9ECBFF"> env.d.ts</span><span style="color:#6A737D">            # vue 环境声明，不同版本的 vite 文件可能会有所差异</span></span>
+<span class="line"><span style="color:#B392F0">    ├──</span><span style="color:#9ECBFF"> main.ts</span><span style="color:#6A737D">             # 主文件</span></span></code></pre>
+<p>我们之后的内容，基本都是基于上面结构进行的。</p>
+<h3 id="修改-vite-的配置文件">修改 vite 的配置文件</h3>
+<p><code>vite</code> 的配置在根目录下的 <code>vite.config.ts</code> 中，我们根据需要进行一些修改：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="ts"><code><span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> { defineConfig } </span><span style="color:#F97583">from</span><span style="color:#9ECBFF"> "vite"</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> vue </span><span style="color:#F97583">from</span><span style="color:#9ECBFF"> "@vitejs/plugin-vue"</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> { resolve } </span><span style="color:#F97583">from</span><span style="color:#9ECBFF"> "path"</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">// https://vitejs.dev/config/</span></span>
+<span class="line"><span style="color:#F97583">export</span><span style="color:#F97583"> default</span><span style="color:#B392F0"> defineConfig</span><span style="color:#E1E4E8">({</span></span>
+<span class="line"><span style="color:#E1E4E8">  plugins: [</span><span style="color:#B392F0">vue</span><span style="color:#E1E4E8">()],</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">  resolve: {</span></span>
+<span class="line"><span style="color:#6A737D">    // 配置 @ 映射到 src 目录</span></span>
+<span class="line"><span style="color:#E1E4E8">    alias: {</span></span>
+<span class="line"><span style="color:#9ECBFF">      "@"</span><span style="color:#E1E4E8">: </span><span style="color:#B392F0">resolve</span><span style="color:#E1E4E8">(__dirname, </span><span style="color:#9ECBFF">"src"</span><span style="color:#E1E4E8">)</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"><span style="color:#E1E4E8">  },</span></span>
+<span class="line"><span style="color:#E1E4E8">  base: </span><span style="color:#9ECBFF">"./"</span><span style="color:#E1E4E8">, </span><span style="color:#6A737D">// 打包路径</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">  server: {</span></span>
+<span class="line"><span style="color:#E1E4E8">    port: </span><span style="color:#79B8FF">3000</span><span style="color:#E1E4E8">, </span><span style="color:#6A737D">// 端口</span></span>
+<span class="line"><span style="color:#E1E4E8">    open: </span><span style="color:#79B8FF">true</span><span style="color:#E1E4E8">, </span><span style="color:#6A737D">// 启动打开浏览器</span></span>
+<span class="line"><span style="color:#E1E4E8">    cors: </span><span style="color:#79B8FF">true</span><span style="color:#E1E4E8">, </span><span style="color:#6A737D">// 跨域</span></span>
+<span class="line"><span style="color:#E1E4E8">    proxy: {</span></span>
+<span class="line"><span style="color:#9ECBFF">      "/api"</span><span style="color:#E1E4E8">: {</span></span>
+<span class="line"><span style="color:#E1E4E8">        target: </span><span style="color:#9ECBFF">"http://localhost:8080/api/"</span><span style="color:#E1E4E8">, </span><span style="color:#6A737D">// 目标地址</span></span>
+<span class="line"><span style="color:#E1E4E8">        changeOrigin: </span><span style="color:#79B8FF">true</span><span style="color:#E1E4E8">, </span><span style="color:#6A737D">// 修改源</span></span>
+<span class="line"><span style="color:#E1E4E8">        secure: </span><span style="color:#79B8FF">false</span><span style="color:#E1E4E8">, </span><span style="color:#6A737D">// ssl</span></span>
+<span class="line"><span style="color:#B392F0">        rewrite</span><span style="color:#E1E4E8">: </span><span style="color:#FFAB70">path</span><span style="color:#F97583"> =></span><span style="color:#E1E4E8"> path.</span><span style="color:#B392F0">replace</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">"/api/"</span><span style="color:#E1E4E8">, </span><span style="color:#9ECBFF">"/"</span><span style="color:#E1E4E8">)</span></span>
+<span class="line"><span style="color:#E1E4E8">      }</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"><span style="color:#E1E4E8">  }</span></span>
+<span class="line"><span style="color:#E1E4E8">});</span></span></code></pre>
+<p>::: tip 提示 在这里，当导入 <code>"path"</code> 时，可能会提示 <code>找不到模块的类型声明</code>：</p>
+<p><a href="/images/2021/cannot_find_path_module_declare.png"><img src="/images/2021/cannot_find_path_module_declare.png" alt=""></a></p>
+<p>此时按照提示直接安装 <code>@types/node</code> 即可。</p>
+<p>或者手动安装：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="sh"><code><span class="line"><span style="color:#B392F0">yarn</span><span style="color:#9ECBFF"> add</span><span style="color:#9ECBFF"> @types/node</span><span style="color:#79B8FF"> -D</span></span></code></pre>
+<p>:::</p>
+<h3 id="安装网络工具-axios">安装网络工具 axios</h3>
+<p>1、直接命令安装最新版即可：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="sh"><code><span class="line"><span style="color:#B392F0">yarn</span><span style="color:#9ECBFF"> add</span><span style="color:#9ECBFF"> axios</span></span></code></pre>
+<p>2、配置</p>
+<p>为了方便使用，我们需要进行简单配置。</p>
+<p>在 <code>utils</code> 文件夹下创建一个 <code>http</code> 的文件夹，并在其中创建一个 <code>index.ts</code> 文件，结构如下：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="sh"><code><span class="line"><span style="color:#B392F0">src</span></span>
+<span class="line"><span style="color:#B392F0">└──</span><span style="color:#9ECBFF"> utils/</span></span>
+<span class="line"><span style="color:#B392F0">    ├──</span><span style="color:#9ECBFF"> http/</span></span>
+<span class="line"><span style="color:#B392F0">        ├──</span><span style="color:#9ECBFF"> index.ts</span><span style="color:#6A737D">      # axios 配置文件</span></span></code></pre>
+<p>在文件中填入如下内容：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="ts"><code><span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> Axios </span><span style="color:#F97583">from</span><span style="color:#9ECBFF"> "axios"</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">const</span><span style="color:#79B8FF"> baseURL</span><span style="color:#F97583"> =</span><span style="color:#9ECBFF"> ""</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">const</span><span style="color:#79B8FF"> axios</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> Axios.</span><span style="color:#B392F0">create</span><span style="color:#E1E4E8">({</span></span>
+<span class="line"><span style="color:#E1E4E8">  baseURL, </span><span style="color:#6A737D">// 基础 url</span></span>
+<span class="line"><span style="color:#E1E4E8">  timeout: </span><span style="color:#79B8FF">10000</span><span style="color:#6A737D"> // 超时 10s</span></span>
+<span class="line"><span style="color:#E1E4E8">});</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">// 请求拦截器</span></span>
+<span class="line"><span style="color:#E1E4E8">axios.interceptors.request.</span><span style="color:#B392F0">use</span><span style="color:#E1E4E8">(</span></span>
+<span class="line"><span style="color:#FFAB70">  config</span><span style="color:#F97583"> =></span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#6A737D">    // TODO: 配置请求内容</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">    // config.headers.Authorization = `Bearer ${token}`;</span></span>
+<span class="line"><span style="color:#F97583">    return</span><span style="color:#E1E4E8"> config;</span></span>
+<span class="line"><span style="color:#E1E4E8">  },</span></span>
+<span class="line"><span style="color:#FFAB70">  error</span><span style="color:#F97583"> =></span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#F97583">    return</span><span style="color:#79B8FF"> Promise</span><span style="color:#E1E4E8">.</span><span style="color:#B392F0">reject</span><span style="color:#E1E4E8">(error);</span></span>
+<span class="line"><span style="color:#E1E4E8">  }</span></span>
+<span class="line"><span style="color:#E1E4E8">);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">// 响应拦截器</span></span>
+<span class="line"><span style="color:#E1E4E8">axios.interceptors.response.</span><span style="color:#B392F0">use</span><span style="color:#E1E4E8">(</span></span>
+<span class="line"><span style="color:#FFAB70">  response</span><span style="color:#F97583"> =></span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#6A737D">    // TODO: 配置对响应内容的处理</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">    return</span><span style="color:#E1E4E8"> response;</span></span>
+<span class="line"><span style="color:#E1E4E8">  },</span></span>
+<span class="line"><span style="color:#FFAB70">  error</span><span style="color:#F97583"> =></span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#F97583">    let</span><span style="color:#E1E4E8"> { response } </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> error;</span></span>
+<span class="line"><span style="color:#F97583">    if</span><span style="color:#E1E4E8"> (error </span><span style="color:#F97583">&#x26;&#x26;</span><span style="color:#E1E4E8"> error.response) {</span></span>
+<span class="line"><span style="color:#F97583">      switch</span><span style="color:#E1E4E8"> (error.response.status) {</span></span>
+<span class="line"><span style="color:#F97583">        case</span><span style="color:#79B8FF"> 400</span><span style="color:#E1E4E8">:</span></span>
+<span class="line"><span style="color:#E1E4E8">          response.message </span><span style="color:#F97583">=</span><span style="color:#9ECBFF"> "未知错误"</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">          break</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">        case</span><span style="color:#79B8FF"> 401</span><span style="color:#E1E4E8">:</span></span>
+<span class="line"><span style="color:#E1E4E8">          response.message </span><span style="color:#F97583">=</span><span style="color:#9ECBFF"> "未授权"</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">          break</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">        case</span><span style="color:#79B8FF"> 403</span><span style="color:#E1E4E8">:</span></span>
+<span class="line"><span style="color:#E1E4E8">          response.message </span><span style="color:#F97583">=</span><span style="color:#9ECBFF"> "权限不足"</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">          break</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">        case</span><span style="color:#79B8FF"> 404</span><span style="color:#E1E4E8">:</span></span>
+<span class="line"><span style="color:#E1E4E8">          response.message </span><span style="color:#F97583">=</span><span style="color:#9ECBFF"> "数据不存在"</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">          break</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">        case</span><span style="color:#79B8FF"> 405</span><span style="color:#E1E4E8">:</span></span>
+<span class="line"><span style="color:#E1E4E8">          response.message </span><span style="color:#F97583">=</span><span style="color:#9ECBFF"> "不允许的请求方法"</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">          break</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">        case</span><span style="color:#79B8FF"> 408</span><span style="color:#E1E4E8">:</span></span>
+<span class="line"><span style="color:#E1E4E8">          response.message </span><span style="color:#F97583">=</span><span style="color:#9ECBFF"> "请求超时"</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">          break</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">        case</span><span style="color:#79B8FF"> 415</span><span style="color:#E1E4E8">:</span></span>
+<span class="line"><span style="color:#E1E4E8">          response.message </span><span style="color:#F97583">=</span><span style="color:#9ECBFF"> "不支持的媒体类型"</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">          break</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">        case</span><span style="color:#79B8FF"> 500</span><span style="color:#E1E4E8">:</span></span>
+<span class="line"><span style="color:#E1E4E8">          response.message </span><span style="color:#F97583">=</span><span style="color:#9ECBFF"> "服务器出现异常"</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">          break</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">        case</span><span style="color:#79B8FF"> 501</span><span style="color:#E1E4E8">:</span></span>
+<span class="line"><span style="color:#E1E4E8">          response.message </span><span style="color:#F97583">=</span><span style="color:#9ECBFF"> "网络未实现"</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">          break</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">        case</span><span style="color:#79B8FF"> 502</span><span style="color:#E1E4E8">:</span></span>
+<span class="line"><span style="color:#E1E4E8">          response.message </span><span style="color:#F97583">=</span><span style="color:#9ECBFF"> "网络错误"</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">          break</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">        case</span><span style="color:#79B8FF"> 503</span><span style="color:#E1E4E8">:</span></span>
+<span class="line"><span style="color:#E1E4E8">          response.message </span><span style="color:#F97583">=</span><span style="color:#9ECBFF"> "服务不可用"</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">          break</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">        case</span><span style="color:#79B8FF"> 504</span><span style="color:#E1E4E8">:</span></span>
+<span class="line"><span style="color:#E1E4E8">          response.message </span><span style="color:#F97583">=</span><span style="color:#9ECBFF"> "网络超时"</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">          break</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">        case</span><span style="color:#79B8FF"> 505</span><span style="color:#E1E4E8">:</span></span>
+<span class="line"><span style="color:#E1E4E8">          response.message </span><span style="color:#F97583">=</span><span style="color:#9ECBFF"> "http版本不支持该请求"</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">          break</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">        default</span><span style="color:#E1E4E8">:</span></span>
+<span class="line"><span style="color:#E1E4E8">          response.message </span><span style="color:#F97583">=</span><span style="color:#9ECBFF"> `其他错误。错误代码：${</span><span style="color:#E1E4E8">error</span><span style="color:#9ECBFF">.</span><span style="color:#E1E4E8">response</span><span style="color:#9ECBFF">.</span><span style="color:#E1E4E8">status</span><span style="color:#9ECBFF">}`</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#E1E4E8">      }</span></span>
+<span class="line"><span style="color:#E1E4E8">    } </span><span style="color:#F97583">else</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#E1E4E8">      response </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> { message: </span><span style="color:#9ECBFF">"无法连接到服务器！"</span><span style="color:#E1E4E8"> };</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"><span style="color:#F97583">    return</span><span style="color:#79B8FF"> Promise</span><span style="color:#E1E4E8">.</span><span style="color:#B392F0">reject</span><span style="color:#E1E4E8">(response);</span></span>
+<span class="line"><span style="color:#E1E4E8">  }</span></span>
+<span class="line"><span style="color:#E1E4E8">);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">export</span><span style="color:#F97583"> default</span><span style="color:#E1E4E8"> axios;</span></span></code></pre>
+<p>3、封装使用方法</p>
+<p>为了方便使用，我们最好将其常用的 <code>get</code>、<code>post</code>、<code>put</code>、<code>delete</code> 进行二次封装。</p>
+<p>在 <code>index.ts</code> 同级目录下创建一个 <code>requests.ts</code> 文件，结构如下：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="sh"><code><span class="line"><span style="color:#B392F0">src</span></span>
+<span class="line"><span style="color:#B392F0">└──</span><span style="color:#9ECBFF"> utils/</span></span>
+<span class="line"><span style="color:#B392F0">    ├──</span><span style="color:#9ECBFF"> http/</span></span>
+<span class="line"><span style="color:#B392F0">        ├──</span><span style="color:#9ECBFF"> index.ts</span><span style="color:#6A737D">      # axios 配置文件</span></span>
+<span class="line"><span style="color:#B392F0">        ├──</span><span style="color:#9ECBFF"> requests.ts</span><span style="color:#6A737D">   # 方法封装</span></span></code></pre>
+<p>在文件中键入如下内容：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="ts"><code><span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> axios </span><span style="color:#F97583">from</span><span style="color:#9ECBFF"> "."</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">/**</span></span>
+<span class="line"><span style="color:#6A737D"> * </span><span style="color:#F97583">@param</span><span style="color:#E1E4E8">  promise</span></span>
+<span class="line"><span style="color:#6A737D"> * </span><span style="color:#F97583">@param</span><span style="color:#E1E4E8"> errorExt</span><span style="color:#6A737D"> - Additional Information you can pass to the err object</span></span>
+<span class="line"><span style="color:#6A737D"> */</span></span>
+<span class="line"><span style="color:#F97583">function</span><span style="color:#B392F0"> to</span><span style="color:#E1E4E8">&#x3C;</span><span style="color:#B392F0">T</span><span style="color:#E1E4E8">, </span><span style="color:#B392F0">U</span><span style="color:#F97583"> =</span><span style="color:#79B8FF"> unknown</span><span style="color:#E1E4E8">>(</span></span>
+<span class="line"><span style="color:#FFAB70">  promise</span><span style="color:#F97583">:</span><span style="color:#B392F0"> Promise</span><span style="color:#E1E4E8">&#x3C;</span><span style="color:#B392F0">T</span><span style="color:#E1E4E8">>,</span></span>
+<span class="line"><span style="color:#FFAB70">  errorExt</span><span style="color:#F97583">?:</span><span style="color:#79B8FF"> object</span></span>
+<span class="line"><span style="color:#E1E4E8">)</span><span style="color:#F97583">:</span><span style="color:#B392F0"> Promise</span><span style="color:#E1E4E8">&#x3C;[</span><span style="color:#B392F0">U</span><span style="color:#F97583"> |</span><span style="color:#79B8FF"> null</span><span style="color:#E1E4E8">, </span><span style="color:#B392F0">T</span><span style="color:#F97583"> |</span><span style="color:#79B8FF"> undefined</span><span style="color:#E1E4E8">]> {</span></span>
+<span class="line"><span style="color:#F97583">  return</span><span style="color:#E1E4E8"> promise</span></span>
+<span class="line"><span style="color:#E1E4E8">    .</span><span style="color:#B392F0">then</span><span style="color:#E1E4E8">&#x3C;[</span><span style="color:#79B8FF">null</span><span style="color:#E1E4E8">, </span><span style="color:#B392F0">T</span><span style="color:#E1E4E8">]>((</span><span style="color:#FFAB70">data</span><span style="color:#F97583">:</span><span style="color:#B392F0"> T</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">=></span><span style="color:#E1E4E8"> [</span><span style="color:#79B8FF">null</span><span style="color:#E1E4E8">, data])</span></span>
+<span class="line"><span style="color:#E1E4E8">    .</span><span style="color:#B392F0">catch</span><span style="color:#E1E4E8">&#x3C;[</span><span style="color:#B392F0">U</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">undefined</span><span style="color:#E1E4E8">]>(</span><span style="color:#FFAB70">err</span><span style="color:#F97583"> =></span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#F97583">      if</span><span style="color:#E1E4E8"> (errorExt) {</span></span>
+<span class="line"><span style="color:#E1E4E8">        Object.</span><span style="color:#B392F0">assign</span><span style="color:#E1E4E8">(err, errorExt);</span></span>
+<span class="line"><span style="color:#E1E4E8">      }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">      return</span><span style="color:#E1E4E8"> [err, </span><span style="color:#79B8FF">undefined</span><span style="color:#E1E4E8">];</span></span>
+<span class="line"><span style="color:#E1E4E8">    });</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">/**</span></span>
+<span class="line"><span style="color:#6A737D"> * GET methods</span></span>
+<span class="line"><span style="color:#6A737D"> * </span><span style="color:#F97583">@param</span><span style="color:#E1E4E8"> url</span></span>
+<span class="line"><span style="color:#6A737D"> * </span><span style="color:#F97583">@param</span><span style="color:#E1E4E8"> data</span></span>
+<span class="line"><span style="color:#6A737D"> * </span><span style="color:#F97583">@returns</span><span style="color:#B392F0"> {Promise}</span></span>
+<span class="line"><span style="color:#6A737D"> */</span></span>
+<span class="line"><span style="color:#F97583">export</span><span style="color:#F97583"> function</span><span style="color:#B392F0"> get</span><span style="color:#E1E4E8">&#x3C;</span><span style="color:#B392F0">T</span><span style="color:#E1E4E8">>(</span><span style="color:#FFAB70">url</span><span style="color:#F97583">:</span><span style="color:#79B8FF"> string</span><span style="color:#E1E4E8">, </span><span style="color:#FFAB70">params</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> {})</span><span style="color:#F97583">:</span><span style="color:#B392F0"> TO</span><span style="color:#E1E4E8">&#x3C;</span><span style="color:#B392F0">T</span><span style="color:#E1E4E8">> {</span></span>
+<span class="line"><span style="color:#F97583">  return</span><span style="color:#B392F0"> to</span><span style="color:#E1E4E8">(</span></span>
+<span class="line"><span style="color:#F97583">    new</span><span style="color:#79B8FF"> Promise</span><span style="color:#E1E4E8">((</span><span style="color:#FFAB70">resolve</span><span style="color:#E1E4E8">, </span><span style="color:#FFAB70">reject</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">=></span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#E1E4E8">      axios</span></span>
+<span class="line"><span style="color:#E1E4E8">        .</span><span style="color:#B392F0">get</span><span style="color:#E1E4E8">(url, {</span></span>
+<span class="line"><span style="color:#E1E4E8">          params</span></span>
+<span class="line"><span style="color:#E1E4E8">        })</span></span>
+<span class="line"><span style="color:#E1E4E8">        .</span><span style="color:#B392F0">then</span><span style="color:#E1E4E8">(</span><span style="color:#FFAB70">result</span><span style="color:#F97583"> =></span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#B392F0">          resolve</span><span style="color:#E1E4E8">(result.data </span><span style="color:#F97583">as</span><span style="color:#B392F0"> T</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#E1E4E8">        })</span></span>
+<span class="line"><span style="color:#E1E4E8">        .</span><span style="color:#B392F0">catch</span><span style="color:#E1E4E8">(</span><span style="color:#FFAB70">err</span><span style="color:#F97583"> =></span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#B392F0">          reject</span><span style="color:#E1E4E8">(err);</span></span>
+<span class="line"><span style="color:#E1E4E8">        });</span></span>
+<span class="line"><span style="color:#E1E4E8">    })</span></span>
+<span class="line"><span style="color:#E1E4E8">  );</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">/**</span></span>
+<span class="line"><span style="color:#6A737D"> * POST methods</span></span>
+<span class="line"><span style="color:#6A737D"> * </span><span style="color:#F97583">@param</span><span style="color:#E1E4E8"> url</span></span>
+<span class="line"><span style="color:#6A737D"> * </span><span style="color:#F97583">@param</span><span style="color:#E1E4E8"> data</span></span>
+<span class="line"><span style="color:#6A737D"> * </span><span style="color:#F97583">@returns</span><span style="color:#B392F0"> {Promise}</span></span>
+<span class="line"><span style="color:#6A737D"> */</span></span>
+<span class="line"><span style="color:#F97583">export</span><span style="color:#F97583"> function</span><span style="color:#B392F0"> post</span><span style="color:#E1E4E8">&#x3C;</span><span style="color:#B392F0">T</span><span style="color:#E1E4E8">>(</span><span style="color:#FFAB70">url</span><span style="color:#F97583">:</span><span style="color:#79B8FF"> string</span><span style="color:#E1E4E8">, </span><span style="color:#FFAB70">data</span><span style="color:#F97583">?:</span><span style="color:#B392F0"> Record</span><span style="color:#E1E4E8">&#x3C;</span><span style="color:#79B8FF">string</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">unknown</span><span style="color:#E1E4E8">>)</span><span style="color:#F97583">:</span><span style="color:#B392F0"> TO</span><span style="color:#E1E4E8">&#x3C;</span><span style="color:#B392F0">T</span><span style="color:#E1E4E8">> {</span></span>
+<span class="line"><span style="color:#F97583">  return</span><span style="color:#B392F0"> to</span><span style="color:#E1E4E8">(</span></span>
+<span class="line"><span style="color:#F97583">    new</span><span style="color:#79B8FF"> Promise</span><span style="color:#E1E4E8">((</span><span style="color:#FFAB70">resolve</span><span style="color:#E1E4E8">, </span><span style="color:#FFAB70">reject</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">=></span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#E1E4E8">      axios</span></span>
+<span class="line"><span style="color:#E1E4E8">        .</span><span style="color:#B392F0">post</span><span style="color:#E1E4E8">(url, data)</span></span>
+<span class="line"><span style="color:#E1E4E8">        .</span><span style="color:#B392F0">then</span><span style="color:#E1E4E8">(</span><span style="color:#FFAB70">result</span><span style="color:#F97583"> =></span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#B392F0">          resolve</span><span style="color:#E1E4E8">(result.data </span><span style="color:#F97583">as</span><span style="color:#B392F0"> T</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#E1E4E8">        })</span></span>
+<span class="line"><span style="color:#E1E4E8">        .</span><span style="color:#B392F0">catch</span><span style="color:#E1E4E8">(</span><span style="color:#FFAB70">err</span><span style="color:#F97583"> =></span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#B392F0">          reject</span><span style="color:#E1E4E8">(err);</span></span>
+<span class="line"><span style="color:#E1E4E8">        });</span></span>
+<span class="line"><span style="color:#E1E4E8">    })</span></span>
+<span class="line"><span style="color:#E1E4E8">  );</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">/**</span></span>
+<span class="line"><span style="color:#6A737D"> * PUT methods</span></span>
+<span class="line"><span style="color:#6A737D"> * </span><span style="color:#F97583">@param</span><span style="color:#E1E4E8"> url</span></span>
+<span class="line"><span style="color:#6A737D"> * </span><span style="color:#F97583">@param</span><span style="color:#E1E4E8"> data</span></span>
+<span class="line"><span style="color:#6A737D"> * </span><span style="color:#F97583">@returns</span><span style="color:#B392F0"> {Promise}</span></span>
+<span class="line"><span style="color:#6A737D"> */</span></span>
+<span class="line"><span style="color:#F97583">export</span><span style="color:#F97583"> function</span><span style="color:#B392F0"> put</span><span style="color:#E1E4E8">&#x3C;</span><span style="color:#B392F0">T</span><span style="color:#E1E4E8">>(</span><span style="color:#FFAB70">url</span><span style="color:#F97583">:</span><span style="color:#79B8FF"> string</span><span style="color:#E1E4E8">, </span><span style="color:#FFAB70">data</span><span style="color:#F97583">?:</span><span style="color:#B392F0"> Record</span><span style="color:#E1E4E8">&#x3C;</span><span style="color:#79B8FF">string</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">unknown</span><span style="color:#E1E4E8">>)</span><span style="color:#F97583">:</span><span style="color:#B392F0"> TO</span><span style="color:#E1E4E8">&#x3C;</span><span style="color:#B392F0">T</span><span style="color:#E1E4E8">> {</span></span>
+<span class="line"><span style="color:#F97583">  return</span><span style="color:#B392F0"> to</span><span style="color:#E1E4E8">(</span></span>
+<span class="line"><span style="color:#F97583">    new</span><span style="color:#79B8FF"> Promise</span><span style="color:#E1E4E8">((</span><span style="color:#FFAB70">resolve</span><span style="color:#E1E4E8">, </span><span style="color:#FFAB70">reject</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">=></span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#E1E4E8">      axios</span></span>
+<span class="line"><span style="color:#E1E4E8">        .</span><span style="color:#B392F0">put</span><span style="color:#E1E4E8">(url, data)</span></span>
+<span class="line"><span style="color:#E1E4E8">        .</span><span style="color:#B392F0">then</span><span style="color:#E1E4E8">(</span><span style="color:#FFAB70">result</span><span style="color:#F97583"> =></span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#B392F0">          resolve</span><span style="color:#E1E4E8">(result.data </span><span style="color:#F97583">as</span><span style="color:#B392F0"> T</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#E1E4E8">        })</span></span>
+<span class="line"><span style="color:#E1E4E8">        .</span><span style="color:#B392F0">catch</span><span style="color:#E1E4E8">(</span><span style="color:#FFAB70">err</span><span style="color:#F97583"> =></span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#B392F0">          reject</span><span style="color:#E1E4E8">(err);</span></span>
+<span class="line"><span style="color:#E1E4E8">        });</span></span>
+<span class="line"><span style="color:#E1E4E8">    })</span></span>
+<span class="line"><span style="color:#E1E4E8">  );</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">/**</span></span>
+<span class="line"><span style="color:#6A737D"> * DELETE methods</span></span>
+<span class="line"><span style="color:#6A737D"> * </span><span style="color:#F97583">@param</span><span style="color:#E1E4E8"> url</span></span>
+<span class="line"><span style="color:#6A737D"> * </span><span style="color:#F97583">@param</span><span style="color:#E1E4E8"> data</span></span>
+<span class="line"><span style="color:#6A737D"> * </span><span style="color:#F97583">@returns</span><span style="color:#B392F0"> {Promise}</span></span>
+<span class="line"><span style="color:#6A737D"> */</span></span>
+<span class="line"><span style="color:#F97583">export</span><span style="color:#F97583"> function</span><span style="color:#B392F0"> del</span><span style="color:#E1E4E8">&#x3C;</span><span style="color:#B392F0">T</span><span style="color:#E1E4E8">>(</span><span style="color:#FFAB70">url</span><span style="color:#F97583">:</span><span style="color:#79B8FF"> string</span><span style="color:#E1E4E8">, </span><span style="color:#FFAB70">data</span><span style="color:#F97583">?:</span><span style="color:#B392F0"> Record</span><span style="color:#E1E4E8">&#x3C;</span><span style="color:#79B8FF">string</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">unknown</span><span style="color:#E1E4E8">>)</span><span style="color:#F97583">:</span><span style="color:#B392F0"> TO</span><span style="color:#E1E4E8">&#x3C;</span><span style="color:#B392F0">T</span><span style="color:#E1E4E8">> {</span></span>
+<span class="line"><span style="color:#F97583">  return</span><span style="color:#B392F0"> to</span><span style="color:#E1E4E8">(</span></span>
+<span class="line"><span style="color:#F97583">    new</span><span style="color:#79B8FF"> Promise</span><span style="color:#E1E4E8">((</span><span style="color:#FFAB70">resolve</span><span style="color:#E1E4E8">, </span><span style="color:#FFAB70">reject</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">=></span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#E1E4E8">      axios</span></span>
+<span class="line"><span style="color:#E1E4E8">        .</span><span style="color:#B392F0">delete</span><span style="color:#E1E4E8">(url, data)</span></span>
+<span class="line"><span style="color:#E1E4E8">        .</span><span style="color:#B392F0">then</span><span style="color:#E1E4E8">(</span><span style="color:#FFAB70">result</span><span style="color:#F97583"> =></span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#B392F0">          resolve</span><span style="color:#E1E4E8">(result.data </span><span style="color:#F97583">as</span><span style="color:#B392F0"> T</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#E1E4E8">        })</span></span>
+<span class="line"><span style="color:#E1E4E8">        .</span><span style="color:#B392F0">catch</span><span style="color:#E1E4E8">(</span><span style="color:#FFAB70">err</span><span style="color:#F97583"> =></span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#B392F0">          reject</span><span style="color:#E1E4E8">(err);</span></span>
+<span class="line"><span style="color:#E1E4E8">        });</span></span>
+<span class="line"><span style="color:#E1E4E8">    })</span></span>
+<span class="line"><span style="color:#E1E4E8">  );</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<p>4、类型声明</p>
+<p>注意到我这里为了更好的使用 <code>Promise</code>，对其返回值进行了一个封装，但是其返回类型 <code>TO</code> 并没有定义，编译器同时会报错。我们在 <code>typings</code> 文件夹中创建一个 <code>http.d.ts</code> 的文件，并进行声明：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="ts"><code><span class="line"><span style="color:#F97583">declare</span><span style="color:#F97583"> type</span><span style="color:#B392F0"> TO</span><span style="color:#E1E4E8">&#x3C;</span><span style="color:#B392F0">T</span><span style="color:#F97583"> =</span><span style="color:#79B8FF"> unknown</span><span style="color:#E1E4E8">> </span><span style="color:#F97583">=</span><span style="color:#B392F0"> Promise</span><span style="color:#E1E4E8">&#x3C;[</span><span style="color:#79B8FF">unknown</span><span style="color:#E1E4E8">, </span><span style="color:#B392F0">T</span><span style="color:#F97583"> |</span><span style="color:#79B8FF"> undefined</span><span style="color:#E1E4E8">]>;</span></span></code></pre>
+<p>此时声明好了，同时错误也没有了。</p>
+<h3 id="安装路由工具-vue-router">安装路由工具 vue-router</h3>
+<p>1、安装 vue-router</p>
+<p>因为我们用的是 <code>vue3</code>，所以需要 <code>vue-router 4.x</code>，直接带版本安装即可：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="sh"><code><span class="line"><span style="color:#B392F0">yarn</span><span style="color:#9ECBFF"> add</span><span style="color:#9ECBFF"> vue-router@4</span></span></code></pre>
+<p>在 <code>router</code> 文件夹下创建 <code>index.ts</code> 文件，结构如下：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="sh"><code><span class="line"><span style="color:#B392F0">src</span></span>
+<span class="line"><span style="color:#B392F0">└──</span><span style="color:#9ECBFF"> router/</span></span>
+<span class="line"><span style="color:#B392F0">    ├──</span><span style="color:#9ECBFF"> index.ts</span><span style="color:#6A737D">      # vue-router 配置文件</span></span></code></pre>
+<p>并键入如下内容：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="ts"><code><span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> { createRouter, createWebHistory, RouteRecordRaw } </span><span style="color:#F97583">from</span><span style="color:#9ECBFF"> "vue-router"</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> Home </span><span style="color:#F97583">from</span><span style="color:#9ECBFF"> "@/pages/Home.vue"</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">const</span><span style="color:#79B8FF"> routes</span><span style="color:#F97583">:</span><span style="color:#B392F0"> Array</span><span style="color:#E1E4E8">&#x3C;</span><span style="color:#B392F0">RouteRecordRaw</span><span style="color:#E1E4E8">> </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> [</span></span>
+<span class="line"><span style="color:#E1E4E8">  {</span></span>
+<span class="line"><span style="color:#E1E4E8">    path: </span><span style="color:#9ECBFF">"/"</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">    name: </span><span style="color:#9ECBFF">"Home"</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">    component: Home</span></span>
+<span class="line"><span style="color:#E1E4E8">  },</span></span>
+<span class="line"><span style="color:#6A737D">  // TODO: 填写其他页面路由内容</span></span>
+<span class="line"><span style="color:#E1E4E8">  {</span></span>
+<span class="line"><span style="color:#6A737D">    // 匹配全部其他内容</span></span>
+<span class="line"><span style="color:#E1E4E8">    path: </span><span style="color:#9ECBFF">"/:pathMatch(.*)*"</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#B392F0">    component</span><span style="color:#E1E4E8">: () </span><span style="color:#F97583">=></span><span style="color:#B392F0"> import</span><span style="color:#E1E4E8">(</span><span style="color:#6A737D">/* webpackChunkName: "404" */</span><span style="color:#9ECBFF"> "@/pages/404.vue"</span><span style="color:#E1E4E8">)</span></span>
+<span class="line"><span style="color:#E1E4E8">  }</span></span>
+<span class="line"><span style="color:#E1E4E8">];</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">const</span><span style="color:#79B8FF"> router</span><span style="color:#F97583"> =</span><span style="color:#B392F0"> createRouter</span><span style="color:#E1E4E8">({</span></span>
+<span class="line"><span style="color:#E1E4E8">  history: </span><span style="color:#B392F0">createWebHistory</span><span style="color:#E1E4E8">(),</span></span>
+<span class="line"><span style="color:#E1E4E8">  routes</span></span>
+<span class="line"><span style="color:#E1E4E8">});</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">// 路由拦截器</span></span>
+<span class="line"><span style="color:#E1E4E8">router.</span><span style="color:#B392F0">beforeEach</span><span style="color:#E1E4E8">((</span><span style="color:#FFAB70">to</span><span style="color:#E1E4E8">, </span><span style="color:#FFAB70">from</span><span style="color:#E1E4E8">, </span><span style="color:#FFAB70">next</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">=></span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#6A737D">  // TODO: 自定义拦截内容</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#B392F0">  next</span><span style="color:#E1E4E8">();</span></span>
+<span class="line"><span style="color:#E1E4E8">});</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">export</span><span style="color:#F97583"> default</span><span style="color:#E1E4E8"> router;</span></span></code></pre>
+<p>2、挂载路由</p>
+<p>打开 <code>main.ts</code> 文件，并修改挂载路由：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="plaintext"><code><span class="line"><span>import { createApp } from "vue";</span></span>
+<span class="line"><span>import App from "./App.vue";</span></span>
+<span class="line"><span>import router from "./router/index";</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>createApp(App)</span></span>
+<span class="line"><span>  .use(router)</span></span>
+<span class="line"><span>  .mount("#app");</span></span></code></pre>
+<p>3、配置路由页面</p>
+<p>为了测试它的效果，我们需要添加几个简单页面，同时配置路由页面。</p>
+<p>打开 <code>App.vue</code> 文件，删除 <code>HelloWorld</code> 组件，并在模板中替换为 <code>&#x3C;router-view /></code> 组件：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="vue"><code><span class="line"><span style="color:#E1E4E8">&#x3C;</span><span style="color:#85E89D">script</span><span style="color:#B392F0"> setup</span><span style="color:#B392F0"> lang</span><span style="color:#E1E4E8">=</span><span style="color:#9ECBFF">"ts"</span><span style="color:#E1E4E8">>&#x3C;/</span><span style="color:#85E89D">script</span><span style="color:#E1E4E8">></span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">&#x3C;</span><span style="color:#85E89D">template</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#E1E4E8">  &#x3C;</span><span style="color:#85E89D">img</span><span style="color:#B392F0"> alt</span><span style="color:#E1E4E8">=</span><span style="color:#9ECBFF">"Vue logo"</span><span style="color:#B392F0"> src</span><span style="color:#E1E4E8">=</span><span style="color:#9ECBFF">"./assets/logo.png"</span><span style="color:#E1E4E8"> /></span></span>
+<span class="line"><span style="color:#E1E4E8">  &#x3C;</span><span style="color:#85E89D">router-view</span><span style="color:#E1E4E8"> /></span></span>
+<span class="line"><span style="color:#E1E4E8">&#x3C;/</span><span style="color:#85E89D">template</span><span style="color:#E1E4E8">></span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">&#x3C;</span><span style="color:#85E89D">style</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#B392F0">#app</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#79B8FF">  font-family</span><span style="color:#E1E4E8">: Avenir, </span><span style="color:#79B8FF">Helvetica</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">Arial</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">sans-serif</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#79B8FF">  -webkit-font-smoothing</span><span style="color:#E1E4E8">: </span><span style="color:#79B8FF">antialiased</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#79B8FF">  -moz-osx-font-smoothing</span><span style="color:#E1E4E8">: </span><span style="color:#79B8FF">grayscale</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#79B8FF">  text-align</span><span style="color:#E1E4E8">: </span><span style="color:#79B8FF">center</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#79B8FF">  color</span><span style="color:#E1E4E8">: </span><span style="color:#79B8FF">#2c3e50</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#79B8FF">  margin-top</span><span style="color:#E1E4E8">: </span><span style="color:#79B8FF">60</span><span style="color:#F97583">px</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"><span style="color:#E1E4E8">&#x3C;/</span><span style="color:#85E89D">style</span><span style="color:#E1E4E8">></span></span></code></pre>
+<p>然后在 <code>pages</code> 文件夹中创建两个文件，<code>Home.vue</code> 和 <code>404.vue</code>：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="sh"><code><span class="line"><span style="color:#B392F0">src</span></span>
+<span class="line"><span style="color:#B392F0">└──</span><span style="color:#9ECBFF"> pages/</span></span>
+<span class="line"><span style="color:#B392F0">    ├──</span><span style="color:#9ECBFF"> 404.vue</span></span>
+<span class="line"><span style="color:#B392F0">    ├──</span><span style="color:#9ECBFF"> Home.vue</span></span></code></pre>
+<p>内容分别如下：</p>
+<ul>
+<li>Home.vue</li>
+</ul>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="vue"><code><span class="line"><span style="color:#E1E4E8">&#x3C;</span><span style="color:#85E89D">template</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#E1E4E8">  &#x3C;</span><span style="color:#85E89D">h1</span><span style="color:#E1E4E8">>Home Page&#x3C;/</span><span style="color:#85E89D">h1</span><span style="color:#E1E4E8">></span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">  &#x3C;</span><span style="color:#85E89D">HelloWorld</span><span style="color:#B392F0"> msg</span><span style="color:#E1E4E8">=</span><span style="color:#9ECBFF">"Welcome to Vite + Vue3 + TypeScript Template"</span><span style="color:#E1E4E8"> /></span></span>
+<span class="line"><span style="color:#E1E4E8">&#x3C;/</span><span style="color:#85E89D">template</span><span style="color:#E1E4E8">></span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">&#x3C;</span><span style="color:#85E89D">script</span><span style="color:#B392F0"> lang</span><span style="color:#E1E4E8">=</span><span style="color:#9ECBFF">"ts"</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> { defineComponent } </span><span style="color:#F97583">from</span><span style="color:#9ECBFF"> "vue"</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> HelloWorld </span><span style="color:#F97583">from</span><span style="color:#9ECBFF"> "@/components/HelloWorld.vue"</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">export</span><span style="color:#F97583"> default</span><span style="color:#B392F0"> defineComponent</span><span style="color:#E1E4E8">({</span></span>
+<span class="line"><span style="color:#E1E4E8">  name: </span><span style="color:#9ECBFF">"HomePage"</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">  components: { HelloWorld },</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#B392F0">  setup</span><span style="color:#E1E4E8">() {}</span></span>
+<span class="line"><span style="color:#E1E4E8">});</span></span>
+<span class="line"><span style="color:#E1E4E8">&#x3C;/</span><span style="color:#85E89D">script</span><span style="color:#E1E4E8">></span></span></code></pre>
+<ul>
+<li>404.vue</li>
+</ul>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="vue"><code><span class="line"><span style="color:#E1E4E8">&#x3C;</span><span style="color:#85E89D">template</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#E1E4E8">  &#x3C;</span><span style="color:#85E89D">h1</span><span style="color:#E1E4E8">>页面不存在&#x3C;/</span><span style="color:#85E89D">h1</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#E1E4E8">  &#x3C;</span><span style="color:#85E89D">div</span><span style="color:#E1E4E8">>对不起，您访问的页面不存在。&#x3C;/</span><span style="color:#85E89D">div</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#E1E4E8">  &#x3C;</span><span style="color:#85E89D">button</span><span style="color:#E1E4E8"> @</span><span style="color:#B392F0">click</span><span style="color:#E1E4E8">=</span><span style="color:#9ECBFF">"</span><span style="color:#E1E4E8">onBack</span><span style="color:#9ECBFF">"</span><span style="color:#E1E4E8">>返回&#x3C;/</span><span style="color:#85E89D">button</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#E1E4E8">&#x3C;/</span><span style="color:#85E89D">template</span><span style="color:#E1E4E8">></span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">&#x3C;</span><span style="color:#85E89D">script</span><span style="color:#B392F0"> lang</span><span style="color:#E1E4E8">=</span><span style="color:#9ECBFF">"ts"</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> { defineComponent } </span><span style="color:#F97583">from</span><span style="color:#9ECBFF"> "vue"</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">export</span><span style="color:#F97583"> default</span><span style="color:#B392F0"> defineComponent</span><span style="color:#E1E4E8">({</span></span>
+<span class="line"><span style="color:#B392F0">  setup</span><span style="color:#E1E4E8">() {</span></span>
+<span class="line"><span style="color:#F97583">    return</span><span style="color:#E1E4E8"> {};</span></span>
+<span class="line"><span style="color:#E1E4E8">  },</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">  methods: {</span></span>
+<span class="line"><span style="color:#B392F0">    onBack</span><span style="color:#E1E4E8">() {</span></span>
+<span class="line"><span style="color:#79B8FF">      this</span><span style="color:#E1E4E8">.$router.</span><span style="color:#B392F0">go</span><span style="color:#E1E4E8">(</span><span style="color:#F97583">-</span><span style="color:#79B8FF">1</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"><span style="color:#E1E4E8">  }</span></span>
+<span class="line"><span style="color:#E1E4E8">});</span></span>
+<span class="line"><span style="color:#E1E4E8">&#x3C;/</span><span style="color:#85E89D">script</span><span style="color:#E1E4E8">></span></span></code></pre>
+<p>现在启动项目，会打开 Home 页，随意输入一个路由，它会匹配到 404 页面，点击 <code>返回</code> 按钮，又回到了 Home 页面。</p>
+<p>到这里，路由就配置完成。</p>
+<h3 id="安装状态管理工具-vuex">安装状态管理工具 vuex</h3>
+<p>1、安装 vuex</p>
+<p>与 <a href="#%E5%AE%89%E8%A3%85%E8%B7%AF%E7%94%B1%E5%B7%A5%E5%85%B7-vue-router">vue-router</a> 一样，因为我们用的是 <code>vue3</code>，所以需要 <code>vuex 4.x</code>，直接带版本安装即可：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="sh"><code><span class="line"><span style="color:#B392F0">yarn</span><span style="color:#9ECBFF"> add</span><span style="color:#9ECBFF"> vuex@next</span><span style="color:#79B8FF"> --save</span></span></code></pre>
+<p>在 <code>store</code> 文件夹下创建 <code>index.ts</code> 文件，结构如下：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="sh"><code><span class="line"><span style="color:#B392F0">src</span></span>
+<span class="line"><span style="color:#B392F0">└──</span><span style="color:#9ECBFF"> store/</span></span>
+<span class="line"><span style="color:#B392F0">    ├──</span><span style="color:#9ECBFF"> index.ts</span><span style="color:#6A737D">      # vuex 配置文件</span></span></code></pre>
+<p>并键入如下内容：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="ts"><code><span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> { createStore } </span><span style="color:#F97583">from</span><span style="color:#9ECBFF"> "vuex"</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">export</span><span style="color:#F97583"> default</span><span style="color:#B392F0"> createStore</span><span style="color:#E1E4E8">({</span></span>
+<span class="line"><span style="color:#E1E4E8">  state: {</span></span>
+<span class="line"><span style="color:#6A737D">    // TODO: 根据实际内容修改</span></span>
+<span class="line"><span style="color:#E1E4E8">    count: </span><span style="color:#79B8FF">0</span></span>
+<span class="line"><span style="color:#E1E4E8">  },</span></span>
+<span class="line"><span style="color:#E1E4E8">  mutations: {},</span></span>
+<span class="line"><span style="color:#E1E4E8">  actions: {},</span></span>
+<span class="line"><span style="color:#E1E4E8">  modules: {}</span></span>
+<span class="line"><span style="color:#E1E4E8">});</span></span></code></pre>
+<p>2、全局挂载 vuex</p>
+<p>打开 <code>main.ts</code> 文件，并添加 <code>vuex</code>，挂载到全局中：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="plaintext"><code><span class="line"><span>import { createApp } from "vue";</span></span>
+<span class="line"><span>import App from "./App.vue";</span></span>
+<span class="line"><span>import router from "./router/index";</span></span>
+<span class="line"><span>import store from "./store/index";</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>createApp(App)</span></span>
+<span class="line"><span>  .use(router)</span></span>
+<span class="line"><span>  .use(store)</span></span>
+<span class="line"><span>  .mount("#app");</span></span></code></pre>
+<p>3、在组件中使用 vuex</p>
+<p>此时可以使用。为了方便测试，我们在 <code>store/index.ts</code> 文件中添加修改方法：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="ts"><code><span class="line"><span style="color:#F97583">export</span><span style="color:#F97583"> default</span><span style="color:#B392F0"> createStore</span><span style="color:#E1E4E8">({</span></span>
+<span class="line"><span style="color:#E1E4E8">  state: {</span></span>
+<span class="line"><span style="color:#6A737D">    // TODO: 根据实际内容修改</span></span>
+<span class="line"><span style="color:#E1E4E8">    count: </span><span style="color:#79B8FF">0</span></span>
+<span class="line"><span style="color:#E1E4E8">  },</span></span>
+<span class="line"><span style="color:#E1E4E8">  mutations: {</span></span>
+<span class="line"><span style="color:#B392F0">    increment</span><span style="color:#E1E4E8">(</span><span style="color:#FFAB70">state</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#E1E4E8">      state.count</span><span style="color:#F97583">++</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"><span style="color:#E1E4E8">  },</span></span>
+<span class="line"><span style="color:#E1E4E8">  actions: {</span></span>
+<span class="line"><span style="color:#B392F0">    increment</span><span style="color:#E1E4E8">: ({ </span><span style="color:#FFAB70">commit</span><span style="color:#E1E4E8"> }) </span><span style="color:#F97583">=></span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#B392F0">      commit</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">"increment"</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"><span style="color:#E1E4E8">  },</span></span>
+<span class="line"><span style="color:#E1E4E8">  modules: {}</span></span>
+<span class="line"><span style="color:#E1E4E8">});</span></span></code></pre>
+<p>同时修改 <code>HelloWorld.vue</code> 中的内容，删除原来的 <code>count</code> 属性，使用 <code>store</code> 中的属性：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="vue"><code><span class="line"><span style="color:#E1E4E8">&#x3C;</span><span style="color:#85E89D">script</span><span style="color:#B392F0"> setup</span><span style="color:#B392F0"> lang</span><span style="color:#E1E4E8">=</span><span style="color:#9ECBFF">"ts"</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> { useStore } </span><span style="color:#F97583">from</span><span style="color:#9ECBFF"> "vuex"</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#B392F0">defineProps</span><span style="color:#E1E4E8">&#x3C;{ </span><span style="color:#FFAB70">msg</span><span style="color:#F97583">:</span><span style="color:#79B8FF"> string</span><span style="color:#E1E4E8"> }>();</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">// const count = ref(0)</span></span>
+<span class="line"><span style="color:#F97583">const</span><span style="color:#79B8FF"> store</span><span style="color:#F97583"> =</span><span style="color:#B392F0"> useStore</span><span style="color:#E1E4E8">();</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">function</span><span style="color:#B392F0"> increment</span><span style="color:#E1E4E8">() {</span></span>
+<span class="line"><span style="color:#E1E4E8">  store.</span><span style="color:#B392F0">dispatch</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">"increment"</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"><span style="color:#E1E4E8">&#x3C;/</span><span style="color:#85E89D">script</span><span style="color:#E1E4E8">></span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">&#x3C;</span><span style="color:#85E89D">template</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#E1E4E8">  &#x3C;</span><span style="color:#85E89D">h1</span><span style="color:#E1E4E8">>{{ msg }}&#x3C;/</span><span style="color:#85E89D">h1</span><span style="color:#E1E4E8">></span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">  &#x3C;!-- ... other code ... --></span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">  &#x3C;!-- &#x3C;button type="button" @click="count++">count is: {{ count }}&#x3C;/button> --></span></span>
+<span class="line"><span style="color:#E1E4E8">  &#x3C;</span><span style="color:#85E89D">button</span><span style="color:#B392F0"> type</span><span style="color:#E1E4E8">=</span><span style="color:#9ECBFF">"button"</span><span style="color:#E1E4E8"> @</span><span style="color:#B392F0">click</span><span style="color:#E1E4E8">=</span><span style="color:#9ECBFF">"</span><span style="color:#E1E4E8">increment</span><span style="color:#9ECBFF">"</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#E1E4E8">    count is: {{ store.state.count }}</span></span>
+<span class="line"><span style="color:#E1E4E8">  &#x3C;/</span><span style="color:#85E89D">button</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#E1E4E8">&#x3C;/</span><span style="color:#85E89D">template</span><span style="color:#E1E4E8">></span></span></code></pre>
+<p>运行项目测试，可以正常运行。</p>
+<p>4、类型声明</p>
+<p>此时虽然可以正常，但是我们可以看到，当我们使用 <code>store.state</code> 时，类型是任意的，我们看不到内部任何属性，当然就更看不到属性值的类型了，这显然不符合我们使用 TypeScript 的需求。</p>
+<p><a href="/images/2021/vuex_any_type.png"><img src="/images/2021/vuex_any_type.png" alt=""></a></p>
+<p>为解决这个问题，我们需要对 <code>store/index.ts</code> 进行一些改造。</p>
+<p>首先声明一个 <code>State</code> 的类型：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="ts"><code><span class="line"><span style="color:#F97583">export</span><span style="color:#F97583"> interface</span><span style="color:#B392F0"> State</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#6A737D">  // TODO: 根据 state 实际内容修改</span></span>
+<span class="line"><span style="color:#FFAB70">  count</span><span style="color:#F97583">:</span><span style="color:#79B8FF"> number</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<p>然后声明一个 <code>Key</code>，这里 <code>vue</code> 已经帮我们提供了一个解决方案：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="ts"><code><span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> { InjectionKey } </span><span style="color:#F97583">from</span><span style="color:#9ECBFF"> "vue"</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">export</span><span style="color:#F97583"> const</span><span style="color:#79B8FF"> key</span><span style="color:#F97583">:</span><span style="color:#B392F0"> InjectionKey</span><span style="color:#E1E4E8">&#x3C;</span><span style="color:#B392F0">Store</span><span style="color:#E1E4E8">&#x3C;</span><span style="color:#B392F0">State</span><span style="color:#E1E4E8">>> </span><span style="color:#F97583">=</span><span style="color:#B392F0"> Symbol</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">"store_key"</span><span style="color:#E1E4E8">); </span><span style="color:#6A737D">// key 内容随便填</span></span></code></pre>
+<p>现在我们可以通过传入对应的 <code>key</code> 来访问对应的 <code>State</code>。</p>
+<p>再次打开 <code>HelloWorld.vue</code>，现在我们把 <code>key</code> 值传入 <code>useStore</code> 中，即：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="ts"><code><span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> { useStore } </span><span style="color:#F97583">from</span><span style="color:#9ECBFF"> "vuex"</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> { key } </span><span style="color:#F97583">from</span><span style="color:#9ECBFF"> "../store"</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">const</span><span style="color:#79B8FF"> store</span><span style="color:#F97583"> =</span><span style="color:#B392F0"> useStore</span><span style="color:#E1E4E8">(key);</span></span></code></pre>
+<p>现在就可以看到类型已经可以正常显示了：</p>
+<p><a href="/images/2021/vuex_state_type.png"><img src="/images/2021/vuex_state_type.png" alt=""></a></p>
+<p>到目前，它好像看起来很正常了。但是随着页面变多，我们需要在每一个页面都传入 <code>key</code> 值，这是一个相当繁琐的事情，我们需要一个更简便的方法，有没有呢？答案是肯定的。</p>
+<p>5、改造类型声明，简化它</p>
+<p>在 <code>store/index.ts</code> 中简单封装一个 <code>useStore</code>：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="ts"><code><span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> { InjectionKey } </span><span style="color:#F97583">from</span><span style="color:#9ECBFF"> "vue"</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> { createStore, useStore </span><span style="color:#F97583">as</span><span style="color:#E1E4E8"> baseUseStore, Store } </span><span style="color:#F97583">from</span><span style="color:#9ECBFF"> "vuex"</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">export</span><span style="color:#F97583"> interface</span><span style="color:#B392F0"> State</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#6A737D">  // TODO: 根据 state 实际内容修改</span></span>
+<span class="line"><span style="color:#FFAB70">  count</span><span style="color:#F97583">:</span><span style="color:#79B8FF"> number</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">export</span><span style="color:#F97583"> const</span><span style="color:#79B8FF"> key</span><span style="color:#F97583">:</span><span style="color:#B392F0"> InjectionKey</span><span style="color:#E1E4E8">&#x3C;</span><span style="color:#B392F0">Store</span><span style="color:#E1E4E8">&#x3C;</span><span style="color:#B392F0">State</span><span style="color:#E1E4E8">>> </span><span style="color:#F97583">=</span><span style="color:#B392F0"> Symbol</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">"store_key"</span><span style="color:#E1E4E8">); </span><span style="color:#6A737D">// key 内容随便填</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">export</span><span style="color:#F97583"> default</span><span style="color:#B392F0"> createStore</span><span style="color:#E1E4E8">({</span></span>
+<span class="line"><span style="color:#E1E4E8">  state: {</span></span>
+<span class="line"><span style="color:#6A737D">    // TODO: 根据实际内容修改</span></span>
+<span class="line"><span style="color:#E1E4E8">    count: </span><span style="color:#79B8FF">0</span></span>
+<span class="line"><span style="color:#E1E4E8">  },</span></span>
+<span class="line"><span style="color:#E1E4E8">  mutations: {},</span></span>
+<span class="line"><span style="color:#E1E4E8">  actions: {},</span></span>
+<span class="line"><span style="color:#E1E4E8">  modules: {}</span></span>
+<span class="line"><span style="color:#E1E4E8">});</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">export</span><span style="color:#F97583"> function</span><span style="color:#B392F0"> useStore</span><span style="color:#E1E4E8">() {</span></span>
+<span class="line"><span style="color:#F97583">  return</span><span style="color:#B392F0"> baseUseStore</span><span style="color:#E1E4E8">(key);</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<p>然后在 <code>main.ts</code> 文件中挂载这个 <code>key</code> 值即可：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="ts"><code><span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> { createApp } </span><span style="color:#F97583">from</span><span style="color:#9ECBFF"> "vue"</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> App </span><span style="color:#F97583">from</span><span style="color:#9ECBFF"> "./App.vue"</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> router </span><span style="color:#F97583">from</span><span style="color:#9ECBFF"> "./router/index"</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> store, { key } </span><span style="color:#F97583">from</span><span style="color:#9ECBFF"> "./store/index"</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#B392F0">createApp</span><span style="color:#E1E4E8">(App)</span></span>
+<span class="line"><span style="color:#E1E4E8">  .</span><span style="color:#B392F0">use</span><span style="color:#E1E4E8">(router)</span></span>
+<span class="line"><span style="color:#E1E4E8">  .</span><span style="color:#B392F0">use</span><span style="color:#E1E4E8">(store, key)</span></span>
+<span class="line"><span style="color:#E1E4E8">  .</span><span style="color:#B392F0">mount</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">"#app"</span><span style="color:#E1E4E8">);</span></span></code></pre>
+<p>现在我们每次导入 <code>useStore</code> 时，不需要再从 <code>vuex</code> 中导入，而是通过 <code>@/store</code> 导入即可，使用上没有其他区别。</p>
+<p>这样，我们就将 <code>vuex</code> 完整的配置好了。</p>
+<h3 id="安装-css-预编译器">安装 CSS 预编译器</h3>
+<p>根据项目需要添加对应的预编译器：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="sh"><code><span class="line"><span style="color:#B392F0">yarn</span><span style="color:#9ECBFF"> add</span><span style="color:#9ECBFF"> stylus</span><span style="color:#79B8FF"> -D</span><span style="color:#6A737D">  # stylus</span></span>
+<span class="line"><span style="color:#B392F0">yarn</span><span style="color:#9ECBFF"> add</span><span style="color:#9ECBFF"> sass</span><span style="color:#79B8FF"> -D</span><span style="color:#6A737D">    # sass / scss</span></span>
+<span class="line"><span style="color:#B392F0">yarn</span><span style="color:#9ECBFF"> add</span><span style="color:#9ECBFF"> less</span><span style="color:#79B8FF"> -D</span><span style="color:#6A737D">    # less</span></span></code></pre>
+<p>这个根据需要对应安装即可。</p>
+<h2 id="安装-husky">安装 husky</h2>
+<p><code>husky</code> 是一个钩子工具，它可以帮助我们在一些特定时候触发一些特定的功能。比如我们在提交代码的时候，需要验证代码是否符合规则，这时候可以通过 <code>husky</code> 很方便的实现。</p>
+<blockquote>
+<p>因为后面的内容基本都需要用到 <code>husky</code>，所以我们首先把它添加到模板中。</p>
+</blockquote>
+<p>1、通过脚本直接安装并配置 <code>husky</code>：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="sh"><code><span class="line"><span style="color:#B392F0">npx</span><span style="color:#9ECBFF"> husky-init</span></span></code></pre>
+<p>它会在项目根目录下创建一个名为 <code>.husky</code> 的文件夹，同时在里面生成相关文件。</p>
+<p><a href="/images/2021/husky_added.png"><img src="/images/2021/husky_added.png" alt=""></a></p>
+<p>2、然后执行：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="sh"><code><span class="line"><span style="color:#B392F0">yarn</span></span>
+<span class="line"><span style="color:#6A737D"># or</span></span>
+<span class="line"><span style="color:#B392F0">npm</span><span style="color:#9ECBFF"> install</span></span></code></pre>
+<p>安装 <code>husky</code> 到项目中。</p>
+<p><code>husky</code> 包含很多钩子，我们常用的有 <code>pre-commit</code>、<code>pre-push</code> 等，从名字就很清晰的知道它应该在什么时候调用。我们在后面需要经常用到这些钩子还帮助我们规范项目。</p>
+<h3 id="husky-的错误解决方案">husky 的错误解决方案</h3>
+<ul>
+<li>Yarn on Windows</li>
+</ul>
+<p>对于 <code>Windows 10</code> 的用户，在使用 <code>yarn</code> 的时候，可能存在执行 <code>pre-push</code> 的时候出现 <code>stdin is not a tty</code> 的错误。</p>
+<p>这时需要在 <code>.husky</code> 文件夹下创建一个名为 <code>common.sh</code> 的文件，并键入如下内容：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="sh"><code><span class="line"><span style="color:#B392F0">command_exists</span><span style="color:#E1E4E8"> () {</span></span>
+<span class="line"><span style="color:#79B8FF">  command</span><span style="color:#79B8FF"> -v</span><span style="color:#9ECBFF"> "</span><span style="color:#79B8FF">$1</span><span style="color:#9ECBFF">"</span><span style="color:#F97583"> ></span><span style="color:#9ECBFF">/dev/null</span><span style="color:#F97583"> 2>&#x26;1</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D"># Workaround for Windows 10, Git Bash and Yarn</span></span>
+<span class="line"><span style="color:#F97583">if</span><span style="color:#B392F0"> command_exists</span><span style="color:#9ECBFF"> winpty</span><span style="color:#E1E4E8"> &#x26;&#x26; </span><span style="color:#79B8FF">test</span><span style="color:#79B8FF"> -t</span><span style="color:#79B8FF"> 1</span><span style="color:#E1E4E8">; </span><span style="color:#F97583">then</span></span>
+<span class="line"><span style="color:#79B8FF">  exec</span><span style="color:#F97583"> &#x3C;</span><span style="color:#9ECBFF"> /dev/tty</span></span>
+<span class="line"><span style="color:#F97583">fi</span></span></code></pre>
+<p>然后就可以在钩子文件中使用 <code>yarn</code> 命令了。<a href="https://typicode.github.io/husky/#/?id=yarn-on-windows">参考</a></p>
+<h2 id="添加代码规范">添加代码规范</h2>
+<p>随着代码越来越复杂，写代码的人越来越多，代码的格式可能会越来越眼花缭乱。为避免这些问题，代码规范就必不可少。</p>
+<p>良好的代码规范可以有效避免团队之间的代码风格差异化，提高审查代码效率等等。</p>
+<p>通常情况下，使用简单的 <a href="https://eslint.org/">eslint</a> + <a href="https://prettier.io/">prettier</a> 就可以保持大部分规范，同时 <code>vue</code> 也提供了对应的 <a href="https://eslint.vuejs.org/rules">vue-eslint</a>，也可以查看 <code>vue</code> 的 <a href="https://v3.cn.vuejs.org/style-guide">风格指南</a>。</p>
+<h3 id="配置-editorconfig">配置 EditorConfig</h3>
+<p><code>EditorConfig</code> 是编辑器风格配置，可以帮助多人或者多设备统一编辑器风格。</p>
+<p>::: tip 提示 <code>VS Code</code> 中需要插件 <code>EditorConfig for VS Code</code></p>
+<p><a href="/images/2021/vscode_editorconfig.png"><img src="/images/2021/vscode_editorconfig.png" alt=""></a></p>
+<p>在 <code>JetBrains</code> 系列如 <code>WebStorm</code> 中，则默认支持。 :::</p>
+<p>在根目录下创建一个名为 <code>.editorconfig</code> 的配置文件：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="plaintext"><code><span class="line"><span># Editor configuration, see http://editorconfig.org</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>root = true                        # 是否为根目录，支持不同层级单独配置</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>[*]                                # 适用所有文件</span></span>
+<span class="line"><span>indent_style = space               # tab | space</span></span>
+<span class="line"><span>indent_size = 4                    # 缩进</span></span>
+<span class="line"><span>end_of_line = crlf                 # lf | cr | crlf</span></span>
+<span class="line"><span>charset = utf-8                    # 字符集</span></span>
+<span class="line"><span>trim_trailing_whitespace = true    # 自动切掉首尾空格</span></span>
+<span class="line"><span>insert_final_newline = true        # 末尾空行</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>[*.{js,ts,vue,jsx,tsx}]            # 如何处理这些文件</span></span>
+<span class="line"><span>indent_size = 2                    # 缩进为 2</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>[*.md]                             # 如何处理这些文件</span></span>
+<span class="line"><span>trim_trailing_whitespace = false   # 不自动切掉首尾空格</span></span></code></pre>
+<h3 id="配置-prettier">配置 Prettier</h3>
+<p><code>Prettier</code> 是一个格式化文档工具，可以快速将我们的代码格式化为统一风格。</p>
+<p>::: tip 提示 <code>VS Code</code> 中需要插件 <code>Prettier - Code formatter</code></p>
+<p><a href="/images/2021/vscode_prettier_plugin.png"><img src="/images/2021/vscode_prettier_plugin.png" alt=""></a></p>
+<p>在 <code>JetBrains</code> 系列如 <code>WebStorm</code> 中，则默认支持。 :::</p>
+<p>1、安装 Prettier</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="sh"><code><span class="line"><span style="color:#B392F0">yarn</span><span style="color:#9ECBFF"> add</span><span style="color:#9ECBFF"> prettier</span><span style="color:#79B8FF"> -D</span></span></code></pre>
+<p>2、配置 Prettier</p>
+<p>在根目录下创建名为 <code>.prettierrc</code> 的文件，并键入如下内容：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="json"><code><span class="line"><span style="color:#E1E4E8">{</span></span>
+<span class="line"><span style="color:#79B8FF">  "useTabs"</span><span style="color:#E1E4E8">: </span><span style="color:#79B8FF">false</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#79B8FF">  "tabWidth"</span><span style="color:#E1E4E8">: </span><span style="color:#79B8FF">2</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#79B8FF">  "printWidth"</span><span style="color:#E1E4E8">: </span><span style="color:#79B8FF">80</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#79B8FF">  "singleQuote"</span><span style="color:#E1E4E8">: </span><span style="color:#79B8FF">true</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#79B8FF">  "trailingComma"</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">"none"</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#79B8FF">  "bracketSpacing"</span><span style="color:#E1E4E8">: </span><span style="color:#79B8FF">true</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#79B8FF">  "semi"</span><span style="color:#E1E4E8">: </span><span style="color:#79B8FF">true</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#79B8FF">  "arrowParens"</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">"avoid"</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<p>具体内容可以根据需要调整，具体可以参考 <a href="https://prettier.io/docs/en/options.html">官方文档</a>。</p>
+<p>3、使用 Prettier</p>
+<p>通过命令可以快速对指定文档进行格式化，也可以通过右键或者快捷方式(<code>Alt</code>+<code>Shift</code>+<code>F</code>)进行格式化。</p>
+<p>格式化命令：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="sh"><code><span class="line"><span style="color:#B392F0">npx</span><span style="color:#9ECBFF"> prettier</span><span style="color:#79B8FF"> --write</span><span style="color:#9ECBFF"> .</span><span style="color:#6A737D">    # . 表示所有文档</span></span></code></pre>
+<h3 id="配置-eslint">配置 ESLint</h3>
+<p><code>ESLint</code> 可以查找并提示代码中的问题，并支持自动修复（如果可以），通过严格的规范检查来控制代码质量。</p>
+<p>相信不少人都被 <code>ESLint</code> 虐过，初接触时，满屏的红色，那叫一个酸爽，但是随着使用的深入，它一定会给你带来质的变化。</p>
+<p>::: tip 提示 <code>VS Code</code> 中需要插件 <code>ESLint</code></p>
+<p><a href="/images/2021/vscode_eslint_plugin.png"><img src="/images/2021/vscode_eslint_plugin.png" alt=""></a></p>
+<p>在 <code>JetBrains</code> 系列如 <code>WebStorm</code> 中，则默认支持。 :::</p>
+<p>1、安装 ESLint</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="sh"><code><span class="line"><span style="color:#B392F0">yarn</span><span style="color:#9ECBFF"> add</span><span style="color:#9ECBFF"> eslint</span><span style="color:#79B8FF"> -D</span></span></code></pre>
+<p>2、配置 ESLint</p>
+<p>安装后，通过 <code>npx eslint --init</code> 可以快速创建配置：</p>
+<p>这里我们直接依次照图选择即可，并选择一个最流行的规则，即 <a href="https://github.com/airbnb/javascript">Airbnb</a>。</p>
+<p>最后，如果不选择使用 npm 安装，可以手动进行安装：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="sh"><code><span class="line"><span style="color:#B392F0">yarn</span><span style="color:#9ECBFF"> add</span><span style="color:#9ECBFF"> eslint-plugin-vue</span><span style="color:#9ECBFF"> eslint-config-airbnb-base</span><span style="color:#9ECBFF"> eslint-plugin-import</span><span style="color:#9ECBFF"> @typescript-eslint/eslint-plugin</span><span style="color:#9ECBFF"> @typescript-eslint/parser</span><span style="color:#79B8FF"> -D</span></span></code></pre>
+<p>执行完成，会在根目录下创建一个名为 <code>.eslintrc.js</code> 的配置文件：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="js"><code><span class="line"><span style="color:#79B8FF">module</span><span style="color:#E1E4E8">.</span><span style="color:#79B8FF">exports</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#E1E4E8">  env: {</span></span>
+<span class="line"><span style="color:#E1E4E8">    browser: </span><span style="color:#79B8FF">true</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">    es2021: </span><span style="color:#79B8FF">true</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">    node: </span><span style="color:#79B8FF">true</span></span>
+<span class="line"><span style="color:#E1E4E8">  },</span></span>
+<span class="line"><span style="color:#E1E4E8">  extends: [</span><span style="color:#9ECBFF">"plugin:vue/essential"</span><span style="color:#E1E4E8">, </span><span style="color:#9ECBFF">"airbnb-base"</span><span style="color:#E1E4E8">],</span></span>
+<span class="line"><span style="color:#E1E4E8">  parserOptions: {</span></span>
+<span class="line"><span style="color:#E1E4E8">    ecmaVersion: </span><span style="color:#79B8FF">13</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">    parser: </span><span style="color:#9ECBFF">"@typescript-eslint/parser"</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">    sourceType: </span><span style="color:#9ECBFF">"module"</span></span>
+<span class="line"><span style="color:#E1E4E8">  },</span></span>
+<span class="line"><span style="color:#E1E4E8">  plugins: [</span><span style="color:#9ECBFF">"vue"</span><span style="color:#E1E4E8">, </span><span style="color:#9ECBFF">"@typescript-eslint"</span><span style="color:#E1E4E8">],</span></span>
+<span class="line"><span style="color:#E1E4E8">  rules: {}</span></span>
+<span class="line"><span style="color:#E1E4E8">};</span></span></code></pre>
+<p>可以根据实际情况增删内容。</p>
+<p>然后添加针对 <code>vue</code> 的规则配置：</p>
+<ul>
+<li>添加高亮行内容到文件中：</li>
+</ul>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="plaintext"><code><span class="line"><span>module.exports = {</span></span>
+<span class="line"><span>  extends: [</span></span>
+<span class="line"><span>    "plugin:vue/essential",</span></span>
+<span class="line"><span>    "airbnb-base",</span></span>
+<span class="line"><span>    "plugin:vue/vue3-recommended" // 添加该行内容，针对 vue3 的规则。如果是 vue2，则是 plugin:vue/recommended</span></span>
+<span class="line"><span>  ]</span></span>
+<span class="line"><span>};</span></span></code></pre>
+<ul>
+<li>添加 parser</li>
+</ul>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="js"><code><span class="line"><span style="color:#79B8FF">module</span><span style="color:#E1E4E8">.</span><span style="color:#79B8FF">exports</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#E1E4E8">  parser: </span><span style="color:#9ECBFF">"vue-eslint-parser"</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">  parserOptions: {</span></span>
+<span class="line"><span style="color:#E1E4E8">    parser: </span><span style="color:#9ECBFF">"@typescript-eslint/parser"</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">    sourceType: </span><span style="color:#9ECBFF">"module"</span></span>
+<span class="line"><span style="color:#E1E4E8">  }</span></span>
+<span class="line"><span style="color:#E1E4E8">};</span></span></code></pre>
+<p>此时如果文件有错误，则会显示出来。<strong>如果没显示出来，重启编译器再试。</strong></p>
+<p>3、添加 TypeScript 支持</p>
+<p>对于 <code>airbnb-base</code> 来说，需要单独添加 <code>TypeScript</code> 的支持。</p>
+<p>安装插件：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="sh"><code><span class="line"><span style="color:#B392F0">yarn</span><span style="color:#9ECBFF"> add</span><span style="color:#9ECBFF"> eslint-config-airbnb-typescript</span><span style="color:#79B8FF"> -D</span></span></code></pre>
+<p>在 <code>.eslintrc.js</code> 中添加如下内容：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="js"><code><span class="line"><span style="color:#79B8FF">module</span><span style="color:#E1E4E8">.</span><span style="color:#79B8FF">exports</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#E1E4E8">  extends: [</span></span>
+<span class="line"><span style="color:#9ECBFF">    "plugin:vue/essential"</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#9ECBFF">    "airbnb-base"</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#9ECBFF">    "airbnb-typescript/base"</span><span style="color:#E1E4E8">, </span><span style="color:#6A737D">// 添加 typescript 支持</span></span>
+<span class="line"><span style="color:#9ECBFF">    "plugin:vue/vue3-recommended"</span></span>
+<span class="line"><span style="color:#E1E4E8">  ]</span></span>
+<span class="line"><span style="color:#E1E4E8">};</span></span></code></pre>
+<p>4、使用 ESLint</p>
+<p>在 <code>package.json</code> 文件的 <code>scripts</code> 字段中添加如下内容：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="json"><code><span class="line"><span style="color:#9ECBFF">"scripts"</span><span style="color:#E1E4E8">: {</span></span>
+<span class="line"><span style="color:#79B8FF">    "lint"</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">"eslint src/**/*.{js,vue,ts,jsx,tsx}"</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#79B8FF">    "lint:fix"</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">"eslint src/**/*.{js,vue,ts,jsx,tsx} --fix"</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#79B8FF">    "lint:create"</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">"eslint --init"</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<p>然后执行：<code>yarn lint:fix</code> 即可修复所有内容，如果此时报错，则需要手动修复。</p>
+<p>5、常用的 vue 规则</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="js"><code><span class="line"><span style="color:#79B8FF">module</span><span style="color:#E1E4E8">.</span><span style="color:#79B8FF">exports</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#E1E4E8">  rules: {</span></span>
+<span class="line"><span style="color:#9ECBFF">    "vue/no-multiple-template-root"</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">"off"</span><span style="color:#E1E4E8">, </span><span style="color:#6A737D">// 启用根层级多个标签</span></span>
+<span class="line"><span style="color:#9ECBFF">    "vue/script-setup-uses-vars"</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">"error"</span><span style="color:#6A737D"> // 标记 setup 中的变量为 used</span></span>
+<span class="line"><span style="color:#E1E4E8">  }</span></span>
+<span class="line"><span style="color:#E1E4E8">};</span></span></code></pre>
+<h3 id="在-husky-中集成样式规范">在 husky 中集成样式规范</h3>
+<p>我们不想每次都手动执行命令来修正代码样式，那么可以通过 <code>husky</code> 的钩子，在每次提交代码之前首先修改样式即可。</p>
+<p>只需要在 <code>.husky/pre-commit</code> 文件中修改命令：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="sh"><code><span class="line"><span style="color:#6A737D"># 如果是全局安装 eslint，则可以直接使用 eslint 命令</span></span>
+<span class="line"><span style="color:#B392F0">yarn</span><span style="color:#9ECBFF"> eslint</span><span style="color:#79B8FF"> --fix</span><span style="color:#9ECBFF"> ./src</span><span style="color:#79B8FF"> --ext</span><span style="color:#9ECBFF"> .js,.jsx,.ts,.tsx,.vue</span></span></code></pre>
+<p>在每次预提交的时候，都会触发该方法进行检查并修复内容，同时如果出现错误，不会继续。</p>
+<p>但是这样会有一个问题，每次都会检查所有文件，这在开发中并不常用，因为通常代码不是我们一个人写的，同时项目可能包含远古代码，修改格式会导致未知错误。这时候就需要仅仅针对当前我们修改过的文件进行检查即可。</p>
+<h3 id="使用-lint-staged">使用 lint-staged</h3>
+<p>想要做到上述要求，我们需要使用 <code>lint-staged</code> 工具帮助我们仅仅检查暂存区的内容。</p>
+<h4 id="安装-lint-staged">安装 <code>lint-staged</code></h4>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="sh"><code><span class="line"><span style="color:#B392F0">yarn</span><span style="color:#9ECBFF"> add</span><span style="color:#9ECBFF"> lint-staged</span><span style="color:#79B8FF"> -D</span></span></code></pre>
+<h4 id="配置-lint-staged">配置 lint-staged</h4>
+<p>在 <code>package.json</code> 中增加配置内容：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="json"><code><span class="line"><span style="color:#E1E4E8">{</span></span>
+<span class="line"><span style="color:#79B8FF">  "lint-staged"</span><span style="color:#E1E4E8">: {</span></span>
+<span class="line"><span style="color:#79B8FF">    "*.{vue,js,ts,jsx,tsx}"</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">"eslint --fix"</span></span>
+<span class="line"><span style="color:#E1E4E8">  }</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<p>::: tip 提示 有时候我们看到有些项目或者一些文章，在该字段中同时添加 <code>eslint --fix</code> 与 <code>git add</code>，也就是 <code>"*.{vue,js,ts,jsx,tsx}": ["eslint --fix", "git add"]</code>，这是 <code>lint-staged</code> v10 以下版本的写法，在 v10 及以上版本不再需要 <code>git add</code>。 :::</p>
+<p>这表示检查并修复暂存区中所有的 <code>vue</code>、<code>js</code>、<code>ts</code>、<code>jsx</code>、<code>tsx</code> 文件。</p>
+<h4 id="修改-husky-的钩子内容">修改 husky 的钩子内容</h4>
+<p>将之前在 <code>.husky/pre-commit</code> 中的指令修改为：<code>npx lint-staged</code>。</p>
+<p>这样就配置好了。当我们提交一个有错误的文件时，它会报错并拒绝提交：</p>
+<p><a href="/images/2021/husky_eslint_error.png"><img src="/images/2021/husky_eslint_error.png" alt=""></a></p>
+<h2 id="解决样式配置后出现的问题">解决样式配置后出现的问题</h2>
+<h3 id="解决-prettier-行尾换行符报错">解决 Prettier 行尾换行符报错</h3>
+<p>有时候当我们安装了 <code>Prettier</code> 之后，发现每一行的行尾都会报错，这是因为行尾换行符的冲突配置所致。此时我们需要在 <code>.eslintrc.js</code> 中的 <code>rules</code> 字段中添加一条规则：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="js"><code><span class="line"><span style="color:#B392F0">rules</span><span style="color:#E1E4E8">: {</span></span>
+<span class="line"><span style="color:#6A737D">    // 解决 prettier 行尾报错</span></span>
+<span class="line"><span style="color:#9ECBFF">    "prettier/prettier"</span><span style="color:#E1E4E8">: [</span><span style="color:#9ECBFF">"error"</span><span style="color:#E1E4E8">, { endOfLine: </span><span style="color:#9ECBFF">"auto"</span><span style="color:#E1E4E8"> }],</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<p>所有文件的结尾错误就可以解决。</p>
+<h3 id="解决-prettier-与-eslint-的冲突问题">解决 Prettier 与 ESLint 的冲突问题</h3>
+<p>这两个的规则有时存在冲突，一般情况下以 <code>Prettier</code> 为优先。</p>
+<p>安装插件：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="sh"><code><span class="line"><span style="color:#B392F0">yarn</span><span style="color:#9ECBFF"> add</span><span style="color:#9ECBFF"> eslint-plugin-prettier</span><span style="color:#9ECBFF"> eslint-config-prettier</span><span style="color:#79B8FF"> -D</span></span></code></pre>
+<p>在 <code>.eslintrc.js</code> 中添加：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="js"><code><span class="line"><span style="color:#B392F0">extends</span><span style="color:#E1E4E8">: [</span></span>
+<span class="line"><span style="color:#9ECBFF">  'plugin:vue/essential'</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#9ECBFF">  'airbnb-base'</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#9ECBFF">  "airbnb-typescript/base"</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#9ECBFF">  "plugin:vue/vue3-recommended"</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#9ECBFF">  'plugin:prettier/recommended'</span><span style="color:#6A737D"> // 添加解决冲突插件</span></span>
+<span class="line"><span style="color:#E1E4E8">],</span></span></code></pre>
+<h3 id="解决通过--引入的路径问题">解决通过 <code>@</code> 引入的路径问题</h3>
+<p>如果在使用了 <code>@</code> 字符的路径中出现该问题，则可以按如下方法解决。</p>
+<p><a href="/images/2021/import_no_unresolved.png"><img src="/images/2021/import_no_unresolved.png" alt=""></a></p>
+<p>安装工具：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="sh"><code><span class="line"><span style="color:#B392F0">yarn</span><span style="color:#9ECBFF"> add</span><span style="color:#9ECBFF"> eslint-import-resolver-alias</span><span style="color:#9ECBFF"> eslint-import-resolver-typescript</span><span style="color:#79B8FF"> -D</span></span></code></pre>
+<p>在 <code>tsconfig.json</code> 中添加：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="json"><code><span class="line"><span style="color:#E1E4E8">{</span></span>
+<span class="line"><span style="color:#79B8FF">  "compilerOptions"</span><span style="color:#E1E4E8">: {</span></span>
+<span class="line"><span style="color:#79B8FF">    "baseUrl"</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">"."</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#79B8FF">    "types"</span><span style="color:#E1E4E8">: [</span><span style="color:#9ECBFF">"vite/client"</span><span style="color:#E1E4E8">, </span><span style="color:#9ECBFF">"node"</span><span style="color:#E1E4E8">],</span></span>
+<span class="line"><span style="color:#79B8FF">    "paths"</span><span style="color:#E1E4E8">: {</span></span>
+<span class="line"><span style="color:#79B8FF">      "@/*"</span><span style="color:#E1E4E8">: [</span><span style="color:#9ECBFF">"./src/*"</span><span style="color:#E1E4E8">]</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"><span style="color:#E1E4E8">  }</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<p>在 <code>.eslintrc.js</code> 中添加：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="js"><code><span class="line"><span style="color:#79B8FF">module</span><span style="color:#E1E4E8">.</span><span style="color:#79B8FF">exports</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#E1E4E8">  parserOptions: {</span></span>
+<span class="line"><span style="color:#E1E4E8">    ecmaVersion: </span><span style="color:#79B8FF">12</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">    parser: </span><span style="color:#9ECBFF">"@typescript-eslint/parser"</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">    sourceType: </span><span style="color:#9ECBFF">"module"</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">    project: [</span><span style="color:#9ECBFF">"./tsconfig.json"</span><span style="color:#E1E4E8">]</span></span>
+<span class="line"><span style="color:#E1E4E8">  },</span></span>
+<span class="line"><span style="color:#E1E4E8">  settings: {</span></span>
+<span class="line"><span style="color:#9ECBFF">    "import/parsers"</span><span style="color:#E1E4E8">: {</span></span>
+<span class="line"><span style="color:#9ECBFF">      "@typescript-eslint/parser"</span><span style="color:#E1E4E8">: [</span><span style="color:#9ECBFF">".ts"</span><span style="color:#E1E4E8">, </span><span style="color:#9ECBFF">".tsx"</span><span style="color:#E1E4E8">]</span></span>
+<span class="line"><span style="color:#E1E4E8">    },</span></span>
+<span class="line"><span style="color:#9ECBFF">    "import/resolver"</span><span style="color:#E1E4E8">: {</span></span>
+<span class="line"><span style="color:#E1E4E8">      alias: {</span></span>
+<span class="line"><span style="color:#E1E4E8">        map: [[</span><span style="color:#9ECBFF">"@"</span><span style="color:#E1E4E8">, </span><span style="color:#9ECBFF">"./src"</span><span style="color:#E1E4E8">]],</span></span>
+<span class="line"><span style="color:#E1E4E8">        extensions: [</span><span style="color:#9ECBFF">".js"</span><span style="color:#E1E4E8">, </span><span style="color:#9ECBFF">".jsx"</span><span style="color:#E1E4E8">]</span></span>
+<span class="line"><span style="color:#E1E4E8">      },</span></span>
+<span class="line"><span style="color:#E1E4E8">      typescript: {</span></span>
+<span class="line"><span style="color:#E1E4E8">        alwaysTryTypes: </span><span style="color:#79B8FF">true</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">        project: </span><span style="color:#9ECBFF">"./tsconfig.json"</span></span>
+<span class="line"><span style="color:#E1E4E8">      }</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"><span style="color:#E1E4E8">  }</span></span>
+<span class="line"><span style="color:#E1E4E8">};</span></span></code></pre>
+<h3 id="尝试保存文件时自动修复错误">尝试保存文件时自动修复错误</h3>
+<p>在当前项目的根目录下创建文件夹 <code>.vscode</code>，在其中新建文件 <code>settings.json</code> 并键入：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="json"><code><span class="line"><span style="color:#E1E4E8">{</span></span>
+<span class="line"><span style="color:#79B8FF">  "editor.codeActionsOnSave"</span><span style="color:#E1E4E8">: {</span></span>
+<span class="line"><span style="color:#79B8FF">    "source.fixAll.eslint"</span><span style="color:#E1E4E8">: </span><span style="color:#79B8FF">true</span></span>
+<span class="line"><span style="color:#E1E4E8">  }</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<p>如果需要在全局生效，则进入设置页面（<code>文件</code> -> <code>首选项</code> -> <code>设置</code>），搜索 <code>editor.codeActionsOnSave</code>，打开 <code>settings.json</code> 配置上述内容即可。</p>
+<h3 id="修复所有-vue-文件第一行首字符处出现-parsing-error-parseroptionsproject-的错误">修复所有 vue 文件第一行首字符处出现 <code>Parsing error: "parserOptions.project"...</code> 的错误</h3>
+<p><a href="/images/2021/error_parseroptions_project.png"><img src="/images/2021/error_parseroptions_project.png" alt=""></a></p>
+<p>如遇到上面问题，配置 <code>.eslintrc.js</code> 中的 <code>extraFileExtensions</code> 字段即可：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="js"><code><span class="line"><span style="color:#79B8FF">module</span><span style="color:#E1E4E8">.</span><span style="color:#79B8FF">exports</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#E1E4E8">  parserOptions: {</span></span>
+<span class="line"><span style="color:#E1E4E8">    extraFileExtensions: [</span><span style="color:#9ECBFF">".vue"</span><span style="color:#E1E4E8">]</span></span>
+<span class="line"><span style="color:#E1E4E8">  }</span></span>
+<span class="line"><span style="color:#E1E4E8">};</span></span></code></pre>
+<blockquote>
+<p>如果配置后未生效，重启编辑器即可。</p>
+</blockquote>
+<h3 id="修复-defineprops-等未定义的错误">修复 defineProps 等未定义的错误</h3>
+<p>使用 <code>&#x3C;script setup></code> 标签时，常用的 <code>defineProps</code> 等属于全局宏定义，不需要二次引入，但是可能会导致规则报错，需要在 <code>.eslintrc.js</code> 中添加配置：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="js"><code><span class="line"><span style="color:#79B8FF">module</span><span style="color:#E1E4E8">.</span><span style="color:#79B8FF">exports</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#E1E4E8">  globals: {</span></span>
+<span class="line"><span style="color:#E1E4E8">    defineProps: </span><span style="color:#9ECBFF">"readonly"</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">    defineEmits: </span><span style="color:#9ECBFF">"readonly"</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">    defineExpose: </span><span style="color:#9ECBFF">"readonly"</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">    withDefaults: </span><span style="color:#9ECBFF">"readonly"</span></span>
+<span class="line"><span style="color:#E1E4E8">  }</span></span>
+<span class="line"><span style="color:#E1E4E8">};</span></span></code></pre>
+<h3 id="修复-pluginviteeslint-的相关错误">修复 [plugin:vite:eslint] 的相关错误</h3>
+<p>有时候浏览器会报 <code>[plugin:vite:eslint]</code> 的相关错误，此时可以通过安装 <code>vite-plugin-eslint</code> 并配置来解决。</p>
+<ul>
+<li>安装：</li>
+</ul>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="sh"><code><span class="line"><span style="color:#B392F0">yarn</span><span style="color:#9ECBFF"> add</span><span style="color:#9ECBFF"> vite-plugin-eslint</span><span style="color:#79B8FF"> -D</span></span></code></pre>
+<ul>
+<li>配置</li>
+</ul>
+<p>在 <code>vite.config.ts</code> 文件中配置：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="ts"><code><span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> eslintPlugin </span><span style="color:#F97583">from</span><span style="color:#9ECBFF"> "vite-plugin-eslint"</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">export</span><span style="color:#F97583"> default</span><span style="color:#B392F0"> defineConfig</span><span style="color:#E1E4E8">({</span></span>
+<span class="line"><span style="color:#E1E4E8">  plugins: [</span><span style="color:#B392F0">vue</span><span style="color:#E1E4E8">(), </span><span style="color:#B392F0">eslintPlugin</span><span style="color:#E1E4E8">()]</span></span>
+<span class="line"><span style="color:#E1E4E8">});</span></span></code></pre>
+<p>如果你需要指定文件，可以添加参数：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="ts"><code><span class="line"><span style="color:#B392F0">plugins</span><span style="color:#E1E4E8">: [</span></span>
+<span class="line"><span style="color:#B392F0">  vue</span><span style="color:#E1E4E8">(),</span></span>
+<span class="line"><span style="color:#B392F0">  eslintPlugin</span><span style="color:#E1E4E8">({</span></span>
+<span class="line"><span style="color:#E1E4E8">    include: [</span><span style="color:#9ECBFF">"src/**/*.js"</span><span style="color:#E1E4E8">, </span><span style="color:#9ECBFF">"src/**/*.vue"</span><span style="color:#E1E4E8">, </span><span style="color:#9ECBFF">"src/**/*.ts"</span><span style="color:#E1E4E8">]</span></span>
+<span class="line"><span style="color:#E1E4E8">  })</span></span>
+<span class="line"><span style="color:#E1E4E8">];</span></span></code></pre>
+<p>此时如果还报错，可以重启编译器和服务器尝试，通常会好。</p>
+<h2 id="添加提交规范">添加提交规范</h2>
+<p><code>GIT</code> 的具体提交规范，可以参考 <a href="/document/git/#%E6%8F%90%E4%BA%A4%E8%A7%84%E8%8C%83">提交规范</a>，这里只涉及规范工具的使用。</p>
+<h3 id="集成-commitizen">集成 Commitizen</h3>
+<p><a href="https://github.com/commitizen/cz-cli">Commitizen</a> 是一个撰写规范提交信息的工具。</p>
+<p>我们可以全局安装该工具：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="sh"><code><span class="line"><span style="color:#B392F0">npm</span><span style="color:#9ECBFF"> install</span><span style="color:#79B8FF"> -g</span><span style="color:#9ECBFF"> commitizen</span></span></code></pre>
+<p>::: tip 提示 <code>Commitizen</code> 最好是全局安装，否则不可以在全局使用 <code>git cz</code> 命令，而是需要在项目中使用 <code>yarn git-cz</code> :::</p>
+<p>然后在项目中初始化：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="sh"><code><span class="line"><span style="color:#B392F0">npx</span><span style="color:#9ECBFF"> commitizen</span><span style="color:#9ECBFF"> init</span><span style="color:#9ECBFF"> cz-conventional-changelog</span><span style="color:#79B8FF"> --save-dev</span><span style="color:#79B8FF"> --save-exact</span></span></code></pre>
+<p>这样就可以通过命令行直接使用 <code>Commitizen</code> 了。以后但凡使用 <code>git commit</code> 命令，一律改为使用 <code>git cz</code> 即可，根据 cli 的提示一步步选择就可以生成符合规范的提交消息了。</p>
+<p><a href="/images/2021/cz_select_type.png"><img src="/images/2021/cz_select_type.png" alt=""></a></p>
+<blockquote>
+<p>注意：要先使用 <code>git add</code> 添加要提交的文件。</p>
+</blockquote>
+<p>按照提示依次填写完成，就可以成功提交了。</p>
+<p><a href="/images/2021/cz_commit_finish.png"><img src="/images/2021/cz_commit_finish.png" alt=""></a></p>
+<h3 id="自定义提交配置">自定义提交配置</h3>
+<p>因为提交的提示都是英文的，也没有配置内容，这时我们就需要 <code>cz-customizable</code> 来个性化。</p>
+<p>在项目中初始化它：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="sh"><code><span class="line"><span style="color:#B392F0">npx</span><span style="color:#9ECBFF"> commitizen</span><span style="color:#9ECBFF"> init</span><span style="color:#9ECBFF"> cz-customizable</span><span style="color:#79B8FF"> --save-dev</span><span style="color:#79B8FF"> --save-exact</span><span style="color:#79B8FF"> --force</span></span></code></pre>
+<p>注意上面的 <code>--force</code> 参数，因为之前已经初始化了 <code>cz-conventional-changelog</code>，我们在这里需要覆盖它。</p>
+<p>执行完成后，我们在根目录下创建一个 <code>.cz-config.js</code> 的文件，然后根据 <a href="https://github.com/leoforfree/cz-customizable/blob/master/cz-config-EXAMPLE.js">官方文档</a> 进行配置即可。</p>
+<p>可以参考下面的中文示例进行配置：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="js"><code><span class="line"><span style="color:#6A737D">// 官方示例：https://github.com/leoforfree/cz-customizable/blob/master/cz-config-EXAMPLE.js</span></span>
+<span class="line"><span style="color:#79B8FF">module</span><span style="color:#E1E4E8">.</span><span style="color:#79B8FF">exports</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#E1E4E8">  types: [</span></span>
+<span class="line"><span style="color:#E1E4E8">    { value: </span><span style="color:#9ECBFF">"feat"</span><span style="color:#E1E4E8">, name: </span><span style="color:#9ECBFF">"feat:</span><span style="color:#79B8FF">\t\t</span><span style="color:#9ECBFF">新增功能"</span><span style="color:#E1E4E8"> },</span></span>
+<span class="line"><span style="color:#E1E4E8">    { value: </span><span style="color:#9ECBFF">"fix"</span><span style="color:#E1E4E8">, name: </span><span style="color:#9ECBFF">"fix:</span><span style="color:#79B8FF">\t\t</span><span style="color:#9ECBFF">修复 bug"</span><span style="color:#E1E4E8"> },</span></span>
+<span class="line"><span style="color:#E1E4E8">    { value: </span><span style="color:#9ECBFF">"docs"</span><span style="color:#E1E4E8">, name: </span><span style="color:#9ECBFF">"docs:</span><span style="color:#79B8FF">\t\t</span><span style="color:#9ECBFF">文档变更"</span><span style="color:#E1E4E8"> },</span></span>
+<span class="line"><span style="color:#E1E4E8">    {</span></span>
+<span class="line"><span style="color:#E1E4E8">      value: </span><span style="color:#9ECBFF">"style"</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">      name: </span><span style="color:#9ECBFF">"style:</span><span style="color:#79B8FF">\t</span><span style="color:#9ECBFF">代码格式（不影响功能，例如空格、分号等格式修正）"</span></span>
+<span class="line"><span style="color:#E1E4E8">    },</span></span>
+<span class="line"><span style="color:#E1E4E8">    {</span></span>
+<span class="line"><span style="color:#E1E4E8">      value: </span><span style="color:#9ECBFF">"refactor"</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">      name: </span><span style="color:#9ECBFF">"refactor:</span><span style="color:#79B8FF">\t</span><span style="color:#9ECBFF">代码重构（不包括 bug 修复、功能新增）"</span></span>
+<span class="line"><span style="color:#E1E4E8">    },</span></span>
+<span class="line"><span style="color:#E1E4E8">    { value: </span><span style="color:#9ECBFF">"perf"</span><span style="color:#E1E4E8">, name: </span><span style="color:#9ECBFF">"perf:</span><span style="color:#79B8FF">\t\t</span><span style="color:#9ECBFF">性能优化"</span><span style="color:#E1E4E8"> },</span></span>
+<span class="line"><span style="color:#E1E4E8">    { value: </span><span style="color:#9ECBFF">"test"</span><span style="color:#E1E4E8">, name: </span><span style="color:#9ECBFF">"test:</span><span style="color:#79B8FF">\t\t</span><span style="color:#9ECBFF">添加、修改测试用例"</span><span style="color:#E1E4E8"> },</span></span>
+<span class="line"><span style="color:#E1E4E8">    {</span></span>
+<span class="line"><span style="color:#E1E4E8">      value: </span><span style="color:#9ECBFF">"build"</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">      name:</span></span>
+<span class="line"><span style="color:#9ECBFF">        "build:</span><span style="color:#79B8FF">\t</span><span style="color:#9ECBFF">构建流程、外部依赖变更（如升级 npm 包、修改 webpack 配置等）"</span></span>
+<span class="line"><span style="color:#E1E4E8">    },</span></span>
+<span class="line"><span style="color:#E1E4E8">    { value: </span><span style="color:#9ECBFF">"ci"</span><span style="color:#E1E4E8">, name: </span><span style="color:#9ECBFF">"ci:</span><span style="color:#79B8FF">\t\t</span><span style="color:#9ECBFF">修改 CI 配置、脚本"</span><span style="color:#E1E4E8"> },</span></span>
+<span class="line"><span style="color:#E1E4E8">    {</span></span>
+<span class="line"><span style="color:#E1E4E8">      value: </span><span style="color:#9ECBFF">"chore"</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">      name: </span><span style="color:#9ECBFF">"chore:</span><span style="color:#79B8FF">\t</span><span style="color:#9ECBFF">对构建过程或辅助工具和库的更改（不影响源文件、测试用例）"</span></span>
+<span class="line"><span style="color:#E1E4E8">    },</span></span>
+<span class="line"><span style="color:#E1E4E8">    { value: </span><span style="color:#9ECBFF">"revert"</span><span style="color:#E1E4E8">, name: </span><span style="color:#9ECBFF">"revert:</span><span style="color:#79B8FF">\t</span><span style="color:#9ECBFF">回滚 commit"</span><span style="color:#E1E4E8"> }</span></span>
+<span class="line"><span style="color:#E1E4E8">  ],</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">  scopes: [</span></span>
+<span class="line"><span style="color:#E1E4E8">    { value: </span><span style="color:#9ECBFF">"components"</span><span style="color:#E1E4E8">, name: </span><span style="color:#9ECBFF">"components:</span><span style="color:#79B8FF">\t</span><span style="color:#9ECBFF">组件相关"</span><span style="color:#E1E4E8"> },</span></span>
+<span class="line"><span style="color:#E1E4E8">    { value: </span><span style="color:#9ECBFF">"composables"</span><span style="color:#E1E4E8">, name: </span><span style="color:#9ECBFF">"composables:</span><span style="color:#79B8FF">\t</span><span style="color:#9ECBFF">composables相关"</span><span style="color:#E1E4E8"> },</span></span>
+<span class="line"><span style="color:#E1E4E8">    { value: </span><span style="color:#9ECBFF">"utils"</span><span style="color:#E1E4E8">, name: </span><span style="color:#9ECBFF">"utils:</span><span style="color:#79B8FF">\t</span><span style="color:#9ECBFF">utils相关"</span><span style="color:#E1E4E8"> },</span></span>
+<span class="line"><span style="color:#E1E4E8">    { value: </span><span style="color:#9ECBFF">"styles"</span><span style="color:#E1E4E8">, name: </span><span style="color:#9ECBFF">"styles:</span><span style="color:#79B8FF">\t</span><span style="color:#9ECBFF">样式相关"</span><span style="color:#E1E4E8"> },</span></span>
+<span class="line"><span style="color:#E1E4E8">    { value: </span><span style="color:#9ECBFF">"dependencies"</span><span style="color:#E1E4E8">, name: </span><span style="color:#9ECBFF">"dependencies:</span><span style="color:#79B8FF">\t</span><span style="color:#9ECBFF">依赖相关"</span><span style="color:#E1E4E8"> },</span></span>
+<span class="line"><span style="color:#E1E4E8">    { value: </span><span style="color:#9ECBFF">"other"</span><span style="color:#E1E4E8">, name: </span><span style="color:#9ECBFF">"other:</span><span style="color:#79B8FF">\t</span><span style="color:#9ECBFF">其他"</span><span style="color:#E1E4E8"> },</span></span>
+<span class="line"><span style="color:#6A737D">    // 选中自定义可以自行填写，或者开启 allowCustomScopes 亦可</span></span>
+<span class="line"><span style="color:#E1E4E8">    { value: </span><span style="color:#9ECBFF">"custom"</span><span style="color:#E1E4E8">, name: </span><span style="color:#9ECBFF">"custom:</span><span style="color:#79B8FF">\t</span><span style="color:#9ECBFF">自定义"</span><span style="color:#E1E4E8"> }</span></span>
+<span class="line"><span style="color:#E1E4E8">  ],</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">  // allowCustomScopes: true,</span></span>
+<span class="line"><span style="color:#6A737D">  // allowTicketNumber: false,</span></span>
+<span class="line"><span style="color:#6A737D">  // isTicketNumberRequired: false,</span></span>
+<span class="line"><span style="color:#6A737D">  // ticketNumberPrefix: 'TICKET-',</span></span>
+<span class="line"><span style="color:#6A737D">  // ticketNumberRegExp: '\\d{1,5}',</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">  scopeOverrides: {</span></span>
+<span class="line"><span style="color:#E1E4E8">    fix: [</span></span>
+<span class="line"><span style="color:#E1E4E8">      { name: </span><span style="color:#9ECBFF">"merge"</span><span style="color:#E1E4E8"> },</span></span>
+<span class="line"><span style="color:#E1E4E8">      { name: </span><span style="color:#9ECBFF">"style"</span><span style="color:#E1E4E8"> },</span></span>
+<span class="line"><span style="color:#E1E4E8">      { name: </span><span style="color:#9ECBFF">"e2eTest"</span><span style="color:#E1E4E8"> },</span></span>
+<span class="line"><span style="color:#E1E4E8">      { name: </span><span style="color:#9ECBFF">"unitTest"</span><span style="color:#E1E4E8"> }</span></span>
+<span class="line"><span style="color:#E1E4E8">    ]</span></span>
+<span class="line"><span style="color:#E1E4E8">  },</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">  messages: {</span></span>
+<span class="line"><span style="color:#E1E4E8">    type: </span><span style="color:#9ECBFF">"确保本次提交遵循 Angular 规范！</span><span style="color:#79B8FF">\n</span><span style="color:#9ECBFF">选择你要提交的类型："</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">    scope: </span><span style="color:#9ECBFF">"</span><span style="color:#79B8FF">\n</span><span style="color:#9ECBFF">选择一个 scope（可选）："</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#6A737D">    // 选择 scope: custom 时会出下面的提示</span></span>
+<span class="line"><span style="color:#E1E4E8">    customScope: </span><span style="color:#9ECBFF">"请输入自定义的 scope："</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">    subject: </span><span style="color:#9ECBFF">"填写本次提交的主题：</span><span style="color:#79B8FF">\n</span><span style="color:#9ECBFF">"</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">    body: </span><span style="color:#9ECBFF">'填写详细的变更描述（可选）。使用 "|" 换行：</span><span style="color:#79B8FF">\n</span><span style="color:#9ECBFF">'</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">    breaking: </span><span style="color:#9ECBFF">"是否存在非兼容性的变更。如果有，请填写：</span><span style="color:#79B8FF">\n</span><span style="color:#9ECBFF">"</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">    footer: </span><span style="color:#9ECBFF">"请填写相应的 ISSUES（可选）。 例如: #1, #2：</span><span style="color:#79B8FF">\n</span><span style="color:#9ECBFF">"</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">    confirmCommit: </span><span style="color:#9ECBFF">"确认提交？"</span></span>
+<span class="line"><span style="color:#E1E4E8">  },</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">  // 设置只有 type 选择了 feat 或 fix，才询问 breaking message</span></span>
+<span class="line"><span style="color:#E1E4E8">  allowBreakingChanges: [</span><span style="color:#9ECBFF">"feat"</span><span style="color:#E1E4E8">, </span><span style="color:#9ECBFF">"fix"</span><span style="color:#E1E4E8">],</span></span>
+<span class="line"><span style="color:#6A737D">  // askForBreakingChangeFirst : true,</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">  // 跳过要询问的步骤</span></span>
+<span class="line"><span style="color:#6A737D">  // skipQuestions: ["body", "footer"],</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">  // subject 限制长度</span></span>
+<span class="line"><span style="color:#E1E4E8">  subjectLimit: </span><span style="color:#79B8FF">100</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">  breaklineChar: </span><span style="color:#9ECBFF">"|"</span><span style="color:#6A737D"> // 支持 body 和 footer</span></span>
+<span class="line"><span style="color:#6A737D">  // footerPrefix : 'ISSUES CLOSED:'</span></span>
+<span class="line"><span style="color:#E1E4E8">};</span></span></code></pre>
+<p>此时再运行 <code>git cz</code> 的时候，就可以看到中文了。</p>
+<p><a href="/images/2021/cz_select_type_cn.png"><img src="/images/2021/cz_select_type_cn.png" alt=""></a></p>
+<p>现在的提示，对于我这种英语学渣来说，就友好了很多~ :D</p>
+<h3 id="集成-commitlint">集成 commitlint</h3>
+<p>尽管我们添加了 <code>Commitizen</code>，但是我们仍然可以通过 <code>git commit</code> 填写任意内容进行提交。为了保证规范，我们需要添加一个限制，就是 <code>如果没有按照规范填写提交信息，就不可以提交成功</code>，此时就需要通过 <code>commitlint</code> 来实现。</p>
+<h4 id="安装-commitlint">安装 commitlint</h4>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="sh"><code><span class="line"><span style="color:#B392F0">yarn</span><span style="color:#9ECBFF"> add</span><span style="color:#9ECBFF"> @commitlint/config-conventional</span><span style="color:#9ECBFF"> @commitlint/cli</span><span style="color:#79B8FF"> -D</span></span></code></pre>
+<h4 id="配置-commitlint">配置 commitlint</h4>
+<p>在根目录下创建一个名为 <code>commitlint.config.js</code> 的文件，并填写如下内容：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="js"><code><span class="line"><span style="color:#79B8FF">module</span><span style="color:#E1E4E8">.</span><span style="color:#79B8FF">exports</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#E1E4E8">  extends: [</span><span style="color:#9ECBFF">"@commitlint/config-conventional"</span><span style="color:#E1E4E8">]</span></span>
+<span class="line"><span style="color:#E1E4E8">};</span></span></code></pre>
+<p>配置好 <code>commitlint</code>，我们使用 <code>husky</code> 的钩子方法来验证提交信息。执行下面命令：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="sh"><code><span class="line"><span style="color:#B392F0">npx</span><span style="color:#9ECBFF"> husky</span><span style="color:#9ECBFF"> add</span><span style="color:#9ECBFF"> .husky/commit-msg</span><span style="color:#9ECBFF"> "npx --no-install commitlint --edit </span><span style="color:#79B8FF">$1</span><span style="color:#9ECBFF">"</span></span></code></pre>
+<blockquote>
+<p>如果没有安装 husky，请参考前面的内容 <a href="#%E5%AE%89%E8%A3%85-husky">安装 husky</a>。</p>
+</blockquote>
+<p>我们现在再来试一下通过 <code>git commit</code> 命令随意填写提交信息：</p>
+<p><a href="/images/2021/husky_commitlint_error.png"><img src="/images/2021/husky_commitlint_error.png" alt=""></a></p>
+<p>可以看到已经不能正常提交了，同时给出错误的提示。</p>
+<p>当我们按照要求填写内容的时候，它就可以正常提交了：</p>
+<p><a href="/images/2021/husky_commitlint_ok.png"><img src="/images/2021/husky_commitlint_ok.png" alt=""></a></p>
+<p>毕竟我们手写很可能出错，所以还是尽量选用 <code>git cz</code> 命令来按照提示选择最为稳妥。</p>
+<h3 id="集成-standard-version">集成 Standard-Version</h3>
+<p>生成 <code>CHANGELOG.md</code> 的方式有很多种，我们选择 <a href="https://github.com/conventional-changelog/standard-version">standard-version</a> 来帮助我们实现。</p>
+<p>它是一个命令行工具，可以通过我们提交的内容，自动更新项目的版本，同时添加 <code>git tag</code> 和更新 <code>CHANGELOG.md</code>，很方便。</p>
+<p>我们的版本号分为 <code>major</code>、<code>minor</code>、<code>patch</code>，分别是<code>主版本</code>、<code>次版本</code>、<code>补丁版本</code>，它们分别对应项目的重构级别、新功能的增加、bug 的修复等。这在 <a href="https://semver.org/">语义化版本</a> 中有详细的解释。</p>
+<h4 id="安装-standard-version">安装 Standard-Version</h4>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="sh"><code><span class="line"><span style="color:#B392F0">npm</span><span style="color:#9ECBFF"> install</span><span style="color:#79B8FF"> -g</span><span style="color:#9ECBFF"> standard-version</span><span style="color:#6A737D">  # 推荐全局安装</span></span>
+<span class="line"><span style="color:#6A737D"># or</span></span>
+<span class="line"><span style="color:#B392F0">yarn</span><span style="color:#9ECBFF"> add</span><span style="color:#9ECBFF"> standard-version</span><span style="color:#79B8FF"> -D</span></span></code></pre>
+<h4 id="配置-standard-version">配置 Standard-Version</h4>
+<p>在 <code>package.json</code> 中添加如下脚本：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="json"><code><span class="line"><span style="color:#E1E4E8">{</span></span>
+<span class="line"><span style="color:#79B8FF">  "scripts"</span><span style="color:#E1E4E8">: {</span></span>
+<span class="line"><span style="color:#79B8FF">    "release"</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">"standard-version"</span></span>
+<span class="line"><span style="color:#E1E4E8">  }</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<h4 id="使用-standard-version">使用 Standard-Version</h4>
+<h5 id="1自动生成版本号">1、自动生成版本号</h5>
+<p>默认情况下，工具会根据规则自动生成版本号：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="sh"><code><span class="line"><span style="color:#6A737D"># 全局安装执行</span></span>
+<span class="line"><span style="color:#B392F0">standard-version</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D"># 脚本运行则执行</span></span>
+<span class="line"><span style="color:#B392F0">yarn</span><span style="color:#9ECBFF"> release</span></span>
+<span class="line"><span style="color:#6A737D"># or</span></span>
+<span class="line"><span style="color:#B392F0">npm</span><span style="color:#9ECBFF"> run</span><span style="color:#9ECBFF"> release</span></span></code></pre>
+<ul>
+<li>如果提交的 <code>type</code> 是 <code>feat</code>，则 <code>minor</code> +1</li>
+<li>如果提交的 <code>type</code> 是 <code>fix</code>，则 <code>patch</code> +1</li>
+</ul>
+<h5 id="2指定版本号">2、指定版本号</h5>
+<p>我们可以通过参数，指定我们需要的版本号，但是这仍然需要遵循 <a href="https://semver.org/">语义化版本</a>。</p>
+<p>假如当前版本号为 <code>v1.0.0</code>：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="sh"><code><span class="line"><span style="color:#B392F0">standard-version</span><span style="color:#79B8FF"> -r</span><span style="color:#9ECBFF"> major</span><span style="color:#6A737D">            # 2.0.0</span></span>
+<span class="line"><span style="color:#B392F0">standard-version</span><span style="color:#79B8FF"> -r</span><span style="color:#9ECBFF"> 2.0.0-t</span><span style="color:#6A737D">          # 2.0.0-t</span></span>
+<span class="line"><span style="color:#B392F0">standard-version</span><span style="color:#79B8FF"> -r</span><span style="color:#9ECBFF"> minor</span><span style="color:#6A737D">            # 1.1.0</span></span>
+<span class="line"><span style="color:#B392F0">standard-version</span><span style="color:#79B8FF"> -r</span><span style="color:#9ECBFF"> 1.1.0-t</span><span style="color:#6A737D">          # 1.1.0-t</span></span>
+<span class="line"><span style="color:#B392F0">standard-version</span><span style="color:#79B8FF"> -r</span><span style="color:#9ECBFF"> patch</span><span style="color:#6A737D">            # 1.0.1</span></span>
+<span class="line"><span style="color:#B392F0">standard-version</span><span style="color:#79B8FF"> -r</span><span style="color:#9ECBFF"> 1.0.1-t</span><span style="color:#6A737D">          # 1.0.1-t</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D"># 脚本运行</span></span>
+<span class="line"><span style="color:#B392F0">yarn</span><span style="color:#9ECBFF"> release</span><span style="color:#79B8FF"> --</span><span style="color:#79B8FF"> --release-as</span><span style="color:#9ECBFF"> minor</span><span style="color:#6A737D">   # 1.1.0</span></span></code></pre>
+<blockquote>
+<ul>
+<li><code>-r</code> 表示 <code>--release-as</code>，指定版本号</li>
+</ul>
+</blockquote>
+<h5 id="3预发布版本">3、预发布版本</h5>
+<p>预发布版本用来发布预发版本，通常在版本号之后添加 <code>alpha</code> 或 <code>beta</code> 等字样。</p>
+<p>假如当前版本为 <code>v1.0.0</code>：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="sh"><code><span class="line"><span style="color:#B392F0">standard-version</span><span style="color:#79B8FF"> --prerelease</span><span style="color:#6A737D">         # 1.0.1-0</span></span>
+<span class="line"><span style="color:#B392F0">standard-version</span><span style="color:#79B8FF"> --prerelease</span><span style="color:#9ECBFF"> alpha</span><span style="color:#6A737D">   # 1.0.1-alpha.0</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D"># 脚本运行</span></span>
+<span class="line"><span style="color:#B392F0">yarn</span><span style="color:#9ECBFF"> release</span><span style="color:#79B8FF"> --</span><span style="color:#79B8FF"> -p</span><span style="color:#9ECBFF"> beta</span><span style="color:#6A737D">               # 1.0.1-beta.0</span></span></code></pre>
+<h5 id="4添加-tag-前缀">4、添加 tag 前缀</h5>
+<p>有时候我们需要为 <code>tag</code> 添加一些前缀内容，如 <code>@scope/package@2.0.0</code>，则需要：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="sh"><code><span class="line"><span style="color:#B392F0">standard-version</span><span style="color:#79B8FF"> --tag-prefix</span><span style="color:#9ECBFF"> @scope/package@</span><span style="color:#6A737D">  # @scope/package@2.0.1</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D"># 脚本运行</span></span>
+<span class="line"><span style="color:#B392F0">yarn</span><span style="color:#9ECBFF"> release</span><span style="color:#79B8FF"> --</span><span style="color:#79B8FF"> -t</span><span style="color:#9ECBFF"> @scope/package@</span><span style="color:#6A737D">             # @scope/package@2.0.1</span></span></code></pre>
+<h4 id="standard-version-的一些问题">Standard-Version 的一些问题</h4>
+<p>如果版本为 <code>0.x.x</code> 时，例如 <code>0.1.1</code>，当我们的提交中包含 <code>feat</code> 特性时，执行 <code>yarn release</code> 不会变成 <code>0.2.1</code>，而是 <code>0.1.2</code>，这是因为没有主版本号。</p>
+<p>这时需要手动给定版本号，或者修改主版本号后再执行。</p>
+<h2 id="添加单元测试">添加单元测试</h2>
+<p>对于任何项目，尤其是大型项目，单元测试是一个非常重要的环节。完整的测试可以有效保证代码质量。</p>
+<h3 id="添加测试依赖">添加测试依赖</h3>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="sh"><code><span class="line"><span style="color:#B392F0">yarn</span><span style="color:#9ECBFF"> add</span><span style="color:#9ECBFF"> jest@26</span><span style="color:#9ECBFF"> ts-jest@26</span><span style="color:#9ECBFF"> @vue/test-utils@next</span><span style="color:#9ECBFF"> vue-jest@next</span><span style="color:#9ECBFF"> @types/jest</span><span style="color:#9ECBFF"> eslint-plugin-jest</span><span style="color:#79B8FF"> -D</span></span></code></pre>
+<p>::: tip 安装提示 错误日期：2021.11.8</p>
+<p><code>jest</code> 和 <code>ts-jest</code> 由于版本冲突，最新如果直接安装，则为版本 27，此时运行测试内容会报错：</p>
+<p><a href="/images/2021/jest_version_error.png"><img src="/images/2021/jest_version_error.png" alt=""></a></p>
+<p>需要指定版本 26，会解决该问题。</p>
+<p>详见 <a href="https://github.com/vuejs/vue-jest/issues/351">ISSUE #351</a> :::</p>
+<p>同时测试需要 <code>babel</code>，所以再安装 <code>babel</code> 依赖：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="sh"><code><span class="line"><span style="color:#B392F0">yarn</span><span style="color:#9ECBFF"> add</span><span style="color:#9ECBFF"> babel-jest</span><span style="color:#9ECBFF"> @babel/core</span><span style="color:#9ECBFF"> @babel/preset-env</span><span style="color:#9ECBFF"> @babel/preset-typescript</span><span style="color:#9ECBFF"> @vue/babel-plugin-jsx</span><span style="color:#79B8FF"> -D</span></span></code></pre>
+<h3 id="配置-jest">配置 jest</h3>
+<ul>
+<li>在根目录下添加 <code>jest.config.js</code> 文件，并键入如下内容：</li>
+</ul>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="js"><code><span class="line"><span style="color:#79B8FF">module</span><span style="color:#E1E4E8">.</span><span style="color:#79B8FF">exports</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#E1E4E8">  clearMocks: </span><span style="color:#79B8FF">true</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">  coverageDirectory: </span><span style="color:#9ECBFF">"coverage"</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">  coverageProvider: </span><span style="color:#9ECBFF">"v8"</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">  moduleFileExtensions: [</span><span style="color:#9ECBFF">"vue"</span><span style="color:#E1E4E8">, </span><span style="color:#9ECBFF">"js"</span><span style="color:#E1E4E8">, </span><span style="color:#9ECBFF">"json"</span><span style="color:#E1E4E8">, </span><span style="color:#9ECBFF">"jsx"</span><span style="color:#E1E4E8">, </span><span style="color:#9ECBFF">"ts"</span><span style="color:#E1E4E8">, </span><span style="color:#9ECBFF">"tsx"</span><span style="color:#E1E4E8">, </span><span style="color:#9ECBFF">"node"</span><span style="color:#E1E4E8">],</span></span>
+<span class="line"><span style="color:#E1E4E8">  testMatch: [</span><span style="color:#9ECBFF">"**/tests/units/**/?(*.)+(unit|test|spec).[jt]s?(x)"</span><span style="color:#E1E4E8">],</span></span>
+<span class="line"><span style="color:#E1E4E8">  testPathIgnorePatterns: [</span><span style="color:#9ECBFF">"/node_modules/"</span><span style="color:#E1E4E8">],</span></span>
+<span class="line"><span style="color:#E1E4E8">  transform: {</span></span>
+<span class="line"><span style="color:#9ECBFF">    "^.+</span><span style="color:#79B8FF">\\</span><span style="color:#9ECBFF">.jsx?$"</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">"babel-jest"</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#9ECBFF">    "^.+</span><span style="color:#79B8FF">\\</span><span style="color:#9ECBFF">.vue?$"</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">"vue-jest"</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#9ECBFF">    "^.+</span><span style="color:#79B8FF">\\</span><span style="color:#9ECBFF">.tsx$"</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">"ts-jest"</span></span>
+<span class="line"><span style="color:#E1E4E8">  },</span></span>
+<span class="line"><span style="color:#E1E4E8">  moduleNameMapper: {</span></span>
+<span class="line"><span style="color:#6A737D">    // 支持源代码中相同的 `@` -> `src` 别名</span></span>
+<span class="line"><span style="color:#9ECBFF">    "^@/(.*)$"</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">"&#x3C;rootDir>/src/$1"</span></span>
+<span class="line"><span style="color:#E1E4E8">  },</span></span>
+<span class="line"><span style="color:#E1E4E8">  preset: </span><span style="color:#9ECBFF">"ts-jest"</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">  testEnvironment: </span><span style="color:#9ECBFF">"jsdom"</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">  collectCoverage: </span><span style="color:#79B8FF">true</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">  collectCoverageFrom: [</span><span style="color:#9ECBFF">"src/**/*.{js,jsx,ts,tsx,vue}"</span><span style="color:#E1E4E8">, </span><span style="color:#9ECBFF">"!**/node_modules/**"</span><span style="color:#E1E4E8">]</span></span>
+<span class="line"><span style="color:#6A737D">  // coverageReporters: ["text", "text-summary", "html"],</span></span>
+<span class="line"><span style="color:#E1E4E8">};</span></span></code></pre>
+<ul>
+<li>在根目录下添加 <code>babel.config.js</code> 文件，并键入：</li>
+</ul>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="js"><code><span class="line"><span style="color:#79B8FF">module</span><span style="color:#E1E4E8">.</span><span style="color:#79B8FF">exports</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#E1E4E8">  presets: [</span></span>
+<span class="line"><span style="color:#E1E4E8">    [</span><span style="color:#9ECBFF">"@babel/preset-env"</span><span style="color:#E1E4E8">, { targets: { node: </span><span style="color:#9ECBFF">"current"</span><span style="color:#E1E4E8"> } }],</span></span>
+<span class="line"><span style="color:#9ECBFF">    "@babel/preset-typescript"</span></span>
+<span class="line"><span style="color:#E1E4E8">  ],</span></span>
+<span class="line"><span style="color:#E1E4E8">  plugins: [</span><span style="color:#9ECBFF">"@vue/babel-plugin-jsx"</span><span style="color:#E1E4E8">]</span></span>
+<span class="line"><span style="color:#E1E4E8">};</span></span></code></pre>
+<ul>
+<li>在 <code>tsconfig.json</code> 中添加：</li>
+</ul>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="json"><code><span class="line"><span style="color:#E1E4E8">{</span></span>
+<span class="line"><span style="color:#79B8FF">  "compilerOptions"</span><span style="color:#E1E4E8">: {</span></span>
+<span class="line"><span style="color:#79B8FF">    "types"</span><span style="color:#E1E4E8">: [</span><span style="color:#9ECBFF">"vite/client"</span><span style="color:#E1E4E8">, </span><span style="color:#9ECBFF">"node"</span><span style="color:#E1E4E8">, </span><span style="color:#9ECBFF">"jest"</span><span style="color:#E1E4E8">]</span></span>
+<span class="line"><span style="color:#E1E4E8">  },</span></span>
+<span class="line"><span style="color:#79B8FF">  "include"</span><span style="color:#E1E4E8">: [</span></span>
+<span class="line"><span style="color:#9ECBFF">    "src/**/*.ts"</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#9ECBFF">    "src/**/*.d.ts"</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#9ECBFF">    "src/**/*.tsx"</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#9ECBFF">    "src/**/*.vue"</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#9ECBFF">    "tests/**/*.ts"</span></span>
+<span class="line"><span style="color:#E1E4E8">  ]</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<p>在 <code>.eslintrc.js</code> 中添加：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="js"><code><span class="line"><span style="color:#B392F0">extends</span><span style="color:#E1E4E8">: [</span></span>
+<span class="line"><span style="color:#9ECBFF">    'plugin:vue/essential'</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#9ECBFF">    'plugin:jest/recommended'</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#9ECBFF">    'airbnb-base'</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#9ECBFF">    'airbnb-typescript/base'</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#9ECBFF">    'plugin:vue/vue3-recommended'</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#9ECBFF">    'plugin:prettier/recommended'</span><span style="color:#6A737D"> // 添加 prettier 插件</span></span>
+<span class="line"><span style="color:#E1E4E8">],</span></span></code></pre>
+<h3 id="执行测试">执行测试</h3>
+<p>在 <code>package.json</code> 中添加脚本：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="json"><code><span class="line"><span style="color:#E1E4E8">{</span></span>
+<span class="line"><span style="color:#79B8FF">  "scripts"</span><span style="color:#E1E4E8">: {</span></span>
+<span class="line"><span style="color:#79B8FF">    "test"</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">"jest"</span></span>
+<span class="line"><span style="color:#E1E4E8">  }</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<p>执行 <code>yarn test</code>，会根据 <code>jest.config.js</code> 的配置内容进行测试：</p>
+<p><a href="/images/2021/jest_result.png"><img src="/images/2021/jest_result.png" alt=""></a></p>
+<h3 id="将测试集成到-husky-中">将测试集成到 husky 中</h3>
+<p>默认情况下，<code>husky</code> 提供的代码是每次提交都进行测试，这样对于开发来说比较麻烦，我们之前也删除了对应的代码。我们希望在 <code>push</code> 的时候测试代码，这样可以减少测试数量，同时也保证了代码的有效性。</p>
+<p>使用 <code>pre-push</code> 钩子就可以实现。</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="sh"><code><span class="line"><span style="color:#B392F0">npx</span><span style="color:#9ECBFF"> husky</span><span style="color:#9ECBFF"> add</span><span style="color:#9ECBFF"> .husky/pre-push</span><span style="color:#9ECBFF"> "yarn test </span><span style="color:#79B8FF">$1</span><span style="color:#9ECBFF">"</span></span></code></pre>
+<p>该命令会在 <code>.husky</code> 文件夹下创建一个 <code>pre-push</code> 的钩子文件。</p>
+<p>现在，每次我们提交的时候都会执行测试，只有当测试通过才会进行 <code>push</code> 操作。</p> </div> <!-- 悬浮 TOC --> <button class="toc-toggle" id="toc-toggle" aria-label="显示目录" data-astro-cid-iy4s3wf7> <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-list" data-astro-cid-iy4s3wf7> <line x1="8" y1="6" x2="21" y2="6" data-astro-cid-iy4s3wf7></line> <line x1="8" y1="12" x2="21" y2="12" data-astro-cid-iy4s3wf7></line> <line x1="8" y1="18" x2="21" y2="18" data-astro-cid-iy4s3wf7></line> <line x1="3" y1="6" x2="3.01" y2="6" data-astro-cid-iy4s3wf7></line> <line x1="3" y1="12" x2="3.01" y2="12" data-astro-cid-iy4s3wf7></line> <line x1="3" y1="18" x2="3.01" y2="18" data-astro-cid-iy4s3wf7></line> </svg> </button> <aside class="floating-toc" id="floating-toc" data-astro-cid-iy4s3wf7> <div class="toc-header" data-astro-cid-iy4s3wf7> <h3 data-astro-cid-iy4s3wf7>目录</h3> </div> <nav class="toc-nav" id="toc-nav" data-astro-cid-g3fimnfa> <!-- TOC 内容将由客户端脚本填充 --> </nav>  <script type="module">document.addEventListener("DOMContentLoaded",()=>{const n=document.getElementById("toc-nav"),a=document.querySelector(".toc-header h3");if(!n)return;const s=document.querySelector(".article-header h1")?.textContent||"目录";a&&(a.textContent=s);const c=Array.from(document.querySelectorAll(".article-content h2, .article-content h3, .article-content h4, .article-content h5, .article-content h6"));if(c.length===0){n.innerHTML='<p style="color: var(--color-text-secondary); padding: 0.5rem;">暂无目录</p>';return}c.forEach(e=>{e.id||(e.id=e.textContent?.toLowerCase().replace(/\s+/g,"-").replace(/[^\w\-\u4e00-\u9fa5]/g,"")||"")});const l=document.createElement("ul");c.forEach(e=>{const t=document.createElement("li"),o=document.createElement("a");o.href=`#${e.id}`,o.textContent=e.textContent||"",o.classList.add(`toc-${e.tagName.toLowerCase()}`),o.addEventListener("click",i=>{i.preventDefault();const r=document.getElementById(e.id);if(r){const u=r.getBoundingClientRect().top+window.pageYOffset-80;window.scrollTo({top:u,behavior:"smooth"}),history.pushState(null,"",`#${e.id}`)}}),t.appendChild(o),l.appendChild(t)}),n.appendChild(l);const d={root:null,rootMargin:"-60px 0px -80% 0px",threshold:0},h=new IntersectionObserver(e=>{e.forEach(t=>{if(t.isIntersecting){const o=t.target.id;n.querySelectorAll("a").forEach(r=>{r.classList.remove("active")});const i=n.querySelector(`a[href="#${o}"]`);i&&i.classList.add("active")}})},d);c.forEach(e=>h.observe(e)),setTimeout(()=>{if(window.location.hash){const t=n.querySelector(`a[href="${window.location.hash}"]`);if(t){n.querySelectorAll("a").forEach(o=>o.classList.remove("active")),t.classList.add("active");return}}let e="";for(const t of c)if(t.getBoundingClientRect().top<=150)e=t.id;else break;if(!e&&c.length>0&&window.scrollY<100&&(e=c[0].id),e){n.querySelectorAll("a").forEach(o=>o.classList.remove("active"));const t=n.querySelector(`a[href="#${e}"]`);t&&t.classList.add("active")}},100)});</script> </aside> <div class="toc-overlay" id="toc-overlay" data-astro-cid-iy4s3wf7></div> <section class="comments" data-astro-cid-iy4s3wf7> <div class="giscus-wrapper"> <script src="https://giscus.app/client.js" data-repo="jeremyjone/blog-comments" data-repo-id="R_kgDOQlVVGg" data-category="Announcements" data-category-id="DIC_kwDOQlVVGs4Czkir" data-mapping="title" data-term data-strict="0" data-reactions-enabled="1" data-emit-metadata="0" data-input-position="top" data-theme="preferred_color_scheme" data-lang="zh-CN" crossorigin="anonymous" async></script> <noscript>请启用 JavaScript 查看评论。</noscript> </div> </section> </article>  </main> <footer class="site-footer" data-astro-cid-x322jucz> <div class="container footer-content" data-astro-cid-x322jucz> <p data-astro-cid-x322jucz>
+&copy; 2025 <b data-astro-cid-x322jucz>JeremyJone.com</b> All rights reserved.
+</p> <div class="footer-links" data-astro-cid-x322jucz> <a href="https://github.com/jeremyjone" target="_blank" rel="noopener" data-astro-cid-x322jucz> GitHub </a> </div> </div> </footer> <script type="module" src="/_astro/BaseLayout.astro_astro_type_script_index_0_lang.D4h-rqQD.js"></script> <div id="search-modal" class="search-modal" style="display: none;" data-astro-cid-jwf5kjrd> <div class="search-overlay" data-astro-cid-jwf5kjrd></div> <div class="search-container" data-astro-cid-jwf5kjrd> <div class="search-header" data-astro-cid-jwf5kjrd> <input type="text" id="search-input-global" placeholder="搜索全站内容 (Cmd+K)..." autocomplete="off" data-astro-cid-jwf5kjrd> <button id="close-search" aria-label="Close search" data-astro-cid-jwf5kjrd>&times;</button> </div> <div id="search-results-global" class="search-results" data-astro-cid-jwf5kjrd> <div class="search-placeholder" data-astro-cid-jwf5kjrd>输入关键词开始搜索...</div> </div> </div> </div>  <script>
+    window.loadPagefind = async () => {
+        try {
+            return await import("/pagefind/pagefind.js");
+        } catch (e) {
+            console.warn("Failed to load pagefind:", e);
+            return null;
+        }
+    };
+</script> <script type="module" src="/_astro/SearchModal.astro_astro_type_script_index_0_lang.C4oQFeHw.js"></script> </body></html>  <script type="module">document.addEventListener("DOMContentLoaded",()=>{const c=document.getElementById("toc-toggle"),e=document.getElementById("floating-toc"),t=document.getElementById("toc-overlay");c?.addEventListener("click",()=>{e?.classList.add("active"),t?.classList.add("active")});const o=()=>{e?.classList.remove("active"),t?.classList.remove("active")};t?.addEventListener("click",o)});</script>

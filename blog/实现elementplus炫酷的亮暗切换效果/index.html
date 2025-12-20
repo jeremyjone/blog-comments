@@ -1,0 +1,266 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="dark" data-astro-cid-x322jucz> <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>实现ElementPlus炫酷的亮暗切换效果</title><meta name="description" content="一直觉得 Element-plus 的亮暗切换很漂亮，最近抽时间研究了一下，技术还是比较新的，甚至在打包的时候，对应 api 还报了找不到声明的问题，也算是小坑。 > 吐槽一下：前端真是天天卷样式，实在搞不动了 ## 实现原理 我们先..."><link rel="canonical" href="https://www.jeremyjone.com//blog/%E5%AE%9E%E7%8E%B0elementplus%E7%82%AB%E9%85%B7%E7%9A%84%E4%BA%AE%E6%9A%97%E5%88%87%E6%8D%A2%E6%95%88%E6%9E%9C/"><meta property="og:title" content="实现ElementPlus炫酷的亮暗切换效果"><meta property="og:description" content="一直觉得 Element-plus 的亮暗切换很漂亮，最近抽时间研究了一下，技术还是比较新的，甚至在打包的时候，对应 api 还报了找不到声明的问题，也算是小坑。 > 吐槽一下：前端真是天天卷样式，实在搞不动了 ## 实现原理 我们先..."><meta property="og:type" content="article"><meta property="og:url" content="https://www.jeremyjone.com//blog/%E5%AE%9E%E7%8E%B0elementplus%E7%82%AB%E9%85%B7%E7%9A%84%E4%BA%AE%E6%9A%97%E5%88%87%E6%8D%A2%E6%95%88%E6%9E%9C/"><meta property="og:site_name" content="JeremyJone's Blog"><meta property="og:locale" content="zh_CN"><link rel="icon" href="/favicon.ico"><link rel="stylesheet" href="/_astro/_year_.CFHYKZJi.css">
+<link rel="stylesheet" href="/_astro/_slug_.B1ShOm38.css"></head> <body data-astro-cid-x322jucz> <header class="site-header" data-astro-cid-x322jucz> <div class="container header-content" data-astro-cid-x322jucz> <a href="/" class="logo" data-astro-cid-x322jucz> <div class="logo-icon" data-astro-cid-x322jucz> <img src="/resources/avatar.png" alt="Logo" width="32" height="32" data-astro-cid-x322jucz> </div> <span class="logo-text" data-astro-cid-x322jucz>JeremyJone&#39;s Blog</span> </a> <div class="header-right" data-astro-cid-x322jucz> <nav class="nav" data-astro-cid-x322jucz> <a href="/" class="nav-link" data-astro-cid-x322jucz> 首页 </a><a href="/blog" class="nav-link active" data-astro-cid-x322jucz> 博客 </a><a href="/notes" class="nav-link" data-astro-cid-x322jucz> 笔记 </a> </nav> <button class="search-toggle" onclick="window.openSearchModal()" aria-label="搜索" data-astro-cid-x322jucz> <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-astro-cid-x322jucz><circle cx="11" cy="11" r="8" data-astro-cid-x322jucz></circle><line x1="21" y1="21" x2="16.65" y2="16.65" data-astro-cid-x322jucz></line></svg> <span class="search-placeholder" data-astro-cid-x322jucz>Ctrl+K 搜索...</span> </button> <button class="theme-toggle" id="theme-toggle" aria-label="切换主题" data-astro-cid-x322jucz> <svg class="sun-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" data-astro-cid-x322jucz> <circle cx="12" cy="12" r="5" data-astro-cid-x322jucz></circle> <line x1="12" y1="1" x2="12" y2="3" data-astro-cid-x322jucz></line> <line x1="12" y1="21" x2="12" y2="23" data-astro-cid-x322jucz></line> <line x1="4.22" y1="4.22" x2="5.64" y2="5.64" data-astro-cid-x322jucz></line> <line x1="18.36" y1="18.36" x2="19.78" y2="19.78" data-astro-cid-x322jucz></line> <line x1="1" y1="12" x2="3" y2="12" data-astro-cid-x322jucz></line> <line x1="21" y1="12" x2="23" y2="12" data-astro-cid-x322jucz></line> <line x1="4.22" y1="19.78" x2="5.64" y2="18.36" data-astro-cid-x322jucz></line> <line x1="18.36" y1="5.64" x2="19.78" y2="4.22" data-astro-cid-x322jucz></line> </svg> <svg class="moon-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" data-astro-cid-x322jucz> <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" data-astro-cid-x322jucz></path> </svg> </button> </div> </div> </header> <main class="container" data-astro-cid-x322jucz>  <article data-content-type="blog" data-pagefind-body data-pagefind-filter="type:blog" data-astro-cid-iy4s3wf7> <header class="article-header" data-astro-cid-iy4s3wf7> <h1 data-astro-cid-iy4s3wf7>实现ElementPlus炫酷的亮暗切换效果</h1> <p class="meta" data-astro-cid-iy4s3wf7>
+发布于 2024-10-15 10:54:30 · 6 分钟 · 标签：<a href="/tags/JavaScript" class="tag" data-astro-cid-iy4s3wf7> JavaScript </a><a href="/tags/vue" class="tag" data-astro-cid-iy4s3wf7> vue </a> </p> </header> <div class="article-content" data-astro-cid-iy4s3wf7> <p>一直觉得 Element-plus 的亮暗切换很漂亮，最近抽时间研究了一下，技术还是比较新的，甚至在打包的时候，对应 api 还报了找不到声明的问题，也算是小坑。</p>
+<blockquote>
+<p>吐槽一下：前端真是天天卷样式，实在搞不动了</p>
+</blockquote>
+<h2 id="实现原理">实现原理</h2>
+<p>我们先来看一下 element-plus 的效果：</p>
+<p><a href="/images/2024/elem.gif"><img src="/images/2024/elem.gif" alt=""></a></p>
+<p>分析一下可以看出，要想实现这个效果，至少需要四步：</p>
+<p>1、找到点击的位置 2、再找到距离点击位置的最远位置（以上图官方为例，点击的是右上角，那么最远的点应该就是左下角） 3、基于上面的点，画一个大圆 4、让这个圆动起来，实现效果切换~</p>
+<p>前面三个都不难，重点就是最后一步，这个我一直以为使用的是蒙版~</p>
+<h2 id="实现基础切换">实现基础切换</h2>
+<blockquote>
+<p>我创建了一个管理框架，并使用了 <code>Element-Plus</code> 和 <code>vueuse</code>。</p>
+</blockquote>
+<p>首先，创建这个 switch 按钮，并实现基础逻辑：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="vue"><code><span class="line"><span style="color:#E1E4E8">&#x3C;</span><span style="color:#85E89D">template</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#E1E4E8">  &#x3C;</span><span style="color:#85E89D">el-switch</span></span>
+<span class="line"><span style="color:#B392F0">    class</span><span style="color:#E1E4E8">=</span><span style="color:#9ECBFF">"XSwitchTheme"</span></span>
+<span class="line"><span style="color:#E1E4E8">    :</span><span style="color:#B392F0">model-value</span><span style="color:#E1E4E8">=</span><span style="color:#9ECBFF">"</span><span style="color:#E1E4E8">isDark</span><span style="color:#9ECBFF">"</span></span>
+<span class="line"><span style="color:#E1E4E8">    @</span><span style="color:#B392F0">change</span><span style="color:#E1E4E8">=</span><span style="color:#9ECBFF">"</span><span style="color:#E1E4E8">onChange</span><span style="color:#9ECBFF">"</span></span>
+<span class="line"><span style="color:#E1E4E8">    @</span><span style="color:#B392F0">click</span><span style="color:#E1E4E8">.</span><span style="color:#B392F0">capture</span><span style="color:#E1E4E8">=</span><span style="color:#9ECBFF">"</span><span style="color:#E1E4E8">onClick</span><span style="color:#9ECBFF">"</span></span>
+<span class="line"><span style="color:#E1E4E8">  ></span></span>
+<span class="line"><span style="color:#E1E4E8">    &#x3C;</span><span style="color:#85E89D">template</span><span style="color:#E1E4E8"> #</span><span style="color:#B392F0">active-action</span><span style="color:#E1E4E8">>🌙&#x3C;/</span><span style="color:#85E89D">template</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#E1E4E8">    &#x3C;</span><span style="color:#85E89D">template</span><span style="color:#E1E4E8"> #</span><span style="color:#B392F0">inactive-action</span><span style="color:#E1E4E8">>🌞&#x3C;/</span><span style="color:#85E89D">template</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#E1E4E8">  &#x3C;/</span><span style="color:#85E89D">el-switch</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#E1E4E8">&#x3C;/</span><span style="color:#85E89D">template</span><span style="color:#E1E4E8">></span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">&#x3C;</span><span style="color:#85E89D">script</span><span style="color:#B392F0"> setup</span><span style="color:#B392F0"> lang</span><span style="color:#E1E4E8">=</span><span style="color:#9ECBFF">"ts"</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> { useDark } </span><span style="color:#F97583">from</span><span style="color:#9ECBFF"> '@/hooks/useDark'</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> { ref } </span><span style="color:#F97583">from</span><span style="color:#9ECBFF"> 'vue'</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">const</span><span style="color:#E1E4E8"> { </span><span style="color:#79B8FF">isDark</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">mode</span><span style="color:#E1E4E8"> } </span><span style="color:#F97583">=</span><span style="color:#B392F0"> useDark</span><span style="color:#E1E4E8">();</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">const</span><span style="color:#79B8FF"> pos</span><span style="color:#F97583"> =</span><span style="color:#B392F0"> ref</span><span style="color:#E1E4E8">({ x: </span><span style="color:#79B8FF">0</span><span style="color:#E1E4E8">, y: </span><span style="color:#79B8FF">0</span><span style="color:#E1E4E8"> });</span></span>
+<span class="line"><span style="color:#F97583">function</span><span style="color:#B392F0"> onClick</span><span style="color:#E1E4E8">(</span><span style="color:#FFAB70">e</span><span style="color:#F97583">:</span><span style="color:#B392F0"> MouseEvent</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#E1E4E8">  pos.value </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> { x: e.clientX, y: e.clientY };</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">function</span><span style="color:#B392F0"> onChange</span><span style="color:#E1E4E8">(</span><span style="color:#FFAB70">val</span><span style="color:#F97583">:</span><span style="color:#79B8FF"> boolean</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#E1E4E8">  mode.value </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> val </span><span style="color:#F97583">?</span><span style="color:#9ECBFF"> 'dark'</span><span style="color:#F97583"> :</span><span style="color:#9ECBFF"> 'light'</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"><span style="color:#E1E4E8">&#x3C;/</span><span style="color:#85E89D">script</span><span style="color:#E1E4E8">></span></span></code></pre>
+<p>因为使用了 vueuse 的 <code>useColorMode</code> 来管理亮暗模式，所以 swtich 中需要使用只读的方式传值，在 change 事件中去修改它。</p>
+<p>useDark 的逻辑也很简单：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="ts"><code><span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> { useColorMode } </span><span style="color:#F97583">from</span><span style="color:#9ECBFF"> '@vueuse/core'</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> { computed } </span><span style="color:#F97583">from</span><span style="color:#9ECBFF"> 'vue'</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">export</span><span style="color:#F97583"> const</span><span style="color:#B392F0"> useDark</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> () </span><span style="color:#F97583">=></span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#F97583">  const</span><span style="color:#79B8FF"> mode</span><span style="color:#F97583"> =</span><span style="color:#B392F0"> useColorMode</span><span style="color:#E1E4E8">({</span></span>
+<span class="line"><span style="color:#E1E4E8">    emitAuto: </span><span style="color:#79B8FF">true</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">    storageKey: </span><span style="color:#9ECBFF">"ACTIVE_COLOR_SCHEME"</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">    disableTransition: </span><span style="color:#79B8FF">false</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">    initialValue: </span><span style="color:#9ECBFF">'light'</span></span>
+<span class="line"><span style="color:#E1E4E8">  });</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">  return</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#E1E4E8">    isDark: </span><span style="color:#B392F0">computed</span><span style="color:#E1E4E8">(</span></span>
+<span class="line"><span style="color:#E1E4E8">      () </span><span style="color:#F97583">=></span></span>
+<span class="line"><span style="color:#E1E4E8">        (mode.store.value </span><span style="color:#F97583">===</span><span style="color:#9ECBFF"> 'auto'</span><span style="color:#F97583"> ?</span><span style="color:#E1E4E8"> mode.system.value </span><span style="color:#F97583">:</span><span style="color:#E1E4E8"> mode.store.value) </span><span style="color:#F97583">===</span></span>
+<span class="line"><span style="color:#9ECBFF">        'dark'</span></span>
+<span class="line"><span style="color:#E1E4E8">    ),</span></span>
+<span class="line"><span style="color:#E1E4E8">    mode</span></span>
+<span class="line"><span style="color:#E1E4E8">  };</span></span>
+<span class="line"><span style="color:#E1E4E8">};</span></span></code></pre>
+<p>这样就可以适配亮暗，并且还可以根据系统自动选择。</p>
+<p>现在，我们的页面也可以完成切换效果：</p>
+<p><a href="/images/2024/1071-1.gif"><img src="/images/2024/1071-1.gif" alt=""></a></p>
+<h2 id="找到远端点并绘制大圆">找到远端点，并绘制大圆</h2>
+<p>在上面的代码中，已经找到了每次点击的位置，现在，我们需要找到对应的远点：</p>
+<p>我们要做的是，无论切换按钮在哪里，都可以找到远点，如图示例：</p>
+<p><img src="/images/2024/image-1728957406167.png" alt="file"></p>
+<p>也就是：</p>
+<p>1、找到 x 轴的较大值 2、找到 y 轴的较大值 3、基于 x 和 y 值，相当于一个直角三角形，求斜边边长，这个边长就是大圆的半径</p>
+<p>这里要用到 js 的原生方法 <code>Math.hypot</code>，它可以很方便的求出斜边：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="ts"><code><span class="line"><span style="color:#F97583">const</span><span style="color:#79B8FF"> radius</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> Math.</span><span style="color:#B392F0">hypot</span><span style="color:#E1E4E8">(</span></span>
+<span class="line"><span style="color:#E1E4E8">  Math.</span><span style="color:#B392F0">max</span><span style="color:#E1E4E8">(pos.value.x, window.innerWidth </span><span style="color:#F97583">-</span><span style="color:#E1E4E8"> pos.value.x),</span></span>
+<span class="line"><span style="color:#E1E4E8">  Math.</span><span style="color:#B392F0">max</span><span style="color:#E1E4E8">(pos.value.y, window.innerHeight </span><span style="color:#F97583">-</span><span style="color:#E1E4E8"> pos.value.y)</span></span>
+<span class="line"><span style="color:#E1E4E8">);</span></span></code></pre>
+<p>我们有了半径，怎么画圆呢？这里就需要用到 css 提供的一个属性：</p>
+<ul>
+<li><code>clip-path</code>：使用裁剪方式创建元素的可显示区域。区域内的部分显示，区域外的隐藏。</li>
+</ul>
+<blockquote>
+<p>有兴趣的朋友可以自行查看 <a href="https://developer.mozilla.org/zh-CN/docs/Web/CSS/clip-path">MDN文档</a></p>
+</blockquote>
+<h3 id="clip-path">clip-path</h3>
+<p>比如我们现在在页面上这样写：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="css"><code><span class="line"><span style="color:#85E89D">clip-path</span><span style="color:#E1E4E8">: circle(10% at 50% </span><span style="color:#85E89D">center</span><span style="color:#E1E4E8">);</span></span></code></pre>
+<blockquote>
+<p>关于 circle 更多内容可以查看 <a href="https://developer.mozilla.org/zh-CN/docs/Web/CSS/basic-shape/circle">MDN文档</a></p>
+</blockquote>
+<p>我们将它挂在文本上：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="html"><code><span class="line"><span style="color:#E1E4E8">&#x3C;</span><span style="color:#85E89D">h1</span><span style="color:#B392F0"> class</span><span style="color:#E1E4E8">=</span><span style="color:#9ECBFF">"text-100px"</span><span style="color:#B392F0"> style</span><span style="color:#E1E4E8">=</span><span style="color:#9ECBFF">"clip-path: circle(10% at 50% center)"</span><span style="color:#E1E4E8">>JEREMYJONE&#x3C;/</span><span style="color:#85E89D">h1</span><span style="color:#E1E4E8">></span></span></code></pre>
+<p>看到的效果就是：</p>
+<p><img src="/images/2024/image-1728958265209.png" alt="file"></p>
+<p>它将 h1 标签进行了裁切，大小为 10%，位置在 50%、中央的位置，它只展示这个区域的内容。</p>
+<p>有了上面关于 circle 的基础，我们可以想象，基于点击位置，画一个上面计算出来的 radius 半径大小的圆。它应该这样写：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="ts"><code><span class="line"><span style="color:#9ECBFF">`clip-path: circle(${</span><span style="color:#E1E4E8">radius</span><span style="color:#9ECBFF">}px at ${</span><span style="color:#E1E4E8">pos</span><span style="color:#9ECBFF">.</span><span style="color:#E1E4E8">value</span><span style="color:#9ECBFF">.</span><span style="color:#E1E4E8">x</span><span style="color:#9ECBFF">}px ${</span><span style="color:#E1E4E8">pos</span><span style="color:#9ECBFF">.</span><span style="color:#E1E4E8">value</span><span style="color:#9ECBFF">.</span><span style="color:#E1E4E8">y</span><span style="color:#9ECBFF">}px)`</span></span></code></pre>
+<p>我们先看一下效果，所以我们直接在切换后，将半径设置为 500px，我们把它画在根节点上：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="ts"><code><span class="line"><span style="color:#F97583">function</span><span style="color:#B392F0"> onChange</span><span style="color:#E1E4E8">(</span><span style="color:#FFAB70">val</span><span style="color:#F97583">:</span><span style="color:#79B8FF"> boolean</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#E1E4E8">  mode.value </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> val </span><span style="color:#F97583">?</span><span style="color:#9ECBFF"> 'dark'</span><span style="color:#F97583"> :</span><span style="color:#9ECBFF"> 'light'</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">  // 半径固定设为 500px</span></span>
+<span class="line"><span style="color:#E1E4E8">  document.documentElement.style.clipPath </span><span style="color:#F97583">=</span><span style="color:#9ECBFF"> `circle(500px at ${</span><span style="color:#E1E4E8">pos</span><span style="color:#9ECBFF">.</span><span style="color:#E1E4E8">value</span><span style="color:#9ECBFF">.</span><span style="color:#E1E4E8">x</span><span style="color:#9ECBFF">}px ${</span><span style="color:#E1E4E8">pos</span><span style="color:#9ECBFF">.</span><span style="color:#E1E4E8">value</span><span style="color:#9ECBFF">.</span><span style="color:#E1E4E8">y</span><span style="color:#9ECBFF">}px)`</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<p><a href="/images/2024/1071-2.gif"><img src="/images/2024/1071-2.gif" alt=""></a></p>
+<p>可以看到在点击后，圆已经出现了。现在就要实现它的动画。</p>
+<h2 id="实现动画">实现动画</h2>
+<p>要实现这个动画，就要使用一个比较新的 API 了。</p>
+<p><a href="https://developer.mozilla.org/zh-CN/docs/Web/API/Document/startViewTransition"><code>startViewTransition</code></a>，它开始一个新的视图过渡，并返回一个 ViewTransition 对象来表示它。</p>
+<p>说人话，就是在页面发生变化后启动一个动画，并可以通过伪类实现不同效果。直接上用法：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="ts"><code><span class="line"><span style="color:#6A737D">// 调用 startViewTransition 实现动画</span></span>
+<span class="line"><span style="color:#E1E4E8">document.</span><span style="color:#B392F0">startViewTransition</span><span style="color:#E1E4E8">(() </span><span style="color:#F97583">=></span><span style="color:#E1E4E8"> { mode.value </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> val</span><span style="color:#F97583">?</span><span style="color:#9ECBFF"> 'dark'</span><span style="color:#F97583"> :</span><span style="color:#9ECBFF"> 'light'</span><span style="color:#E1E4E8"> }).ready.</span><span style="color:#B392F0">then</span><span style="color:#E1E4E8">(() </span><span style="color:#F97583">=></span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#E1E4E8">  document.documentElement.</span><span style="color:#B392F0">animate</span><span style="color:#E1E4E8">(</span></span>
+<span class="line"><span style="color:#E1E4E8">    {</span></span>
+<span class="line"><span style="color:#6A737D">      // 圆，从半径为0，到半径最大，然后让其实现动画，也就实现了圆自动展开的效果</span></span>
+<span class="line"><span style="color:#E1E4E8">      clipPath: [</span></span>
+<span class="line"><span style="color:#9ECBFF">        `circle(0px at ${</span><span style="color:#E1E4E8">pos</span><span style="color:#9ECBFF">.</span><span style="color:#E1E4E8">value</span><span style="color:#9ECBFF">.</span><span style="color:#E1E4E8">x</span><span style="color:#9ECBFF">}px ${</span><span style="color:#E1E4E8">pos</span><span style="color:#9ECBFF">.</span><span style="color:#E1E4E8">value</span><span style="color:#9ECBFF">.</span><span style="color:#E1E4E8">y</span><span style="color:#9ECBFF">}px)`</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#9ECBFF">        `circle(${</span><span style="color:#E1E4E8">radius</span><span style="color:#9ECBFF">}px at ${</span><span style="color:#E1E4E8">pos</span><span style="color:#9ECBFF">.</span><span style="color:#E1E4E8">value</span><span style="color:#9ECBFF">.</span><span style="color:#E1E4E8">x</span><span style="color:#9ECBFF">}px ${</span><span style="color:#E1E4E8">pos</span><span style="color:#9ECBFF">.</span><span style="color:#E1E4E8">value</span><span style="color:#9ECBFF">.</span><span style="color:#E1E4E8">y</span><span style="color:#9ECBFF">}px)`</span></span>
+<span class="line"><span style="color:#E1E4E8">      ]</span></span>
+<span class="line"><span style="color:#E1E4E8">    },</span></span>
+<span class="line"><span style="color:#E1E4E8">    {</span></span>
+<span class="line"><span style="color:#E1E4E8">      duration: </span><span style="color:#79B8FF">600</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">      pseudoElement: </span><span style="color:#9ECBFF">'::view-transition-new(root)'</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"><span style="color:#E1E4E8">  )</span></span>
+<span class="line"><span style="color:#E1E4E8">})</span></span></code></pre>
+<p>这里的 <code>::view-transition-new(root)</code> 伪类是应用在 <code>startViewTransition</code> API 中的，具体可以看 <a href="https://drafts.csswg.org/css-view-transitions/#::view-transition-new">W3C技术规范</a></p>
+<p>现在我们就可以看到动画效果了：</p>
+<p><a href="/images/2024/1071-3.gif"><img src="/images/2024/1071-3.gif" alt=""></a></p>
+<p>但是，效果并不明显，这是因为这个伪类有默认效果，我们需要重置它：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="css"><code><span class="line"><span style="color:#E1E4E8">::view-transition-new(root),</span></span>
+<span class="line"><span style="color:#E1E4E8">::view-transition-old(root) {</span></span>
+<span class="line"><span style="color:#79B8FF">  animation</span><span style="color:#E1E4E8">: </span><span style="color:#79B8FF">none</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#79B8FF">  mix-blend-mode</span><span style="color:#E1E4E8">: </span><span style="color:#79B8FF">normal</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<p><a href="/images/2024/1071-4.gif"><img src="/images/2024/1071-4.gif" alt=""></a></p>
+<p>这样就看到效果了。</p>
+<h3 id="实现反向效果">实现反向效果</h3>
+<p>反向效果的实现就很简单了，只需要将其动画翻转即可：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="ts"><code><span class="line"><span style="color:#F97583">function</span><span style="color:#B392F0"> onChange</span><span style="color:#E1E4E8">(</span><span style="color:#FFAB70">val</span><span style="color:#F97583">:</span><span style="color:#79B8FF"> boolean</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#F97583">  const</span><span style="color:#B392F0"> setTheme</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> () </span><span style="color:#F97583">=></span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#E1E4E8">    mode.value </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> val </span><span style="color:#F97583">?</span><span style="color:#9ECBFF"> 'dark'</span><span style="color:#F97583"> :</span><span style="color:#9ECBFF"> 'light'</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#E1E4E8">  };</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">  const</span><span style="color:#B392F0"> doAnimate</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> () </span><span style="color:#F97583">=></span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#F97583">    const</span><span style="color:#79B8FF"> radius</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> Math.</span><span style="color:#B392F0">hypot</span><span style="color:#E1E4E8">(</span></span>
+<span class="line"><span style="color:#E1E4E8">      Math.</span><span style="color:#B392F0">max</span><span style="color:#E1E4E8">(pos.value.x, window.innerWidth </span><span style="color:#F97583">-</span><span style="color:#E1E4E8"> pos.value.x),</span></span>
+<span class="line"><span style="color:#E1E4E8">      Math.</span><span style="color:#B392F0">max</span><span style="color:#E1E4E8">(pos.value.y, window.innerHeight </span><span style="color:#F97583">-</span><span style="color:#E1E4E8"> pos.value.y)</span></span>
+<span class="line"><span style="color:#E1E4E8">    );</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">    const</span><span style="color:#79B8FF"> clipPath</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> [</span></span>
+<span class="line"><span style="color:#9ECBFF">      `circle(0px at ${</span><span style="color:#E1E4E8">pos</span><span style="color:#9ECBFF">.</span><span style="color:#E1E4E8">value</span><span style="color:#9ECBFF">.</span><span style="color:#E1E4E8">x</span><span style="color:#9ECBFF">}px ${</span><span style="color:#E1E4E8">pos</span><span style="color:#9ECBFF">.</span><span style="color:#E1E4E8">value</span><span style="color:#9ECBFF">.</span><span style="color:#E1E4E8">y</span><span style="color:#9ECBFF">}px)`</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#9ECBFF">      `circle(${</span><span style="color:#E1E4E8">radius</span><span style="color:#9ECBFF">}px at ${</span><span style="color:#E1E4E8">pos</span><span style="color:#9ECBFF">.</span><span style="color:#E1E4E8">value</span><span style="color:#9ECBFF">.</span><span style="color:#E1E4E8">x</span><span style="color:#9ECBFF">}px ${</span><span style="color:#E1E4E8">pos</span><span style="color:#9ECBFF">.</span><span style="color:#E1E4E8">value</span><span style="color:#9ECBFF">.</span><span style="color:#E1E4E8">y</span><span style="color:#9ECBFF">}px)`</span></span>
+<span class="line"><span style="color:#E1E4E8">    ];</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">    document.documentElement.</span><span style="color:#B392F0">animate</span><span style="color:#E1E4E8">(</span></span>
+<span class="line"><span style="color:#6A737D">      // 通过 val 值判断展示方向</span></span>
+<span class="line"><span style="color:#E1E4E8">      { clipPath: val </span><span style="color:#F97583">?</span><span style="color:#E1E4E8"> clipPath.</span><span style="color:#B392F0">reverse</span><span style="color:#E1E4E8">() </span><span style="color:#F97583">:</span><span style="color:#E1E4E8"> clipPath },</span></span>
+<span class="line"><span style="color:#E1E4E8">      {</span></span>
+<span class="line"><span style="color:#E1E4E8">        duration: </span><span style="color:#79B8FF">600</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">        pseudoElement: val</span></span>
+<span class="line"><span style="color:#6A737D">          // 这里一样，通过 val 值判断方向</span></span>
+<span class="line"><span style="color:#F97583">          ?</span><span style="color:#9ECBFF"> '::view-transition-old(root)'</span></span>
+<span class="line"><span style="color:#F97583">          :</span><span style="color:#9ECBFF"> '::view-transition-new(root)'</span></span>
+<span class="line"><span style="color:#E1E4E8">      }</span></span>
+<span class="line"><span style="color:#E1E4E8">    );</span></span>
+<span class="line"><span style="color:#E1E4E8">  };</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">  document.startViewTransition</span></span>
+<span class="line"><span style="color:#F97583">    ?</span><span style="color:#E1E4E8"> document.</span><span style="color:#B392F0">startViewTransition</span><span style="color:#E1E4E8">(setTheme).ready.</span><span style="color:#B392F0">then</span><span style="color:#E1E4E8">(doAnimate)</span></span>
+<span class="line"><span style="color:#F97583">    :</span><span style="color:#B392F0"> setTheme</span><span style="color:#E1E4E8">();</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<p>这里有一个细节，就是反向的时候，我们仍然需要添加一个 css，否则 old 会因为层级不够，而看不到效果，因为 new 默认永远在 old 上面：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="css"><code><span class="line"><span style="color:#B392F0">.dark</span><span style="color:#E1E4E8">::view-transition-old(root) {</span></span>
+<span class="line"><span style="color:#79B8FF">  z-index</span><span style="color:#E1E4E8">: </span><span style="color:#79B8FF">9999999999</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<p>需要注意，添加的时候要挂载 dark 属性，否则变亮时，也会看不到效果了。</p>
+<p><a href="/images/2024/1071-5.gif"><img src="/images/2024/1071-5.gif" alt=""></a></p>
+<p>至此，我们就完成了整个效果。</p>
+<h2 id="完整代码">完整代码</h2>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="vue"><code><span class="line"><span style="color:#E1E4E8">&#x3C;</span><span style="color:#85E89D">template</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#E1E4E8">  &#x3C;</span><span style="color:#85E89D">el-switch</span></span>
+<span class="line"><span style="color:#B392F0">    class</span><span style="color:#E1E4E8">=</span><span style="color:#9ECBFF">"XSwitchTheme"</span></span>
+<span class="line"><span style="color:#E1E4E8">    :</span><span style="color:#B392F0">model-value</span><span style="color:#E1E4E8">=</span><span style="color:#9ECBFF">"</span><span style="color:#E1E4E8">isDark</span><span style="color:#9ECBFF">"</span></span>
+<span class="line"><span style="color:#E1E4E8">    @</span><span style="color:#B392F0">change</span><span style="color:#E1E4E8">=</span><span style="color:#9ECBFF">"</span><span style="color:#E1E4E8">onChange</span><span style="color:#9ECBFF">"</span></span>
+<span class="line"><span style="color:#E1E4E8">    @</span><span style="color:#B392F0">click</span><span style="color:#E1E4E8">.</span><span style="color:#B392F0">capture</span><span style="color:#E1E4E8">=</span><span style="color:#9ECBFF">"</span><span style="color:#E1E4E8">onClick</span><span style="color:#9ECBFF">"</span></span>
+<span class="line"><span style="color:#E1E4E8">  ></span></span>
+<span class="line"><span style="color:#E1E4E8">    &#x3C;</span><span style="color:#85E89D">template</span><span style="color:#E1E4E8"> #</span><span style="color:#B392F0">active-action</span><span style="color:#E1E4E8">>🌙&#x3C;/</span><span style="color:#85E89D">template</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#E1E4E8">    &#x3C;</span><span style="color:#85E89D">template</span><span style="color:#E1E4E8"> #</span><span style="color:#B392F0">inactive-action</span><span style="color:#E1E4E8">>🌞&#x3C;/</span><span style="color:#85E89D">template</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#E1E4E8">  &#x3C;/</span><span style="color:#85E89D">el-switch</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#E1E4E8">&#x3C;/</span><span style="color:#85E89D">template</span><span style="color:#E1E4E8">></span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">&#x3C;</span><span style="color:#85E89D">script</span><span style="color:#B392F0"> setup</span><span style="color:#B392F0"> lang</span><span style="color:#E1E4E8">=</span><span style="color:#9ECBFF">"ts"</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> { useDark } </span><span style="color:#F97583">from</span><span style="color:#9ECBFF"> '@/hooks/useDark'</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> { ref } </span><span style="color:#F97583">from</span><span style="color:#9ECBFF"> 'vue'</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">const</span><span style="color:#E1E4E8"> { </span><span style="color:#79B8FF">isDark</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">mode</span><span style="color:#E1E4E8"> } </span><span style="color:#F97583">=</span><span style="color:#B392F0"> useDark</span><span style="color:#E1E4E8">();</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">const</span><span style="color:#79B8FF"> pos</span><span style="color:#F97583"> =</span><span style="color:#B392F0"> ref</span><span style="color:#E1E4E8">({ x: </span><span style="color:#79B8FF">0</span><span style="color:#E1E4E8">, y: </span><span style="color:#79B8FF">0</span><span style="color:#E1E4E8"> });</span></span>
+<span class="line"><span style="color:#F97583">function</span><span style="color:#B392F0"> onClick</span><span style="color:#E1E4E8">(</span><span style="color:#FFAB70">e</span><span style="color:#F97583">:</span><span style="color:#B392F0"> MouseEvent</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#E1E4E8">  pos.value </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> { x: e.clientX, y: e.clientY };</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">function</span><span style="color:#B392F0"> onChange</span><span style="color:#E1E4E8">(</span><span style="color:#FFAB70">val</span><span style="color:#F97583">:</span><span style="color:#79B8FF"> boolean</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#F97583">  const</span><span style="color:#B392F0"> setTheme</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> () </span><span style="color:#F97583">=></span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#E1E4E8">    mode.value </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> val </span><span style="color:#F97583">?</span><span style="color:#9ECBFF"> 'dark'</span><span style="color:#F97583"> :</span><span style="color:#9ECBFF"> 'light'</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#E1E4E8">  };</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">  const</span><span style="color:#B392F0"> doAnimate</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> () </span><span style="color:#F97583">=></span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#F97583">    const</span><span style="color:#79B8FF"> radius</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> Math.</span><span style="color:#B392F0">hypot</span><span style="color:#E1E4E8">(</span></span>
+<span class="line"><span style="color:#E1E4E8">      Math.</span><span style="color:#B392F0">max</span><span style="color:#E1E4E8">(pos.value.x, window.innerWidth </span><span style="color:#F97583">-</span><span style="color:#E1E4E8"> pos.value.x),</span></span>
+<span class="line"><span style="color:#E1E4E8">      Math.</span><span style="color:#B392F0">max</span><span style="color:#E1E4E8">(pos.value.y, window.innerHeight </span><span style="color:#F97583">-</span><span style="color:#E1E4E8"> pos.value.y)</span></span>
+<span class="line"><span style="color:#E1E4E8">    );</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">    const</span><span style="color:#79B8FF"> clipPath</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> [</span></span>
+<span class="line"><span style="color:#9ECBFF">      `circle(0px at ${</span><span style="color:#E1E4E8">pos</span><span style="color:#9ECBFF">.</span><span style="color:#E1E4E8">value</span><span style="color:#9ECBFF">.</span><span style="color:#E1E4E8">x</span><span style="color:#9ECBFF">}px ${</span><span style="color:#E1E4E8">pos</span><span style="color:#9ECBFF">.</span><span style="color:#E1E4E8">value</span><span style="color:#9ECBFF">.</span><span style="color:#E1E4E8">y</span><span style="color:#9ECBFF">}px)`</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#9ECBFF">      `circle(${</span><span style="color:#E1E4E8">radius</span><span style="color:#9ECBFF">}px at ${</span><span style="color:#E1E4E8">pos</span><span style="color:#9ECBFF">.</span><span style="color:#E1E4E8">value</span><span style="color:#9ECBFF">.</span><span style="color:#E1E4E8">x</span><span style="color:#9ECBFF">}px ${</span><span style="color:#E1E4E8">pos</span><span style="color:#9ECBFF">.</span><span style="color:#E1E4E8">value</span><span style="color:#9ECBFF">.</span><span style="color:#E1E4E8">y</span><span style="color:#9ECBFF">}px)`</span></span>
+<span class="line"><span style="color:#E1E4E8">    ];</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">    document.documentElement.</span><span style="color:#B392F0">animate</span><span style="color:#E1E4E8">(</span></span>
+<span class="line"><span style="color:#E1E4E8">      { clipPath: val </span><span style="color:#F97583">?</span><span style="color:#E1E4E8"> clipPath.</span><span style="color:#B392F0">reverse</span><span style="color:#E1E4E8">() </span><span style="color:#F97583">:</span><span style="color:#E1E4E8"> clipPath },</span></span>
+<span class="line"><span style="color:#E1E4E8">      {</span></span>
+<span class="line"><span style="color:#E1E4E8">        duration: </span><span style="color:#79B8FF">600</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">        pseudoElement: val</span></span>
+<span class="line"><span style="color:#F97583">          ?</span><span style="color:#9ECBFF"> '::view-transition-old(root)'</span></span>
+<span class="line"><span style="color:#F97583">          :</span><span style="color:#9ECBFF"> '::view-transition-new(root)'</span></span>
+<span class="line"><span style="color:#E1E4E8">      }</span></span>
+<span class="line"><span style="color:#E1E4E8">    );</span></span>
+<span class="line"><span style="color:#E1E4E8">  };</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">  document.startViewTransition</span></span>
+<span class="line"><span style="color:#F97583">    ?</span><span style="color:#E1E4E8"> document.</span><span style="color:#B392F0">startViewTransition</span><span style="color:#E1E4E8">(setTheme).ready.</span><span style="color:#B392F0">then</span><span style="color:#E1E4E8">(doAnimate)</span></span>
+<span class="line"><span style="color:#F97583">    :</span><span style="color:#B392F0"> setTheme</span><span style="color:#E1E4E8">();</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"><span style="color:#E1E4E8">&#x3C;/</span><span style="color:#85E89D">script</span><span style="color:#E1E4E8">></span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">&#x3C;</span><span style="color:#85E89D">style</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#B392F0">.XSwitchTheme</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#E1E4E8">  .</span><span style="color:#79B8FF">el-switch</span><span style="color:#E1E4E8">__</span><span style="color:#79B8FF">action</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#79B8FF">    background-color</span><span style="color:#E1E4E8">: </span><span style="color:#79B8FF">transparent</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#E1E4E8">  }</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">::view-transition-new(root),</span></span>
+<span class="line"><span style="color:#E1E4E8">::view-transition-old(root) {</span></span>
+<span class="line"><span style="color:#79B8FF">  animation</span><span style="color:#E1E4E8">: </span><span style="color:#79B8FF">none</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#79B8FF">  mix-blend-mode</span><span style="color:#E1E4E8">: </span><span style="color:#79B8FF">normal</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"><span style="color:#B392F0">.dark</span><span style="color:#E1E4E8">::view-transition-old(root) {</span></span>
+<span class="line"><span style="color:#79B8FF">  z-index</span><span style="color:#E1E4E8">: </span><span style="color:#79B8FF">9999999999</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"><span style="color:#E1E4E8">&#x3C;/</span><span style="color:#85E89D">style</span><span style="color:#E1E4E8">></span></span></code></pre> </div> <!-- 悬浮 TOC --> <button class="toc-toggle" id="toc-toggle" aria-label="显示目录" data-astro-cid-iy4s3wf7> <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-list" data-astro-cid-iy4s3wf7> <line x1="8" y1="6" x2="21" y2="6" data-astro-cid-iy4s3wf7></line> <line x1="8" y1="12" x2="21" y2="12" data-astro-cid-iy4s3wf7></line> <line x1="8" y1="18" x2="21" y2="18" data-astro-cid-iy4s3wf7></line> <line x1="3" y1="6" x2="3.01" y2="6" data-astro-cid-iy4s3wf7></line> <line x1="3" y1="12" x2="3.01" y2="12" data-astro-cid-iy4s3wf7></line> <line x1="3" y1="18" x2="3.01" y2="18" data-astro-cid-iy4s3wf7></line> </svg> </button> <aside class="floating-toc" id="floating-toc" data-astro-cid-iy4s3wf7> <div class="toc-header" data-astro-cid-iy4s3wf7> <h3 data-astro-cid-iy4s3wf7>目录</h3> </div> <nav class="toc-nav" id="toc-nav" data-astro-cid-g3fimnfa> <!-- TOC 内容将由客户端脚本填充 --> </nav>  <script type="module">document.addEventListener("DOMContentLoaded",()=>{const n=document.getElementById("toc-nav"),a=document.querySelector(".toc-header h3");if(!n)return;const s=document.querySelector(".article-header h1")?.textContent||"目录";a&&(a.textContent=s);const c=Array.from(document.querySelectorAll(".article-content h2, .article-content h3, .article-content h4, .article-content h5, .article-content h6"));if(c.length===0){n.innerHTML='<p style="color: var(--color-text-secondary); padding: 0.5rem;">暂无目录</p>';return}c.forEach(e=>{e.id||(e.id=e.textContent?.toLowerCase().replace(/\s+/g,"-").replace(/[^\w\-\u4e00-\u9fa5]/g,"")||"")});const l=document.createElement("ul");c.forEach(e=>{const t=document.createElement("li"),o=document.createElement("a");o.href=`#${e.id}`,o.textContent=e.textContent||"",o.classList.add(`toc-${e.tagName.toLowerCase()}`),o.addEventListener("click",i=>{i.preventDefault();const r=document.getElementById(e.id);if(r){const u=r.getBoundingClientRect().top+window.pageYOffset-80;window.scrollTo({top:u,behavior:"smooth"}),history.pushState(null,"",`#${e.id}`)}}),t.appendChild(o),l.appendChild(t)}),n.appendChild(l);const d={root:null,rootMargin:"-60px 0px -80% 0px",threshold:0},h=new IntersectionObserver(e=>{e.forEach(t=>{if(t.isIntersecting){const o=t.target.id;n.querySelectorAll("a").forEach(r=>{r.classList.remove("active")});const i=n.querySelector(`a[href="#${o}"]`);i&&i.classList.add("active")}})},d);c.forEach(e=>h.observe(e)),setTimeout(()=>{if(window.location.hash){const t=n.querySelector(`a[href="${window.location.hash}"]`);if(t){n.querySelectorAll("a").forEach(o=>o.classList.remove("active")),t.classList.add("active");return}}let e="";for(const t of c)if(t.getBoundingClientRect().top<=150)e=t.id;else break;if(!e&&c.length>0&&window.scrollY<100&&(e=c[0].id),e){n.querySelectorAll("a").forEach(o=>o.classList.remove("active"));const t=n.querySelector(`a[href="#${e}"]`);t&&t.classList.add("active")}},100)});</script> </aside> <div class="toc-overlay" id="toc-overlay" data-astro-cid-iy4s3wf7></div> <section class="comments" data-astro-cid-iy4s3wf7> <div class="giscus-wrapper"> <script src="https://giscus.app/client.js" data-repo="jeremyjone/blog-comments" data-repo-id="R_kgDOQlVVGg" data-category="Announcements" data-category-id="DIC_kwDOQlVVGs4Czkir" data-mapping="title" data-term data-strict="0" data-reactions-enabled="1" data-emit-metadata="0" data-input-position="top" data-theme="preferred_color_scheme" data-lang="zh-CN" crossorigin="anonymous" async></script> <noscript>请启用 JavaScript 查看评论。</noscript> </div> </section> </article>  </main> <footer class="site-footer" data-astro-cid-x322jucz> <div class="container footer-content" data-astro-cid-x322jucz> <p data-astro-cid-x322jucz>
+&copy; 2025 <b data-astro-cid-x322jucz>JeremyJone.com</b> All rights reserved.
+</p> <div class="footer-links" data-astro-cid-x322jucz> <a href="https://github.com/jeremyjone" target="_blank" rel="noopener" data-astro-cid-x322jucz> GitHub </a> </div> </div> </footer> <script type="module" src="/_astro/BaseLayout.astro_astro_type_script_index_0_lang.D4h-rqQD.js"></script> <div id="search-modal" class="search-modal" style="display: none;" data-astro-cid-jwf5kjrd> <div class="search-overlay" data-astro-cid-jwf5kjrd></div> <div class="search-container" data-astro-cid-jwf5kjrd> <div class="search-header" data-astro-cid-jwf5kjrd> <input type="text" id="search-input-global" placeholder="搜索全站内容 (Cmd+K)..." autocomplete="off" data-astro-cid-jwf5kjrd> <button id="close-search" aria-label="Close search" data-astro-cid-jwf5kjrd>&times;</button> </div> <div id="search-results-global" class="search-results" data-astro-cid-jwf5kjrd> <div class="search-placeholder" data-astro-cid-jwf5kjrd>输入关键词开始搜索...</div> </div> </div> </div>  <script>
+    window.loadPagefind = async () => {
+        try {
+            return await import("/pagefind/pagefind.js");
+        } catch (e) {
+            console.warn("Failed to load pagefind:", e);
+            return null;
+        }
+    };
+</script> <script type="module" src="/_astro/SearchModal.astro_astro_type_script_index_0_lang.C4oQFeHw.js"></script> </body></html>  <script type="module">document.addEventListener("DOMContentLoaded",()=>{const c=document.getElementById("toc-toggle"),e=document.getElementById("floating-toc"),t=document.getElementById("toc-overlay");c?.addEventListener("click",()=>{e?.classList.add("active"),t?.classList.add("active")});const o=()=>{e?.classList.remove("active"),t?.classList.remove("active")};t?.addEventListener("click",o)});</script>

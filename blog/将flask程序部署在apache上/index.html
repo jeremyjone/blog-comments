@@ -1,0 +1,157 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="dark" data-astro-cid-x322jucz> <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>将flask程序部署在apache上</title><meta name="description" content="唠叨几句，我真的不知道现在的很多人拷贝粘贴别人的博客，甚至只是别人提的问题，就复制到自己的博客中，这样真的是学到东西了么？况且复制的还是错误的，有的时候真的不愿意看国内的这些烂博客，平时代码CV习惯了吧，博客这种东西也CV，没意思了吧~ ..."><link rel="canonical" href="https://www.jeremyjone.com//blog/%E5%B0%86flask%E7%A8%8B%E5%BA%8F%E9%83%A8%E7%BD%B2%E5%9C%A8apache%E4%B8%8A/"><meta property="og:title" content="将flask程序部署在apache上"><meta property="og:description" content="唠叨几句，我真的不知道现在的很多人拷贝粘贴别人的博客，甚至只是别人提的问题，就复制到自己的博客中，这样真的是学到东西了么？况且复制的还是错误的，有的时候真的不愿意看国内的这些烂博客，平时代码CV习惯了吧，博客这种东西也CV，没意思了吧~ ..."><meta property="og:type" content="article"><meta property="og:url" content="https://www.jeremyjone.com//blog/%E5%B0%86flask%E7%A8%8B%E5%BA%8F%E9%83%A8%E7%BD%B2%E5%9C%A8apache%E4%B8%8A/"><meta property="og:site_name" content="JeremyJone's Blog"><meta property="og:locale" content="zh_CN"><link rel="icon" href="/favicon.ico"><link rel="stylesheet" href="/_astro/_year_.CFHYKZJi.css">
+<link rel="stylesheet" href="/_astro/_slug_.B1ShOm38.css"></head> <body data-astro-cid-x322jucz> <header class="site-header" data-astro-cid-x322jucz> <div class="container header-content" data-astro-cid-x322jucz> <a href="/" class="logo" data-astro-cid-x322jucz> <div class="logo-icon" data-astro-cid-x322jucz> <img src="/resources/avatar.png" alt="Logo" width="32" height="32" data-astro-cid-x322jucz> </div> <span class="logo-text" data-astro-cid-x322jucz>JeremyJone&#39;s Blog</span> </a> <div class="header-right" data-astro-cid-x322jucz> <nav class="nav" data-astro-cid-x322jucz> <a href="/" class="nav-link" data-astro-cid-x322jucz> 首页 </a><a href="/blog" class="nav-link active" data-astro-cid-x322jucz> 博客 </a><a href="/notes" class="nav-link" data-astro-cid-x322jucz> 笔记 </a> </nav> <button class="search-toggle" onclick="window.openSearchModal()" aria-label="搜索" data-astro-cid-x322jucz> <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-astro-cid-x322jucz><circle cx="11" cy="11" r="8" data-astro-cid-x322jucz></circle><line x1="21" y1="21" x2="16.65" y2="16.65" data-astro-cid-x322jucz></line></svg> <span class="search-placeholder" data-astro-cid-x322jucz>Ctrl+K 搜索...</span> </button> <button class="theme-toggle" id="theme-toggle" aria-label="切换主题" data-astro-cid-x322jucz> <svg class="sun-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" data-astro-cid-x322jucz> <circle cx="12" cy="12" r="5" data-astro-cid-x322jucz></circle> <line x1="12" y1="1" x2="12" y2="3" data-astro-cid-x322jucz></line> <line x1="12" y1="21" x2="12" y2="23" data-astro-cid-x322jucz></line> <line x1="4.22" y1="4.22" x2="5.64" y2="5.64" data-astro-cid-x322jucz></line> <line x1="18.36" y1="18.36" x2="19.78" y2="19.78" data-astro-cid-x322jucz></line> <line x1="1" y1="12" x2="3" y2="12" data-astro-cid-x322jucz></line> <line x1="21" y1="12" x2="23" y2="12" data-astro-cid-x322jucz></line> <line x1="4.22" y1="19.78" x2="5.64" y2="18.36" data-astro-cid-x322jucz></line> <line x1="18.36" y1="5.64" x2="19.78" y2="4.22" data-astro-cid-x322jucz></line> </svg> <svg class="moon-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" data-astro-cid-x322jucz> <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" data-astro-cid-x322jucz></path> </svg> </button> </div> </div> </header> <main class="container" data-astro-cid-x322jucz>  <article data-content-type="blog" data-pagefind-body data-pagefind-filter="type:blog" data-astro-cid-iy4s3wf7> <header class="article-header" data-astro-cid-iy4s3wf7> <h1 data-astro-cid-iy4s3wf7>将flask程序部署在apache上</h1> <p class="meta" data-astro-cid-iy4s3wf7>
+发布于 2020-01-28 02:27:58 · 7 分钟 · 标签：<a href="/tags/Apache" class="tag" data-astro-cid-iy4s3wf7> Apache </a><a href="/tags/Flask" class="tag" data-astro-cid-iy4s3wf7> Flask </a><a href="/tags/服务器" class="tag" data-astro-cid-iy4s3wf7> 服务器 </a> </p> </header> <div class="article-content" data-astro-cid-iy4s3wf7> <p>唠叨几句，我真的不知道现在的很多人拷贝粘贴别人的博客，甚至只是别人提的问题，就复制到自己的博客中，这样真的是学到东西了么？况且复制的还是错误的，有的时候真的不愿意看国内的这些烂博客，平时代码CV习惯了吧，博客这种东西也CV，没意思了吧~</p>
+<hr>
+<h4 id="序">序</h4>
+<p>因为这个春节哪里都去不了了，闲来无事，整理一下之前的flask部署遇到的问题，其实不难，但是中间有很多小坑，踩上的话，也可能会浪费不少时间，所以总结一下。</p>
+<hr>
+<h4 id="正文开始">正文开始</h4>
+<h2 id="前提">前提</h2>
+<p>首先，你需要有一个服务器，比如阿里云之类。然后才能开始后面的工作。</p>
+<p>或者，你可以在自己电脑上测试架设一个也行，学习嘛。我就是在子系统中安装的。</p>
+<p><strong>注：我是用的CentOS，下面命令全部基于CentOS。</strong></p>
+<h2 id="安装必要软件">安装必要软件</h2>
+<h4 id="apache">apache</h4>
+<p>你需要安装apache：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#B392F0">sudo</span><span style="color:#9ECBFF"> yum</span><span style="color:#9ECBFF"> install</span><span style="color:#9ECBFF"> httpd</span></span></code></pre>
+<h4 id="pythonanaconda">python（anaconda）</h4>
+<p>因为我希望使用科学计算，所以不会用自带python，而是使用anaconda：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#B392F0">wget</span><span style="color:#9ECBFF"> https://mirrors.tuna.tsinghua.edu.cn/anaconda/archive/Anaconda3-4.1.1-Linux-x86_64.sh</span></span></code></pre>
+<p>我用的清华的源，因为我需要用到某些特殊版本的包，所以python需要3.5版本以下，我这个是3.5.2版本的。现在最新anaconda的已经5.x，支持python3.7，可以自行选择，网址：<a href="https://mirrors.tuna.tsinghua.edu.cn/anaconda/archive/">https://mirrors.tuna.tsinghua.edu.cn/anaconda/archive/</a></p>
+<p>插一句：清华的源非常全，速度也非常快。但是据说目前不更新了？小道消息，听说而已，没有确认过，如果是真的就太可惜了。不过目前还可以用。</p>
+<p>下载好了之后，直接安装：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#B392F0">bash</span><span style="color:#9ECBFF"> Anaconda3-4.1.1-Linux-x86_64.sh</span></span></code></pre>
+<p>运行如下： <img src="/images/2020/image-1580144688443.png" alt="file"></p>
+<p>输入<code>ENTER</code>： <img src="/images/2020/image-1580144727071.png" alt="file"></p>
+<p>一直到： <img src="/images/2020/image-1580144788070.png" alt="file"></p>
+<p>然后输入<code>yes</code>，确认： <img src="/images/2020/image-1580144860104.png" alt="file"></p>
+<p>这里需要注意一下，这里有三个选项：</p>
+<ul>
+<li>
+<p>直接回车安装，这样会安装到<code>/root/anaconda3</code>中</p>
+</li>
+<li>
+<p>按<code>CTRL-C</code>取消安装</p>
+</li>
+<li>
+<p>输入一个路径进行自定义安装</p>
+<ul>
+<li>
+<p><strong>我们一定要在这里输入自定义安装，可以输入如图的<code>opt/anaconda3</code>，这就是一个小坑，因为apache无法读取<code>/root</code>目录，我设置了权限也不可以，在StackOverflow.com中看有人也出现此问题，故认为不是我的设置问题，应该是apache本身权限设置有冲突。最好的解决方案也是从StackOverflow.com看到，就是安装到<code>/opt</code>中方可解决。</strong></p>
+</li>
+<li>
+<p><strong>还有第二个坑就是安装的时候会出现如下提示：<img src="/images/2020/image-1580550779791.png" alt="file">这时候需要安装bzip2，命令：<code>yum install -y bzip2</code>，这样既可解决问题。</strong></p>
+</li>
+</ul>
+</li>
+</ul>
+<p>之后按下回车，即可开始安装。还需要注意安装完成，最后一步需要确认是否将安装目录添加到系统环境中，我建议是<code>yes</code>，因为毕竟我们不用原生的，所以自动添加一劳永逸，否则还要自行修改<code>~/.bashrc</code>，比较麻烦，这里就不过多废话了。</p>
+<h2 id="配置">配置</h2>
+<p>配置其实也没啥问题，之前讲过网站如何配置，如果对apache本身的配置有不了解的朋友可以去看我之前的帖子。<a href="https://www.jeremyjone.com/505/">Apache部署多网站（二级域名同理）</a>，根据这里的帖子创建一个新的二级网站空间，我们暂且取名为<code>ft</code>（flask_test），其目录在<code>/var/www/ft</code>。</p>
+<p>这里重点说一下怎么让flask跑起来。</p>
+<p>首先在<code>ft</code>文件夹中创建一个<code>app</code>文件夹：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#79B8FF">cd</span><span style="color:#9ECBFF"> /var/www/ft</span></span>
+<span class="line"><span style="color:#B392F0">mkdir</span><span style="color:#9ECBFF"> app</span></span></code></pre>
+<p>然后新建一个<code>__init__.py</code>文件</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#B392F0">touch</span><span style="color:#9ECBFF"> app/__init__.py</span></span></code></pre>
+<p>打开该文件并输入如下内容：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="python"><code><span class="line"><span style="color:#6A737D"># !/usr/bin/env python</span></span>
+<span class="line"><span style="color:#6A737D"># -*- coding:utf8 -*-</span></span>
+<span class="line"><span style="color:#F97583">from</span><span style="color:#E1E4E8"> flask </span><span style="color:#F97583">import</span><span style="color:#E1E4E8"> Flask</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">app </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> Flask(</span><span style="color:#79B8FF">__name__</span><span style="color:#E1E4E8">)</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#B392F0">@app.route</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">"/"</span><span style="color:#E1E4E8">)</span></span>
+<span class="line"><span style="color:#F97583">def</span><span style="color:#B392F0"> get_home</span><span style="color:#E1E4E8">():</span></span>
+<span class="line"><span style="color:#F97583">    return</span><span style="color:#9ECBFF"> "Hello world"</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">if</span><span style="color:#79B8FF"> __name__</span><span style="color:#F97583"> ==</span><span style="color:#9ECBFF"> "__main__"</span><span style="color:#E1E4E8">:</span></span>
+<span class="line"><span style="color:#E1E4E8">    app.run()</span></span></code></pre>
+<p>具体内容含义可以自行了解，最简单的一个flask程序。</p>
+<p>我们在本地测试时，可以直接运行该文件，然后就可以在浏览器访问，那么现在在服务器该如何访问呢？换句话说，我们该如何使用apache调用该程序呢？</p>
+<h3 id="wsgi">WSGI</h3>
+<p>没错，就是WSGI，Python Web Server Gateway Interface，Web服务器网关接口，它是python web框架与服务器(apache等)的一种简单而通用的接口。</p>
+<p>我们使用<code>mod_wsgi</code>，其<a href="https://github.com/GrahamDumpleton/mod_wsgi">GitHub</a>，它的具体安装和详细配置都在<a href="https://dormousehole.readthedocs.io/en/latest/deploying/mod_wsgi.html#mod-wsgi">文档</a>中。</p>
+<p>不想看文档，可以参照我下面的操作：</p>
+<h5 id="安装mod_wsgi">安装mod_wsgi</h5>
+<p><strong>注意，这里不能使用系统命令进行安装，它的编译方式不对，因为我们需要使用自己安装的python环境，而系统安装的mod_wsgi会默认查找系统环境，所以会出现问题，尤其是我们使用的是anaconda环境</strong></p>
+<p>当然，你可以使用系统的，正如官方文档中介绍的一样，但是，这种方式会衍生出很多后续问题，比如致命的<code>prefix</code>问题就会一直伴随，各种奇奇怪怪的问题，反正很多吧，这个坑我踩了2天。</p>
+<p>言归正传，安装，使用anaconda环境安装。建议使用pip，因为他很简单，编译的很完美。当然，前提是你需要确认你的pip命令是anaconda环境中的。</p>
+<p><img src="/images/2020/image-1580146858666.png" alt="file"></p>
+<p>这里安装的时候需要注意版本问题，如果按照我这样使用不是最新的anaconda包的话，也不要使用最新的mod_wsgi包，这点需要注意，不过我已经给出了一种方案，这个是我多次实验后的最佳搭配：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#B392F0">pip</span><span style="color:#9ECBFF"> install</span><span style="color:#9ECBFF"> mod_wsgi==</span><span style="color:#79B8FF">4.6.5</span></span></code></pre>
+<p>安装的时候可能会遇到如下问题：</p>
+<p><img src="/images/2020/image-1580577373404.png" alt="file"></p>
+<p>这个时候需要是因为我们没有安装一个httpd-devel的工具，先安装这个工具：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#B392F0">yum</span><span style="color:#9ECBFF"> install</span><span style="color:#9ECBFF"> httpd-devel</span></span></code></pre>
+<p>安装完成后，就可以顺利安装我们的wsgi了。</p>
+<p>安装完成后，开始配置。</p>
+<h5 id="配置mod_wsgi">配置mod_wsgi</h5>
+<p>首先运行如下命令：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#B392F0"> mod_wsgi-express</span><span style="color:#9ECBFF"> module-config</span></span></code></pre>
+<p><img src="/images/2020/image-1580147010160.png" alt="file"></p>
+<p>会生成一个so文件，记录好生成后的信息，将信息复制，粘贴到<code>/etc/httpd/conf/http.conf</code>中去。如图：</p>
+<p><img src="/images/2020/image-1580147225193.png" alt="file"></p>
+<p>图中我还另外添加了<code>WSGIPythonPath</code>，可以手动自行添加上去，这个后面会用到。</p>
+<h5 id="添加wsgipy文件">添加wsgi.py文件</h5>
+<p>在<code>/var/www/ft</code>中添加wsgi.py文件</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#B392F0">touch</span><span style="color:#9ECBFF"> wsgi.py</span></span></code></pre>
+<p>同时，添加如下内容：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="python"><code><span class="line"><span style="color:#6A737D">#!/usr/bin/env python</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> sys</span></span>
+<span class="line"><span style="color:#E1E4E8">sys.path.insert(</span><span style="color:#79B8FF">0</span><span style="color:#E1E4E8">, </span><span style="color:#9ECBFF">"/var/www/ft"</span><span style="color:#E1E4E8">)</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">from</span><span style="color:#E1E4E8"> app </span><span style="color:#F97583">import</span><span style="color:#E1E4E8"> app </span><span style="color:#F97583">as</span><span style="color:#E1E4E8"> application</span></span></code></pre>
+<h5 id="将wsgi添加到apache中">将wsgi添加到apache中</h5>
+<p>打开apache的配置文件：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#B392F0">vim</span><span style="color:#9ECBFF"> /etc/httpd/conf/httpd.conf</span></span></code></pre>
+<p>如果开始没有创建名为<code>ft</code>的虚拟主机，根据上面提到的**『Apache部署多网站』**，添加如下语句；如果已添加，则去重添加如下语句：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#F97583">&#x3C;</span><span style="color:#E1E4E8">VirtualHost </span><span style="color:#F97583">*</span><span style="color:#E1E4E8">:</span><span style="color:#F97583">80></span></span>
+<span class="line"><span style="color:#B392F0">    ServerAdmin</span><span style="color:#9ECBFF"> root@localhost.com</span></span>
+<span class="line"><span style="color:#B392F0">    ServerName</span><span style="color:#9ECBFF"> ft</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#B392F0">    WSGIScriptAlias</span><span style="color:#9ECBFF"> /</span><span style="color:#9ECBFF"> /var/www/ft/wsgi.py</span></span>
+<span class="line"><span style="color:#F97583">    &#x3C;</span><span style="color:#B392F0">Directory</span><span style="color:#9ECBFF"> "/var/www/ft"</span><span style="color:#F97583">></span></span>
+<span class="line"><span style="color:#B392F0">        WSGIApplicationGroup</span><span style="color:#9ECBFF"> %{GLOBAL}</span></span>
+<span class="line"><span style="color:#B392F0">        Options</span><span style="color:#9ECBFF"> Indexes</span><span style="color:#9ECBFF"> FollowSymLinks</span></span>
+<span class="line"><span style="color:#B392F0">        AllowOverride</span><span style="color:#9ECBFF"> All</span></span>
+<span class="line"><span style="color:#B392F0">        Require</span><span style="color:#9ECBFF"> all</span><span style="color:#9ECBFF"> granted</span></span>
+<span class="line"><span style="color:#F97583">    &#x3C;</span><span style="color:#B392F0">/Directory</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#F97583">&#x3C;</span><span style="color:#E1E4E8">/VirtualHost</span><span style="color:#F97583">></span></span></code></pre>
+<p>这里重点是<code>WSGIScriptAlias</code>属性，它表示将后面的<code>/var/www/ft/wsgi.py</code>路径作为当前运行的<code>/</code>目录，也就是根目录，当然也可以写别的目录，只是网站链接需要注意。</p>
+<h3 id="运行">运行</h3>
+<p>按照这样的操作后，重启服务器：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#B392F0">systemctl</span><span style="color:#9ECBFF"> restart</span><span style="color:#9ECBFF"> httpd</span></span></code></pre>
+<p>即可在浏览器中输入网址，得到相应结果：</p>
+<p><img src="/images/2020/image-1580148486735.png" alt="file"></p>
+<p>这样就完成了配置。</p>
+<h2 id="注意的坑">注意的坑</h2>
+<h4 id="1版本问题">1、版本问题</h4>
+<p>Python以及其环境的版本一直是比较头疼的问题，所以一定要选择好，搭配好，以防出现不可预见的错误。</p>
+<p>这里我给出了一种方案，如果你的环境和需求跟我差不多，完全可以使用我的选择。</p>
+<h4 id="2权限问题">2、权限问题</h4>
+<p>因为权限导致的问题也不在少数。anaconda环境的安装一定要注意不要使用默认的<code>/root/anaconda3</code>路径，而是改为<code>/opt/anaconda3</code>，这样apache有权限访问，不会出现<code>Permission denied</code>的错误。</p>
+<p>另外，如果遇到<code>/usr/share/httpd</code>这个文件夹出现了权限问题，只需要将其改为可读可写即可，因为某些需求，可能会有保留token的操作，会用到这里。</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#B392F0">sudo</span><span style="color:#9ECBFF"> chmod</span><span style="color:#79B8FF"> -R</span><span style="color:#79B8FF"> 777</span><span style="color:#9ECBFF"> /usr/share/httpd/</span></span></code></pre>
+<h4 id="3mod_wsgi的安装">3、mod_wsgi的安装</h4>
+<p>一定不要用系统命令安装，换用pip进行安装，安装的时候注意pip是我们需要的python环境。</p>
+<p>同时注意mod_wsgi的版本，不同版本之间还是有一定差别的。</p>
+<h4 id="4配置httpd">4、配置httpd</h4>
+<p>配置httpd时，主要是WSGI的配置问题，在全局中配置<code>WSGIPythonHome</code>和<code>WSGIPythonPath</code>，在虚拟主机中配置<code>WSGIScriptAlias</code>，这样就完成了全部配置。</p>
+<p>如果使用虚拟环境，那么就需要用到<code>WSGIDaemonProcess</code>这样的命令，它有参数<code>python-home</code>和<code>python-path</code>，具体参见官方文档。</p>
+<hr>
+<p>其实没有多难，但是开始总有很多小坑，我在环境的配置中踩了两天坑，然后发现我查的一些博客根本就是错误的，所以才有了开始的唠叨。最后还是OverStackflow.com解决了我大部分的问题，剩下的自己看日志一点一点解决。</p>
+<p>日志路径：<code>/var/log/httpd/</code>，里面都是各种apache的日志记录，通常看<code>error_log</code>即可。</p>
+<p>嗯，完成了。</p> </div> <!-- 悬浮 TOC --> <button class="toc-toggle" id="toc-toggle" aria-label="显示目录" data-astro-cid-iy4s3wf7> <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-list" data-astro-cid-iy4s3wf7> <line x1="8" y1="6" x2="21" y2="6" data-astro-cid-iy4s3wf7></line> <line x1="8" y1="12" x2="21" y2="12" data-astro-cid-iy4s3wf7></line> <line x1="8" y1="18" x2="21" y2="18" data-astro-cid-iy4s3wf7></line> <line x1="3" y1="6" x2="3.01" y2="6" data-astro-cid-iy4s3wf7></line> <line x1="3" y1="12" x2="3.01" y2="12" data-astro-cid-iy4s3wf7></line> <line x1="3" y1="18" x2="3.01" y2="18" data-astro-cid-iy4s3wf7></line> </svg> </button> <aside class="floating-toc" id="floating-toc" data-astro-cid-iy4s3wf7> <div class="toc-header" data-astro-cid-iy4s3wf7> <h3 data-astro-cid-iy4s3wf7>目录</h3> </div> <nav class="toc-nav" id="toc-nav" data-astro-cid-g3fimnfa> <!-- TOC 内容将由客户端脚本填充 --> </nav>  <script type="module">document.addEventListener("DOMContentLoaded",()=>{const n=document.getElementById("toc-nav"),a=document.querySelector(".toc-header h3");if(!n)return;const s=document.querySelector(".article-header h1")?.textContent||"目录";a&&(a.textContent=s);const c=Array.from(document.querySelectorAll(".article-content h2, .article-content h3, .article-content h4, .article-content h5, .article-content h6"));if(c.length===0){n.innerHTML='<p style="color: var(--color-text-secondary); padding: 0.5rem;">暂无目录</p>';return}c.forEach(e=>{e.id||(e.id=e.textContent?.toLowerCase().replace(/\s+/g,"-").replace(/[^\w\-\u4e00-\u9fa5]/g,"")||"")});const l=document.createElement("ul");c.forEach(e=>{const t=document.createElement("li"),o=document.createElement("a");o.href=`#${e.id}`,o.textContent=e.textContent||"",o.classList.add(`toc-${e.tagName.toLowerCase()}`),o.addEventListener("click",i=>{i.preventDefault();const r=document.getElementById(e.id);if(r){const u=r.getBoundingClientRect().top+window.pageYOffset-80;window.scrollTo({top:u,behavior:"smooth"}),history.pushState(null,"",`#${e.id}`)}}),t.appendChild(o),l.appendChild(t)}),n.appendChild(l);const d={root:null,rootMargin:"-60px 0px -80% 0px",threshold:0},h=new IntersectionObserver(e=>{e.forEach(t=>{if(t.isIntersecting){const o=t.target.id;n.querySelectorAll("a").forEach(r=>{r.classList.remove("active")});const i=n.querySelector(`a[href="#${o}"]`);i&&i.classList.add("active")}})},d);c.forEach(e=>h.observe(e)),setTimeout(()=>{if(window.location.hash){const t=n.querySelector(`a[href="${window.location.hash}"]`);if(t){n.querySelectorAll("a").forEach(o=>o.classList.remove("active")),t.classList.add("active");return}}let e="";for(const t of c)if(t.getBoundingClientRect().top<=150)e=t.id;else break;if(!e&&c.length>0&&window.scrollY<100&&(e=c[0].id),e){n.querySelectorAll("a").forEach(o=>o.classList.remove("active"));const t=n.querySelector(`a[href="#${e}"]`);t&&t.classList.add("active")}},100)});</script> </aside> <div class="toc-overlay" id="toc-overlay" data-astro-cid-iy4s3wf7></div> <section class="comments" data-astro-cid-iy4s3wf7> <div class="giscus-wrapper"> <script src="https://giscus.app/client.js" data-repo="jeremyjone/blog-comments" data-repo-id="R_kgDOQlVVGg" data-category="Announcements" data-category-id="DIC_kwDOQlVVGs4Czkir" data-mapping="title" data-term data-strict="0" data-reactions-enabled="1" data-emit-metadata="0" data-input-position="top" data-theme="preferred_color_scheme" data-lang="zh-CN" crossorigin="anonymous" async></script> <noscript>请启用 JavaScript 查看评论。</noscript> </div> </section> </article>  </main> <footer class="site-footer" data-astro-cid-x322jucz> <div class="container footer-content" data-astro-cid-x322jucz> <p data-astro-cid-x322jucz>
+&copy; 2025 <b data-astro-cid-x322jucz>JeremyJone.com</b> All rights reserved.
+</p> <div class="footer-links" data-astro-cid-x322jucz> <a href="https://github.com/jeremyjone" target="_blank" rel="noopener" data-astro-cid-x322jucz> GitHub </a> </div> </div> </footer> <script type="module" src="/_astro/BaseLayout.astro_astro_type_script_index_0_lang.D4h-rqQD.js"></script> <div id="search-modal" class="search-modal" style="display: none;" data-astro-cid-jwf5kjrd> <div class="search-overlay" data-astro-cid-jwf5kjrd></div> <div class="search-container" data-astro-cid-jwf5kjrd> <div class="search-header" data-astro-cid-jwf5kjrd> <input type="text" id="search-input-global" placeholder="搜索全站内容 (Cmd+K)..." autocomplete="off" data-astro-cid-jwf5kjrd> <button id="close-search" aria-label="Close search" data-astro-cid-jwf5kjrd>&times;</button> </div> <div id="search-results-global" class="search-results" data-astro-cid-jwf5kjrd> <div class="search-placeholder" data-astro-cid-jwf5kjrd>输入关键词开始搜索...</div> </div> </div> </div>  <script>
+    window.loadPagefind = async () => {
+        try {
+            return await import("/pagefind/pagefind.js");
+        } catch (e) {
+            console.warn("Failed to load pagefind:", e);
+            return null;
+        }
+    };
+</script> <script type="module" src="/_astro/SearchModal.astro_astro_type_script_index_0_lang.C4oQFeHw.js"></script> </body></html>  <script type="module">document.addEventListener("DOMContentLoaded",()=>{const c=document.getElementById("toc-toggle"),e=document.getElementById("floating-toc"),t=document.getElementById("toc-overlay");c?.addEventListener("click",()=>{e?.classList.add("active"),t?.classList.add("active")});const o=()=>{e?.classList.remove("active"),t?.classList.remove("active")};t?.addEventListener("click",o)});</script>

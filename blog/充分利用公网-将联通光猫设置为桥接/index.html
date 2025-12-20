@@ -1,0 +1,71 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="dark" data-astro-cid-x322jucz> <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>充分利用公网 -- 将联通光猫设置为桥接</title><meta name="description" content="今天2月3号，还是不用上班，又延长了一个礼拜，计划今天继续刷剧。可是一觉醒来发现家里没网了。这个有点郁闷，之前是宽带通，因为一直都很慢，真的很辣鸡，所以想着到期就不续费了，没成想居然昨天到期，今天整个屋里都没有网了。。。 立马手机下单约了..."><link rel="canonical" href="https://www.jeremyjone.com//blog/%E5%85%85%E5%88%86%E5%88%A9%E7%94%A8%E5%85%AC%E7%BD%91-%E5%B0%86%E8%81%94%E9%80%9A%E5%85%89%E7%8C%AB%E8%AE%BE%E7%BD%AE%E4%B8%BA%E6%A1%A5%E6%8E%A5/"><meta property="og:title" content="充分利用公网 -- 将联通光猫设置为桥接"><meta property="og:description" content="今天2月3号，还是不用上班，又延长了一个礼拜，计划今天继续刷剧。可是一觉醒来发现家里没网了。这个有点郁闷，之前是宽带通，因为一直都很慢，真的很辣鸡，所以想着到期就不续费了，没成想居然昨天到期，今天整个屋里都没有网了。。。 立马手机下单约了..."><meta property="og:type" content="article"><meta property="og:url" content="https://www.jeremyjone.com//blog/%E5%85%85%E5%88%86%E5%88%A9%E7%94%A8%E5%85%AC%E7%BD%91-%E5%B0%86%E8%81%94%E9%80%9A%E5%85%89%E7%8C%AB%E8%AE%BE%E7%BD%AE%E4%B8%BA%E6%A1%A5%E6%8E%A5/"><meta property="og:site_name" content="JeremyJone's Blog"><meta property="og:locale" content="zh_CN"><link rel="icon" href="/favicon.ico"><link rel="stylesheet" href="/_astro/_year_.CFHYKZJi.css">
+<link rel="stylesheet" href="/_astro/_slug_.B1ShOm38.css"></head> <body data-astro-cid-x322jucz> <header class="site-header" data-astro-cid-x322jucz> <div class="container header-content" data-astro-cid-x322jucz> <a href="/" class="logo" data-astro-cid-x322jucz> <div class="logo-icon" data-astro-cid-x322jucz> <img src="/resources/avatar.png" alt="Logo" width="32" height="32" data-astro-cid-x322jucz> </div> <span class="logo-text" data-astro-cid-x322jucz>JeremyJone&#39;s Blog</span> </a> <div class="header-right" data-astro-cid-x322jucz> <nav class="nav" data-astro-cid-x322jucz> <a href="/" class="nav-link" data-astro-cid-x322jucz> 首页 </a><a href="/blog" class="nav-link active" data-astro-cid-x322jucz> 博客 </a><a href="/notes" class="nav-link" data-astro-cid-x322jucz> 笔记 </a> </nav> <button class="search-toggle" onclick="window.openSearchModal()" aria-label="搜索" data-astro-cid-x322jucz> <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-astro-cid-x322jucz><circle cx="11" cy="11" r="8" data-astro-cid-x322jucz></circle><line x1="21" y1="21" x2="16.65" y2="16.65" data-astro-cid-x322jucz></line></svg> <span class="search-placeholder" data-astro-cid-x322jucz>Ctrl+K 搜索...</span> </button> <button class="theme-toggle" id="theme-toggle" aria-label="切换主题" data-astro-cid-x322jucz> <svg class="sun-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" data-astro-cid-x322jucz> <circle cx="12" cy="12" r="5" data-astro-cid-x322jucz></circle> <line x1="12" y1="1" x2="12" y2="3" data-astro-cid-x322jucz></line> <line x1="12" y1="21" x2="12" y2="23" data-astro-cid-x322jucz></line> <line x1="4.22" y1="4.22" x2="5.64" y2="5.64" data-astro-cid-x322jucz></line> <line x1="18.36" y1="18.36" x2="19.78" y2="19.78" data-astro-cid-x322jucz></line> <line x1="1" y1="12" x2="3" y2="12" data-astro-cid-x322jucz></line> <line x1="21" y1="12" x2="23" y2="12" data-astro-cid-x322jucz></line> <line x1="4.22" y1="19.78" x2="5.64" y2="18.36" data-astro-cid-x322jucz></line> <line x1="18.36" y1="5.64" x2="19.78" y2="4.22" data-astro-cid-x322jucz></line> </svg> <svg class="moon-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" data-astro-cid-x322jucz> <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" data-astro-cid-x322jucz></path> </svg> </button> </div> </div> </header> <main class="container" data-astro-cid-x322jucz>  <article data-content-type="blog" data-pagefind-body data-pagefind-filter="type:blog" data-astro-cid-iy4s3wf7> <header class="article-header" data-astro-cid-iy4s3wf7> <h1 data-astro-cid-iy4s3wf7>充分利用公网 -- 将联通光猫设置为桥接</h1> <p class="meta" data-astro-cid-iy4s3wf7>
+发布于 2020-02-04 01:02:04 · 4 分钟 · 标签：<a href="/tags/ip" class="tag" data-astro-cid-iy4s3wf7> ip </a><a href="/tags/公网IP" class="tag" data-astro-cid-iy4s3wf7> 公网IP </a> </p> </header> <div class="article-content" data-astro-cid-iy4s3wf7> <p>今天2月3号，还是不用上班，又延长了一个礼拜，计划今天继续刷剧。可是一觉醒来发现家里没网了。这个有点郁闷，之前是宽带通，因为一直都很慢，真的很辣鸡，所以想着到期就不续费了，没成想居然昨天到期，今天整个屋里都没有网了。。。</p>
+<p>立马手机下单约了联通的宽带，没五分钟师傅就打来电话说下午可以安装。上午11点下单，下午2点就安装好了，整体安装时间不超过10分钟。</p>
+<p>等师傅走了，我开始满屋消毒，没办法，为了大家好，这日子档口，像安装师傅这样每家每户走动，无论是谁，都要先消毒的，毕竟我进门第一件事也是先消毒。<strong>不管怎么说，真心希望这场2020年春节的疫情早些过去。</strong></p>
+<hr>
+<p>言归正传。网速还是不错的，小米路由测的，给个图： <img src="/images/2020/image-1580745537690.png" alt="file"></p>
+<h2 id="安装">安装</h2>
+<p>它的逻辑是这样子的：<strong>光纤入户 -> 光猫 -> 路由(注1，可选可不选) -> 室内设备</strong></p>
+<ul>
+<li>注1：光猫本身也可以算是一个路由器，它具有wifi和lan口，不过设置上很不友好，并且wifi不具备5G，明显不能满足我的刷剧需求了，而且，wifi信号是真的差劲。。。~</li>
+</ul>
+<h4 id="光纤">光纤</h4>
+<p>光纤是本身就会有的，北京用户可以在这里查询：<a href="http://www.wokuan.cn/index.php?s=/SeleFiberBuild/vilige">http://www.wokuan.cn/index.php?s=/SeleFiberBuild/vilige</a> ，外地用户可以自行百度~</p>
+<h4 id="光猫">光猫</h4>
+<p>有了光纤，师傅来家里主要就是安装和配置光猫，这里略过，因为我们后续就要改掉它~</p>
+<h4 id="路由">路由</h4>
+<p>师傅问了我是不是继续使用我的路由，然后他会主动连接路由，我把路由的上网设置改成DHCP后，直接联网成功~</p>
+<h2 id="测试">测试</h2>
+<p>测试了网络，发现是可以用的。我重新选择联通是因为它可以给我提供<strong>公网IP</strong>，这个是很重要的指标。本来计划着打电话管客服要，没成想联网后居然就是公网，这就省事儿了，直接测试。但是无论怎么配置路由，都无法从外面连接。这个就头疼了。不过没关系，问题也很明显，公网可以找到光猫，而光猫无法转发给路由，路由内的设备也就无法被找到。</p>
+<h2 id="改造">改造</h2>
+<p>既然光猫的设置很烂，那就跳过光猫，直接用路由联网，这就需要把光猫变成中继设备，把光猫变成桥接模式，让光纤与路由直接连接即可。</p>
+<h5 id="注意以下几点">注意以下几点：</h5>
+<ul>
+<li>我的光猫型号为ZXHN F477V2，其他型号我没用过，应该大同小异，我查的资料反正都差不多。</li>
+<li>我的是小米路由，本身不需要重置网段，其他路由请先重置路由的网段，因为光猫默认为192.168.1.1的，如果重复了可能会有问题。网上说的，我没试。</li>
+<li>我只配置了网络，如果有语音电话或者IPTV的，我不太清楚会有什么影响，具体可以打客服询问。</li>
+</ul>
+<h4 id="管理员登录">管理员登录</h4>
+<p>登录管理员账户页面<a href="http://192.168.1.1/CU.html">http://192.168.1.1/CU.html</a> ，但是我们打开后发现还是普通用户：</p>
+<p><img src="/images/2020/image-1580747139856.png" alt="file"></p>
+<p>这时先打开这个网址：<a href="192.168.1.1/hidden_version_switch.gch">192.168.1.1/hidden_version_switch.gch</a>，等待一段时间，会打开一个全新的界面：</p>
+<p><img src="/images/2020/image-1580747400649.png" alt="file"></p>
+<p>选择<code>Default Version</code>，并输入管理员密码<code>CUAdmin</code>，点击提交，稍微等待后，重新打开登录页面<a href="http://192.168.1.1/CU.html">http://192.168.1.1/CU.html</a> ，此时就可以选择管理员了。</p>
+<p><img src="/images/2020/image-1580747650301.png" alt="file"></p>
+<p>点击管理员，输入密码，密码仍然是<code>CUAdmin</code>，就可以进到管理员页面。</p>
+<h4 id="新建桥接">新建桥接</h4>
+<p>在配置中找到上行线路配置，然后新建一个WAN连接，业务模式选择<code>INTERNET</code>，VLAN模式选择<code>改写(tag)</code>，VLAN ID填写<code>3961</code>，<strong>根据网友 <code>炸鸡</code> 的意见，下图的模式一栏，应改为 <code>桥接</code>，这个确实是，当时没注意这个点</strong>，其他不用修改，点击创建，然后重启光猫，完成配置。</p>
+<p><img src="/images/2020/image-1580748219810.png" alt="file"></p>
+<p>完成后在基本页面中可以看到新配置的结果：</p>
+<p><img src="/images/2020/image-1580748208495.png" alt="file"></p>
+<h4 id="配置路由器">配置路由器</h4>
+<p>光猫配置好，开始配置路由器，起始就是从DHCP改回PPPoE模式即可，账号和密码在安装光猫的时候，师傅会给，直接连接即可成功。</p>
+<p><img src="/images/2020/image-1580748370902.png" alt="file"></p>
+<h4 id="测试-1">测试</h4>
+<p>现在配置一个端口转发，测试一下我的NAS：</p>
+<p><img src="/images/2020/image-1580748591934.png" alt="file"></p>
+<p>现在在浏览器输入公网IP加端口号12345，或者手机关掉Wifi使用4G也可以，都可以得到我的NAS管理页面：</p>
+<p><img src="/images/2020/image-1580748731233.png" alt="file"></p>
+<p>这样，我的公网IP就可以在路由器上配置了，简单方便，毕竟小米路由器要更加灵活一些。</p>
+<h2 id="退回">退回</h2>
+<p>如果有问题要恢复初始状态，重新回到<a href="192.168.1.1/hidden_version_switch.gch">192.168.1.1/hidden_version_switch.gch</a> 里选 <code>beijing</code>配置，然后在配置页面里输入宽带账号就可以了</p>
+<h2 id="出现的问题">出现的问题</h2>
+<p>设置好了之后，我发现光猫的管理页面192.168.1.1上不去了：</p>
+<p><img src="/images/2020/image-1580749010447.png" alt="file"></p>
+<p>这个确实又是个问题了，因为我现在用的都是小米的192.168.31.1的网络，光猫只是一个中继设备了。</p>
+<p>解决的办法还是有的，我突然想起来它本身有wifi，连接一下试了试，还真管用，只不过它本身没有外网了，属于一个独立的网关了，但是连接它的wifi之后可以登录其管理页面。</p>
+<p>所以连接的问题就解决了，每次需要管理的时候（当然，我觉得这种时候并不多，所以不算麻烦），切换wifi网络即可。</p>
+<hr>
+<p>好了，祝大家都早日用上公网IP，也祝福现在所有为疫情做出贡献的人，祝福武汉，祝福中国~</p> </div> <!-- 悬浮 TOC --> <button class="toc-toggle" id="toc-toggle" aria-label="显示目录" data-astro-cid-iy4s3wf7> <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-list" data-astro-cid-iy4s3wf7> <line x1="8" y1="6" x2="21" y2="6" data-astro-cid-iy4s3wf7></line> <line x1="8" y1="12" x2="21" y2="12" data-astro-cid-iy4s3wf7></line> <line x1="8" y1="18" x2="21" y2="18" data-astro-cid-iy4s3wf7></line> <line x1="3" y1="6" x2="3.01" y2="6" data-astro-cid-iy4s3wf7></line> <line x1="3" y1="12" x2="3.01" y2="12" data-astro-cid-iy4s3wf7></line> <line x1="3" y1="18" x2="3.01" y2="18" data-astro-cid-iy4s3wf7></line> </svg> </button> <aside class="floating-toc" id="floating-toc" data-astro-cid-iy4s3wf7> <div class="toc-header" data-astro-cid-iy4s3wf7> <h3 data-astro-cid-iy4s3wf7>目录</h3> </div> <nav class="toc-nav" id="toc-nav" data-astro-cid-g3fimnfa> <!-- TOC 内容将由客户端脚本填充 --> </nav>  <script type="module">document.addEventListener("DOMContentLoaded",()=>{const n=document.getElementById("toc-nav"),a=document.querySelector(".toc-header h3");if(!n)return;const s=document.querySelector(".article-header h1")?.textContent||"目录";a&&(a.textContent=s);const c=Array.from(document.querySelectorAll(".article-content h2, .article-content h3, .article-content h4, .article-content h5, .article-content h6"));if(c.length===0){n.innerHTML='<p style="color: var(--color-text-secondary); padding: 0.5rem;">暂无目录</p>';return}c.forEach(e=>{e.id||(e.id=e.textContent?.toLowerCase().replace(/\s+/g,"-").replace(/[^\w\-\u4e00-\u9fa5]/g,"")||"")});const l=document.createElement("ul");c.forEach(e=>{const t=document.createElement("li"),o=document.createElement("a");o.href=`#${e.id}`,o.textContent=e.textContent||"",o.classList.add(`toc-${e.tagName.toLowerCase()}`),o.addEventListener("click",i=>{i.preventDefault();const r=document.getElementById(e.id);if(r){const u=r.getBoundingClientRect().top+window.pageYOffset-80;window.scrollTo({top:u,behavior:"smooth"}),history.pushState(null,"",`#${e.id}`)}}),t.appendChild(o),l.appendChild(t)}),n.appendChild(l);const d={root:null,rootMargin:"-60px 0px -80% 0px",threshold:0},h=new IntersectionObserver(e=>{e.forEach(t=>{if(t.isIntersecting){const o=t.target.id;n.querySelectorAll("a").forEach(r=>{r.classList.remove("active")});const i=n.querySelector(`a[href="#${o}"]`);i&&i.classList.add("active")}})},d);c.forEach(e=>h.observe(e)),setTimeout(()=>{if(window.location.hash){const t=n.querySelector(`a[href="${window.location.hash}"]`);if(t){n.querySelectorAll("a").forEach(o=>o.classList.remove("active")),t.classList.add("active");return}}let e="";for(const t of c)if(t.getBoundingClientRect().top<=150)e=t.id;else break;if(!e&&c.length>0&&window.scrollY<100&&(e=c[0].id),e){n.querySelectorAll("a").forEach(o=>o.classList.remove("active"));const t=n.querySelector(`a[href="#${e}"]`);t&&t.classList.add("active")}},100)});</script> </aside> <div class="toc-overlay" id="toc-overlay" data-astro-cid-iy4s3wf7></div> <section class="comments" data-astro-cid-iy4s3wf7> <div class="giscus-wrapper"> <script src="https://giscus.app/client.js" data-repo="jeremyjone/blog-comments" data-repo-id="R_kgDOQlVVGg" data-category="Announcements" data-category-id="DIC_kwDOQlVVGs4Czkir" data-mapping="title" data-term data-strict="0" data-reactions-enabled="1" data-emit-metadata="0" data-input-position="top" data-theme="preferred_color_scheme" data-lang="zh-CN" crossorigin="anonymous" async></script> <noscript>请启用 JavaScript 查看评论。</noscript> </div> </section> </article>  </main> <footer class="site-footer" data-astro-cid-x322jucz> <div class="container footer-content" data-astro-cid-x322jucz> <p data-astro-cid-x322jucz>
+&copy; 2025 <b data-astro-cid-x322jucz>JeremyJone.com</b> All rights reserved.
+</p> <div class="footer-links" data-astro-cid-x322jucz> <a href="https://github.com/jeremyjone" target="_blank" rel="noopener" data-astro-cid-x322jucz> GitHub </a> </div> </div> </footer> <script type="module" src="/_astro/BaseLayout.astro_astro_type_script_index_0_lang.D4h-rqQD.js"></script> <div id="search-modal" class="search-modal" style="display: none;" data-astro-cid-jwf5kjrd> <div class="search-overlay" data-astro-cid-jwf5kjrd></div> <div class="search-container" data-astro-cid-jwf5kjrd> <div class="search-header" data-astro-cid-jwf5kjrd> <input type="text" id="search-input-global" placeholder="搜索全站内容 (Cmd+K)..." autocomplete="off" data-astro-cid-jwf5kjrd> <button id="close-search" aria-label="Close search" data-astro-cid-jwf5kjrd>&times;</button> </div> <div id="search-results-global" class="search-results" data-astro-cid-jwf5kjrd> <div class="search-placeholder" data-astro-cid-jwf5kjrd>输入关键词开始搜索...</div> </div> </div> </div>  <script>
+    window.loadPagefind = async () => {
+        try {
+            return await import("/pagefind/pagefind.js");
+        } catch (e) {
+            console.warn("Failed to load pagefind:", e);
+            return null;
+        }
+    };
+</script> <script type="module" src="/_astro/SearchModal.astro_astro_type_script_index_0_lang.C4oQFeHw.js"></script> </body></html>  <script type="module">document.addEventListener("DOMContentLoaded",()=>{const c=document.getElementById("toc-toggle"),e=document.getElementById("floating-toc"),t=document.getElementById("toc-overlay");c?.addEventListener("click",()=>{e?.classList.add("active"),t?.classList.add("active")});const o=()=>{e?.classList.remove("active"),t?.classList.remove("active")};t?.addEventListener("click",o)});</script>
