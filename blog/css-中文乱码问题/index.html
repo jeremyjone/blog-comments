@@ -1,0 +1,289 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="dark" data-astro-cid-x322jucz> <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="astro-view-transitions-enabled" content="true"><meta name="astro-view-transitions-fallback" content="animate"><script type="module" src="/_astro/ClientRouter.astro_astro_type_script_index_0_lang.QW52Ox2j.js"></script><title>CSS 中文乱码问题</title><meta name="description" content="# CSS `content`​ 中文乱码问题：从 Nginx 配置到 PostCSS 编译的完整解决方案 ## 一、问题起因 ### 1.1 现象描述 线上部署的 Vue 项目，在部分用户电脑上出现诡异现象： * 页面主体内容正常..."><link rel="canonical" href="https://www.jeremyjone.com//blog/css-%E4%B8%AD%E6%96%87%E4%B9%B1%E7%A0%81%E9%97%AE%E9%A2%98/"><meta property="og:title" content="CSS 中文乱码问题"><meta property="og:description" content="# CSS `content`​ 中文乱码问题：从 Nginx 配置到 PostCSS 编译的完整解决方案 ## 一、问题起因 ### 1.1 现象描述 线上部署的 Vue 项目，在部分用户电脑上出现诡异现象： * 页面主体内容正常..."><meta property="og:type" content="article"><meta property="og:url" content="https://www.jeremyjone.com//blog/css-%E4%B8%AD%E6%96%87%E4%B9%B1%E7%A0%81%E9%97%AE%E9%A2%98/"><meta property="og:site_name" content="JeremyJone's Blog"><meta property="og:locale" content="zh_CN"><link rel="icon" href="/favicon.ico"><style>#nprogress{pointer-events:none}#nprogress .bar{background:#29d;position:fixed;z-index:1031;top:0;left:0;width:100%;height:2px}#nprogress .peg{display:block;position:absolute;right:0;width:100px;height:100%;box-shadow:0 0 10px #29d,0 0 5px #29d;opacity:1;-webkit-transform:rotate(3deg) translate(0px,-4px);-ms-transform:rotate(3deg) translate(0px,-4px);transform:rotate(3deg) translateY(-4px)}#nprogress .spinner{display:block;position:fixed;z-index:1031;top:15px;right:15px}#nprogress .spinner-icon{width:18px;height:18px;box-sizing:border-box;border:solid 2px transparent;border-top-color:#29d;border-left-color:#29d;border-radius:50%;-webkit-animation:nprogress-spinner .4s linear infinite;animation:nprogress-spinner .4s linear infinite}.nprogress-custom-parent{overflow:hidden;position:relative}.nprogress-custom-parent #nprogress .spinner,.nprogress-custom-parent #nprogress .bar{position:absolute}@-webkit-keyframes nprogress-spinner{0%{-webkit-transform:rotate(0deg)}to{-webkit-transform:rotate(360deg)}}@keyframes nprogress-spinner{0%{transform:rotate(0)}to{transform:rotate(360deg)}}
+</style>
+<link rel="stylesheet" href="/_astro/_year_.CYaCSRsu.css">
+<link rel="stylesheet" href="/_astro/_slug_.B1ShOm38.css"></head> <body data-astro-cid-x322jucz> <header class="site-header" data-astro-cid-x322jucz data-astro-transition-persist="astro-oh3dxdoj-1"> <div class="container header-content" data-astro-cid-x322jucz> <a href="/" class="logo" data-astro-cid-x322jucz> <div class="logo-icon" data-astro-cid-x322jucz> <img src="/resources/avatar.png" alt="Logo" width="32" height="32" data-astro-cid-x322jucz> </div> <span class="logo-text" data-astro-cid-x322jucz>JeremyJone&#39;s Blog</span> </a> <div class="header-right" data-astro-cid-x322jucz> <nav class="nav" data-astro-cid-x322jucz> <a href="/" class="nav-link" data-href="/" data-astro-cid-x322jucz> 首页 </a><a href="/blog" class="nav-link" data-href="/blog" data-astro-cid-x322jucz> 博客 </a><a href="/notes" class="nav-link" data-href="/notes" data-astro-cid-x322jucz> 笔记 </a> </nav> <button class="search-toggle" onclick="window.openSearchModal()" aria-label="搜索" data-astro-cid-x322jucz> <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-astro-cid-x322jucz><circle cx="11" cy="11" r="8" data-astro-cid-x322jucz></circle><line x1="21" y1="21" x2="16.65" y2="16.65" data-astro-cid-x322jucz></line></svg> <span class="search-placeholder" data-astro-cid-x322jucz>Ctrl+K 搜索...</span> </button> <button class="theme-toggle" id="theme-toggle" aria-label="切换主题" data-astro-cid-x322jucz> <svg class="sun-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" data-astro-cid-x322jucz> <circle cx="12" cy="12" r="5" data-astro-cid-x322jucz></circle> <line x1="12" y1="1" x2="12" y2="3" data-astro-cid-x322jucz></line> <line x1="12" y1="21" x2="12" y2="23" data-astro-cid-x322jucz></line> <line x1="4.22" y1="4.22" x2="5.64" y2="5.64" data-astro-cid-x322jucz></line> <line x1="18.36" y1="18.36" x2="19.78" y2="19.78" data-astro-cid-x322jucz></line> <line x1="1" y1="12" x2="3" y2="12" data-astro-cid-x322jucz></line> <line x1="21" y1="12" x2="23" y2="12" data-astro-cid-x322jucz></line> <line x1="4.22" y1="19.78" x2="5.64" y2="18.36" data-astro-cid-x322jucz></line> <line x1="18.36" y1="5.64" x2="19.78" y2="4.22" data-astro-cid-x322jucz></line> </svg> <svg class="moon-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" data-astro-cid-x322jucz> <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" data-astro-cid-x322jucz></path> </svg> </button> </div> </div> </header> <main class="container" data-astro-cid-x322jucz>  <article data-content-type="blog" data-pagefind-body data-pagefind-filter="type:blog" data-astro-cid-iy4s3wf7> <header class="article-header" data-astro-cid-iy4s3wf7> <h1 data-astro-cid-iy4s3wf7>CSS 中文乱码问题</h1> <p class="meta" data-astro-cid-iy4s3wf7>
+发布于 2026-01-14 09:20:19 · 4 分钟 · 标签：<a href="/tags/css" class="tag" data-astro-cid-iy4s3wf7> css </a> </p> </header> <div class="article-content" data-astro-cid-iy4s3wf7> <h1 id="css-content-中文乱码问题从-nginx-配置到-postcss-编译的完整解决方案">CSS <code>content</code>​ 中文乱码问题：从 Nginx 配置到 PostCSS 编译的完整解决方案</h1>
+<h2 id="一问题起因">一、问题起因</h2>
+<h3 id="11-现象描述">1.1 现象描述</h3>
+<p>线上部署的 Vue 项目，在部分用户电脑上出现诡异现象：</p>
+<ul>
+<li>页面主体内容正常显示</li>
+<li>只有通过 CSS <code>::before</code>​ / <code>::after</code>​ 的 <code>content</code>​ 属性显示的中文变成乱码</li>
+<li>表现为类似 <code>æš‚æ— ç›¸å…³æ•°æ®</code>​ 这样的”拉丁字符乱码串”</li>
+</ul>
+<p>典型代码：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="css"><code><span class="line"><span style="color:#B392F0">.my-empty</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#E1E4E8">  &#x26;::after {</span></span>
+<span class="line"><span style="color:#79B8FF">    content</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">"暂无相关数据"</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#79B8FF">    color</span><span style="color:#E1E4E8">: </span><span style="color:#79B8FF">#999</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#E1E4E8">  }</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<h3 id="12-问题特征">1.2 问题特征</h3>
+<ul>
+<li><strong>同一环境、不同电脑表现不同</strong>：有的人正常，有的人乱码</li>
+<li><strong>不是字体缺失</strong>：字体缺失会显示”豆腐块（□）“，而这里是拉丁字符乱码</li>
+<li><strong>只影响 CSS</strong> <strong>​<code>content</code>​</strong>​：HTML 中的中文正常</li>
+</ul>
+<h3 id="13-根本原因">1.3 根本原因</h3>
+<p><strong>浏览器在解析 CSS 文件时，使用了错误的字符集（charset）</strong> 。</p>
+<p>具体链路：</p>
+<ol>
+<li>CSS 源文件是 UTF-8 编码</li>
+<li>构建打包后，CSS 产物仍是 UTF-8</li>
+<li>服务器返回 CSS 时，<code>Content-Type</code>​ 响应头<strong>没有声明</strong> <strong>​<code>charset=utf-8</code>​</strong>​</li>
+<li>部分浏览器/代理环境会按默认编码（如 ISO-8859-1、GBK）解读 CSS</li>
+<li>UTF-8 的中文字节被按错误编码解码，变成乱码</li>
+</ol>
+<h2 id="二问题排查">二、问题排查</h2>
+<h3 id="21-判断是字体问题还是编码问题">2.1 判断是”字体问题”还是”编码问题”</h3>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>表现</th><th>原因</th></tr></thead><tbody><tr><td>方块/豆腐块（□□□）</td><td>字体缺失</td></tr><tr><td>拉丁乱码（æš‚æ— …）</td><td>编码错误</td></tr></tbody></table>
+<h3 id="22-用-devtools-验证">2.2 用 DevTools 验证</h3>
+<ol>
+<li>
+<p>打开出问题的页面</p>
+</li>
+<li>
+<p>DevTools → Network → 找到加载的 <code>.css</code>​ 文件</p>
+</li>
+<li>
+<p>查看 <strong>Response Headers</strong>：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="text"><code><span class="line"><span>Content-Type: text/css</span></span></code></pre>
+</li>
+</ol>
+<p>如果只有 <code>text/css</code>​，没有 <code>charset=utf-8</code>​，就是问题所在。</p>
+<p>正确的响应头应该是：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="text"><code><span class="line"><span>Content-Type: text/css; charset=utf-8</span></span></code></pre>
+<h2 id="三解决方案一nginx-强制-utf-8推荐">三、解决方案一：Nginx 强制 UTF-8（推荐）</h2>
+<h3 id="31-原理">3.1 原理</h3>
+<p>在服务端（Nginx）层面，强制所有 CSS 响应都带上 <code>charset=utf-8</code>​，让浏览器明确知道”用 UTF-8 解码”。</p>
+<h3 id="32-配置方法">3.2 配置方法</h3>
+<p>在 nginx.conf 的 <code>http {}</code>​ 块中添加：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="nginx"><code><span class="line"><span style="color:#F97583">http</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#F97583">  include </span><span style="color:#E1E4E8">      mime.types;</span></span>
+<span class="line"><span style="color:#F97583">  default_type </span><span style="color:#E1E4E8"> application/octet-stream;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">  # 强制输出使用 UTF-8</span></span>
+<span class="line"><span style="color:#F97583">  charset </span><span style="color:#E1E4E8">utf-8;</span></span>
+<span class="line"><span style="color:#F97583">  charset_types </span><span style="color:#E1E4E8">text/css;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">  # ...其他配置...</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<p><strong>配置说明：</strong></p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>指令</th><th>作用</th></tr></thead><tbody><tr><td>​<code>charset utf-8;</code>​</td><td>在响应头中添加 <code>charset=utf-8</code>​</td></tr><tr><td>​<code>charset_types text/css;</code>​</td><td>指定哪些 MIME 类型需要附加 charset（默认只对 <code>text/html</code>​ 生效）</td></tr></tbody></table>
+<h3 id="33-如果使用了-sub_filter">3.3 如果使用了 <code>sub_filter</code>​</h3>
+<p>当你的场景涉及多入口部署、路径替换（例如把 <code>/web/</code>​ 替换为 <code>/sub/web/</code>​），启用 <code>sub_filter</code>​ 后更容易触发此问题：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="nginx"><code><span class="line"><span style="color:#F97583">location</span><span style="color:#B392F0"> /sub/web/ </span><span style="color:#E1E4E8">{</span></span>
+<span class="line"><span style="color:#F97583">  alias </span><span style="color:#E1E4E8">/usr/share/nginx/html/;</span></span>
+<span class="line"><span style="color:#F97583">  index </span><span style="color:#E1E4E8">partner-list.html;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">  sub_filter </span><span style="color:#9ECBFF">'/web/'</span><span style="color:#9ECBFF"> '/sub/web/'</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">  sub_filter_once </span><span style="color:#79B8FF">off</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">  sub_filter_types </span><span style="color:#E1E4E8">text/css application/javascript;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">  # 确保 charset 生效</span></span>
+<span class="line"><span style="color:#F97583">  charset </span><span style="color:#E1E4E8">utf-8;</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<h3 id="34-验证">3.4 验证</h3>
+<p>部署后用 curl 检查：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="sh"><code><span class="line"><span style="color:#B392F0">curl</span><span style="color:#79B8FF"> -I</span><span style="color:#9ECBFF"> http://your-host/static/css/app.xxx.css</span></span></code></pre>
+<p>响应头应包含：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="text"><code><span class="line"><span>Content-Type: text/css; charset=utf-8</span></span></code></pre>
+<h2 id="四解决方案二unicode-转义前端编译时处理">四、解决方案二：Unicode 转义（前端编译时处理）</h2>
+<h3 id="41-原理">4.1 原理</h3>
+<p>将 CSS 中的中文字符转换为 Unicode 转义序列，这样即使浏览器按错误编码解读 CSS，也不会影响 <code>content</code>​ 的显示。</p>
+<p><strong>转换示例：</strong></p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>原始写法</th><th>Unicode 转义写法</th></tr></thead><tbody><tr><td>​<code>content: "暂无相关数据";</code>​</td><td>​<code>content: "\6682\65e0\76f8\5173\6570\636e";</code>​</td></tr></tbody></table>
+<h3 id="42-方法一手动硬写">4.2 方法一：手动硬写</h3>
+<p>直接在 CSS/Less/Scss 中写 Unicode 转义：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="css"><code><span class="line"><span style="color:#B392F0">.my-empty</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#E1E4E8">  &#x26;::after {</span></span>
+<span class="line"><span style="color:#79B8FF">    content</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">"</span><span style="color:#79B8FF">\6682\65e0\76f8\5173\6570\636e</span><span style="color:#9ECBFF">"</span><span style="color:#E1E4E8">; </span><span style="color:#6A737D">/* 暂无相关数据 */</span></span>
+<span class="line"><span style="color:#79B8FF">    color</span><span style="color:#E1E4E8">: </span><span style="color:#79B8FF">#999</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#E1E4E8">  }</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<p><strong>转换工具（JavaScript）：</strong></p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="js"><code><span class="line"><span style="color:#F97583">function</span><span style="color:#B392F0"> toUnicodeEscape</span><span style="color:#E1E4E8">(</span><span style="color:#FFAB70">str</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#F97583">  return</span><span style="color:#E1E4E8"> str.</span><span style="color:#B392F0">split</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">''</span><span style="color:#E1E4E8">).</span><span style="color:#B392F0">map</span><span style="color:#E1E4E8">(</span><span style="color:#FFAB70">char</span><span style="color:#F97583"> =></span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#F97583">    const</span><span style="color:#79B8FF"> code</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> char.</span><span style="color:#B392F0">charCodeAt</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">0</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#F97583">    if</span><span style="color:#E1E4E8"> (code </span><span style="color:#F97583">></span><span style="color:#79B8FF"> 127</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#F97583">      return</span><span style="color:#9ECBFF"> '</span><span style="color:#79B8FF">\\</span><span style="color:#9ECBFF">'</span><span style="color:#F97583"> +</span><span style="color:#E1E4E8"> code.</span><span style="color:#B392F0">toString</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">16</span><span style="color:#E1E4E8">).</span><span style="color:#B392F0">padStart</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">4</span><span style="color:#E1E4E8">, </span><span style="color:#9ECBFF">'0'</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"><span style="color:#F97583">    return</span><span style="color:#E1E4E8"> char;</span></span>
+<span class="line"><span style="color:#E1E4E8">  }).</span><span style="color:#B392F0">join</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">''</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">console.</span><span style="color:#B392F0">log</span><span style="color:#E1E4E8">(</span><span style="color:#B392F0">toUnicodeEscape</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">'暂无相关数据'</span><span style="color:#E1E4E8">));</span></span>
+<span class="line"><span style="color:#6A737D">// 输出: \6682\65e0\76f8\5173\6570\636e</span></span></code></pre>
+<h3 id="43-方法二postcss-插件自动转换推荐">4.3 方法二：PostCSS 插件自动转换（推荐）</h3>
+<p>通过 PostCSS 插件，在构建时自动将 <code>content</code>​ 中的中文转为 Unicode 转义。</p>
+<p><strong>安装：</strong></p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="sh"><code><span class="line"><span style="color:#B392F0">npm</span><span style="color:#9ECBFF"> install</span><span style="color:#9ECBFF"> postcss-content-unicode</span><span style="color:#79B8FF"> --save-dev</span></span></code></pre>
+<p>如果没有现成插件，可以自己写一个简单的：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="js"><code><span class="line"><span style="color:#79B8FF">module</span><span style="color:#E1E4E8">.</span><span style="color:#79B8FF">exports</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> () </span><span style="color:#F97583">=></span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#F97583">  return</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#E1E4E8">    postcssPlugin: </span><span style="color:#9ECBFF">'postcss-content-unicode'</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#B392F0">    Declaration</span><span style="color:#E1E4E8">(</span><span style="color:#FFAB70">decl</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#F97583">      if</span><span style="color:#E1E4E8"> (decl.prop </span><span style="color:#F97583">===</span><span style="color:#9ECBFF"> 'content'</span><span style="color:#F97583"> &#x26;&#x26;</span><span style="color:#E1E4E8"> decl.value) {</span></span>
+<span class="line"><span style="color:#E1E4E8">        decl.value </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> decl.value.</span><span style="color:#B392F0">replace</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">/</span><span style="color:#79B8FF">[\u4e00-\u9fa5]</span><span style="color:#9ECBFF">/</span><span style="color:#F97583">g</span><span style="color:#E1E4E8">, (</span><span style="color:#FFAB70">char</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">=></span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#F97583">          return</span><span style="color:#9ECBFF"> '</span><span style="color:#79B8FF">\\</span><span style="color:#9ECBFF">'</span><span style="color:#F97583"> +</span><span style="color:#E1E4E8"> char.</span><span style="color:#B392F0">charCodeAt</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">0</span><span style="color:#E1E4E8">).</span><span style="color:#B392F0">toString</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">16</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#E1E4E8">        });</span></span>
+<span class="line"><span style="color:#E1E4E8">      }</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"><span style="color:#E1E4E8">  };</span></span>
+<span class="line"><span style="color:#E1E4E8">};</span></span>
+<span class="line"><span style="color:#79B8FF">module</span><span style="color:#E1E4E8">.</span><span style="color:#79B8FF">exports</span><span style="color:#E1E4E8">.postcss </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> true</span><span style="color:#E1E4E8">;</span></span></code></pre>
+<p><strong>在 Vue CLI 项目中使用：</strong></p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="js"><code><span class="line"><span style="color:#79B8FF">module</span><span style="color:#E1E4E8">.</span><span style="color:#79B8FF">exports</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#E1E4E8">  plugins: [</span></span>
+<span class="line"><span style="color:#B392F0">    require</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">'autoprefixer'</span><span style="color:#E1E4E8">),</span></span>
+<span class="line"><span style="color:#B392F0">    require</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">'./postcss-plugins/postcss-content-unicode.js'</span><span style="color:#E1E4E8">)</span></span>
+<span class="line"><span style="color:#E1E4E8">  ]</span></span>
+<span class="line"><span style="color:#E1E4E8">};</span></span></code></pre>
+<p><strong>或在</strong> <strong>vue.config.js</strong> <strong>中配置：</strong></p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="js"><code><span class="line"><span style="color:#79B8FF">module</span><span style="color:#E1E4E8">.</span><span style="color:#79B8FF">exports</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#E1E4E8">  css: {</span></span>
+<span class="line"><span style="color:#E1E4E8">    loaderOptions: {</span></span>
+<span class="line"><span style="color:#E1E4E8">      postcss: {</span></span>
+<span class="line"><span style="color:#E1E4E8">        postcssOptions: {</span></span>
+<span class="line"><span style="color:#E1E4E8">          plugins: [</span></span>
+<span class="line"><span style="color:#B392F0">            require</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">'./postcss-plugins/postcss-content-unicode.js'</span><span style="color:#E1E4E8">)()</span></span>
+<span class="line"><span style="color:#E1E4E8">          ]</span></span>
+<span class="line"><span style="color:#E1E4E8">        }</span></span>
+<span class="line"><span style="color:#E1E4E8">      }</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"><span style="color:#E1E4E8">  }</span></span>
+<span class="line"><span style="color:#E1E4E8">};</span></span></code></pre>
+<h3 id="44-两种方案对比">4.4 两种方案对比</h3>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>维度</th><th>Nginx 方案</th><th>Unicode 转义方案</th></tr></thead><tbody><tr><td><strong>改动位置</strong></td><td>服务端配置</td><td>前端源码/构建配置</td></tr><tr><td><strong>生效范围</strong></td><td>全局，所有 CSS</td><td>仅 <code>content</code>​ 属性</td></tr><tr><td><strong>维护成本</strong></td><td>一次配置，永久生效</td><td>手动写需每次转换；PostCSS 需维护插件</td></tr><tr><td><strong>适用场景</strong></td><td>有服务端控制权</td><td>无服务端控制权、CDN 托管</td></tr><tr><td><strong>可靠性</strong></td><td>根治（明确声明编码）</td><td>规避（绕过编码问题）</td></tr></tbody></table>
+<h2 id="五最佳实践">五、最佳实践</h2>
+<h3 id="51-推荐组合">5.1 推荐组合</h3>
+<ol>
+<li><strong>优先使用 Nginx 方案</strong>：从根本上解决编码声明问题</li>
+<li><strong>PostCSS 作为双保险</strong>：即使服务端配置有遗漏，也能兜底</li>
+</ol>
+<h3 id="52-检查清单">5.2 检查清单</h3>
+<ul class="contains-task-list">
+<li class="task-list-item"><input type="checkbox" disabled> 源码文件编码为 UTF-8（VS Code 右下角确认）</li>
+<li class="task-list-item"><input type="checkbox" disabled> Nginx 配置 <code>charset utf-8;</code>​ + <code>charset_types text/css;</code>​</li>
+<li class="task-list-item"><input type="checkbox" disabled> 如果用了 <code>sub_filter</code>​，确保 <code>sub_filter_types</code>​ 包含 <code>text/css</code>​</li>
+<li class="task-list-item"><input type="checkbox" disabled> 验证 CSS 响应头包含 <code>charset=utf-8</code>​</li>
+</ul>
+<h2 id="六总结">六、总结</h2>
+<p>CSS <code>content</code>​ 中文乱码问题，表面是”样式显示异常”，实际是<strong>HTTP 响应头编码声明缺失</strong>导致的字符集解码错误。</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>问题层面</th><th>解决方案</th></tr></thead><tbody><tr><td>服务端</td><td>Nginx <code>charset utf-8; charset_types text/css;</code>​</td></tr><tr><td>前端构建</td><td>PostCSS 插件自动转 Unicode 转义</td></tr><tr><td>临时应急</td><td>手动将中文改为 <code>\xxxx</code>​ 格式</td></tr></tbody></table>
+<p>在现代 Web 开发中，<strong>保证源码 UTF-8 + 服务端响应头声明 UTF-8</strong>，是避免此类问题的根本之道。</p>
+<p>‍</p> </div> <!-- 悬浮 TOC --> <button class="toc-toggle" id="toc-toggle" aria-label="显示目录" data-astro-cid-iy4s3wf7> <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-list" data-astro-cid-iy4s3wf7> <line x1="8" y1="6" x2="21" y2="6" data-astro-cid-iy4s3wf7></line> <line x1="8" y1="12" x2="21" y2="12" data-astro-cid-iy4s3wf7></line> <line x1="8" y1="18" x2="21" y2="18" data-astro-cid-iy4s3wf7></line> <line x1="3" y1="6" x2="3.01" y2="6" data-astro-cid-iy4s3wf7></line> <line x1="3" y1="12" x2="3.01" y2="12" data-astro-cid-iy4s3wf7></line> <line x1="3" y1="18" x2="3.01" y2="18" data-astro-cid-iy4s3wf7></line> </svg> </button> <aside class="floating-toc" id="floating-toc" data-astro-cid-iy4s3wf7> <div class="toc-header" data-astro-cid-iy4s3wf7> <h3 data-astro-cid-iy4s3wf7>目录</h3> </div> <nav class="toc-nav" id="toc-nav" data-astro-cid-g3fimnfa> <!-- TOC 内容将由客户端脚本填充 --> </nav>  <script type="module">function s(){const n=document.getElementById("toc-nav"),a=document.querySelector(".toc-header h3");if(!n)return;n.innerHTML="";const d=document.querySelector(".article-header h1")?.textContent||"目录";a&&(a.textContent=d);const c=Array.from(document.querySelectorAll(".article-content h2, .article-content h3, .article-content h4, .article-content h5, .article-content h6"));if(c.length===0){n.innerHTML='<p style="color: var(--color-text-secondary); padding: 0.5rem;">暂无目录</p>';return}c.forEach(e=>{e.id||(e.id=e.textContent?.toLowerCase().replace(/\s+/g,"-").replace(/[^\w\-\u4e00-\u9fa5]/g,"")||"")});const l=document.createElement("ul");c.forEach(e=>{const t=document.createElement("li"),o=document.createElement("a");o.href=`#${e.id}`,o.textContent=e.textContent||"",o.classList.add(`toc-${e.tagName.toLowerCase()}`),o.addEventListener("click",i=>{i.preventDefault();const r=document.getElementById(e.id);if(r){const f=r.getBoundingClientRect().top+window.pageYOffset-80;window.scrollTo({top:f,behavior:"smooth"}),history.pushState(null,"",`#${e.id}`)}}),t.appendChild(o),l.appendChild(t)}),n.appendChild(l);const h={root:null,rootMargin:"-60px 0px -80% 0px",threshold:0},u=new IntersectionObserver(e=>{e.forEach(t=>{if(t.isIntersecting){const o=t.target.id;n.querySelectorAll("a").forEach(r=>{r.classList.remove("active")});const i=n.querySelector(`a[href="#${o}"]`);i&&i.classList.add("active")}})},h);c.forEach(e=>u.observe(e)),setTimeout(()=>{if(window.location.hash){const t=n.querySelector(`a[href="${window.location.hash}"]`);if(t){n.querySelectorAll("a").forEach(o=>o.classList.remove("active")),t.classList.add("active");return}}let e="";for(const t of c)if(t.getBoundingClientRect().top<=150)e=t.id;else break;if(!e&&c.length>0&&window.scrollY<100&&(e=c[0].id),e){n.querySelectorAll("a").forEach(o=>o.classList.remove("active"));const t=n.querySelector(`a[href="#${e}"]`);t&&t.classList.add("active")}},100)}s();document.addEventListener("astro:page-load",s);</script> </aside> <div class="toc-overlay" id="toc-overlay" data-astro-cid-iy4s3wf7></div> <section class="comments" data-astro-cid-iy4s3wf7> <div class="giscus-wrapper"> <script data-astro-rerun src="https://giscus.app/client.js" data-repo="jeremyjone/blog-comments" data-repo-id="R_kgDOQlVVGg" data-category="Announcements" data-category-id="DIC_kwDOQlVVGs4Czkir" data-mapping="title" data-term data-strict="0" data-reactions-enabled="1" data-emit-metadata="0" data-input-position="top" data-theme="preferred_color_scheme" data-lang="zh-CN" crossorigin="anonymous" async></script> <noscript>请启用 JavaScript 查看评论。</noscript> </div> </section> </article>  </main> <footer class="site-footer" data-astro-cid-x322jucz> <div class="container footer-content" data-astro-cid-x322jucz> <p data-astro-cid-x322jucz>
+&copy; 2026 <b data-astro-cid-x322jucz>JeremyJone.com</b> All rights reserved.
+</p> <div class="footer-links" data-astro-cid-x322jucz> <a href="https://github.com/jeremyjone" target="_blank" rel="noopener" data-astro-cid-x322jucz> GitHub </a> </div> </div> </footer> <script type="module" src="/_astro/BaseLayout.astro_astro_type_script_index_0_lang.CSchzSu4.js"></script> <div id="search-modal" class="search-modal" style="display: none;" data-astro-cid-jwf5kjrd> <div class="search-overlay" data-astro-cid-jwf5kjrd></div> <div class="search-container" data-astro-cid-jwf5kjrd> <div class="search-header" data-astro-cid-jwf5kjrd> <div class="search-input-wrapper" data-astro-cid-jwf5kjrd> <input type="text" id="search-input-global" placeholder="搜索全站内容 (Cmd+K)..." autocomplete="off" data-astro-cid-jwf5kjrd> <button id="clear-search" class="clear-btn" aria-label="Clear search" style="display: none;" data-astro-cid-jwf5kjrd> <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-astro-cid-jwf5kjrd><line x1="18" y1="6" x2="6" y2="18" data-astro-cid-jwf5kjrd></line><line x1="6" y1="6" x2="18" y2="18" data-astro-cid-jwf5kjrd></line></svg> </button> </div> <button id="close-search" aria-label="Close search" data-astro-cid-jwf5kjrd>Esc</button> </div> <div id="search-results-global" class="search-results" data-astro-cid-jwf5kjrd> <div class="search-placeholder" data-astro-cid-jwf5kjrd>输入关键词开始搜索...</div> </div> </div> </div>  <script>
+    window.loadPagefind = async () => {
+        try {
+            return await import("/pagefind/pagefind.js");
+        } catch (e) {
+            console.warn("Failed to load pagefind:", e);
+            return null;
+        }
+    };
+</script> <script type="module" src="/_astro/SearchModal.astro_astro_type_script_index_0_lang.BdkfzuBE.js"></script> </body></html>  <script type="module">document.addEventListener("DOMContentLoaded",()=>{const c=document.getElementById("toc-toggle"),e=document.getElementById("floating-toc"),t=document.getElementById("toc-overlay");c?.addEventListener("click",()=>{e?.classList.add("active"),t?.classList.add("active")});const o=()=>{e?.classList.remove("active"),t?.classList.remove("active")};t?.addEventListener("click",o)});</script>
