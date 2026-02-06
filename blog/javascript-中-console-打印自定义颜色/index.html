@@ -1,0 +1,164 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="dark" data-astro-cid-x322jucz> <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="astro-view-transitions-enabled" content="true"><meta name="astro-view-transitions-fallback" content="animate"><script type="module" src="/_astro/ClientRouter.astro_astro_type_script_index_0_lang.QW52Ox2j.js"></script><title>JavaScript 中 console 打印自定义颜色</title><meta name="description" content="我们在写 CLI、调日志、写脚手架时，**彩色输出**几乎是刚需。今天我就系统聊聊 **JavaScript 在控制台输出颜色**这件事，内容从底层原理讲到库的使用，再到实战建议，尽量做到“看完就能用”。 --- ## 1. 为什么需要..."><link rel="canonical" href="https://www.jeremyjone.com//blog/javascript-%E4%B8%AD-console-%E6%89%93%E5%8D%B0%E8%87%AA%E5%AE%9A%E4%B9%89%E9%A2%9C%E8%89%B2/"><meta property="og:title" content="JavaScript 中 console 打印自定义颜色"><meta property="og:description" content="我们在写 CLI、调日志、写脚手架时，**彩色输出**几乎是刚需。今天我就系统聊聊 **JavaScript 在控制台输出颜色**这件事，内容从底层原理讲到库的使用，再到实战建议，尽量做到“看完就能用”。 --- ## 1. 为什么需要..."><meta property="og:type" content="article"><meta property="og:url" content="https://www.jeremyjone.com//blog/javascript-%E4%B8%AD-console-%E6%89%93%E5%8D%B0%E8%87%AA%E5%AE%9A%E4%B9%89%E9%A2%9C%E8%89%B2/"><meta property="og:site_name" content="JeremyJone's Blog"><meta property="og:locale" content="zh_CN"><link rel="icon" href="/favicon.ico"><style>#nprogress{pointer-events:none}#nprogress .bar{background:#29d;position:fixed;z-index:1031;top:0;left:0;width:100%;height:2px}#nprogress .peg{display:block;position:absolute;right:0;width:100px;height:100%;box-shadow:0 0 10px #29d,0 0 5px #29d;opacity:1;-webkit-transform:rotate(3deg) translate(0px,-4px);-ms-transform:rotate(3deg) translate(0px,-4px);transform:rotate(3deg) translateY(-4px)}#nprogress .spinner{display:block;position:fixed;z-index:1031;top:15px;right:15px}#nprogress .spinner-icon{width:18px;height:18px;box-sizing:border-box;border:solid 2px transparent;border-top-color:#29d;border-left-color:#29d;border-radius:50%;-webkit-animation:nprogress-spinner .4s linear infinite;animation:nprogress-spinner .4s linear infinite}.nprogress-custom-parent{overflow:hidden;position:relative}.nprogress-custom-parent #nprogress .spinner,.nprogress-custom-parent #nprogress .bar{position:absolute}@-webkit-keyframes nprogress-spinner{0%{-webkit-transform:rotate(0deg)}to{-webkit-transform:rotate(360deg)}}@keyframes nprogress-spinner{0%{transform:rotate(0)}to{transform:rotate(360deg)}}
+</style>
+<link rel="stylesheet" href="/_astro/_year_.CYaCSRsu.css">
+<link rel="stylesheet" href="/_astro/_slug_.B1ShOm38.css"></head> <body data-astro-cid-x322jucz> <header class="site-header" data-astro-cid-x322jucz data-astro-transition-persist="astro-oh3dxdoj-1"> <div class="container header-content" data-astro-cid-x322jucz> <a href="/" class="logo" data-astro-cid-x322jucz> <div class="logo-icon" data-astro-cid-x322jucz> <img src="/resources/avatar.png" alt="Logo" width="32" height="32" data-astro-cid-x322jucz> </div> <span class="logo-text" data-astro-cid-x322jucz>JeremyJone&#39;s Blog</span> </a> <div class="header-right" data-astro-cid-x322jucz> <nav class="nav" data-astro-cid-x322jucz> <a href="/" class="nav-link" data-href="/" data-astro-cid-x322jucz> 首页 </a><a href="/blog" class="nav-link" data-href="/blog" data-astro-cid-x322jucz> 博客 </a><a href="/notes" class="nav-link" data-href="/notes" data-astro-cid-x322jucz> 笔记 </a> </nav> <button class="search-toggle" onclick="window.openSearchModal()" aria-label="搜索" data-astro-cid-x322jucz> <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-astro-cid-x322jucz><circle cx="11" cy="11" r="8" data-astro-cid-x322jucz></circle><line x1="21" y1="21" x2="16.65" y2="16.65" data-astro-cid-x322jucz></line></svg> <span class="search-placeholder" data-astro-cid-x322jucz>Ctrl+K 搜索...</span> </button> <button class="theme-toggle" id="theme-toggle" aria-label="切换主题" data-astro-cid-x322jucz> <svg class="sun-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" data-astro-cid-x322jucz> <circle cx="12" cy="12" r="5" data-astro-cid-x322jucz></circle> <line x1="12" y1="1" x2="12" y2="3" data-astro-cid-x322jucz></line> <line x1="12" y1="21" x2="12" y2="23" data-astro-cid-x322jucz></line> <line x1="4.22" y1="4.22" x2="5.64" y2="5.64" data-astro-cid-x322jucz></line> <line x1="18.36" y1="18.36" x2="19.78" y2="19.78" data-astro-cid-x322jucz></line> <line x1="1" y1="12" x2="3" y2="12" data-astro-cid-x322jucz></line> <line x1="21" y1="12" x2="23" y2="12" data-astro-cid-x322jucz></line> <line x1="4.22" y1="19.78" x2="5.64" y2="18.36" data-astro-cid-x322jucz></line> <line x1="18.36" y1="5.64" x2="19.78" y2="4.22" data-astro-cid-x322jucz></line> </svg> <svg class="moon-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" data-astro-cid-x322jucz> <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" data-astro-cid-x322jucz></path> </svg> </button> </div> </div> </header> <main class="container" data-astro-cid-x322jucz>  <article data-content-type="blog" data-pagefind-body data-pagefind-filter="type:blog" data-astro-cid-iy4s3wf7> <header class="article-header" data-astro-cid-iy4s3wf7> <h1 data-astro-cid-iy4s3wf7>JavaScript 中 console 打印自定义颜色</h1> <p class="meta" data-astro-cid-iy4s3wf7>
+发布于 2026-02-06 09:42:32 · 2 分钟 · 标签：<a href="/tags/JavaScript" class="tag" data-astro-cid-iy4s3wf7> JavaScript </a> </p> </header> <div class="article-content" data-astro-cid-iy4s3wf7> <p>我们在写 CLI、调日志、写脚手架时，<strong>彩色输出</strong>几乎是刚需。今天我就系统聊聊 <strong>JavaScript 在控制台输出颜色</strong>这件事，内容从底层原理讲到库的使用，再到实战建议，尽量做到“看完就能用”。</p>
+<hr>
+<h2 id="1-为什么需要彩色控制台输出">1. 为什么需要彩色控制台输出？</h2>
+<p>如果你和我一样，写过 CLI 或 Node 服务日志，就会知道：</p>
+<ul>
+<li><strong>错误一片红</strong>，一眼就能定位</li>
+<li><strong>警告是黄色</strong>，不至于忽略</li>
+<li><strong>成功是绿色</strong>，仪式感拉满</li>
+<li><strong>信息是蓝色</strong>，层次更清晰</li>
+</ul>
+<p>简而言之：<strong>提升可读性 + 降低噪音</strong>。</p>
+<hr>
+<h2 id="2-基础原理ansi-escape-codes">2. 基础原理：ANSI Escape Codes</h2>
+<p>绝大多数终端都支持 ANSI 转义序列，它就是彩色输出的底层核心。</p>
+<p>最常见的格式如下：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="plaintext"><code><span class="line"><span>\033[31m红色文字\033[0m</span></span></code></pre>
+<p>含义：</p>
+<ul>
+<li>​<code>\033[</code>​：转义序列开始</li>
+<li>​<code>31m</code>​：设置前景色为红色</li>
+<li>​<code>0m</code>​：重置颜色和样式（必须有！）</li>
+</ul>
+<h3 id="常用颜色码">常用颜色码</h3>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>颜色</th><th>前景色代码</th></tr></thead><tbody><tr><td>黑</td><td>30</td></tr><tr><td>红</td><td>31</td></tr><tr><td>绿</td><td>32</td></tr><tr><td>黄</td><td>33</td></tr><tr><td>蓝</td><td>34</td></tr><tr><td>紫</td><td>35</td></tr><tr><td>青</td><td>36</td></tr><tr><td>白</td><td>37</td></tr><tr><td>重置</td><td>0</td></tr></tbody></table>
+<hr>
+<h2 id="3-javascript-原生输出颜色">3. JavaScript 原生输出颜色</h2>
+<p>在 Node.js 控制台里可以直接打印 ANSI：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="js"><code><span class="line"><span style="color:#E1E4E8">console.</span><span style="color:#B392F0">log</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">"</span><span style="color:#79B8FF">\033</span><span style="color:#9ECBFF">[32mSuccess!</span><span style="color:#79B8FF">\033</span><span style="color:#9ECBFF">[0m"</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#E1E4E8">console.</span><span style="color:#B392F0">log</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">"</span><span style="color:#79B8FF">\033</span><span style="color:#9ECBFF">[31mError!</span><span style="color:#79B8FF">\033</span><span style="color:#9ECBFF">[0m"</span><span style="color:#E1E4E8">);</span></span></code></pre>
+<p>如果你想粗体、下划线，也可以加样式：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="js"><code><span class="line"><span style="color:#E1E4E8">console.</span><span style="color:#B392F0">log</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">"</span><span style="color:#79B8FF">\033</span><span style="color:#9ECBFF">[1;34mBold Blue</span><span style="color:#79B8FF">\033</span><span style="color:#9ECBFF">[0m"</span><span style="color:#E1E4E8">);</span></span></code></pre>
+<blockquote>
+<p>但缺点也很明显：<strong>可读性差</strong>、<strong>难维护</strong>。</p>
+</blockquote>
+<hr>
+<h2 id="4-实用库推荐更舒服的写法">4. 实用库推荐（更舒服的写法）</h2>
+<p>我日常最常用的两个库：</p>
+<h3 id="-chalk明星库">✅ chalk（明星库）</h3>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#B392F0">npm</span><span style="color:#9ECBFF"> i</span><span style="color:#9ECBFF"> chalk</span></span></code></pre>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="js"><code><span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> chalk </span><span style="color:#F97583">from</span><span style="color:#9ECBFF"> "chalk"</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">console.</span><span style="color:#B392F0">log</span><span style="color:#E1E4E8">(chalk.</span><span style="color:#B392F0">green</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">"Success"</span><span style="color:#E1E4E8">));</span></span>
+<span class="line"><span style="color:#E1E4E8">console.</span><span style="color:#B392F0">log</span><span style="color:#E1E4E8">(chalk.red.</span><span style="color:#B392F0">bold</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">"Error"</span><span style="color:#E1E4E8">));</span></span></code></pre>
+<p>优点：</p>
+<ul>
+<li>API 清晰</li>
+<li>支持链式</li>
+<li>支持 true color</li>
+</ul>
+<h3 id="-kleur轻量替代">✅ kleur（轻量替代）</h3>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#B392F0">npm</span><span style="color:#9ECBFF"> i</span><span style="color:#9ECBFF"> kleur</span></span></code></pre>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="js"><code><span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> { green, red, bold } </span><span style="color:#F97583">from</span><span style="color:#9ECBFF"> "kleur"</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">console.</span><span style="color:#B392F0">log</span><span style="color:#E1E4E8">(</span><span style="color:#B392F0">green</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">"OK"</span><span style="color:#E1E4E8">));</span></span>
+<span class="line"><span style="color:#E1E4E8">console.</span><span style="color:#B392F0">log</span><span style="color:#E1E4E8">(</span><span style="color:#B392F0">bold</span><span style="color:#E1E4E8">().</span><span style="color:#B392F0">red</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">"Failed"</span><span style="color:#E1E4E8">));</span></span></code></pre>
+<p>优点：</p>
+<ul>
+<li>体积小</li>
+<li>速度快</li>
+<li>没有大依赖</li>
+</ul>
+<hr>
+<h2 id="5-高级玩法24-bit-真彩色">5. 高级玩法：24-bit 真彩色</h2>
+<p>如果你的终端支持真彩色（大多数现代终端都支持）：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="js"><code><span class="line"><span style="color:#E1E4E8">console.</span><span style="color:#B392F0">log</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">"</span><span style="color:#79B8FF">\033</span><span style="color:#9ECBFF">[38;2;255;100;0mOrange Text</span><span style="color:#79B8FF">\033</span><span style="color:#9ECBFF">[0m"</span><span style="color:#E1E4E8">);</span></span></code></pre>
+<p>格式：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="plaintext"><code><span class="line"><span>\033[38;2;R;G;Bm</span></span></code></pre>
+<p>背景色用 <code>48;2</code>​。</p>
+<hr>
+<h2 id="6-兼容性与配置建议">6. 兼容性与配置建议</h2>
+<h3 id="1-检测终端是否支持颜色">1) 检测终端是否支持颜色</h3>
+<p>常见判断：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="js"><code><span class="line"><span style="color:#E1E4E8">process.stdout.isTTY</span></span></code></pre>
+<h3 id="2-支持关闭颜色">2) 支持关闭颜色</h3>
+<p>CLI 常见做法：</p>
+<ul>
+<li>​<code>--no-color</code>​ 参数</li>
+<li>或尊重 <code>NO_COLOR</code>​ 环境变量</li>
+</ul>
+<h3 id="3-windows-兼容性">3) Windows 兼容性</h3>
+<p>旧版 Windows CMD 不支持 ANSI，但现在的 Windows Terminal / PowerShell / WSL 已经没太大问题。</p>
+<hr>
+<h2 id="7-我个人的一套颜色风格约定">7. 我个人的一套颜色风格约定</h2>
+<p>如果你也在写 CLI 或日志系统，可以参考：</p>
+<ul>
+<li>✅ <strong>Success：绿色</strong></li>
+<li>⚠️ <strong>Warning：黄色</strong></li>
+<li>❌ <strong>Error：红色</strong></li>
+<li>ℹ️ <strong>Info：蓝色</strong></li>
+<li>🐛 <strong>Debug：灰色</strong></li>
+</ul>
+<p>保持统一很重要。</p>
+<hr>
+<h2 id="8-最佳实践小结">8. 最佳实践小结</h2>
+<p>✅ <strong>不要忘 reset</strong>
+每次加颜色一定要 <code>\033[0m</code>​ 或使用库自动重置。</p>
+<p>✅ <strong>少即是多</strong>
+颜色不要滥用，重点突出即可。</p>
+<p>✅ <strong>对用户友好</strong>
+允许用户关闭颜色输出，尤其是在写文件或日志系统时。</p>
+<hr>
+<h2 id="写在最后">写在最后</h2>
+<p>彩色控制台输出虽然是“小事”，但它能显著提升一个 CLI 工具的体验感。只要掌握 ANSI 规则，再配合合适的库，写出来的命令行工具立刻“高级感拉满”。</p>
+<p>如果你想看更完整的 <strong>Node.js 日志彩色输出模板</strong>、<strong>CLI 脚手架实践</strong>、或 <strong>chalk/kleur 对比分析</strong>，欢迎留言，我可以继续写一篇深入实战篇。</p> </div> <!-- 悬浮 TOC --> <button class="toc-toggle" id="toc-toggle" aria-label="显示目录" data-astro-cid-iy4s3wf7> <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-list" data-astro-cid-iy4s3wf7> <line x1="8" y1="6" x2="21" y2="6" data-astro-cid-iy4s3wf7></line> <line x1="8" y1="12" x2="21" y2="12" data-astro-cid-iy4s3wf7></line> <line x1="8" y1="18" x2="21" y2="18" data-astro-cid-iy4s3wf7></line> <line x1="3" y1="6" x2="3.01" y2="6" data-astro-cid-iy4s3wf7></line> <line x1="3" y1="12" x2="3.01" y2="12" data-astro-cid-iy4s3wf7></line> <line x1="3" y1="18" x2="3.01" y2="18" data-astro-cid-iy4s3wf7></line> </svg> </button> <aside class="floating-toc" id="floating-toc" data-astro-cid-iy4s3wf7> <div class="toc-header" data-astro-cid-iy4s3wf7> <h3 data-astro-cid-iy4s3wf7>目录</h3> </div> <nav class="toc-nav" id="toc-nav" data-astro-cid-g3fimnfa> <!-- TOC 内容将由客户端脚本填充 --> </nav>  <script type="module">function s(){const n=document.getElementById("toc-nav"),a=document.querySelector(".toc-header h3");if(!n)return;n.innerHTML="";const d=document.querySelector(".article-header h1")?.textContent||"目录";a&&(a.textContent=d);const c=Array.from(document.querySelectorAll(".article-content h2, .article-content h3, .article-content h4, .article-content h5, .article-content h6"));if(c.length===0){n.innerHTML='<p style="color: var(--color-text-secondary); padding: 0.5rem;">暂无目录</p>';return}c.forEach(e=>{e.id||(e.id=e.textContent?.toLowerCase().replace(/\s+/g,"-").replace(/[^\w\-\u4e00-\u9fa5]/g,"")||"")});const l=document.createElement("ul");c.forEach(e=>{const t=document.createElement("li"),o=document.createElement("a");o.href=`#${e.id}`,o.textContent=e.textContent||"",o.classList.add(`toc-${e.tagName.toLowerCase()}`),o.addEventListener("click",i=>{i.preventDefault();const r=document.getElementById(e.id);if(r){const f=r.getBoundingClientRect().top+window.pageYOffset-80;window.scrollTo({top:f,behavior:"smooth"}),history.pushState(null,"",`#${e.id}`)}}),t.appendChild(o),l.appendChild(t)}),n.appendChild(l);const h={root:null,rootMargin:"-60px 0px -80% 0px",threshold:0},u=new IntersectionObserver(e=>{e.forEach(t=>{if(t.isIntersecting){const o=t.target.id;n.querySelectorAll("a").forEach(r=>{r.classList.remove("active")});const i=n.querySelector(`a[href="#${o}"]`);i&&i.classList.add("active")}})},h);c.forEach(e=>u.observe(e)),setTimeout(()=>{if(window.location.hash){const t=n.querySelector(`a[href="${window.location.hash}"]`);if(t){n.querySelectorAll("a").forEach(o=>o.classList.remove("active")),t.classList.add("active");return}}let e="";for(const t of c)if(t.getBoundingClientRect().top<=150)e=t.id;else break;if(!e&&c.length>0&&window.scrollY<100&&(e=c[0].id),e){n.querySelectorAll("a").forEach(o=>o.classList.remove("active"));const t=n.querySelector(`a[href="#${e}"]`);t&&t.classList.add("active")}},100)}s();document.addEventListener("astro:page-load",s);</script> </aside> <div class="toc-overlay" id="toc-overlay" data-astro-cid-iy4s3wf7></div> <section class="comments" data-astro-cid-iy4s3wf7> <div class="giscus-wrapper"> <script data-astro-rerun src="https://giscus.app/client.js" data-repo="jeremyjone/blog-comments" data-repo-id="R_kgDOQlVVGg" data-category="Announcements" data-category-id="DIC_kwDOQlVVGs4Czkir" data-mapping="title" data-term data-strict="0" data-reactions-enabled="1" data-emit-metadata="0" data-input-position="top" data-theme="preferred_color_scheme" data-lang="zh-CN" crossorigin="anonymous" async></script> <noscript>请启用 JavaScript 查看评论。</noscript> </div> </section> </article>  </main> <footer class="site-footer" data-astro-cid-x322jucz> <div class="container footer-content" data-astro-cid-x322jucz> <p data-astro-cid-x322jucz>
+&copy; 2026 <b data-astro-cid-x322jucz>JeremyJone.com</b> All rights reserved.
+</p> <div class="footer-links" data-astro-cid-x322jucz> <a href="https://github.com/jeremyjone" target="_blank" rel="noopener" data-astro-cid-x322jucz> GitHub </a> </div> </div> </footer> <script type="module" src="/_astro/BaseLayout.astro_astro_type_script_index_0_lang.CSchzSu4.js"></script> <div id="search-modal" class="search-modal" style="display: none;" data-astro-cid-jwf5kjrd> <div class="search-overlay" data-astro-cid-jwf5kjrd></div> <div class="search-container" data-astro-cid-jwf5kjrd> <div class="search-header" data-astro-cid-jwf5kjrd> <div class="search-input-wrapper" data-astro-cid-jwf5kjrd> <input type="text" id="search-input-global" placeholder="搜索全站内容 (Cmd+K)..." autocomplete="off" data-astro-cid-jwf5kjrd> <button id="clear-search" class="clear-btn" aria-label="Clear search" style="display: none;" data-astro-cid-jwf5kjrd> <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-astro-cid-jwf5kjrd><line x1="18" y1="6" x2="6" y2="18" data-astro-cid-jwf5kjrd></line><line x1="6" y1="6" x2="18" y2="18" data-astro-cid-jwf5kjrd></line></svg> </button> </div> <button id="close-search" aria-label="Close search" data-astro-cid-jwf5kjrd>Esc</button> </div> <div id="search-results-global" class="search-results" data-astro-cid-jwf5kjrd> <div class="search-placeholder" data-astro-cid-jwf5kjrd>输入关键词开始搜索...</div> </div> </div> </div>  <script>
+    window.loadPagefind = async () => {
+        try {
+            return await import("/pagefind/pagefind.js");
+        } catch (e) {
+            console.warn("Failed to load pagefind:", e);
+            return null;
+        }
+    };
+</script> <script type="module" src="/_astro/SearchModal.astro_astro_type_script_index_0_lang.BdkfzuBE.js"></script> </body></html>  <script type="module">document.addEventListener("DOMContentLoaded",()=>{const c=document.getElementById("toc-toggle"),e=document.getElementById("floating-toc"),t=document.getElementById("toc-overlay");c?.addEventListener("click",()=>{e?.classList.add("active"),t?.classList.add("active")});const o=()=>{e?.classList.remove("active"),t?.classList.remove("active")};t?.addEventListener("click",o)});</script>
